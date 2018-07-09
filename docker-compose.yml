@@ -8,14 +8,16 @@ services:
       - "3000:8080"
     volumes:
       - "./frontend/:/app"
-  # back-end:
-  #   build:
-  #     context: ./backend/
-  #     dockerfile: Dockerfile-run
-  #   ports:
-  #     - "3001:8080"
-  #   volumes:
-  #     - "./backend/:/app"
+  back-end:
+    build:
+      context: ./backend/
+      dockerfile: Dockerfile-run
+    volumes:
+      - ~/.m2:/root/.m2
+    ports:
+      - "3001:8080"
+    volumes:
+      - "./backend/:/app"
   data-base:
     image: cassandra:3
     ports:

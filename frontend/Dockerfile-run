@@ -1,12 +1,15 @@
 FROM node:9
 
+USER root
+
 WORKDIR /app
 
-ADD src /app/src
-ADD package.json /app
+COPY src /app/src
+COPY package.json /app
+COPY package-lock.json /app
 
 RUN npm i
 
-CMD npm start
-
 EXPOSE 8080
+
+ENTRYPOINT ["npm", "start"]
