@@ -19,4 +19,4 @@ data class User(
         @ElementCollection(fetch = FetchType.EAGER)
         val authorities: Set<String> = setOf()
 
-):Serializable
+) : Serializable

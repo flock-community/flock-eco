@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service
 interface UserRepository : PagingAndSortingRepository<User, Long> {
 
     fun findByReference(name: String): User?
+
 }
 
 

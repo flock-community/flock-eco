@@ -8,7 +8,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>eco-feature-users</artifactId>
+    <artifactId>eco-feature-members</artifactId>
 
     <packaging>jar</packaging>
 
