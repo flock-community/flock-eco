@@ -4,20 +4,17 @@
 
     <parent>
         <groupId>com.github.flock-se.eco</groupId>
-        <artifactId>eco-parent</artifactId>
+        <artifactId>eco-feature-parent</artifactId>
         <version>feature~community-SNAPSHOT</version>
     </parent>
 
-    <artifactId>eco-core</artifactId>
+    <artifactId>eco-feature-payments</artifactId>
 
-    <packaging>jar</packaging>
-
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>kotlin-maven-plugin</artifactId>
-                <groupId>org.jetbrains.kotlin</groupId>
-            </plugin>
-        </plugins>
-    </build>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.4</version>
+        </dependency>
+    </dependencies>
 </project>

@@ -2,9 +2,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>community.flock.eco</groupId>
+    <groupId>com.github.flock-se.eco</groupId>
     <artifactId>eco-parent</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>feature~community-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
