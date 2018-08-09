@@ -22,7 +22,7 @@ open class PaymentBuckarooController(
 
         val obj = mapper.readValue(json, com.fasterxml.jackson.databind.node.ObjectNode::class.java)
 
-        val key = obj.get("PaymentTransaction").get("Key").asText()
+        val key = obj.get("Transaction").get("Key").asText()
 
         transactionRepository.findByReference(key)?.let {
             transactionRepository.save(it.copy(

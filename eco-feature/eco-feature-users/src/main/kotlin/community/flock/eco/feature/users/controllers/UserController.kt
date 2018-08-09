@@ -35,20 +35,20 @@ open class UserController(private val userRepository: UserRepository) {
     }
 
     @GetMapping()
-    @PreAuthorize("hasAuthority('UserAuthorities.READ')")
+    @PreAuthorize("hasAuthority('UserAuthority.READ')")
     fun findAll(pageable: Pageable): Page<User> {
         return userRepository.findAll(pageable)
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('UserAuthorities.READ')")
+    @PreAuthorize("hasAuthority('UserAuthority.READ')")
     fun findById(@PathVariable id: Long): User {
         return userRepository.findById(id).orElse(null)
     }
 
     @PostMapping()
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('UserAuthorities.WRITE')")
+    @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
     fun save(@RequestBody user: User, @PathVariable id: Long?): User {
         if (id != null) {
             return userRepository.save(user.copy(
