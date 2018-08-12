@@ -9,21 +9,6 @@ import UserTable from "./UserTable";
 import UserForm from "./UserForm";
 import UserDialog from "./UserDialog";
 
-const users = [{
-  name: "Willem Veelenturf 1",
-  email: "willem.veelenturf@gmail.com",
-  authorities: ['123', '456']
-}, {
-  name: "Willem Veelenturf 2",
-  email: "willem.veelenturf@gmail.com",
-  authorities: []
-}, {
-  name: "Willem Veelenturf 3",
-  email: "willem.veelenturf@gmail.com",
-  authorities: []
-},];
-
-const authorities = [0, 1, 2, 3]
 
 const styles = theme => ({
   button: {
@@ -62,6 +47,13 @@ class UserManager extends React.Component {
         this.setState({authorities: json});
       })
 
+    fetch('/api/users')
+      .then(res => res.json())
+      .then(json => {
+        console.log(json)
+        this.setState({users: json});
+      })
+
   }
 
   render() {
@@ -72,7 +64,7 @@ class UserManager extends React.Component {
 
       <div>
         <UserTable
-          data={users}
+          data={this.state.users}
           handleRowClick={this.rowClick}
         />
 
