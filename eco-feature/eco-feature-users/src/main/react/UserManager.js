@@ -28,7 +28,6 @@ class UserManager extends React.Component {
     }
 
     this.rowClick = (user) => {
-      console.log(user)
       this.setState({user})
     }
 
@@ -51,7 +50,7 @@ class UserManager extends React.Component {
       .then(res => res.json())
       .then(json => {
         console.log(json)
-        this.setState({users: json});
+        this.setState({users: json.content});
       })
 
   }
