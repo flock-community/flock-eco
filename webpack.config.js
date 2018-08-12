@@ -14,7 +14,7 @@ module.exports = {
   entry: path.join(__dirname, root, 'src/main/react'),
 
   output: {
-    path: path.join(__dirname, root, 'target/dist')
+    path: path.join(__dirname, root, 'target/generated-resources')
   },
 
   module: {
