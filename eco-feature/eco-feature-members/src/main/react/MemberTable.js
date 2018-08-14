@@ -48,7 +48,7 @@ class MemberTable extends React.Component {
 
   memberToName(it){
     if(it.infix){
-      return `${it.firstName} ${it.surName}`
+      return `${it.firstName} ${it.infix} ${it.surName}`
     }
     return `${it.firstName} ${it.surName}`
   }
