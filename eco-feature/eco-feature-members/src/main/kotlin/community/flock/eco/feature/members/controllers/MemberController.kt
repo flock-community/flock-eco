@@ -2,12 +2,13 @@ package community.flock.eco.feature.members.controllers
 
 
 import community.flock.eco.feature.members.model.Member
+import community.flock.eco.feature.members.model.MemberStatus
 import community.flock.eco.feature.members.repositories.MemberRepository
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
 
-//@RestController
+@RestController
 @RequestMapping("/api/members")
 open class MemberController(private val memberRepository: MemberRepository) {
 
@@ -26,9 +27,13 @@ open class MemberController(private val memberRepository: MemberRepository) {
         return memberRepository.findByIds(ids.map { it.toLong() })
     }
 
-    @PostMapping()
+    @PostMapping
     fun create(@RequestBody member: Member): Member {
-        return memberRepository.save(member)
+        return memberRepository.save(member.copy(
+                id = 0,
+                status = MemberStatus.NEW,
+                groups = setOf()
+        ))
     }
 
     @PutMapping("/{id}")
