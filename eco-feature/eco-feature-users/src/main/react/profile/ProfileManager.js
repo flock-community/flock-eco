@@ -19,7 +19,7 @@ const styles = theme => ({
   }
 });
 
-class UserManager extends React.Component {
+class ProfileManager extends React.Component {
 
   constructor(props) {
     super(props);
@@ -71,7 +71,6 @@ class UserManager extends React.Component {
           open={this.state.user != null}
           onClose={this.handleClose}
           classes={classes}
-
         >
           <UserForm
             authorities={this.state.authorities}
@@ -93,4 +92,4 @@ class UserManager extends React.Component {
   }
 };
 
-export default withStyles(styles)(UserManager);
+export default withStyles(styles)(ProfileManager);

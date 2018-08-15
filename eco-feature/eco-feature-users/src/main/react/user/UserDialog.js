@@ -22,7 +22,11 @@ class UserDialog extends React.Component {
   constructor(props){
     super(props);
     this.handleClose = () => {
-      this.props.onClose(props.selectedValue);
+      this.props.onClose();
+    };
+
+    this.handleSave = () => {
+      this.props.onSave();
     };
 
   }
@@ -45,7 +49,10 @@ class UserDialog extends React.Component {
           <Button onClick={this.handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={this.handleClose} color="primary" autoFocus>
+          <Button onClick={this.handleDelete} color="secondary">
+            Delete
+          </Button>
+          <Button onClick={this.handleSave} color="primary" autoFocus>
             Save
           </Button>
         </DialogActions>

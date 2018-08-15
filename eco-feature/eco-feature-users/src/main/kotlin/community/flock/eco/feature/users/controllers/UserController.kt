@@ -47,14 +47,26 @@ open class UserController(private val userRepository: UserRepository) {
     }
 
     @PostMapping()
+    @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
+    fun create(@RequestBody user: User): User {
+        return userRepository.save(user.copy(
+                id = 0))
+    }
+
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
-    fun save(@RequestBody user: User, @PathVariable id: Long?): User {
-        if (id != null) {
-            return userRepository.save(user.copy(
-                    id = id))
-        }
-        return userRepository.save(user)
+    fun update(@RequestBody user: User, @PathVariable id: String): User {
+        return userRepository.save(user.copy(
+                id = id.toLong()))
+
     }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
+    fun update(@PathVariable id: String) {
+        return userRepository.deleteById(id.toLong())
+
+    }
+
 
 }
