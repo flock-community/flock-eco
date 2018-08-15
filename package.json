@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --mode development --open",
+    "start:member": "cd eco-feature/eco-feature-members/src/main/react && npm start",
     "build": "webpack --mode production"
   },
   "keywords": [],

@@ -1,17 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import Button from '@material-ui/core/Button';
-
-import AddIcon from '@material-ui/icons/Add';
-
-import UserManager from "./MemberManager";
+import UserManager from "./member/MemberManager";
+import MemberGroupManager from "./member_group/MemberGroupManager";
 
 class App extends React.Component {
 
   render() {
     return (
-      <UserManager/>
+      <MemberGroupManager/>
     )
   }
 };
