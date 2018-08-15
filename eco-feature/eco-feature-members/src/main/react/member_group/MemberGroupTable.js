@@ -6,8 +6,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
-import Paper from '@material-ui/core/Paper';
-
 class MemberTable extends React.Component {
 
 
@@ -16,32 +14,30 @@ class MemberTable extends React.Component {
     const {list} = this.props;
 
     return (
-      <Paper>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Code</TableCell>
-              <TableCell>Name</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>{list.map(it => (
-            <TableRow
-              key={it.code}
-              hover
-              onClick={event => this.handleClick(it)}
-            >
-              <TableCell component="th" scope="row">{it.code}</TableCell>
-              <TableCell>{it.name}</TableCell>
-            </TableRow>
-          ))}
-          </TableBody>
-        </Table>
-      </Paper>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Code</TableCell>
+            <TableCell>Name</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>{list.map(it => (
+          <TableRow
+            key={it.code}
+            hover
+            onClick={event => this.handleClick(it)}
+          >
+            <TableCell component="th" scope="row">{it.code}</TableCell>
+            <TableCell>{it.name}</TableCell>
+          </TableRow>
+        ))}
+        </TableBody>
+      </Table>
     )
   }
 
   handleClick(event, item) {
-    if(this.props.handleRowClick)
+    if (this.props.handleRowClick)
       return this.props.handleRowClick(event, item)
     console.log(user)
   }
