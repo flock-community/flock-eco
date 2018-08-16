@@ -8,7 +8,6 @@ const htmlPlugin = new HtmlWebPackPlugin({
   filename: "./index.html"
 });
 
-
 module.exports = {
 
   entry: path.join(__dirname, root, 'src/main/react'),
