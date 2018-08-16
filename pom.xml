@@ -16,9 +16,9 @@
     <modules>
         <module>eco-core</module>
         <module>eco-feature</module>
-        <module>eco-feature/eco-feature-users</module>
-        <module>eco-feature/eco-feature-members</module>
-        <module>eco-feature/eco-feature-payments</module>
+        <module>eco-feature/eco-feature-user</module>
+        <module>eco-feature/eco-feature-member</module>
+        <module>eco-feature/eco-feature-payment</module>
     </modules>
 
     <dependencyManagement>
