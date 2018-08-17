@@ -42,7 +42,7 @@ class MemberTable extends React.Component {
               <TablePagination
                 colSpan={0}
                 count={14}
-                rowsPerPage={15}
+                rowsPerPage={25}
                 page={0}
                 rowsPerPageOptions={[]}
                 onChangePage={this.handleChangePage}

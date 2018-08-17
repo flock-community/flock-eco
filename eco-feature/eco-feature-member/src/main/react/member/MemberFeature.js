@@ -25,6 +25,7 @@ class MemberFeature extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      size: 25,
       search: '',
       members: props.members || []
     };
@@ -38,8 +39,11 @@ class MemberFeature extends React.Component {
     };
 
     this.handleSearch = (val) => {
-      console.log("handleSearch", this.state.search)
-      this.setState({search: val});
+      console.log("handleSearch", val.search)
+      this.setState({search: val.search}, () => {
+        this.load()
+      });
+
     };
 
     this.handleClose = () => {
@@ -129,7 +133,7 @@ class MemberFeature extends React.Component {
   }
 
   load() {
-    return fetch('/api/members')
+    return fetch(`/api/members?s=${this.state.search}&size=${this.state.size}`)
       .then(res => res.json())
       .then(json => {
         console.log(json)

@@ -1,10 +1,10 @@
 package community.flock.eco.feature.member.repositories
 
 
+import community.flock.eco.feature.member.MemberConfiguration
 import community.flock.eco.feature.member.model.Member
 import community.flock.eco.feature.member.model.MemberGroup
 import community.flock.eco.feature.member.model.MemberStatus
-import community.flock.eco.feature.member.MemberConfiguration
 import org.junit.Assert.assertEquals
 import org.junit.Ignore
 import org.junit.Test
@@ -14,7 +14,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 import javax.annotation.PostConstruct
@@ -31,7 +30,7 @@ open class MemberRepositoryTest {
     @PostConstruct
     fun init() {
         memberRepository.deleteAll()
- ''
+
         memberRepository.save(Member(
                 firstName = "member1",
                 surName = "member1",
@@ -48,6 +47,13 @@ open class MemberRepositoryTest {
                 firstName = "member3",
                 surName = "member3",
                 email = "member3@gmail.com",
+                status = MemberStatus.ACTIVE
+        ))
+
+        memberRepository.save(Member(
+                firstName = "joop",
+                surName = "joop",
+                email = "joop@gmail.com",
                 status = MemberStatus.ACTIVE
         ))
     }
@@ -71,8 +77,15 @@ open class MemberRepositoryTest {
     }
 
     @Test
+    fun testsFindBySearch2Page() {
+        val page = PageRequest.of(0,1)
+        val res = memberRepository.findBySearch("jo", page)
+        assertEquals("joop ", res.content[0].firstName)
+    }
+
+    @Test
     fun testsFindBySearchPage() {
-        val page = PageRequest.of(0,10)
+        val page = PageRequest.of(0, 10)
         val res = memberRepository.findBySearch("member3", page)
         assertEquals(1, res.totalElements)
     }

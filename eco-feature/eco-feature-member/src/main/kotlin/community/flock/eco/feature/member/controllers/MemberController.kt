@@ -4,6 +4,7 @@ package community.flock.eco.feature.member.controllers
 import community.flock.eco.feature.member.model.Member
 import community.flock.eco.feature.member.model.MemberStatus
 import community.flock.eco.feature.member.repositories.MemberRepository
+import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -13,7 +14,10 @@ import java.util.*
 class MemberController(private val memberRepository: MemberRepository) {
 
     @GetMapping
-    fun findAll(): List<Member> {
+    fun findAll(@RequestParam("s")  search:String?, page:Pageable): List<Member> {
+        if(!search.isNullOrBlank()){
+            return memberRepository.findBySearch(search!!, page).content.toList()
+        }
         return memberRepository.findAll().toList()
     }
 
