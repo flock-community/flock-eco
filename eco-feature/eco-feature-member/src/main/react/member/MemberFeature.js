@@ -121,7 +121,7 @@ class MemberFeature extends React.Component {
   }
 
   load() {
-    return fetch('/api/member')
+    return fetch('/api/members')
       .then(res => res.json())
       .then(json => {
         console.log(json)

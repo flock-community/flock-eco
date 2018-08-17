@@ -96,7 +96,7 @@ class itemManager extends React.Component {
   }
 
   load() {
-    const users = fetch('/api/user')
+    const users = fetch('/api/users')
       .then(res => res.json())
       .then(json => {
         console.log(json)

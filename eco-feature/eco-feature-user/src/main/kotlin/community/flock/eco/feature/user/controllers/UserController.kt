@@ -12,7 +12,7 @@ import java.security.Principal
 
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/users")
 open class UserController(private val userRepository: UserRepository) {
 
     @GetMapping("/me")

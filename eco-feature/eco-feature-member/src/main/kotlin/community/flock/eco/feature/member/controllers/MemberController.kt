@@ -9,7 +9,7 @@ import java.util.*
 
 
 @RestController
-@RequestMapping("/api/member")
+@RequestMapping("/api/members")
 open class MemberController(private val memberRepository: MemberRepository) {
 
     @GetMapping
