@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 import javax.annotation.PostConstruct
@@ -53,6 +55,26 @@ open class MemberRepositoryTest {
         val res = memberRepository.findById(100)
         assertEquals(Optional.empty<Member>(), res)
     }
+
+    @Test
+    fun testsFindByName() {
+        val res = memberRepository.findByName("member3")
+        assertEquals(1, res.size)
+    }
+
+    @Test
+    fun testsFindBySearch() {
+        val res = memberRepository.findBySearch("member3")
+        assertEquals(1, res.size)
+    }
+
+    @Test
+    fun testsFindBySearchPage() {
+        val page = PageRequest.of(0,10)
+        val res = memberRepository.findBySearch("member3", page)
+        assertEquals(1, res.totalElements)
+    }
+
 
     @Test
     @Ignore
