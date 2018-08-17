@@ -80,7 +80,7 @@ open class MemberRepositoryTest {
     fun testsFindBySearch2Page() {
         val page = PageRequest.of(0,1)
         val res = memberRepository.findBySearch("jo", page)
-        assertEquals("joop ", res.content[0].firstName)
+        assertEquals("joop", res.content[0].firstName)
     }
 
     @Test
