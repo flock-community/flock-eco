@@ -1,22 +1,23 @@
 version: '3'
 services:
-  front-end:
+  eco-frontend:
     build:
-      context: ./frontend/
-      dockerfile: Dockerfile-run
-    ports: 
-      - "3000:8080"
-    volumes:
-      - "./frontend/:/app"
-  # back-end:
-  #   build:
-  #     context: ./backend/
-  #     dockerfile: Dockerfile-run
-  #   ports:
-  #     - "3001:8080"
-  #   volumes:
-  #     - "./backend/:/app"
-  data-base:
-    image: cassandra:3
+      context: ./eco-webpack/
+      dockerfile: ./Dockerfile-fe
     ports:
-      - "9042:9042"
+    - "3000:3000"
+    - "8080:8080"
+    volumes:
+    - "./eco-webpack/:/app"
+    eco-feature-member:
+      build:
+        context: ./eco-feature/eco-feature-member
+        dockerfile: ./Dockerfile-be
+      ports:
+      - "8081:8080"
+      volumes:
+      - "./eco-feature/eco-feature-member/:/app"
+#  data-base:
+#    image: cassandra:3
+#    ports:
+#      - "9042:9042"
