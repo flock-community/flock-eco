@@ -64,7 +64,7 @@ class MemberFeature extends React.Component {
           },
           body: JSON.stringify(this.state.member),
         };
-        fetch('/api/member', opts)
+        fetch('/api/members', opts)
           .then(() => {
             this.setState({member: null});
             this.load();
