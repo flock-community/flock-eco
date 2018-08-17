@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-@RequestMapping("/api/transactions")
+@RequestMapping("/api/payment/transactions")
 open class PaymentTransactionController(private val paymentTransactionRepository: PaymentTransactionRepository) {
 
     @GetMapping()

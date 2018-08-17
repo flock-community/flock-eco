@@ -10,7 +10,7 @@ import java.util.*
 
 
 @RestController
-@RequestMapping("/api/buckaroo")
+@RequestMapping("/api/payment/buckaroo")
 open class PaymentBuckarooController(
         private val transactionRepository: PaymentTransactionRepository) {
 
