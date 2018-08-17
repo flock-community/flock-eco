@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 
 import MemberTable from "./MemberTable";
+import MemberSearch from "./MemberSearch";
 import MemberForm from "./MemberForm";
 import MemberDialog from "./MemberDialog";
 
@@ -24,6 +25,7 @@ class MemberFeature extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      search: '',
       members: props.members || []
     };
 
@@ -33,6 +35,11 @@ class MemberFeature extends React.Component {
 
     this.newClick = () => {
       this.setState({member: {}})
+    };
+
+    this.handleSearch = (val) => {
+      console.log("handleSearch", this.state.search)
+      this.setState({search: val});
     };
 
     this.handleClose = () => {
@@ -89,6 +96,7 @@ class MemberFeature extends React.Component {
     return (
 
       <div>
+        <MemberSearch onChange={this.handleSearch}/>
         <MemberTable
           data={this.state.members}
           handleRowClick={this.rowClick}

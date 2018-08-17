@@ -2,9 +2,11 @@ import React from "react";
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
+import TableFooter from '@material-ui/core/TableFooter';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import TablePagination from '@material-ui/core/TablePagination';
 
 import Paper from '@material-ui/core/Paper';
 
@@ -35,6 +37,18 @@ class MemberTable extends React.Component {
             </TableRow>
           ))}
           </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                colSpan={0}
+                count={14}
+                rowsPerPage={15}
+                page={0}
+                rowsPerPageOptions={[]}
+                onChangePage={this.handleChangePage}
+              />
+            </TableRow>
+          </TableFooter>
         </Table>
       </Paper>
     )
@@ -44,6 +58,10 @@ class MemberTable extends React.Component {
     if(this.props.handleRowClick)
       return this.props.handleRowClick(event, user)
     console.log(user)
+  }
+
+  handleChangePage(){
+
   }
 
   memberToName(it){

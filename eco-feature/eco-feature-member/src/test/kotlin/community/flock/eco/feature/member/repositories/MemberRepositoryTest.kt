@@ -30,6 +30,8 @@ open class MemberRepositoryTest {
 
     @PostConstruct
     fun init() {
+        memberRepository.deleteAll()
+ ''
         memberRepository.save(Member(
                 firstName = "member1",
                 surName = "member1",

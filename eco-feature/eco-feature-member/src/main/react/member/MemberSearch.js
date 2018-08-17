@@ -1,6 +1,7 @@
 import React from "react";
 
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 
 class MemberForm extends React.Component {
@@ -25,10 +26,13 @@ class MemberForm extends React.Component {
         direction="column"
         justify="space-evenly"
         alignItems="stretch"
+
       >
-        <TextField
-          value={this.state.search}
-          onChange={this.handleChange('search')}/>
+
+            <TextField
+              label="Search"
+              value={this.state.search}
+              onChange={this.handleChange('search')}/>
 
       </Grid>
     )
