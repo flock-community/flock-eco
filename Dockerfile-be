@@ -1,6 +1,6 @@
 FROM maven:3-jdk-8
 
-WORKDIR /app
+WORKDIR /app/${FEATURE_DIR}
 
 EXPOSE 8080
 

@@ -130,12 +130,20 @@
                     <groupId>com.github.eirslett</groupId>
                     <artifactId>frontend-maven-plugin</artifactId>
                     <version>1.6</version>
+                    <configuration>
+                        <installDirectory>${project.build.directory}</installDirectory>
+                        <workingDirectory>../../eco-webpack</workingDirectory>
+                    </configuration>
                     <executions>
                         <execution>
                             <id>install node and npm</id>
                             <goals>
                                 <goal>install-node-and-npm</goal>
                             </goals>
+                            <configuration>
+                                <nodeVersion>v8.11.3</nodeVersion>
+                                <npmVersion>5.6.0</npmVersion>
+                            </configuration>
                         </execution>
                         <execution>
                             <id>npm install</id>
@@ -156,11 +164,6 @@
                             </configuration>
                         </execution>
                     </executions>
-                    <configuration>
-                        <nodeVersion>v8.11.3</nodeVersion>
-                        <npmVersion>5.6.0</npmVersion>
-                        <installDirectory>${project.build.directory}</installDirectory>
-                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>

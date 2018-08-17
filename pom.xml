@@ -11,6 +11,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>4.12</junit.version>
         <kotlin.version>1.2.60</kotlin.version>
+        <main.basedir>${project.basedir}</main.basedir>
     </properties>
 
     <modules>

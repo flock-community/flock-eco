@@ -10,18 +10,20 @@ services:
     ports:
     - "3001:3000"
     volumes:
-    - "./eco-webpack/:/app"
-    - "./eco-feature/eco-feature-member/src/:/app/src"
-#  eco-feature-member-be:
-#    build:
-#      context: ./eco-feature/eco-feature-member
-#      dockerfile: $PWD/Dockerfile-be
-#    ports:
-#    - "8081:8080"
-#    volumes:
-#    - "./eco-feature/eco-feature-member/:/app"
-#    - "~/.m2/:/root/.m2"
-#
+    - "./eco-webpack:/app"
+    - "./eco-feature/eco-feature-member/src:/app/src"
+  eco-feature-member-be:
+    build:
+      context: ./eco-feature
+      dockerfile: $PWD/Dockerfile-be
+      args:
+        - FEATURE_DIR=eco-feature-member
+    ports:
+    - "8081:8080"
+    volumes:
+    - "./eco-feature:/app"
+    - "~/.m2:/root/.m2"
+
 #  eco-feature-payment-fe:
 #    build:
 #      context: ./eco-webpack/

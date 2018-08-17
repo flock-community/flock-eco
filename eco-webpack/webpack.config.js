@@ -1,7 +1,8 @@
 const path = require('path');
-const HtmlWebPackPlugin = require("html-webpack-plugin");
+const HtmlWebPackPlugin = require('html-webpack-plugin');
 
-const root = process.env.BASE_DIR || '../eco-feature/eco-feature-member/';
+const root = process.env.BASE_DIR || '/../eco-feature/eco-feature-member/';
+console.log(root)
 
 const htmlPlugin = new HtmlWebPackPlugin({
   template: path.join(__dirname, root, 'src/main/react/index.html'),
@@ -22,7 +23,7 @@ module.exports = {
         test: /\.js|jsx$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
             presets: ['env', 'react']
           }

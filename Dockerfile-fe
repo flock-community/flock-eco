@@ -6,4 +6,4 @@ WORKDIR /app
 
 EXPOSE 3000 8080
 
-CMD ["npm", "run", "prepare"]
+CMD ["npm", "run", "docker"]
