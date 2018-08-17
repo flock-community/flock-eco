@@ -8,21 +8,21 @@ services:
       context: .
       dockerfile: $PWD/Dockerfile-fe
     ports:
-    - "3001:3000"
+      - "3001:3000"
     volumes:
-    - "./eco-webpack:/app"
-    - "./eco-feature/eco-feature-member/src:/app/src"
+      - ./eco-webpack:/app
+      - ./eco-feature/eco-feature-member/src:/app/src
   eco-feature-member-be:
     build:
-      context: ./eco-feature
+      context: .
       dockerfile: $PWD/Dockerfile-be
       args:
-        - FEATURE_DIR=eco-feature-member
+        - FEATURE_DIR=eco-feature/eco-feature-member
     ports:
-    - "8081:8080"
+      - "8081:8080"
     volumes:
-    - "./eco-feature:/app"
-    - "~/.m2:/root/.m2"
+      - ./:/app
+      - ~/.m2:/root/.m2
 
 #  eco-feature-payment-fe:
 #    build:
