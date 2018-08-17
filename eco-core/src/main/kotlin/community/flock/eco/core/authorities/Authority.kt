@@ -7,4 +7,5 @@ interface Authority : Serializable {
     fun toName(): String {
         return javaClass.simpleName + "." + toString()
     }
+
 }

@@ -1,7 +1,7 @@
-const path = require('path')
+const path = require('path');
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 
-const root = 'eco-feature/eco-feature-member';
+const root = process.env.BASE_DIR || '../eco-feature/eco-feature-member/';
 
 const htmlPlugin = new HtmlWebPackPlugin({
   template: path.join(__dirname, root, 'src/main/react/index.html'),
@@ -24,10 +24,7 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: ['env', 'react'],
-            plugins: [
-                "babel-plugin-transform-object-rest-spread"
-            ]
+            presets: ['env', 'react']
           }
         }
       }
@@ -38,6 +35,7 @@ module.exports = {
 
   devServer: {
     port: 3000,
+    host: '0.0.0.0',
     proxy: {
       '/api/**': 'http://localhost:8080',
       '/login': 'http://localhost:8080'

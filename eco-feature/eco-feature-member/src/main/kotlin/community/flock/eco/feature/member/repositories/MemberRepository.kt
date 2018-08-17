@@ -7,7 +7,6 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Service
 import java.util.*
 
-
 @Service
 interface MemberRepository : CrudRepository<Member, Long> {
 
@@ -23,5 +22,3 @@ interface MemberRepository : CrudRepository<Member, Long> {
     fun findByEmail(email: String): List<Member>
 
 }
-
-

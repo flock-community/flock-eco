@@ -1,14 +1,12 @@
 package community.flock.eco.feature.member.controllers
 
-
 import community.flock.eco.feature.member.model.MemberGroup
 import community.flock.eco.feature.member.repositories.MemberGroupRepository
 import org.springframework.web.bind.annotation.*
 
-
 @RestController
 @RequestMapping("/api/member_groups")
-open class MemberGroupController(private val memberGroupRepository: MemberGroupRepository) {
+class MemberGroupController(private val memberGroupRepository: MemberGroupRepository) {
 
     @GetMapping
     fun findAll(): List<MemberGroup> {
@@ -23,9 +21,7 @@ open class MemberGroupController(private val memberGroupRepository: MemberGroupR
     @PutMapping("/{code}")
     fun update(@PathVariable("code") code: String, @RequestBody memberGroup: MemberGroup): MemberGroup {
         return memberGroupRepository.save(
-                memberGroup.copy(
-                        code = code
-                )
+                memberGroup.copy(code = code)
         )
     }
 
@@ -33,6 +29,5 @@ open class MemberGroupController(private val memberGroupRepository: MemberGroupR
     fun delete(@PathVariable("code") code: String) {
         memberGroupRepository.deleteById(code)
     }
-
 
 }

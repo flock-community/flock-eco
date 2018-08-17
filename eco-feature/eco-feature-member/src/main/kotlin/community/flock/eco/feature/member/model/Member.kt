@@ -33,6 +33,3 @@ data class Member(
         val status: MemberStatus = MemberStatus.NEW
 
 )
-
-
-
