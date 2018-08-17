@@ -31,7 +31,7 @@ open class MemberRepositoryTest {
     @PostConstruct
     fun init() {
         memberRepository.deleteAll()
- ''
+
         memberRepository.save(Member(
                 firstName = "member1",
                 surName = "member1",
@@ -76,7 +76,6 @@ open class MemberRepositoryTest {
         val res = memberRepository.findBySearch("member3", page)
         assertEquals(1, res.totalElements)
     }
-
 
     @Test
     @Ignore
@@ -127,8 +126,6 @@ open class MemberRepositoryTest {
         assertEquals("Willem", res2.firstName)
         assertEquals("LEKSTREEK", res2.groups.toList()[0].code)
 
-
     }
-
 
 }
