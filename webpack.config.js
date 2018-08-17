@@ -1,13 +1,12 @@
 const path = require('path')
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 
-const root = 'eco-feature/eco-feature-members';
+const root = 'eco-feature/eco-feature-user';
 
 const htmlPlugin = new HtmlWebPackPlugin({
   template: path.join(__dirname, root, 'src/main/react/index.html'),
   filename: "./index.html"
 });
-
 
 module.exports = {
 
