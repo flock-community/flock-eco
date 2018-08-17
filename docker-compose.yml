@@ -1,23 +1,59 @@
 version: '3'
 services:
-  eco-frontend:
+
+  eco-feature-member-fe:
+    environment:
+      - BASE_DIR=.
     build:
-      context: ./eco-webpack/
-      dockerfile: ./Dockerfile-fe
+      context: .
+      dockerfile: $PWD/Dockerfile-fe
     ports:
-    - "3000:3000"
-    - "8080:8080"
+    - "3001:3000"
     volumes:
     - "./eco-webpack/:/app"
-    eco-feature-member:
-      build:
-        context: ./eco-feature/eco-feature-member
-        dockerfile: ./Dockerfile-be
-      ports:
-      - "8081:8080"
-      volumes:
-      - "./eco-feature/eco-feature-member/:/app"
-#  data-base:
-#    image: cassandra:3
+    - "./eco-feature/eco-feature-member/src/:/app/src"
+#  eco-feature-member-be:
+#    build:
+#      context: ./eco-feature/eco-feature-member
+#      dockerfile: $PWD/Dockerfile-be
 #    ports:
-#      - "9042:9042"
+#    - "8081:8080"
+#    volumes:
+#    - "./eco-feature/eco-feature-member/:/app"
+#    - "~/.m2/:/root/.m2"
+#
+#  eco-feature-payment-fe:
+#    build:
+#      context: ./eco-webpack/
+#      dockerfile: $PWD/Dockerfile-fe
+#    ports:
+#    - "3002:3000"
+#    volumes:
+#    - "./eco-webpack/:/app"
+#  eco-feature-payment-be:
+#    build:
+#      context: ./eco-feature/eco-feature-payment
+#      dockerfile: $PWD/Dockerfile-be
+#    ports:
+#    - "8082:8080"
+#    volumes:
+#    - "./eco-feature/eco-feature-payment/:/app"
+#    - "~/.m2/:/root/.m2"
+#
+#  eco-feature-user-fe:
+#    build:
+#      context: ./eco-webpack/
+#      dockerfile: $PWD/Dockerfile-fe
+#    ports:
+#    - "3003:3000"
+#    volumes:
+#    - "./eco-webpack/:/app"
+#  eco-feature-user-be:
+#    build:
+#      context: ./eco-feature/eco-feature-user
+#      dockerfile: $PWD/Dockerfile-be
+#    ports:
+#    - "8083:8080"
+#    volumes:
+#    - "./eco-feature/eco-feature-user/:/app"
+#    - "~/.m2/:/root/.m2"

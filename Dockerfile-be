@@ -3,3 +3,5 @@ FROM maven:3-jdk-8
 WORKDIR /app
 
 EXPOSE 8080
+
+CMD ["mvn", "clean", "&&", "mvn", "spring-boot:run"]
