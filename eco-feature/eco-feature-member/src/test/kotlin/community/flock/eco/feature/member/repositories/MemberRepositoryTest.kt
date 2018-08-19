@@ -90,7 +90,6 @@ open class MemberRepositoryTest {
         assertEquals(1, res.totalElements)
     }
 
-
     @Test
     @Ignore
     fun testsFindByIds() {
@@ -140,8 +139,6 @@ open class MemberRepositoryTest {
         assertEquals("Willem", res2.firstName)
         assertEquals("LEKSTREEK", res2.groups.toList()[0].code)
 
-
     }
-
 
 }

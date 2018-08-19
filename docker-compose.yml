@@ -8,54 +8,64 @@ services:
       context: .
       dockerfile: $PWD/Dockerfile-fe
     ports:
-    - "3001:3000"
+      - "3001:3000"
     volumes:
-    - "./eco-webpack:/app"
-    - "./eco-feature/eco-feature-member/src:/app/src"
+      - ./eco-webpack:/app
+      - ./eco-feature/eco-feature-member/src:/app/src
   eco-feature-member-be:
     build:
-      context: ./eco-feature
+      context: .
       dockerfile: $PWD/Dockerfile-be
       args:
-        - FEATURE_DIR=eco-feature-member
+        - FEATURE_DIR=eco-feature/eco-feature-member
     ports:
-    - "8081:8080"
+      - "8081:8080"
     volumes:
-    - "./eco-feature:/app"
-    - "~/.m2:/root/.m2"
+      - ./:/app
+      - ~/.m2:/root/.m2
 
-#  eco-feature-payment-fe:
-#    build:
-#      context: ./eco-webpack/
-#      dockerfile: $PWD/Dockerfile-fe
-#    ports:
-#    - "3002:3000"
-#    volumes:
-#    - "./eco-webpack/:/app"
-#  eco-feature-payment-be:
-#    build:
-#      context: ./eco-feature/eco-feature-payment
-#      dockerfile: $PWD/Dockerfile-be
-#    ports:
-#    - "8082:8080"
-#    volumes:
-#    - "./eco-feature/eco-feature-payment/:/app"
-#    - "~/.m2/:/root/.m2"
-#
-#  eco-feature-user-fe:
-#    build:
-#      context: ./eco-webpack/
-#      dockerfile: $PWD/Dockerfile-fe
-#    ports:
-#    - "3003:3000"
-#    volumes:
-#    - "./eco-webpack/:/app"
-#  eco-feature-user-be:
-#    build:
-#      context: ./eco-feature/eco-feature-user
-#      dockerfile: $PWD/Dockerfile-be
-#    ports:
-#    - "8083:8080"
-#    volumes:
-#    - "./eco-feature/eco-feature-user/:/app"
-#    - "~/.m2/:/root/.m2"
+  eco-feature-payment-fe:
+    environment:
+    - BASE_DIR=.
+    build:
+      context: .
+      dockerfile: $PWD/Dockerfile-fe
+    ports:
+    - "3002:3000"
+    volumes:
+    - ./eco-webpack:/app
+    - ./eco-feature/eco-feature-payment/src:/app/src
+  eco-feature-payment-be:
+    build:
+      context: .
+      dockerfile: $PWD/Dockerfile-be
+      args:
+      - FEATURE_DIR=eco-feature/eco-feature-payment
+    ports:
+    - "8082:8080"
+    volumes:
+    - ./:/app
+    - ~/.m2:/root/.m2
+
+  eco-feature-user-fe:
+    environment:
+    - BASE_DIR=.
+    build:
+      context: .
+      dockerfile: $PWD/Dockerfile-fe
+    ports:
+    - "3003:3000"
+    volumes:
+    - ./eco-webpack:/app
+    - ./eco-feature/eco-feature-user/src:/app/src
+  eco-feature-user-be:
+    build:
+      context: .
+      dockerfile: $PWD/Dockerfile-be
+      args:
+      - FEATURE_DIR=eco-feature/eco-feature-user
+    ports:
+    - "8083:8080"
+    volumes:
+    - ./:/app
+    - ~/.m2:/root/.m2
