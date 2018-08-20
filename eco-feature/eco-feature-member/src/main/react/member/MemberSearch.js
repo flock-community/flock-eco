@@ -1,7 +1,14 @@
 import React from "react";
 
-import Grid from '@material-ui/core/Grid';
+import {withStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+
+
+const styles = theme => ({
+  textField: {
+    width: "100%",
+  },
+});
 
 class MemberForm extends React.Component {
 
@@ -31,21 +38,15 @@ class MemberForm extends React.Component {
     const {classes, item} = this.props;
 
     return (
-      <Grid
-        container
-        direction="column"
-        justify="space-evenly"
-        alignItems="stretch"
-
-      >
+      <div style={{padding: "8px 24px"}}>
         <TextField
           label="Search"
           value={this.state.search}
+          className={classes.textField}
           onChange={this.handleChange('search')}/>
-
-      </Grid>
+      </div>
     )
   }
 }
 
-export default MemberForm;
+export default withStyles(styles)(MemberForm);

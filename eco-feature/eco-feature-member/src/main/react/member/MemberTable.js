@@ -8,64 +8,59 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
 
-import Paper from '@material-ui/core/Paper';
-
 class MemberTable extends React.Component {
 
 
   render() {
 
-    const {data} = this.props;
+    const {data, page, count} = this.props;
 
     return (
-      <Paper>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Email</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>{data.map(it => (
-            <TableRow
-              key={it.id}
-              hover
-              onClick={event => this.handleClick(it)}
-            >
-              <TableCell component="th" scope="row">{this.memberToName(it)}</TableCell>
-              <TableCell>{it.email}</TableCell>
-            </TableRow>
-          ))}
-          </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TablePagination
-                colSpan={0}
-                count={14}
-                rowsPerPage={25}
-                page={0}
-                rowsPerPageOptions={[]}
-                onChangePage={this.handleChangePage}
-              />
-            </TableRow>
-          </TableFooter>
-        </Table>
-      </Paper>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Name</TableCell>
+            <TableCell>Email</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>{data.map(it => (
+          <TableRow
+            key={it.id}
+            hover
+            onClick={event => this.handleClick(it)}
+          >
+            <TableCell component="th" scope="row">{this.memberToName(it)}</TableCell>
+            <TableCell>{it.email}</TableCell>
+          </TableRow>
+        ))}
+        </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TablePagination
+              count={count}
+              rowsPerPage={this.props.size}
+              page={page}
+              rowsPerPageOptions={[]}
+              onChangePage={this.handleChangePage}
+            />
+          </TableRow>
+        </TableFooter>
+      </Table>
     )
   }
 
   handleClick(event, user) {
-    if(this.props.handleRowClick)
-      return this.props.handleRowClick(event, user)
-    console.log(user)
+    if (this.props.onRowClick)
+      return this.props.onRowClick(event, user)
   }
 
-  handleChangePage(){
-
+  handleChangePage(event) {
+    if (this.props.onChangePage)
+      return this.props.onChangePage(event)
   }
 
-  memberToName(it){
-    if(it.infix){
+  memberToName(it) {
+    if (it.infix) {
       return `${it.firstName} ${it.infix} ${it.surName}`
     }
     return `${it.firstName} ${it.surName}`

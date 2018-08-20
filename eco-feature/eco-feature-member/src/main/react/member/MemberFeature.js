@@ -2,6 +2,8 @@ import React from "react";
 import {withStyles} from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 
 import AddIcon from '@material-ui/icons/Add';
 
@@ -17,7 +19,7 @@ const styles = theme => ({
     right: 20,
     bottom: 20,
     margin: theme.spacing.unit,
-  }
+  },
 });
 
 class MemberFeature extends React.Component {
@@ -25,16 +27,18 @@ class MemberFeature extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      size: 25,
-      search: '',
-      members: props.members || []
+      size: 10,
+      search: props.search || '',
+      members: props.members || [],
+      count: 0,
+      page: 0,
     };
 
-    this.rowClick = (member) => {
+    this.handleRowClick = (member) => {
       this.setState({member: member})
     };
 
-    this.newClick = () => {
+    this.handleNewClick = () => {
       this.setState({member: {}})
     };
 
@@ -54,7 +58,7 @@ class MemberFeature extends React.Component {
     this.handleSave = () => {
       console.log("handleSave", this.state.member)
 
-      if(this.state.member.id){
+      if (this.state.member.id) {
         const opts = {
           method: "PUT",
           headers: {
@@ -67,7 +71,7 @@ class MemberFeature extends React.Component {
             this.setState({member: null});
             this.load();
           })
-      }else{
+      } else {
         const opts = {
           method: "POST",
           headers: {
@@ -90,6 +94,10 @@ class MemberFeature extends React.Component {
       this.setState({member: value});
     };
 
+    this.handleChangePage = (event) => {
+      console.log(event)
+    }
+
     this.load()
   }
 
@@ -99,18 +107,33 @@ class MemberFeature extends React.Component {
 
     return (
 
-      <div>
-        <MemberSearch onChange={this.handleSearch}/>
-        <MemberTable
-          data={this.state.members}
-          handleRowClick={this.rowClick}
-        />
+      <Paper>
+
+        <Grid
+          container
+          direction="column"
+          spacing={16}
+        >
+          <Grid item>
+            <MemberSearch onChange={this.handleSearch}/>
+          </Grid>
+          <Grid item>
+            <MemberTable
+              data={this.state.members}
+              count={this.state.count}
+              page={this.state.page}
+              size={this.state.size}
+              onRowClick={this.handleRowClick}
+              onChangePage={this.handleChangePage}
+            />
+          </Grid>
+        </Grid>
+
 
         <MemberDialog
           open={this.state.member != null}
           onClose={this.handleClose}
           onSave={this.handleSave}
-
         >
           <MemberForm
             item={this.state.member}
@@ -124,17 +147,26 @@ class MemberFeature extends React.Component {
           color="primary"
           aria-label="Add"
           className={classes.button}
-          onClick={this.newClick}
+          onClick={this.handleNewClick}
         >
           <AddIcon/>
         </Button>
-      </div>
+      </Paper>
     )
   }
 
   load() {
     return fetch(`/api/members?s=${this.state.search}&size=${this.state.size}`)
-      .then(res => res.json())
+      .then(res => {
+        res.headers.forEach(function (value, name) {
+          console.log(name + ": " + value);
+        });
+        console.log(res.headers, res.headers.get('x-total'))
+        this.setState({
+          count: parseInt(res.headers.get('x-total'))
+        })
+        return res.json()
+      })
       .then(json => {
         console.log(json)
         this.setState({members: json});

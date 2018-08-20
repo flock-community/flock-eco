@@ -1,7 +1,7 @@
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 
-const root = process.env.BASE_DIR || '/../eco-feature/eco-feature-member/';
+const root = process.env.BASE_DIR || `../eco-feature/eco-feature-${process.env.FEATURE}/`;
 
 const htmlPlugin = new HtmlWebPackPlugin({
   template: path.join(__dirname, root, 'src/main/react/index.html'),
@@ -26,7 +26,7 @@ module.exports = {
           options: {
             presets: ['env', 'react'],
             plugins: [
-              "babel-plugin-transform-object-rest-spread"
+              "transform-object-rest-spread",
             ]
           },
         }
