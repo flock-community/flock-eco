@@ -1,7 +1,19 @@
 import React from "react";
 
+import {withStyles} from '@material-ui/core/styles';
+
 import Grid from '@material-ui/core/Grid';
+import InputLabel from '@material-ui/core/InputLabel';
 import TextField from '@material-ui/core/TextField';
+
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+
+const styles = theme => ({
+  input: {
+    width: "100%",
+  },
+});
 
 class MemberForm extends React.Component {
 
@@ -12,88 +24,161 @@ class MemberForm extends React.Component {
 
   init(memberData) {
     const member = {
-        firstName: "",
-        infix: "",
-        surName: "",
-        gender: "",
-        birthDate: "",
-        email: "",
-        street: "",
-        houseNumber: "",
-        houseNumberExtension: "",
-        postalCode: "",
-        city: "",
+      firstName: "",
+      infix: "",
+      surName: "",
+      gender: "",
+      birthDate: "",
+      email: "",
+      street: "",
+      houseNumber: "",
+      houseNumberExtension: "",
+      postalCode: "",
+      city: "",
+      groups: []
     };
 
     this.state = {...member, ...memberData};
   }
 
   render() {
-    const {classes, item} = this.props;
+    const {classes, item, groups} = this.props;
 
     return (
-      <Grid
-        container
-        direction="column"
-        justify="space-evenly"
-        alignItems="stretch"
-      >
-        <TextField
-          label="First name"
-          value={this.state.firstName}
-          onChange={this.handleChange('firstName')}/>
+      <form className={classes.container}>
+        <Grid
+          container
+          spacing={24}
+        >
+          <Grid item xs={5}>
+            <TextField
+              required
+              className={classes.input}
+              label="First name"
+              value={this.state.firstName}
+              onChange={this.handleChange('firstName')}/>
+          </Grid>
 
-        <TextField
-          label="Infix"
-          value={this.state.infix}
-          onChange={this.handleChange('infix')}/>
+          <Grid item xs={2}>
+            <TextField
+              className={classes.input}
+              label="Infix"
+              value={this.state.infix}
+              onChange={this.handleChange('infix')}/>
+          </Grid>
 
-        <TextField
-          label="Surname"
-          value={this.state.surName}
-          onChange={this.handleChange('surName')}/>
+          <Grid item xs={5}>
+            <TextField
+              required
+              className={classes.input}
+              label="Surname"
+              value={this.state.surName}
+              onChange={this.handleChange('surName')}/>
+          </Grid>
 
-        <TextField
-          label="Gender"
-          value={this.state.gender}
-          onChange={this.handleChange('gender')}/>
+          <Grid item xs={7}>
+            <TextField
+              className={classes.input}
+              label="Birth date"
+              value={this.state.birthDate}
+              onChange={this.handleChange('birthDate')}/>
+          </Grid>
 
-        <TextField
-          label="Birth date"
-          value={this.state.birthDate}
-          onChange={this.handleChange('birthDate')}/>
+          <Grid item xs={5}>
+            <InputLabel htmlFor="gender">Gender</InputLabel>
+            <Select
+              required
+              className={classes.input}
+              value={this.state.gender}
+              onChange={this.handleChange('gender')}
+              inputProps={{
+                name: 'gender',
+                id: 'gender',
+              }}
+            >
+              <MenuItem value="MALE">Male</MenuItem>
+              <MenuItem value="FEMALE">Female</MenuItem>
+            </Select>
+          </Grid>
 
-        <TextField
-          label="Email"
-          value={this.state.email}
-          onChange={this.handleChange('email')}/>
+          <Grid item xs={12}>
+            <TextField
+              className={classes.input}
+              label="Email"
+              value={this.state.email}
+              onChange={this.handleChange('email')}/>
+          </Grid>
 
-        <TextField
-          label="House number"
-          value={this.state.houseNumber}
-          onChange={this.handleChange('houseNumber')}/>
+          <Grid item xs={8}>
+            <TextField
+              className={classes.input}
+              label="Street"
+              value={this.state.street}
+              onChange={this.handleChange('street')}/>
+          </Grid>
 
-        <TextField
-          label="House number extension"
-          value={this.state.houseNumberExtension}
-          onChange={this.handleChange('houseNumberExtension')}/>
+          <Grid item xs={2}>
+            <TextField
+              className={classes.input}
+              label="Nr"
+              value={this.state.houseNumber}
+              onChange={this.handleChange('houseNumber')}/>
+          </Grid>
 
-        <TextField
-          label="Postal code"
-          value={this.state.postalCode}
-          onChange={this.handleChange('postalCode')}/>
+          <Grid item xs={2}>
+            <TextField
+              className={classes.input}
+              label="Ext"
+              value={this.state.houseNumberExtension}
+              onChange={this.handleChange('houseNumberExtension')}/>
+          </Grid>
 
-        <TextField
-          label="City"
-          value={this.state.city}
-          onChange={this.handleChange('city')}/>
+          <Grid item xs={3}>
+            <TextField
+              className={classes.input}
+              label="Postal code"
+              value={this.state.postalCode}
+              onChange={this.handleChange('postalCode')}/>
+          </Grid>
 
-      </Grid>
+          <Grid item xs={9}>
+            <TextField
+              className={classes.input}
+              label="City"
+              value={this.state.city}
+              onChange={this.handleChange('city')}/>
+          </Grid>
+
+          <Grid item xs={12}>
+            <InputLabel htmlFor="groups">Groups</InputLabel>
+            <Select
+              className={classes.input}
+              multiple
+              value={this.state.groups}
+              inputProps={{
+                name: 'groups',
+                id: 'groups',
+              }}
+              onChange={this.handleChange('groups')}
+            >
+              {groups.map(it => (
+                <MenuItem
+                  key={it.code}
+                  value={it}
+                >
+                  {it.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </Grid>
+        </Grid>
+      </form>
     )
   }
 
   handleChange(name) {
     return (event) => {
+      console.log('value', event.target.value)
       this.setState(
         {[name]: event.target.value},
         () => {
@@ -105,4 +190,4 @@ class MemberForm extends React.Component {
 
 }
 
-export default MemberForm;
+export default withStyles(styles)(MemberForm);

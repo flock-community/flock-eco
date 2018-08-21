@@ -12,8 +12,9 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 
 const styles = theme => ({
-  paper:{
-    width:'800px'
+  dialog:{
+    'width':'1200px',
+    'maxWidth':'1200px'
   }
 });
 
@@ -43,12 +44,15 @@ class MemberDialog extends React.Component {
         classes={classes}
       >
         <DialogTitle id="simple-dialog-title">Member</DialogTitle>
-        <DialogContent>
+        <DialogContent >
           {this.props.children}
         </DialogContent>
         <DialogActions>
           <Button onClick={this.handleClose} color="primary">
             Cancel
+          </Button>
+          <Button onClick={this.handleDelete} color="secondary">
+            Delete
           </Button>
           <Button onClick={this.handleSave} color="primary" autoFocus>
             Save

@@ -10,6 +10,19 @@ import TablePagination from '@material-ui/core/TablePagination';
 
 class MemberTable extends React.Component {
 
+  constructor(props){
+    super();
+
+    this.handleChangePage = (event, page) => {
+      if (props.onChangePage)
+        return props.onChangePage(event, page)
+    }
+
+    this.handleRowClick = (event, user) => {
+      if (this.props.onRowClick)
+        return this.props.onRowClick(event, user)
+    }
+  }
 
   render() {
 
@@ -23,17 +36,19 @@ class MemberTable extends React.Component {
             <TableCell>Email</TableCell>
           </TableRow>
         </TableHead>
+
         <TableBody>{data.map(it => (
           <TableRow
             key={it.id}
             hover
-            onClick={event => this.handleClick(it)}
+            onClick={event => this.handleRowClick(it)}
           >
             <TableCell component="th" scope="row">{this.memberToName(it)}</TableCell>
             <TableCell>{it.email}</TableCell>
           </TableRow>
         ))}
         </TableBody>
+
         <TableFooter>
           <TableRow>
             <TablePagination
@@ -49,15 +64,9 @@ class MemberTable extends React.Component {
     )
   }
 
-  handleClick(event, user) {
-    if (this.props.onRowClick)
-      return this.props.onRowClick(event, user)
-  }
 
-  handleChangePage(event) {
-    if (this.props.onChangePage)
-      return this.props.onChangePage(event)
-  }
+
+
 
   memberToName(it) {
     if (it.infix) {

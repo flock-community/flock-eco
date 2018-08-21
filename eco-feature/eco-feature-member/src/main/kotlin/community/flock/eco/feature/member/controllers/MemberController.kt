@@ -6,12 +6,10 @@ import community.flock.eco.feature.member.model.MemberStatus
 import community.flock.eco.feature.member.repositories.MemberRepository
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
-import org.springframework.http.HttpStatus
-
-
 
 
 @RestController
@@ -19,18 +17,13 @@ import org.springframework.http.HttpStatus
 class MemberController(private val memberRepository: MemberRepository) {
 
     @GetMapping
-    fun findAll(@RequestParam("s")  search:String?, page:Pageable?): ResponseEntity<List<Member>> {
+    fun findAll(@RequestParam("s") search: String = "", page: Pageable?): ResponseEntity<List<Member>> {
 
-        if(!search.isNullOrBlank() || page != null){
-            val res = memberRepository.findBySearch(search!!, page!!)
-            val headers = HttpHeaders()
-            headers.set("x-page", page.pageNumber.toString())
-            headers.set("x-total", res.totalElements.toString())
-            return ResponseEntity(res.content.toList(), headers, HttpStatus.OK)
-        }
-
-        val res = memberRepository.findAll().toList()
-        return ResponseEntity(res.toList(), HttpStatus.OK)
+        val res = memberRepository.findBySearch(search!!, page!!)
+        val headers = HttpHeaders()
+        headers.set("x-page", page.pageNumber.toString())
+        headers.set("x-total", res.totalElements.toString())
+        return ResponseEntity(res.content.toList(), headers, HttpStatus.OK)
 
     }
 

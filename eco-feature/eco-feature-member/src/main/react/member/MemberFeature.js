@@ -30,6 +30,12 @@ class MemberFeature extends React.Component {
       size: 10,
       search: props.search || '',
       members: props.members || [],
+      groups:[
+        'test1',
+        'test2',
+        'test3',
+        'test4',
+      ],
       count: 0,
       page: 0,
     };
@@ -43,21 +49,20 @@ class MemberFeature extends React.Component {
     };
 
     this.handleSearch = (val) => {
-      console.log("handleSearch", val.search)
-      this.setState({search: val.search}, () => {
+      this.setState({
+        page: 0,
+        search: val.search
+      }, () => {
         this.load()
       });
 
     };
 
     this.handleClose = () => {
-      console.log("handleClose", this.state.member)
       this.setState({member: null});
     };
 
     this.handleSave = () => {
-      console.log("handleSave", this.state.member)
-
       if (this.state.member.id) {
         const opts = {
           method: "PUT",
@@ -90,12 +95,13 @@ class MemberFeature extends React.Component {
     };
 
     this.handleFormUpdate = (value) => {
-      console.log("handleFormUpdate", value)
       this.setState({member: value});
     };
 
-    this.handleChangePage = (event) => {
-      console.log(event)
+    this.handleChangePage = (event, page) => {
+      this.setState({page}, () => {
+        this.load()
+      })
     }
 
     this.load()
@@ -137,6 +143,7 @@ class MemberFeature extends React.Component {
         >
           <MemberForm
             item={this.state.member}
+            groups={this.state.groups}
             onChange={this.handleFormUpdate}
           />
 
@@ -156,19 +163,22 @@ class MemberFeature extends React.Component {
   }
 
   load() {
-    return fetch(`/api/members?s=${this.state.search}&size=${this.state.size}`)
+    fetch(`/api/member_groups`)
       .then(res => {
-        res.headers.forEach(function (value, name) {
-          console.log(name + ": " + value);
-        });
-        console.log(res.headers, res.headers.get('x-total'))
+        return res.json()
+      })
+      .then(json => {
+        this.setState({groups: json});
+      })
+
+    return fetch(`/api/members?s=${this.state.search}&page=${this.state.page}&size=${this.state.size}`)
+      .then(res => {
         this.setState({
           count: parseInt(res.headers.get('x-total'))
         })
         return res.json()
       })
       .then(json => {
-        console.log(json)
         this.setState({members: json});
       })
   }
