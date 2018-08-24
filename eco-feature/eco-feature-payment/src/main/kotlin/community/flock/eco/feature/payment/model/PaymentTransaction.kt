@@ -16,6 +16,8 @@ data class PaymentTransaction(
         val amount: Double,
 
         val reference: String,
-        val confirmed: Date? = null
+        val status: PaymentTransactionStatus,
+        val confirmed: Date? = null,
+        val created: Date? = Date()
 
 )

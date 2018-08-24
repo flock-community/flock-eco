@@ -2,6 +2,7 @@ package community.flock.eco.feature.payment.repositories
 
 import community.flock.eco.feature.payment.PaymentConfiguration
 import community.flock.eco.feature.payment.model.PaymentTransaction
+import community.flock.eco.feature.payment.model.PaymentTransactionStatus
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,7 +24,8 @@ open class PaymentTransactionRepositoryTest {
     fun testsSave() {
         paymentTransactionRepository.save(PaymentTransaction(
                 amount = 10.0,
-                reference = "1010101010"
+                reference = "1010101010",
+                status = PaymentTransactionStatus.PENDING
         ))
 
     }
