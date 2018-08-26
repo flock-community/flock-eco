@@ -6,4 +6,6 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Service
 
 @Service
-interface MemberGroupRepository : CrudRepository<MemberGroup, String>
+interface MemberGroupRepository : CrudRepository<MemberGroup, Long> {
+    fun deleteByCode(code: String)
+}

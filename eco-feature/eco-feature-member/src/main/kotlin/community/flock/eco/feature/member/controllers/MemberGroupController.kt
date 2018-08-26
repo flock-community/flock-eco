@@ -27,7 +27,7 @@ class MemberGroupController(private val memberGroupRepository: MemberGroupReposi
 
     @DeleteMapping("/{code}")
     fun delete(@PathVariable("code") code: String) {
-        memberGroupRepository.deleteById(code)
+        memberGroupRepository.deleteByCode(code)
     }
 
 }
