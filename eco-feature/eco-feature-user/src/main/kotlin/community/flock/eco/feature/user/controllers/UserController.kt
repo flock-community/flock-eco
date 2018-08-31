@@ -10,10 +10,9 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
 
-
 @RestController
 @RequestMapping("/api/users")
-open class UserController(private val userRepository: UserRepository) {
+class UserController(private val userRepository: UserRepository) {
 
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
@@ -58,15 +57,12 @@ open class UserController(private val userRepository: UserRepository) {
     fun update(@RequestBody user: User, @PathVariable id: String): User {
         return userRepository.save(user.copy(
                 id = id.toLong()))
-
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
     fun update(@PathVariable id: String) {
         return userRepository.deleteById(id.toLong())
-
     }
-
 
 }
