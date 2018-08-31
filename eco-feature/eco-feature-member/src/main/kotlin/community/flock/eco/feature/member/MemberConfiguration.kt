@@ -11,7 +11,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 @Configuration
 @EnableJpaRepositories
 @EntityScan
-@Import(
-        MemberController::class,
+@Import(MemberController::class,
         MemberGroupController::class)
 class MemberConfiguration : WebMvcConfigurer

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/payment/transactions")
-open class PaymentTransactionController(private val paymentTransactionRepository: PaymentTransactionRepository) {
+class PaymentTransactionController(private val paymentTransactionRepository: PaymentTransactionRepository) {
 
     @GetMapping()
     @PreAuthorize("hasAuthority('TransactionAuthorities.READ')")

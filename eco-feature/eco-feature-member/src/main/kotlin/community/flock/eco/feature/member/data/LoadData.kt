@@ -26,7 +26,6 @@ class LoadData (
         }
         memberRepository.saveAll(members)
 
-
         val memberGroups = 1.rangeTo(10).map {
             MemberGroup(
                     code = "GROUP_$it",

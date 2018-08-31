@@ -15,7 +15,7 @@ import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
 @Service
-open class PaymentBuckarooService {
+class PaymentBuckarooService {
 
     data class BuckarooTransaction(
             val amount: Double,
@@ -43,7 +43,7 @@ open class PaymentBuckarooService {
 
         val entity = HttpEntity(postContent, headers)
 
-        val res = restTemplate.postForObject("https://" + requestUri, entity, ObjectNode::class.java)
+        val res = restTemplate.postForObject("https://$requestUri", entity, ObjectNode::class.java)
 
         val reference = res.get("Key").asText()
         val redirectUrl = res.get("RequiredAction").get("RedirectURL").asText()
@@ -86,7 +86,7 @@ open class PaymentBuckarooService {
     }
 
     private fun getTimeStamp(): String {
-        return (Date().getTime() / 1000).toString()
+        return (Date().time / 1000).toString()
     }
 
     private fun getNonce(): String {
@@ -126,8 +126,8 @@ open class PaymentBuckarooService {
     ): String {
         val nonce = getNonce()
         val timeStamp = getTimeStamp()
-        var url = URLEncoder.encode(requestUri, "UTF-8").toLowerCase()
-        return "hmac " + websiteKey + ":" + getHash(
+        val url = URLEncoder.encode(requestUri, "UTF-8").toLowerCase()
+        val hash = getHash(
                 websiteKey,
                 secretKey,
                 httpMethod,
@@ -135,7 +135,8 @@ open class PaymentBuckarooService {
                 timeStamp,
                 url,
                 content
-        ) + ":" + nonce + ":" + timeStamp;
+        )
+        return "hmac $websiteKey:$hash:$nonce:$timeStamp"
     }
 
 
