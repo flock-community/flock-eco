@@ -42,7 +42,9 @@ class MemberForm extends React.Component {
   }
 
   render() {
-    const {classes, item, groups} = this.props;
+    const {classes} = this.props;
+
+    const groups = this.props.groups || []
 
     return (
       <form className={classes.container}>
@@ -149,31 +151,39 @@ class MemberForm extends React.Component {
               onChange={this.handleChange('city')}/>
           </Grid>
 
-          <Grid item xs={12}>
-            <InputLabel htmlFor="groups">Groups</InputLabel>
-            <Select
-              className={classes.input}
-              multiple
-              value={this.state.groups}
-              inputProps={{
-                name: 'groups',
-                id: 'groups',
-              }}
-              onChange={this.handleChange('groups')}
-            >
-              {groups.map(it => (
-                <MenuItem
-                  key={it.code}
-                  value={it}
-                >
-                  {it.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </Grid>
+          {groups.length > 0 ? this.groupsRow(groups) : null}
+
         </Grid>
       </form>
     )
+  }
+
+  groupsRow(groups) {
+
+    const {classes} = this.props;
+
+    return (<Grid item xs={12}>
+      <InputLabel htmlFor="groups">Groups</InputLabel>
+      <Select
+        className={classes.input}
+        multiple
+        value={this.state.groups}
+        inputProps={{
+          name: 'groups',
+          id: 'groups',
+        }}
+        onChange={this.handleChange('groups')}
+      >
+        {groups.map(it => (
+          <MenuItem
+            key={it.code}
+            value={it}
+          >
+            {it.name}
+          </MenuItem>
+        ))}
+      </Select>
+    </Grid>)
   }
 
   handleChange(name) {
