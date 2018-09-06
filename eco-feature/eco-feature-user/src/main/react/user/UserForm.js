@@ -2,9 +2,6 @@ import React from "react";
 
 import Grid from '@material-ui/core/Grid';
 
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -47,39 +44,26 @@ class UserForm extends React.Component {
     const {classes} = this.props;
 
     return (
-      <Grid
-        container
-        direction="column"
-        justify="space-evenly"
-        alignItems="stretch"
-      >
-        <Grid item>
-          <TextField
-            label="Name"
-            value={this.state.name}
-            onChange={ev => this.handleChange('name')(ev.target.value)}/>
-        </Grid>
+      <React.Fragment>
+        <Grid
+          container
+          direction="column"
+          justify="space-evenly"
+          alignItems="stretch"
+        >
+          <Grid item>
+            <TextField
+              label="Name"
+              value={this.state.name}
+              onChange={ev => this.handleChange('name')(ev.target.value)}/>
+          </Grid>
 
-        <Grid item>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={this.state.disabled}
-                onChange={this.handleChange('disabled')}
-                value="true"
-                color="primary"
-              />
-            }
-            label="Primary"
-          />
-        </Grid>
+          <Grid item>
+            {this.renderList()}
+          </Grid>
 
-        <Grid item>
-          {this.renderList()}
         </Grid>
-
-      </Grid>
-    )
+      </React.Fragment>)
   }
 
 
