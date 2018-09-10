@@ -1,7 +1,7 @@
 package community.flock.eco.feature.payment.service
 
+import com.flock.community.api.service.PaymentBuckarooService
 import community.flock.eco.feature.payment.PaymentConfiguration
-import community.flock.eco.feature.payment.services.PaymentBuckarooService
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,8 +19,14 @@ open class PaymentBuckarooServiceTest {
     lateinit var service: PaymentBuckarooService
 
     @Test
-    fun createTransaction() {
-        val url = service.createTransaction(10.00, "HAllo", "INGBNL2A")
+    fun createCreditcardTransaction() {
+        val url = service.createTransaction(PaymentBuckarooService.PaymentMethod.CREDITCARD, issuer = "visa", amount =10.00, description = "Creditcard")
+        System.out.println(url);
+    }
+
+    @Test
+    fun createIdealTransaction() {
+        val url = service.createTransaction(PaymentBuckarooService.PaymentMethod.IDEAL, issuer = "INGBNL2A", amount =11.00, description = "Ideal")
         System.out.println(url);
     }
 }
