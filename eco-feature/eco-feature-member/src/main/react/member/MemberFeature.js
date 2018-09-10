@@ -142,7 +142,7 @@ class MemberFeature extends React.Component {
           onSave={this.handleSave}
         >
           <MemberForm
-            item={this.state.member}
+            value={this.state.member}
             groups={this.state.groups}
             onChange={this.handleFormUpdate}
           />

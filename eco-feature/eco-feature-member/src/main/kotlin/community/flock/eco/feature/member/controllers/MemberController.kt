@@ -1,6 +1,5 @@
 package community.flock.eco.feature.member.controllers
 
-
 import community.flock.eco.feature.member.model.Member
 import community.flock.eco.feature.member.model.MemberStatus
 import community.flock.eco.feature.member.repositories.MemberRepository
@@ -11,7 +10,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
-
 @RestController
 @RequestMapping("/api/members")
 class MemberController(private val memberRepository: MemberRepository) {
@@ -19,7 +17,7 @@ class MemberController(private val memberRepository: MemberRepository) {
     @GetMapping
     fun findAll(@RequestParam("s") search: String = "", page: Pageable?): ResponseEntity<List<Member>> {
 
-        val res = memberRepository.findBySearch(search!!, page!!)
+        val res = memberRepository.findBySearch(search, page!!)
         val headers = HttpHeaders()
         headers.set("x-page", page.pageNumber.toString())
         headers.set("x-total", res.totalElements.toString())
@@ -57,6 +55,5 @@ class MemberController(private val memberRepository: MemberRepository) {
     fun delete(@PathVariable("id") id: String) {
         memberRepository.deleteById(id.toLong())
     }
-
 
 }

@@ -8,10 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-
 @RestController
 @RequestMapping("/api/authorities")
-open class AuthorityController(private val userRepository: UserRepository) {
+class AuthorityController(
+        private val userRepository: UserRepository
+) {
 
     val reflections = Reflections("community.flock.eco")
     val classes = reflections.getSubTypesOf(Authority::class.java)

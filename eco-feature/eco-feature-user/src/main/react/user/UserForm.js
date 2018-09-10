@@ -1,9 +1,7 @@
 import React from "react";
+import {withStyles} from '@material-ui/core/styles';
 
 import Grid from '@material-ui/core/Grid';
-
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -11,6 +9,14 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+
+const styles = theme => ({
+  input: {
+    width: '100%'
+  },
+});
 
 class UserForm extends React.Component {
 
@@ -47,45 +53,31 @@ class UserForm extends React.Component {
     const {classes} = this.props;
 
     return (
-      <Grid
-        container
-        direction="column"
-        justify="space-evenly"
-        alignItems="stretch"
-      >
-        <Grid item>
-          <TextField
-            label="Name"
-            value={this.state.name}
-            onChange={ev => this.handleChange('name')(ev.target.value)}/>
-        </Grid>
+      <React.Fragment>
+        <Grid
+          container
+          direction="column"
+          justify="space-evenly"
+          alignItems="stretch"
+        >
+          <Grid item>
+            <TextField
+              label="Name"
+              className={classes.input}
+              value={this.state.name}
+              onChange={ev => this.handleChange('name')(ev.target.value)}/>
+          </Grid>
 
-        <Grid item>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={this.state.disabled}
-                onChange={this.handleChange('disabled')}
-                value="true"
-                color="primary"
-              />
-            }
-            label="Primary"
-          />
-        </Grid>
+          <Grid item style={{marginTop:10}}>
+            {this.renderList()}
+          </Grid>
 
-        <Grid item>
-          {this.renderList()}
         </Grid>
-
-      </Grid>
-    )
+      </React.Fragment>)
   }
 
 
   renderList() {
-
-    console.log('++++', this.state.authorities)
 
     const {classes, authorities} = this.props;
 
@@ -99,43 +91,42 @@ class UserForm extends React.Component {
     }
 
     return (
-      <List
-        style={{
-          position: 'relative',
-          overflow: 'auto',
-          maxHeight: 200,
-        }}
-      >
-        {authorities.map(value => (
-          <ListItem
-            key={value}
-            role={undefined}
-            dense
-            button
-            onClick={ev => handleClick(value)}
-            style={{
-              margin: 0,
-              padding: 0
-            }}
-          >
-            <Checkbox
-              checked={this.state.authorities.includes(value)}
-              tabIndex={-1}
-              disableRipple
+      <FormControl className={classes.formControl}>
+        <InputLabel shrink>Authorities</InputLabel>
+        <List
+          className={classes.input}>
+          {authorities.map(value => (
+            <ListItem
+              className={classes.input}
+              key={value}
+              role={undefined}
+              dense
+              button
+              onClick={ev => handleClick(value)}
               style={{
-                width: 32
+                margin: 0,
+                padding: 0
               }}
-            />
-            <ListItemText
-              primary={value}
-            />
-          </ListItem>
-        ))}
-      </List>
+            >
+              <Checkbox
+                checked={this.state.authorities.includes(value)}
+                tabIndex={-1}
+                disableRipple
+                style={{
+                  width: 32
+                }}
+              />
+              <ListItemText
+                primary={value}
+              />
+            </ListItem>
+          ))}
+        </List>
+      </FormControl>
     )
   }
 
 }
 
 
-export default UserForm;
+export default withStyles(styles)(UserForm);

@@ -1,6 +1,9 @@
 package community.flock.eco.feature.payment.controllers
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import community.flock.eco.core.services.EventService
+import community.flock.eco.feature.payment.event.PaymentSuccessEvent
+import com.fasterxml.jackson.databind.node.ObjectNode
 import community.flock.eco.feature.payment.model.PaymentTransactionStatus
 import community.flock.eco.feature.payment.repositories.PaymentTransactionRepository
 import org.springframework.http.HttpStatus
@@ -15,7 +18,8 @@ import java.util.*
 @RestController
 @RequestMapping("/api/payment/buckaroo")
 open class PaymentBuckarooController(
-        private val transactionRepository: PaymentTransactionRepository) {
+        private val transactionRepository: PaymentTransactionRepository,
+        private val eventService: EventService) {
 
 
     var mapper = ObjectMapper()
@@ -23,7 +27,7 @@ open class PaymentBuckarooController(
     @PostMapping("success")
     fun success(@RequestBody json: String): ResponseEntity<Void> {
 
-        val obj = mapper.readValue(json, com.fasterxml.jackson.databind.node.ObjectNode::class.java)
+        val obj = mapper.readValue(json, ObjectNode::class.java)
 
         val key = obj.get("Transaction").get("Key").asText()
 
@@ -34,12 +38,14 @@ open class PaymentBuckarooController(
             ))
         }
 
+        eventService.emitEvent(PaymentSuccessEvent())
+
         return ResponseEntity(HttpStatus.NO_CONTENT)
     }
 
     @PostMapping("error")
     fun error(@RequestBody json: String): ResponseEntity<Void> {
-        val obj = mapper.readValue(json, com.fasterxml.jackson.databind.node.ObjectNode::class.java)
+        val obj = mapper.readValue(json, ObjectNode::class.java)
 
         val key = obj.get("Transaction").get("Key").asText()
 
