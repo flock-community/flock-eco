@@ -1,4 +1,4 @@
-package com.flock.community.api.service
+package community.flock.eco.feature.payment.services
 
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.commons.lang3.RandomStringUtils

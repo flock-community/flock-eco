@@ -1,6 +1,6 @@
 package community.flock.eco.feature.payment.service
 
-import com.flock.community.api.service.PaymentBuckarooService
+import community.flock.eco.feature.payment.services.PaymentBuckarooService
 import community.flock.eco.feature.payment.PaymentConfiguration
 import org.junit.Test
 import org.junit.runner.RunWith
