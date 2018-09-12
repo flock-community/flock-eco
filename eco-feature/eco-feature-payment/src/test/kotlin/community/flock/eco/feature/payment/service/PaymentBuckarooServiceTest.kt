@@ -2,6 +2,7 @@ package community.flock.eco.feature.payment.service
 
 import community.flock.eco.feature.payment.services.PaymentBuckarooService
 import community.flock.eco.feature.payment.PaymentConfiguration
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
