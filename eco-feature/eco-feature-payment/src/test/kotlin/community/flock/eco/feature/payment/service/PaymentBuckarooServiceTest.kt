@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @SpringBootTest(classes = [PaymentConfiguration::class])
+@Ignore
 open class PaymentBuckarooServiceTest {
 
     @Autowired
@@ -20,13 +21,13 @@ open class PaymentBuckarooServiceTest {
 
     @Test
     fun createCreditcardTransaction() {
-        val url = service.createTransaction(PaymentBuckarooService.PaymentMethod.CREDITCARD, issuer = "visa", amount =10.00, description = "Creditcard")
+        val url = service.createTransaction(PaymentBuckarooService.PaymentMethod.CREDITCARD, issuer = "visa", amount = 10.00, description = "Creditcard")
         System.out.println(url);
     }
 
     @Test
     fun createIdealTransaction() {
-        val url = service.createTransaction(PaymentBuckarooService.PaymentMethod.IDEAL, issuer = "INGBNL2A", amount =11.00, description = "Ideal")
+        val url = service.createTransaction(PaymentBuckarooService.PaymentMethod.IDEAL, issuer = "INGBNL2A", amount = 11.00, description = "Ideal")
         System.out.println(url);
     }
 }

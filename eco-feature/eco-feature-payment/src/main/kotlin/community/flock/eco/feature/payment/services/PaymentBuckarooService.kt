@@ -30,6 +30,9 @@ class PaymentBuckarooService {
             val reference: String
     )
 
+    @Value("\${buckaroo.requestUri}")
+    private var requestUri: String = ""
+
     @Value("\${buckaroo.websiteKey}")
     private var websiteKey: String = ""
 
@@ -37,7 +40,6 @@ class PaymentBuckarooService {
     private var secretKey: String = ""
 
     fun createTransaction(paymentMethod: PaymentMethod, issuer: String, amount: Double, description: String): BuckarooTransaction {
-        val requestUri = "testcheckout.buckaroo.nl/json/transaction"
         val postContent = getContent(paymentMethod, issuer, amount, description);
         val httpMethod = "POST"
         val authHeader = authHeader(requestUri, postContent, httpMethod)
