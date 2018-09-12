@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.github.flock-se.eco</groupId>
-        <artifactId>eco-feature-parent</artifactId>
+        <groupId>com.github.flock-se.flock-eco</groupId>
+        <artifactId>flock-eco-feature-parent</artifactId>
         <version>feature~community-SNAPSHOT</version>
     </parent>
 
-    <artifactId>eco-feature-payment</artifactId>
+    <artifactId>flock-eco-feature-payment</artifactId>
 
 </project>

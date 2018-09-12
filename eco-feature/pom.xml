@@ -3,12 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.github.flock-se.eco</groupId>
-        <artifactId>eco-parent</artifactId>
+        <groupId>com.github.flock-se.flock-eco</groupId>
+        <artifactId>flock-eco-parent</artifactId>
         <version>feature~community-SNAPSHOT</version>
     </parent>
 
-    <artifactId>eco-feature-parent</artifactId>
+    <artifactId>flock-eco-feature-parent</artifactId>
 
     <packaging>pom</packaging>
 
@@ -80,8 +80,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.flock-se.eco</groupId>
-            <artifactId>eco-core</artifactId>
+            <groupId>com.github.flock-se.flock-eco</groupId>
+            <artifactId>flock-eco-core</artifactId>
             <version>${project.version}</version>
         </dependency>
 
