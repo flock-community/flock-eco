@@ -17,6 +17,11 @@ import javax.crypto.spec.SecretKeySpec
 @Service
 class PaymentBuckarooService {
 
+    enum class PaymentMethod{
+        IDEAL,
+        CREDITCARD
+    }
+
     data class BuckarooTransaction(
             val amount: Double,
             val description: String,
@@ -31,9 +36,9 @@ class PaymentBuckarooService {
     @Value("\${buckaroo.secretKey}")
     private var secretKey: String = ""
 
-    fun createTransaction(amount: Double, description: String, issuer: String): BuckarooTransaction {
+    fun createTransaction(paymentMethod: PaymentMethod, issuer: String, amount: Double, description: String): BuckarooTransaction {
         val requestUri = "testcheckout.buckaroo.nl/json/transaction"
-        val postContent = getContent(amount, description, issuer)
+        val postContent = getContent(paymentMethod, issuer, amount, description);
         val httpMethod = "POST"
         val authHeader = authHeader(requestUri, postContent, httpMethod)
         val restTemplate = RestTemplate()
@@ -93,30 +98,52 @@ class PaymentBuckarooService {
         return RandomStringUtils.randomAlphanumeric(32)
     }
 
-    private fun getContent(amount: Double, description: String, issuer: String): String {
-        return """{
-            "Currency": "EUR",
-            "AmountDebit": $amount,
-            "Invoice": "$description",
-            "ClientIP": {
-            "Type": 0,
-            "Address": "0.0.0.0"
-        },
-            "Services": {
-            "ServiceList": [
-            {
-                "Name": "ideal",
-                "Action": "Pay",
-                "Parameters": [
-                {
-                    "Name": "issuer",
-                    "Value": "$issuer"
-                }
-                ]
-            }
-            ]
+    private fun getContent(paymentMethod: PaymentMethod, issuer: String, amount: Double, description: String): String {
+         if(paymentMethod == PaymentMethod.IDEAL) {
+             return """{
+                "Currency": "EUR",
+                "AmountDebit": $amount,
+                "Invoice": "$description",
+                "ClientIP": {
+                "Type": 0,
+                "Address": "0.0.0.0"
+                },
+                    "Services": {
+                    "ServiceList": [
+                    {
+                        "Name": "ideal",
+                        "Action": "Pay",
+                        "Parameters": [
+                        {
+                            "Name": "issuer",
+                            "Value": "$issuer"
+                        }
+                        ]
+                    }
+                    ]
+            }"""
         }
-        """
+        if(paymentMethod == PaymentMethod.CREDITCARD) {
+            return """{
+              "Currency": "EUR",
+              "AmountDebit": $amount,
+              "Invoice": "$description",
+              "ClientIP": {
+                  "Type": 0,
+                  "Address": "0.0.0.0"
+               },
+              "Services": {
+                "ServiceList": [
+                  {
+                    "Name": "$issuer",
+                    "Action": "Pay"
+                  }
+                ]
+              }
+            }"""
+        }
+
+        throw RuntimeException("Payment methode not found")
     }
 
     private fun authHeader(
