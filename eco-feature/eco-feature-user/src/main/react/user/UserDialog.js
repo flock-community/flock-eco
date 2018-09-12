@@ -11,11 +11,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 
-const styles = theme => ({
-  paper:{
-    width:'800px'
-  }
-});
+const styles = theme => ({});
 
 class UserDialog extends React.Component {
 
@@ -36,6 +32,8 @@ class UserDialog extends React.Component {
 
     return (
       <Dialog
+        fullWidth
+        maxWidth={'md'}
         open={open}
         onClose={this.handleClose}
         aria-labelledby="simple-dialog-title"
