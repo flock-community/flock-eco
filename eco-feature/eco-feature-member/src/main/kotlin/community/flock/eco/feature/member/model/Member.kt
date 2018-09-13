@@ -7,7 +7,7 @@ import javax.persistence.*
 data class Member(
 
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
+        @GeneratedValue(strategy=GenerationType.AUTO)
         val id: Long = 0,
 
         val firstName: String,
@@ -27,7 +27,7 @@ data class Member(
         val gender: MemberGender? = null,
         val birthDate: Date? = null,
 
-        @OneToMany(cascade = [CascadeType.ALL])
+        @ManyToMany()
         val groups: Set<MemberGroup> = setOf(),
 
         val status: MemberStatus = MemberStatus.NEW

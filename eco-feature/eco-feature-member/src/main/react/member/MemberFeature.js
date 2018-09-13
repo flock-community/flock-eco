@@ -9,11 +9,13 @@ import AddIcon from '@material-ui/icons/Add';
 
 import MemberTable from "./MemberTable";
 import MemberSearch from "./MemberSearch";
-import MemberForm from "./MemberForm";
 import MemberDialog from "./MemberDialog";
 
 
 const styles = theme => ({
+  root: {
+    marginBottom: 48
+  },
   button: {
     position: 'fixed',
     right: 20,
@@ -24,87 +26,66 @@ const styles = theme => ({
 
 class MemberFeature extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      size: 10,
-      search: props.search || '',
-      members: props.members || [],
-      groups:[
-        'test1',
-        'test2',
-        'test3',
-        'test4',
-      ],
-      count: 0,
+  state = {
+    size: 10,
+    search: this.props.search || '',
+    members: this.props.members || [],
+    item: null,
+    groups: [
+      'test1',
+      'test2',
+      'test3',
+      'test4',
+    ],
+    count: 0,
+    page: 0,
+  };
+
+  componentDidMount() {
+    this.load();
+  }
+
+  handleRowClick = (item) => {
+    this.setState({item})
+  };
+
+  handleNewClick = () => {
+    this.setState({item: {}})
+  };
+
+  handleSearch = (val) => {
+    this.setState({
       page: 0,
-    };
+      search: val.search
+    }, () => {
+      this.load()
+    });
 
-    this.handleRowClick = (member) => {
-      this.setState({member: member})
-    };
+  };
 
-    this.handleNewClick = () => {
-      this.setState({member: {}})
-    };
+  handleChangePage = (event, page) => {
+    this.setState({page}, () => {
+      this.load()
+    })
+  };
 
-    this.handleSearch = (val) => {
-      this.setState({
-        page: 0,
-        search: val.search
-      }, () => {
-        this.load()
-      });
+  handleComplete = () => {
+    this.setState({item: null}, () => {
+      this.load()
+    })
+  }
 
-    };
-
-    this.handleClose = () => {
-      this.setState({member: null});
-    };
-
-    this.handleSave = () => {
-      if (this.state.member.id) {
-        const opts = {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json; charset=utf-8",
-          },
-          body: JSON.stringify(this.state.member),
-        };
-        fetch(`/api/members/${this.state.member.id}`, opts)
-          .then(() => {
-            this.setState({member: null});
-            this.load();
-          })
-      } else {
-        const opts = {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json; charset=utf-8",
-          },
-          body: JSON.stringify(this.state.member),
-        };
-        fetch('/api/members', opts)
-          .then(() => {
-            this.setState({member: null});
-            this.load();
-          })
-      }
-
-
-    };
-
-    this.handleFormUpdate = (value) => {
-      this.setState({member: value});
-    };
-
-    this.handleChangePage = (event, page) => {
-      this.setState({page}, () => {
-        this.load()
+  load = () => {
+    fetch(`/api/members?s=${this.state.search}&page=${this.state.page}&size=${this.state.size}`)
+      .then(res => {
+        this.setState({
+          count: parseInt(res.headers.get('x-total'))
+        })
+        return res.json()
       })
-    }
-
-    this.load()
+      .then(json => {
+        this.setState({members: json});
+      })
   }
 
   render() {
@@ -113,7 +94,7 @@ class MemberFeature extends React.Component {
 
     return (
 
-      <Paper>
+      <Paper className={classes.root}>
 
         <Grid
           container
@@ -135,19 +116,7 @@ class MemberFeature extends React.Component {
           </Grid>
         </Grid>
 
-
-        <MemberDialog
-          open={this.state.member != null}
-          onClose={this.handleClose}
-          onSave={this.handleSave}
-        >
-          <MemberForm
-            value={this.state.member}
-            groups={this.state.groups}
-            onChange={this.handleFormUpdate}
-          />
-
-        </MemberDialog>
+        {this.renderDialog()}
 
         <Button
           variant="fab"
@@ -162,27 +131,15 @@ class MemberFeature extends React.Component {
     )
   }
 
-  load() {
-    fetch(`/api/member_groups`)
-      .then(res => {
-        return res.json()
-      })
-      .then(json => {
-        this.setState({groups: json});
-      })
+  renderDialog() {
 
-    return fetch(`/api/members?s=${this.state.search}&page=${this.state.page}&size=${this.state.size}`)
-      .then(res => {
-        this.setState({
-          count: parseInt(res.headers.get('x-total'))
-        })
-        return res.json()
-      })
-      .then(json => {
-        this.setState({members: json});
-      })
+    if(this.state.item == null)
+      return null
+
+    return (<MemberDialog
+      value = {this.state.item}
+      onComplete={this.handleComplete}/>)
   }
-
 
 };
 

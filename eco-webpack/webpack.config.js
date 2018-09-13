@@ -24,9 +24,10 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['env', 'react'],
-            plugins: [
-              "transform-object-rest-spread",
+            presets: [
+              'env',
+              'react',
+              'stage-2'
             ]
           },
         }

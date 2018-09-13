@@ -8,8 +8,14 @@ import TextField from '@material-ui/core/TextField';
 
 import FormControl from '@material-ui/core/FormControl';
 
+import Input from '@material-ui/core/Input';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+
+import Checkbox from '@material-ui/core/Checkbox';
+import ListItemText from '@material-ui/core/ListItemText';
+
+import {TextValidator} from 'react-material-ui-form-validator';
 
 const styles = theme => ({
   input: {
@@ -21,69 +27,74 @@ class MemberForm extends React.Component {
 
   constructor(props) {
     super(props);
-    this.init(props.value)
+    this.state = props.value || {}
   }
 
-  init(memberData) {
-    const member = {
-      firstName: "",
-      infix: "",
-      surName: "",
-      gender: "",
-      birthDate: "",
-      email: "",
-      street: "",
-      houseNumber: "",
-      houseNumberExtension: "",
-      postalCode: "",
-      city: "",
-      groups: []
-    };
+  handleChange(name) {
+    return (event) => {
+      console.log('value', event.target.value)
+      this.setState({[name]: event.target.value}, () => {
+        this.props.onChange(this.state)
+      })
+    }
+  };
 
-    this.state = {...member, ...memberData};
-  }
+  handleChangeGroup(name) {
+    return (event) => {
+      const value = event.target.value.map(this.resolverGroup)
+      console.log('value', value)
+      this.setState({[name]: value}, () => {
+        this.props.onChange(this.state)
+      })
+    }
+  };
+
+  resolverGroup = id => this.props.groups.find(it => it.id === id)
 
   render() {
     const {classes} = this.props;
 
-    const groups = this.props.groups || []
-
     return (
       <Grid
         container
-        spacing={16}
-      >
+        spacing={16}>
         <Grid item xs={5}>
-          <TextField
+          <TextValidator
             required
-            className={classes.input}
+            name="firstName"
             label="First name"
-            value={this.state.firstName}
-            onChange={this.handleChange('firstName')}/>
+            className={classes.input}
+            value={this.state.firstName || ''}
+            onChange={this.handleChange('firstName')}
+            validators={['required']}
+            errorMessages={['this field is required']}/>
         </Grid>
 
         <Grid item xs={2}>
           <TextField
             className={classes.input}
             label="Infix"
-            value={this.state.infix}
+            value={this.state.infix || ''}
             onChange={this.handleChange('infix')}/>
         </Grid>
 
         <Grid item xs={5}>
-          <TextField
+          <TextValidator
             required
-            className={classes.input}
+            name="surName"
             label="Surname"
-            value={this.state.surName}
-            onChange={this.handleChange('surName')}/>
+            className={classes.input}
+            value={this.state.surName || ''}
+            onChange={this.handleChange('surName')}
+            validators={['required']}
+            errorMessages={['this field is required']}/>
         </Grid>
 
         <Grid item xs={7}>
           <TextField
             className={classes.input}
             label="Birth date"
-            value={this.state.birthDate}
+            value={this.state.birthDate || ''}
             onChange={this.handleChange('birthDate')}/>
         </Grid>
 
@@ -92,14 +103,14 @@ class MemberForm extends React.Component {
             <InputLabel htmlFor="gender">Gender</InputLabel>
             <Select
               required
-
-              value={this.state.gender}
+              value={this.state.gender || 'UNKNOWN'}
               onChange={this.handleChange('gender')}
               inputProps={{
                 name: 'gender',
                 id: 'gender',
               }}
             >
+              <MenuItem value="UNKNOWN">Unknown</MenuItem>
               <MenuItem value="MALE">Male</MenuItem>
               <MenuItem value="FEMALE">Female</MenuItem>
             </Select>
@@ -110,7 +121,7 @@ class MemberForm extends React.Component {
           <TextField
             className={classes.input}
             label="Email"
-            value={this.state.email}
+            value={this.state.email || ''}
             onChange={this.handleChange('email')}/>
         </Grid>
 
@@ -118,7 +129,7 @@ class MemberForm extends React.Component {
           <TextField
             className={classes.input}
             label="Street"
-            value={this.state.street}
+            value={this.state.street || ''}
             onChange={this.handleChange('street')}/>
         </Grid>
 
@@ -126,7 +137,7 @@ class MemberForm extends React.Component {
           <TextField
             className={classes.input}
             label="Nr"
-            value={this.state.houseNumber}
+            value={this.state.houseNumber || ''}
             onChange={this.handleChange('houseNumber')}/>
         </Grid>
 
@@ -134,7 +145,7 @@ class MemberForm extends React.Component {
           <TextField
             className={classes.input}
             label="Ext"
-            value={this.state.houseNumberExtension}
+            value={this.state.houseNumberExtension || ''}
             onChange={this.handleChange('houseNumberExtension')}/>
         </Grid>
 
@@ -142,7 +153,7 @@ class MemberForm extends React.Component {
           <TextField
             className={classes.input}
             label="Postal code"
-            value={this.state.postalCode}
+            value={this.state.postalCode || ''}
             onChange={this.handleChange('postalCode')}/>
         </Grid>
 
@@ -150,39 +161,45 @@ class MemberForm extends React.Component {
           <TextField
             className={classes.input}
             label="City"
-            value={this.state.city}
+            value={this.state.city || ''}
             onChange={this.handleChange('city')}/>
         </Grid>
 
-        {groups.length > 0 ? this.groupsRow(groups) : null}
+        {this.groupsRow()}
 
       </Grid>
     )
   }
 
-  groupsRow(groups) {
+  groupsRow() {
 
     const {classes} = this.props;
 
+    const groups = this.props.groups || []
+
+    if (groups.length === 0)
+      return null;
+
+    console.log('-----', this.state.groups)
+
     return (<Grid item xs={12}>
-      <FormControl>
+      <FormControl
+        className={classes.input}>
         <InputLabel htmlFor="groups">Groups</InputLabel>
         <Select
-          className={classes.input}
+          className={classes.input || []}
           multiple
-          value={this.state.groups}
-          inputProps={{
-            name: 'groups',
-            id: 'groups',
-          }}
-          onChange={this.handleChange('groups')}
+          value={this.state.groups.map(it => it.id) || []}
+          input={<Input id="select-multiple" />}
+          onChange={this.handleChangeGroup('groups')}
+          renderValue={selected => selected.map(this.resolverGroup).map(it => it.name).join(', ')}
         >
           {groups.map(it => (
             <MenuItem
-              key={it.code}
-              value={it}
-            >
-              {it.name}
+              key={it.id}
+              value={it.id}>
+              <Checkbox checked={this.state.groups.map(it => it.id).indexOf(it.id) > -1} />
+              <ListItemText primary={it.name} />
             </MenuItem>
           ))}
         </Select>
@@ -190,17 +207,6 @@ class MemberForm extends React.Component {
     </Grid>)
   }
 
-  handleChange(name) {
-    return (event) => {
-      console.log('value', event.target.value)
-      this.setState(
-        {[name]: event.target.value},
-        () => {
-          this.props.onChange(this.state)
-        })
-
-    }
-  };
 
 }
 

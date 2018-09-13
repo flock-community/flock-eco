@@ -2,6 +2,7 @@ package community.flock.eco.feature.member.controllers
 
 import community.flock.eco.feature.member.model.Member
 import community.flock.eco.feature.member.model.MemberStatus
+import community.flock.eco.feature.member.repositories.MemberGroupRepository
 import community.flock.eco.feature.member.repositories.MemberRepository
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpHeaders
@@ -12,7 +13,9 @@ import java.util.*
 
 @RestController
 @RequestMapping("/api/members")
-class MemberController(private val memberRepository: MemberRepository) {
+class MemberController(
+        private val memberRepository: MemberRepository,
+        private val memberGroupRepository: MemberGroupRepository) {
 
     @GetMapping
     fun findAll(@RequestParam("s") search: String = "", page: Pageable?): ResponseEntity<List<Member>> {
@@ -37,18 +40,25 @@ class MemberController(private val memberRepository: MemberRepository) {
 
     @PostMapping
     fun create(@RequestBody member: Member): Member {
+        val groups = memberGroupRepository
+                .findAllById(member.groups
+                        .map { it.id })
+                .toSet()
         return memberRepository.save(member.copy(
                 id = 0,
                 status = MemberStatus.NEW,
-                groups = setOf()
-        ))
+                groups = groups))
     }
 
     @PutMapping("/{id}")
     fun update(@PathVariable("id") id: String, @RequestBody member: Member): Member {
-        return memberRepository.save(
-                member.copy(id = id.toLong())
-        )
+        val groups = memberGroupRepository
+                .findAllById(member.groups
+                        .map { it.id })
+                .toSet()
+        return memberRepository.save(member.copy(
+                id = id.toLong(),
+                groups = groups))
     }
 
     @DeleteMapping("/{id}")

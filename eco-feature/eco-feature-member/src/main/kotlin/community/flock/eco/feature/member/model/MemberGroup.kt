@@ -9,7 +9,7 @@ import javax.persistence.Id
 data class MemberGroup(
 
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
+        @GeneratedValue(strategy=GenerationType.AUTO)
         val id: Long = 0,
 
         val code: String,
