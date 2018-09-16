@@ -30,6 +30,14 @@ class MemberDialog extends React.Component {
       .then(json => {
         this.setState({groups: json});
       })
+
+    fetch(`/api/member_fields`)
+      .then(res => {
+        return res.json()
+      })
+      .then(json => {
+        this.setState({fields: json});
+      })
   }
 
   handleClose = () => {
@@ -96,6 +104,7 @@ class MemberDialog extends React.Component {
             <MemberForm
               value={this.state.value}
               groups={this.state.groups}
+              fields={this.state.fields}
               onChange={this.handleFormUpdate}
             />
           </ValidatorForm>

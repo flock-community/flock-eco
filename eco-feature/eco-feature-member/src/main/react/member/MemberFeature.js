@@ -31,12 +31,7 @@ class MemberFeature extends React.Component {
     search: this.props.search || '',
     members: this.props.members || [],
     item: null,
-    groups: [
-      'test1',
-      'test2',
-      'test3',
-      'test4',
-    ],
+    groups: [],
     count: 0,
     page: 0,
   };

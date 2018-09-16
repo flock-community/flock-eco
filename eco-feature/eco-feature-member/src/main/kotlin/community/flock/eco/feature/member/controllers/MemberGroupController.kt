@@ -20,10 +20,10 @@ class MemberGroupController(private val memberGroupRepository: MemberGroupReposi
         return memberGroupRepository.save(memberGroup)
     }
 
-    @GetMapping("/{code}")
-    fun findById(@PathVariable("code") code: Long): ResponseEntity<MemberGroup> {
+    @GetMapping("/{id}")
+    fun findById(@PathVariable("id") id: Long): ResponseEntity<MemberGroup> {
 
-        val memberGroupOptional = memberGroupRepository.findById(code)
+        val memberGroupOptional = memberGroupRepository.findById(id)
 
         return if (memberGroupOptional.isPresent) {
             ResponseEntity(memberGroupOptional.get(), HttpStatus.OK)
@@ -33,16 +33,16 @@ class MemberGroupController(private val memberGroupRepository: MemberGroupReposi
 
     }
 
-    @PutMapping("/{code}")
-    fun update(@PathVariable("code") code: String, @RequestBody memberGroup: MemberGroup): MemberGroup {
+    @PutMapping("/{id}")
+    fun update(@PathVariable("id") id: Long, @RequestBody memberGroup: MemberGroup): MemberGroup {
         return memberGroupRepository.save(
-                memberGroup.copy(code = code)
+                memberGroup.copy(id = id)
         )
     }
 
-    @DeleteMapping("/{code}")
-    fun delete(@PathVariable("code") code: String) {
-        memberGroupRepository.deleteByCode(code)
+    @DeleteMapping("/{id}")
+    fun delete(@PathVariable("id") id: Long) {
+        memberGroupRepository.deleteById(id)
     }
 
 }

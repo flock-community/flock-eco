@@ -2,9 +2,7 @@ package community.flock.eco.feature.member.repositories
 
 
 import community.flock.eco.feature.member.MemberConfiguration
-import community.flock.eco.feature.member.model.Member
-import community.flock.eco.feature.member.model.MemberGroup
-import community.flock.eco.feature.member.model.MemberStatus
+import community.flock.eco.feature.member.model.*
 import org.junit.Assert.assertEquals
 import org.junit.Ignore
 import org.junit.Test
@@ -26,6 +24,9 @@ open class MemberRepositoryTest {
 
     @Autowired
     lateinit var memberRepository: MemberRepository
+
+    @Autowired
+    lateinit var memberFieldRepository: MemberFieldRepository
 
     @PostConstruct
     fun init() {
@@ -138,6 +139,50 @@ open class MemberRepositoryTest {
 
         assertEquals("Willem", res2.firstName)
         assertEquals("LEKSTREEK", res2.groups.toList()[0].code)
+
+    }
+
+    @Test
+    fun testsField() {
+
+        val fieldAgreement = MemberField(
+                code = "AGREEMENT",
+                name = "agreement",
+                label = "Agreement",
+                type = MemberFieldType.TEXT
+        )
+
+        val fieldCheckbox = MemberField(
+                code = "CHECKBOX",
+                name = "checkbox",
+                label = "Checkbox",
+                type = MemberFieldType.TEXT
+        )
+
+        memberFieldRepository.save(fieldAgreement)
+        memberFieldRepository.save(fieldCheckbox)
+
+        val member1 = Member(
+                firstName = "Willem",
+                surName = "Veelenturf",
+                email = "willem.veelenturf@gmail.com1",
+                fields = mapOf(fieldAgreement.code to "Test123")
+        )
+        val res1 = memberRepository.save(member1)
+
+        assertEquals("Willem", res1.firstName)
+        assertEquals("Test123", res1.fields["AGREEMENT"])
+
+        val member2 = Member(
+                firstName = "Willem",
+                surName = "Veelenturf",
+                email = "willem.veelenturf@gmail.com2",
+                fields = mapOf(fieldCheckbox.code to "Checked")
+        )
+        val res2 = memberRepository.save(member2)
+
+        assertEquals("Willem", res2.firstName)
+        assertEquals("Checked", res2.fields["CHECKBOX"])
 
     }
 

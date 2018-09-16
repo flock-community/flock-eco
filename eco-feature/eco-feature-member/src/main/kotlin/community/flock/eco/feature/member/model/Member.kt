@@ -7,14 +7,14 @@ import javax.persistence.*
 data class Member(
 
         @Id
-        @GeneratedValue(strategy=GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.AUTO)
         val id: Long = 0,
 
         val firstName: String,
         val infix: String? = null,
         val surName: String,
 
-        val email: String,
+        val email: String?,
 
         val phoneNumber: String? = null,
 
@@ -29,6 +29,9 @@ data class Member(
 
         @ManyToMany()
         val groups: Set<MemberGroup> = setOf(),
+
+        @ElementCollection
+        val fields: Map<String, String> = mapOf(),
 
         val status: MemberStatus = MemberStatus.NEW
 

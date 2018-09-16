@@ -7,6 +7,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import TextField from '@material-ui/core/TextField';
 
 import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import Input from '@material-ui/core/Input';
 import Select from '@material-ui/core/Select';
@@ -32,7 +33,6 @@ class MemberForm extends React.Component {
 
   handleChange(name) {
     return (event) => {
-      console.log('value', event.target.value)
       this.setState({[name]: event.target.value}, () => {
         this.props.onChange(this.state)
       })
@@ -44,6 +44,18 @@ class MemberForm extends React.Component {
       const value = event.target.value.map(this.resolverGroup)
       console.log('value', value)
       this.setState({[name]: value}, () => {
+        this.props.onChange(this.state)
+      })
+    }
+  };
+
+  handleChangeField(name) {
+
+    return (event) => {
+      const value = event.target.value
+      console.log('handleChangeField', name, value)
+      const fields = Object.assign(this.state.fields, {[name]: Array.isArray(value) ? value.join(',') : value})
+      this.setState({fields}, () => {
         this.props.onChange(this.state)
       })
     }
@@ -165,7 +177,9 @@ class MemberForm extends React.Component {
             onChange={this.handleChange('city')}/>
         </Grid>
 
-        {this.groupsRow()}
+        {this.props.groups && this.groupsRow()}
+
+        {this.props.fields && this.fieldsRow()}
 
       </Grid>
     )
@@ -176,11 +190,10 @@ class MemberForm extends React.Component {
     const {classes} = this.props;
 
     const groups = this.props.groups || []
+    this.state.groups = this.state.groups || []
 
     if (groups.length === 0)
       return null;
-
-    console.log('-----', this.state.groups)
 
     return (<Grid item xs={12}>
       <FormControl
@@ -190,7 +203,7 @@ class MemberForm extends React.Component {
           className={classes.input || []}
           multiple
           value={this.state.groups.map(it => it.id) || []}
-          input={<Input id="select-multiple" />}
+          input={<Input id="select-multiple"/>}
           onChange={this.handleChangeGroup('groups')}
           renderValue={selected => selected.map(this.resolverGroup).map(it => it.name).join(', ')}
         >
@@ -198,13 +211,94 @@ class MemberForm extends React.Component {
             <MenuItem
               key={it.id}
               value={it.id}>
-              <Checkbox checked={this.state.groups.map(it => it.id).indexOf(it.id) > -1} />
-              <ListItemText primary={it.name} />
+              <Checkbox checked={this.state.groups.map(it => it.id).indexOf(it.id) > -1}/>
+              <ListItemText primary={it.name}/>
             </MenuItem>
           ))}
         </Select>
       </FormControl>
     </Grid>)
+  }
+
+  fieldsRow() {
+
+    const {classes} = this.props;
+
+    const fields = this.props.fields || []
+    const value = (field) => this.state.fields[field.name] || ""
+
+    if (fields.length === 0)
+      return null;
+
+    const textField = (field) => (<TextField
+      label={field.label}
+      className={classes.input}
+      value={value(field)}
+      onChange={this.handleChangeField(field.name)}/>)
+
+    const checkboxField = (field) => (<FormControlLabel
+      control={
+        <Checkbox
+          onChange={this.handleChangeField(field.name)}
+        />
+      }
+      label={field.label}
+    />)
+
+    const singleSelectField = (field) => (
+
+      <FormControl className={classes.input}>
+        <InputLabel htmlFor={field.name}>{field.label}</InputLabel>
+        <Select
+          className={classes.input || []}
+          value={value(field)}
+          input={<Input id="select-multiple"/>}
+          onChange={this.handleChangeField(field.name)}
+        >
+          {field.options.map(it => (
+            <MenuItem
+              key={it}
+              value={it}>
+              <ListItemText primary={it}/>
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>)
+
+    const multiSelectField = (field) => (
+
+      <FormControl className={classes.input}>
+        <InputLabel htmlFor={field.name}>{field.label}</InputLabel>
+        <Select
+          multiple
+          className={classes.input || []}
+          value={value(field).split(',')}
+          input={<Input id="select-multiple"/>}
+          onChange={this.handleChangeField(field.name)}
+          renderValue={selected => selected.join(', ')}
+        >
+          {field.options.map(it => (
+            <MenuItem
+              key={it}
+              value={it}>
+              <Checkbox checked={value(field).split(',').indexOf(it) > -1}/>
+              <ListItemText primary={it}/>
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>)
+
+    return fields.map(it => (<React.Fragment
+      key={it.name}>
+      <Grid item xs={12}>
+        {it.type === 'CHECKBOX' && checkboxField(it)}
+        {it.type === 'TEXT' && textField(it)}
+        {it.type === 'SINGLE_SELECT' && singleSelectField(it)}
+        {it.type === 'MULTI_SELECT' && multiSelectField(it)}
+      </Grid>
+    </React.Fragment>))
+
+
   }
 
 
