@@ -237,9 +237,13 @@ class MemberForm extends React.Component {
       onChange={this.handleChangeField(field.name)}/>)
 
     const checkboxField = (field) => (<FormControlLabel
+      className={classes.input}
+      disabled={field.disabled}
       control={
         <Checkbox
           onChange={this.handleChangeField(field.name)}
+          checked={(value(field) === 'true')}
+          value={(value(field) !== 'true').toString()}
         />
       }
       label={field.label}
@@ -247,7 +251,9 @@ class MemberForm extends React.Component {
 
     const singleSelectField = (field) => (
 
-      <FormControl className={classes.input}>
+      <FormControl
+        className={classes.input}
+        disabled={field.disabled}>
         <InputLabel htmlFor={field.name}>{field.label}</InputLabel>
         <Select
           className={classes.input || []}
