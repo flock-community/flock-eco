@@ -136,7 +136,7 @@ class MemberManager extends React.Component {
       },
       body: JSON.stringify(this.state.item),
     };
-    fetch(`/api/member_groups/${this.state.item.code}`, opts)
+    fetch(`/api/member_groups/${this.state.item.id}`, opts)
       .then(() => {
         this.setState({item: null});
         this.load();
@@ -150,7 +150,7 @@ class MemberManager extends React.Component {
         "Content-Type": "application/json; charset=utf-8",
       },
     };
-    fetch(`/api/member_groups/${this.state.item.code}`, opts)
+    fetch(`/api/member_groups/${this.state.item.id}`, opts)
       .then(() => {
         this.setState({item: null});
         this.load();

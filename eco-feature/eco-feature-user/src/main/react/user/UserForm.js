@@ -32,7 +32,6 @@ class UserForm extends React.Component {
       authorities: [],
     };
 
-    console.log('----', Object.assign(user, item))
     this.state = Object.assign(user, item);
   }
 
@@ -66,6 +65,22 @@ class UserForm extends React.Component {
               className={classes.input}
               value={this.state.name}
               onChange={ev => this.handleChange('name')(ev.target.value)}/>
+          </Grid>
+
+          <Grid item>
+            <TextField
+              label="Email"
+              className={classes.input}
+              value={this.state.email}
+              onChange={ev => this.handleChange('email')(ev.target.value)}/>
+          </Grid>
+
+          <Grid item>
+            <TextField
+              label="Reference"
+              className={classes.input}
+              value={this.state.reference}
+              onChange={ev => this.handleChange('reference')(ev.target.value)}/>
           </Grid>
 
           <Grid item style={{marginTop:10}}>
