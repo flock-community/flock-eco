@@ -11,7 +11,6 @@ import MemberTable from "./MemberTable";
 import MemberSearch from "./MemberSearch";
 import MemberDialog from "./MemberDialog";
 
-
 const styles = theme => ({
   root: {
     marginBottom: 48
@@ -65,7 +64,9 @@ class MemberFeature extends React.Component {
   };
 
   handleComplete = () => {
-    this.setState({item: null}, () => {
+    this.setState({
+      item: null
+    }, () => {
       this.load()
     })
   }
@@ -80,6 +81,9 @@ class MemberFeature extends React.Component {
       })
       .then(json => {
         this.setState({members: json});
+      })
+      .catch(e => {
+        this.setState({message: "Cannot load members"})
       })
   }
 
@@ -122,14 +126,12 @@ class MemberFeature extends React.Component {
         >
           <AddIcon/>
         </Button>
+
       </Paper>
     )
   }
 
   renderDialog() {
-
-    if(this.state.item == null)
-      return null
 
     return (<MemberDialog
       value = {this.state.item}

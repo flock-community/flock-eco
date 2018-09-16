@@ -53,7 +53,9 @@ class MemberForm extends React.Component {
 
     return (event) => {
       const value = event.target.value
-      console.log('handleChangeField', name, value)
+
+      console.log(name, value)
+
       const fields = Object.assign(this.state.fields, {[name]: Array.isArray(value) ? value.join(',') : value})
       this.setState({fields}, () => {
         this.props.onChange(this.state)
@@ -104,6 +106,7 @@ class MemberForm extends React.Component {
 
         <Grid item xs={7}>
           <TextField
+            type="date"
             className={classes.input}
             label="Birth date"
             value={this.state.birthDate || ''}
@@ -224,16 +227,18 @@ class MemberForm extends React.Component {
 
     const {classes} = this.props;
 
-    const fields = this.props.fields || []
-    const value = (field) => this.state.fields[field.name] || ""
+    const fields = this.props.fields || {}
 
     if (fields.length === 0)
       return null;
 
+    this.state.fields = this.state.fields || {}
+    const value = (field) => this.state.fields[field.name]
+
     const textField = (field) => (<TextField
       label={field.label}
       className={classes.input}
-      value={value(field)}
+      value={value(field) || ""}
       onChange={this.handleChangeField(field.name)}/>)
 
     const checkboxField = (field) => (<FormControlLabel
@@ -257,7 +262,7 @@ class MemberForm extends React.Component {
         <InputLabel htmlFor={field.name}>{field.label}</InputLabel>
         <Select
           className={classes.input || []}
-          value={value(field)}
+          value={value(field) || ""}
           input={<Input id="select-multiple"/>}
           onChange={this.handleChangeField(field.name)}
         >
@@ -278,7 +283,7 @@ class MemberForm extends React.Component {
         <Select
           multiple
           className={classes.input || []}
-          value={value(field).split(',')}
+          value={value(field) ? value(field).split(',') : []}
           input={<Input id="select-multiple"/>}
           onChange={this.handleChangeField(field.name)}
           renderValue={selected => selected.join(', ')}
@@ -287,7 +292,7 @@ class MemberForm extends React.Component {
             <MenuItem
               key={it}
               value={it}>
-              <Checkbox checked={value(field).split(',').indexOf(it) > -1}/>
+              <Checkbox checked={(value(field) ? value(field).split(',') : []).indexOf(it) > -1}/>
               <ListItemText primary={it}/>
             </MenuItem>
           ))}
