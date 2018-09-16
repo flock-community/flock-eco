@@ -45,10 +45,17 @@ class LoadData(
                 type = MemberFieldType.TEXT
         )
 
-        val field2 = MemberField(
+        val field2a = MemberField(
                 name = "field_checkbox",
                 label = "Field Checkbox",
                 type = MemberFieldType.CHECKBOX
+        )
+
+        val field2b = MemberField(
+                name = "field_checkbox_disabled",
+                label = "Field Checkbox",
+                type = MemberFieldType.CHECKBOX,
+                disabled = true
         )
 
         val field3 = MemberField(
@@ -64,7 +71,8 @@ class LoadData(
                 options = sortedSetOf("Option 3","Option 4","Option 5"))
 
         memberFieldRepository.save(field1)
-        memberFieldRepository.save(field2)
+        memberFieldRepository.save(field2a)
+        memberFieldRepository.save(field2b)
         memberFieldRepository.save(field3)
         memberFieldRepository.save(field4)
 

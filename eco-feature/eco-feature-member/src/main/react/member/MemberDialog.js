@@ -1,7 +1,5 @@
 import React from "react";
-
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
 
@@ -22,7 +20,7 @@ class MemberDialog extends React.Component {
     value: this.props.value
   }
 
-  componentDidMount(){
+  componentDidMount() {
     fetch(`/api/member_groups`)
       .then(res => {
         return res.json()
@@ -42,6 +40,17 @@ class MemberDialog extends React.Component {
 
   handleClose = () => {
     this.props.onComplete();
+  };
+
+  handleDelete = () => {
+    const opts = {
+      method: "DELETE",
+    };
+    fetch(`/api/members/${this.state.value.id}`, opts)
+      .then(() => {
+        this.setState({member: null});
+        this.props.onComplete();
+      })
   };
 
   handleSave = () => {
@@ -84,7 +93,7 @@ class MemberDialog extends React.Component {
   }
 
   render() {
-    const { classes, open} = this.props;
+    const {classes, open} = this.props;
 
     return (
       <Dialog
@@ -95,7 +104,7 @@ class MemberDialog extends React.Component {
         aria-labelledby="simple-dialog-title"
       >
         <DialogTitle id="simple-dialog-title">Member</DialogTitle>
-        <DialogContent >
+        <DialogContent>
           <ValidatorForm
             id="member-form"
             onSubmit={this.handleSubmit}
