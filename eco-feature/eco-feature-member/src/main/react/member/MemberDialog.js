@@ -63,13 +63,12 @@ class MemberDialog extends React.Component {
     };
     fetch(`/api/members/${this.state.value.id}`, opts)
       .then((res) => {
-        if(res.ok){
-          this.props.onComplete();
-        }else {
+        if (!res.ok) {
           res.json().then(e => {
             this.setState({message: e.message || "Cannot delete member"});
           })
         }
+        this.props.onComplete();
       })
   };
 
@@ -84,13 +83,12 @@ class MemberDialog extends React.Component {
       };
       fetch(`/api/members/${this.state.value.id}`, opts)
         .then((res) => {
-          if(res.ok){
-            this.props.onComplete();
-          }else {
+          if (!res.ok) {
             res.json().then(e => {
               this.setState({message: e.message || "Cannot update member"});
             })
           }
+          this.props.onComplete();
         })
     } else {
       const opts = {
@@ -102,14 +100,13 @@ class MemberDialog extends React.Component {
       };
       fetch('/api/members', opts)
         .then((res) => {
-          if(res.ok){
-            this.props.onComplete();
-          }else {
+          if (!res.ok) {
             res.json().then(e => {
               this.setState({message: e.message || "Cannot create member"});
             })
 
           }
+          this.props.onComplete();
         })
     }
   };
