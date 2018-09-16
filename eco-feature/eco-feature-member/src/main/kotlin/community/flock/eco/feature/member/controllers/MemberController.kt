@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -18,6 +19,7 @@ class MemberController(
         private val memberGroupRepository: MemberGroupRepository) {
 
     @GetMapping
+    @PreAuthorize("hasAuthority('MemberAuthority.READ')")
     fun findAll(@RequestParam("s") search: String = "", page: Pageable?): ResponseEntity<List<Member>> {
 
         val res = memberRepository.findBySearch(search, page!!)
@@ -29,16 +31,19 @@ class MemberController(
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('MemberAuthority.READ')")
     fun findById(@PathVariable("id") id: String): Optional<Member> {
         return memberRepository.findById(id.toLong())
     }
 
     @GetMapping("/{ids}")
+    @PreAuthorize("hasAuthority('MemberAuthority.READ')")
     fun findByIds(@PathVariable("ids") ids: List<String>): List<Member> {
         return memberRepository.findByIds(ids.map { it.toLong() })
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('MemberAuthority.WRITE')")
     fun create(@RequestBody member: Member): Member {
         val groups = memberGroupRepository
                 .findAllById(member.groups
@@ -51,6 +56,7 @@ class MemberController(
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('MemberAuthority.WRITE')")
     fun update(@PathVariable("id") id: String, @RequestBody member: Member): Member {
         val groups = memberGroupRepository
                 .findAllById(member.groups
@@ -62,6 +68,7 @@ class MemberController(
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('MemberAuthority.WRITE')")
     fun delete(@PathVariable("id") id: String) {
         memberRepository.deleteById(id.toLong())
     }

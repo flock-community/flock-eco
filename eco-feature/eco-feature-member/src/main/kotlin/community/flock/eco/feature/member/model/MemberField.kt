@@ -1,6 +1,5 @@
 package community.flock.eco.feature.member.model
 
-import com.sun.org.apache.xpath.internal.operations.Bool
 import java.util.*
 import javax.persistence.*
 
@@ -8,7 +7,7 @@ import javax.persistence.*
 data class MemberField(
 
         @Id
-        @GeneratedValue(strategy=GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.AUTO)
         val id: Long = 0,
 
         @Column(unique = true)
