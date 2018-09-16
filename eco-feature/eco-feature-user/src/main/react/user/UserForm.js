@@ -28,6 +28,8 @@ class UserForm extends React.Component {
   init(item) {
     const user = {
       name: "",
+      email:"",
+      reference:"",
       disabled: false,
       authorities: [],
     };
@@ -58,8 +60,9 @@ class UserForm extends React.Component {
           direction="column"
           justify="space-evenly"
           alignItems="stretch"
+          spacing={16}
         >
-          <Grid item>
+          <Grid item xs={12}>
             <TextField
               label="Name"
               className={classes.input}
@@ -67,7 +70,7 @@ class UserForm extends React.Component {
               onChange={ev => this.handleChange('name')(ev.target.value)}/>
           </Grid>
 
-          <Grid item>
+          <Grid item xs={12}>
             <TextField
               label="Email"
               className={classes.input}
@@ -75,7 +78,7 @@ class UserForm extends React.Component {
               onChange={ev => this.handleChange('email')(ev.target.value)}/>
           </Grid>
 
-          <Grid item>
+          <Grid item xs={12}>
             <TextField
               label="Reference"
               className={classes.input}

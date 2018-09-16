@@ -120,7 +120,7 @@ class itemManager extends React.Component {
       },
       body: JSON.stringify(item),
     };
-    fetch('/api/user', opts)
+    fetch('/api/users', opts)
       .then(() => {
         this.setState({item: null});
         this.load();
