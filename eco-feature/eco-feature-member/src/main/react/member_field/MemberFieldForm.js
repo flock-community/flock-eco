@@ -43,19 +43,12 @@ class MemberForm extends React.Component {
         justify="space-evenly"
         alignItems="stretch"
         spacing={16}>
-        <Grid item sx={12}>
-          <TextField
-            className={classes.input}
-            label="Code"
-            value={this.state.code || ''}
-            onChange={this.handleChange('code')}/>
-        </Grid>
 
         <Grid item sx={12}>
           <TextField
             className={classes.input}
             label="Name"
-            value={this.state.name.toLowerCase() || ''}
+            value={this.state.name || ''}
             onChange={this.handleChange('name')}/>
         </Grid>
 

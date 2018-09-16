@@ -148,7 +148,7 @@ class MemberManager extends React.Component {
         "Content-Type": "application/json; charset=utf-8",
       },
     };
-    fetch(`/api/member_fields/${this.state.item.code}`, opts)
+    fetch(`/api/member_fields/${this.state.item.id}`, opts)
       .then(() => {
         this.setState({item: null});
         this.load();

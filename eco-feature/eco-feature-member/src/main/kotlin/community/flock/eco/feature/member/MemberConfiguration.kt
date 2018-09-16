@@ -1,6 +1,7 @@
 package community.flock.eco.feature.member
 
 import community.flock.eco.feature.member.controllers.MemberController
+import community.flock.eco.feature.member.controllers.MemberFieldController
 import community.flock.eco.feature.member.controllers.MemberGroupController
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.context.annotation.Configuration
@@ -12,5 +13,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 @EnableJpaRepositories
 @EntityScan
 @Import(MemberController::class,
-        MemberGroupController::class)
+        MemberGroupController::class,
+        MemberFieldController::class)
 class MemberConfiguration : WebMvcConfigurer

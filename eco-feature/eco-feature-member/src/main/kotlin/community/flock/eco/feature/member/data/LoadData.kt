@@ -40,28 +40,24 @@ class LoadData(
         memberGroupRepository.saveAll(memberGroups)
 
         val field1 = MemberField(
-                code = "FIELD_1",
                 name = "field_text",
                 label = "Field Text",
                 type = MemberFieldType.TEXT
         )
 
         val field2 = MemberField(
-                code = "FIELD_2",
                 name = "field_checkbox",
                 label = "Field Checkbox",
                 type = MemberFieldType.CHECKBOX
         )
 
         val field3 = MemberField(
-                code = "FIELD_3",
                 name = "field_single_select",
                 label = "Field Single Select",
                 type = MemberFieldType.SINGLE_SELECT,
                 options = sortedSetOf("Option 1","Option 2"))
 
         val field4 = MemberField(
-                code = "FIELD_4",
                 name = "field_multi_select",
                 label = "Field Multi Select",
                 type = MemberFieldType.MULTI_SELECT,

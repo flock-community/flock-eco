@@ -12,11 +12,10 @@ data class MemberField(
         val id: Long = 0,
 
         @Column(unique = true)
-        val code: String,
-
         val name: String,
         val label: String,
         val type: MemberFieldType,
+
         val required: Boolean = true,
         val disabled: Boolean = false,
 

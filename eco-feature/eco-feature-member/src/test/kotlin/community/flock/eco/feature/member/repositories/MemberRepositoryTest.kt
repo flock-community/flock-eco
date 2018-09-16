@@ -146,14 +146,12 @@ open class MemberRepositoryTest {
     fun testsField() {
 
         val fieldAgreement = MemberField(
-                code = "AGREEMENT",
                 name = "agreement",
                 label = "Agreement",
                 type = MemberFieldType.TEXT
         )
 
         val fieldCheckbox = MemberField(
-                code = "CHECKBOX",
                 name = "checkbox",
                 label = "Checkbox",
                 type = MemberFieldType.TEXT
@@ -166,23 +164,23 @@ open class MemberRepositoryTest {
                 firstName = "Willem",
                 surName = "Veelenturf",
                 email = "willem.veelenturf@gmail.com1",
-                fields = mapOf(fieldAgreement.code to "Test123")
+                fields = mapOf(fieldAgreement.name to "Test123")
         )
         val res1 = memberRepository.save(member1)
 
         assertEquals("Willem", res1.firstName)
-        assertEquals("Test123", res1.fields["AGREEMENT"])
+        assertEquals("Test123", res1.fields["agreement"])
 
         val member2 = Member(
                 firstName = "Willem",
                 surName = "Veelenturf",
                 email = "willem.veelenturf@gmail.com2",
-                fields = mapOf(fieldCheckbox.code to "Checked")
+                fields = mapOf(fieldCheckbox.name to "Checked")
         )
         val res2 = memberRepository.save(member2)
 
         assertEquals("Willem", res2.firstName)
-        assertEquals("Checked", res2.fields["CHECKBOX"])
+        assertEquals("Checked", res2.fields["checkbox"])
 
     }
 

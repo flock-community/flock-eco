@@ -19,7 +19,9 @@ class MemberFieldController(
     @PostMapping
     fun create(@RequestBody memberField: MemberField): MemberField {
         return memberFieldRepository.save(memberField.copy(
-                name = memberField.name.toLowerCase()
+                name = memberField.name
+                        .replace(" ", "_")
+                        .toLowerCase()
         ))
     }
 

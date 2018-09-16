@@ -17,18 +17,16 @@ class MemberTable extends React.Component {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Code</TableCell>
             <TableCell>Name</TableCell>
             <TableCell>Type</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>{list.map(it => (
           <TableRow
-            key={it.code}
+            key={it.name}
             hover
             onClick={event => this.handleClick(it)}
           >
-            <TableCell component="th" scope="row">{it.code}</TableCell>
             <TableCell>{it.name}</TableCell>
             <TableCell>{it.type}</TableCell>
           </TableRow>
