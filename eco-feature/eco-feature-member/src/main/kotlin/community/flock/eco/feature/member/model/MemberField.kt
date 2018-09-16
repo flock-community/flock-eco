@@ -22,6 +22,6 @@ data class MemberField(
         @OrderBy
         val options: SortedSet<String> = sortedSetOf(),
 
-        val default: String? = null
+        val value: String? = null
 
 )

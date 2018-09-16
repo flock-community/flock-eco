@@ -58,7 +58,7 @@ class MemberForm extends React.Component {
             className={classes.input}
             label="Label"
             value={this.state.label || ''}
-            onChange={this.handleChange('name')}/>
+            onChange={this.handleChange('label')}/>
         </Grid>
 
         <Grid item sx={12}>
