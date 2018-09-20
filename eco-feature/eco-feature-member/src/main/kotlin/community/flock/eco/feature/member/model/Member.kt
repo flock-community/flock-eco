@@ -14,7 +14,7 @@ data class Member(
         val infix: String? = null,
         val surName: String,
 
-        val email: String?,
+        val email: String? = null,
 
         val phoneNumber: String? = null,
 
