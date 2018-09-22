@@ -24,6 +24,7 @@ open class PaymentTransactionRepositoryTest {
     fun testsSave() {
         paymentTransactionRepository.save(PaymentTransaction(
                 amount = 10.0,
+                nonce = "1010101010",
                 reference = "1010101010",
                 status = PaymentTransactionStatus.PENDING
         ))

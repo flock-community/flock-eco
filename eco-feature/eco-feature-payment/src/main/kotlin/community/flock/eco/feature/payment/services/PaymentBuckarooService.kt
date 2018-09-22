@@ -1,7 +1,11 @@
 package community.flock.eco.feature.payment.services
 
 import com.fasterxml.jackson.databind.node.ObjectNode
+import community.flock.eco.feature.payment.model.PaymentTransaction
+import community.flock.eco.feature.payment.model.PaymentTransactionStatus
+import community.flock.eco.feature.payment.repositories.PaymentTransactionRepository
 import org.apache.commons.lang3.RandomStringUtils
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -17,17 +21,14 @@ import javax.crypto.spec.SecretKeySpec
 @Service
 class PaymentBuckarooService {
 
-    enum class PaymentMethod{
+    enum class PaymentMethod {
         IDEAL,
         CREDITCARD
     }
 
     data class BuckarooTransaction(
-            val amount: Double,
-            val description: String,
-            val issuer: String,
-            val redirectUrl: String,
-            val reference: String
+            val transaction: PaymentTransaction,
+            val redirectUrl: String
     )
 
     @Value("\${buckaroo.requestUri}")
@@ -39,10 +40,14 @@ class PaymentBuckarooService {
     @Value("\${buckaroo.secretKey}")
     private var secretKey: String = ""
 
+    @Autowired
+    lateinit var paymentTransactionRepository: PaymentTransactionRepository
+
     fun createTransaction(paymentMethod: PaymentMethod, issuer: String, amount: Double, description: String): BuckarooTransaction {
+        val nonce = getNonce()
         val postContent = getContent(paymentMethod, issuer, amount, description);
         val httpMethod = "POST"
-        val authHeader = authHeader(requestUri, postContent, httpMethod)
+        val authHeader = authHeader(requestUri, postContent, httpMethod, nonce)
         val restTemplate = RestTemplate()
         val headers = HttpHeaders()
         headers.set("Authorization", authHeader)
@@ -55,12 +60,16 @@ class PaymentBuckarooService {
         val reference = res.get("Key").asText()
         val redirectUrl = res.get("RequiredAction").get("RedirectURL").asText()
 
-        return BuckarooTransaction(
+        val transaction = paymentTransactionRepository.save(PaymentTransaction(
                 amount = amount,
-                description = description,
-                issuer = issuer,
-                redirectUrl = redirectUrl,
-                reference = reference
+                nonce = nonce,
+                reference = reference,
+                status = PaymentTransactionStatus.PENDING
+        ))
+
+        return BuckarooTransaction(
+                transaction = transaction,
+                redirectUrl = redirectUrl
         )
 
     }
@@ -101,8 +110,8 @@ class PaymentBuckarooService {
     }
 
     private fun getContent(paymentMethod: PaymentMethod, issuer: String, amount: Double, description: String): String {
-         if(paymentMethod == PaymentMethod.IDEAL) {
-             return """{
+        if (paymentMethod == PaymentMethod.IDEAL) {
+            return """{
                 "Currency": "EUR",
                 "AmountDebit": $amount,
                 "Invoice": "$description",
@@ -125,7 +134,7 @@ class PaymentBuckarooService {
                     ]
             }"""
         }
-        if(paymentMethod == PaymentMethod.CREDITCARD) {
+        if (paymentMethod == PaymentMethod.CREDITCARD) {
             return """{
               "Currency": "EUR",
               "AmountDebit": $amount,
@@ -151,9 +160,10 @@ class PaymentBuckarooService {
     private fun authHeader(
             requestUri: String,
             content: String,
-            httpMethod: String
+            httpMethod: String,
+            nonce: String
     ): String {
-        val nonce = getNonce()
+
         val timeStamp = getTimeStamp()
         val url = URLEncoder.encode(requestUri, "UTF-8").toLowerCase()
         val hash = getHash(
