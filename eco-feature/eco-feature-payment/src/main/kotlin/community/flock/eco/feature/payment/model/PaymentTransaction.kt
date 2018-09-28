@@ -19,7 +19,8 @@ data class PaymentTransaction(
         val nonce: String,
 
         val status: PaymentTransactionStatus,
+
         val confirmed: Date? = null,
-        val created: Date? = Date()
+        val created: Date = Date()
 
 )
