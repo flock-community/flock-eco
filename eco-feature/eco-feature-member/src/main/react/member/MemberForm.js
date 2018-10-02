@@ -73,6 +73,7 @@ class MemberForm extends React.Component {
         container
         spacing={16}>
         <Grid item xs={5}>
+
           <TextValidator
             required
             name="firstName"
@@ -109,6 +110,7 @@ class MemberForm extends React.Component {
             type="date"
             className={classes.input}
             label="Birth date"
+            InputLabelProps={{ shrink: true }}
             value={this.state.birthDate || ''}
             onChange={this.handleChange('birthDate')}/>
         </Grid>
