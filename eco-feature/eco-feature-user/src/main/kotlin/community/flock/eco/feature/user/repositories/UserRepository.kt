@@ -11,5 +11,3 @@ interface UserRepository : PagingAndSortingRepository<User, Long> {
     fun findByReference(name: String): Optional<User>
 
 }
-
-

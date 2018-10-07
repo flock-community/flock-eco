@@ -6,7 +6,7 @@ import javax.persistence.*
 data class MemberGroup(
 
         @Id
-        @GeneratedValue(strategy=GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.AUTO)
         val id: Long = 0,
 
         @Column(unique = true)

@@ -1,6 +1,7 @@
 package community.flock.eco.feature.member.controllers
 
 import community.flock.eco.feature.member.model.Member
+import community.flock.eco.feature.member.model.MemberGroup
 import community.flock.eco.feature.member.model.MemberStatus
 import community.flock.eco.feature.member.repositories.MemberGroupRepository
 import community.flock.eco.feature.member.repositories.MemberRepository
@@ -16,7 +17,8 @@ import java.util.*
 @RequestMapping("/api/members")
 class MemberController(
         private val memberRepository: MemberRepository,
-        private val memberGroupRepository: MemberGroupRepository) {
+        private val memberGroupRepository: MemberGroupRepository
+) {
 
     @GetMapping
     @PreAuthorize("hasAuthority('MemberAuthority.READ')")
@@ -32,45 +34,29 @@ class MemberController(
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('MemberAuthority.READ')")
-    fun findById(@PathVariable("id") id: String): Optional<Member> {
-        return memberRepository.findById(id.toLong())
-    }
+    fun findById(@PathVariable("id") id: String): Optional<Member> = memberRepository.findById(id.toLong())
 
     @GetMapping("/{ids}")
     @PreAuthorize("hasAuthority('MemberAuthority.READ')")
-    fun findByIds(@PathVariable("ids") ids: List<String>): List<Member> {
-        return memberRepository.findByIds(ids.map { it.toLong() })
-    }
+    fun findByIds(@PathVariable("ids") ids: List<String>): List<Member> = memberRepository.findByIds(ids.map { it.toLong() })
 
     @PostMapping
     @PreAuthorize("hasAuthority('MemberAuthority.WRITE')")
-    fun create(@RequestBody member: Member): Member {
-        val groups = memberGroupRepository
-                .findAllById(member.groups
-                        .map { it.id })
-                .toSet()
-        return memberRepository.save(member.copy(
-                id = 0,
-                status = MemberStatus.NEW,
-                groups = groups))
-    }
+    fun create(@RequestBody member: Member): Member = memberRepository.save(member.copy(
+            id = 0,
+            status = MemberStatus.NEW,
+            groups = memberGroupRepository.findGroups(member)))
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('MemberAuthority.WRITE')")
-    fun update(@PathVariable("id") id: String, @RequestBody member: Member): Member {
-        val groups = memberGroupRepository
-                .findAllById(member.groups
-                        .map { it.id })
-                .toSet()
-        return memberRepository.save(member.copy(
-                id = id.toLong(),
-                groups = groups))
-    }
+    fun update(@PathVariable("id") id: String, @RequestBody member: Member): Member = memberRepository.save(member.copy(
+            id = id.toLong(),
+            groups = memberGroupRepository.findGroups(member)))
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('MemberAuthority.WRITE')")
-    fun delete(@PathVariable("id") id: String) {
-        memberRepository.deleteById(id.toLong())
-    }
+    fun delete(@PathVariable("id") id: String) = memberRepository.deleteById(id.toLong())
+
+    fun MemberGroupRepository.findGroups(member: Member): Set<MemberGroup> = this.findAllById(member.groups.map { it.id }).toSet()
 
 }

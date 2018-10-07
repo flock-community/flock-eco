@@ -1,6 +1,5 @@
 package community.flock.eco.feature.member.repositories
 
-
 import community.flock.eco.feature.member.MemberConfiguration
 import community.flock.eco.feature.member.model.*
 import org.junit.Assert.assertEquals
@@ -20,36 +19,26 @@ import javax.annotation.PostConstruct
 @RunWith(SpringRunner::class)
 @SpringBootTest(classes = [MemberConfiguration::class])
 @AutoConfigureTestDatabase
-open class MemberRepositoryTest {
+class MemberRepositoryTest{
 
     @Autowired
-    lateinit var memberRepository: MemberRepository
+    private lateinit var memberRepository: MemberRepository
 
     @Autowired
-    lateinit var memberFieldRepository: MemberFieldRepository
+    private lateinit var memberFieldRepository: MemberFieldRepository
 
     @PostConstruct
     fun init() {
         memberRepository.deleteAll()
 
-        memberRepository.save(Member(
-                firstName = "member1",
-                surName = "member1",
-                email = "member1@gmail.com",
-                status = MemberStatus.ACTIVE
-        ))
-        memberRepository.save(Member(
-                firstName = "member2",
-                surName = "member2",
-                email = "member2@gmail.com",
-                status = MemberStatus.ACTIVE
-        ))
-        memberRepository.save(Member(
-                firstName = "member3",
-                surName = "member3",
-                email = "member3@gmail.com",
-                status = MemberStatus.ACTIVE
-        ))
+        (1..3).forEach {
+            memberRepository.save(Member(
+                    firstName = "member$it",
+                    surName = "member$it",
+                    email = "member$it@gmail.com",
+                    status = MemberStatus.ACTIVE
+            ))
+        }
 
         memberRepository.save(Member(
                 firstName = "joop",
@@ -60,7 +49,7 @@ open class MemberRepositoryTest {
     }
 
     @Test
-    fun testsFindById() {
+    fun `find member by id`() {
         val res = memberRepository.findById(100)
         assertEquals(Optional.empty<Member>(), res)
     }
@@ -79,7 +68,7 @@ open class MemberRepositoryTest {
 
     @Test
     fun testsFindBySearch2Page() {
-        val page = PageRequest.of(0,1)
+        val page = PageRequest.of(0, 1)
         val res = memberRepository.findBySearch("jo", page)
         assertEquals("joop", res.content[0].firstName)
     }
@@ -101,9 +90,7 @@ open class MemberRepositoryTest {
 
     @Test
     fun testsCreate() {
-        val member = Member(
-                firstName = "Willem",
-                surName = "Veelenturf",
+        val member = createMember(
                 email = "willem.veelenturf@gmail.com"
         )
         val res = memberRepository.save(member)
@@ -118,10 +105,7 @@ open class MemberRepositoryTest {
                 code = "LEKSTREEK",
                 name = "Lekstreek"
         )
-        val member1 = Member(
-                firstName = "Willem",
-                surName = "Veelenturf",
-                email = "willem.veelenturf@gmail.com1",
+        val member1 = createMember(
                 groups = setOf(group)
         )
         val res1 = memberRepository.save(member1)
@@ -129,9 +113,7 @@ open class MemberRepositoryTest {
         assertEquals("Willem", res1.firstName)
         assertEquals("LEKSTREEK", res1.groups.toList()[0].code)
 
-        val member2 = Member(
-                firstName = "Willem",
-                surName = "Veelenturf",
+        val member2 = createMember(
                 email = "willem.veelenturf@gmail.com2",
                 groups = setOf(group)
         )
@@ -160,20 +142,13 @@ open class MemberRepositoryTest {
         memberFieldRepository.save(fieldAgreement)
         memberFieldRepository.save(fieldCheckbox)
 
-        val member1 = Member(
-                firstName = "Willem",
-                surName = "Veelenturf",
-                email = "willem.veelenturf@gmail.com1",
-                fields = mapOf(fieldAgreement.name to "Test123")
-        )
+        val member1 = createMember(fields = mapOf(fieldAgreement.name to "Test123"))
         val res1 = memberRepository.save(member1)
 
         assertEquals("Willem", res1.firstName)
         assertEquals("Test123", res1.fields["agreement"])
 
-        val member2 = Member(
-                firstName = "Willem",
-                surName = "Veelenturf",
+        val member2 = createMember(
                 email = "willem.veelenturf@gmail.com2",
                 fields = mapOf(fieldCheckbox.name to "Checked")
         )
@@ -183,5 +158,19 @@ open class MemberRepositoryTest {
         assertEquals("Checked", res2.fields["checkbox"])
 
     }
+
+    private fun createMember(
+            firstName: String = "Willem",
+            surName: String = "Veelenturf",
+            email: String = "willem.veelenturf@gmail.com1",
+            groups: Set<MemberGroup> = setOf(),
+            fields: Map<String, String> = mapOf()
+    ): Member = Member(
+            firstName = firstName,
+            surName = surName,
+            email = email,
+            groups = groups,
+            fields = fields
+    )
 
 }

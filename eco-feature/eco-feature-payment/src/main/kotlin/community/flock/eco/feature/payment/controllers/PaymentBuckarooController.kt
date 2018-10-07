@@ -1,9 +1,9 @@
 package community.flock.eco.feature.payment.controllers
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.node.ObjectNode
 import community.flock.eco.core.services.EventService
 import community.flock.eco.feature.payment.event.PaymentSuccessEvent
-import com.fasterxml.jackson.databind.node.ObjectNode
 import community.flock.eco.feature.payment.model.PaymentTransactionStatus
 import community.flock.eco.feature.payment.repositories.PaymentTransactionRepository
 import org.springframework.http.HttpStatus
@@ -14,22 +14,21 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
-
 @RestController
 @RequestMapping("/api/payment/buckaroo")
-open class PaymentBuckarooController(
+class PaymentBuckarooController(
         private val transactionRepository: PaymentTransactionRepository,
-        private val eventService: EventService) {
+        private val eventService: EventService
+) {
 
-
-    var mapper = ObjectMapper()
+    val mapper = ObjectMapper()
 
     @PostMapping("success")
-    fun success(@RequestBody json: String): ResponseEntity<Void> {
+    fun success(@RequestBody json: String): ResponseEntity<Unit> {
 
         val obj = mapper.readValue(json, ObjectNode::class.java)
 
-        val key = obj.get("Transaction").get("Key").asText()
+        val key = obj["Transaction"]["Key"].asText()
 
         transactionRepository.findByReference(key)?.let {
             transactionRepository.save(it.copy(
@@ -47,7 +46,7 @@ open class PaymentBuckarooController(
     fun error(@RequestBody json: String): ResponseEntity<Void> {
         val obj = mapper.readValue(json, ObjectNode::class.java)
 
-        val key = obj.get("Transaction").get("Key").asText()
+        val key = obj["Transaction"]["Key"].asText()
 
         transactionRepository.findByReference(key)?.let {
             transactionRepository.save(it.copy(
@@ -58,7 +57,6 @@ open class PaymentBuckarooController(
 
         return ResponseEntity(HttpStatus.NO_CONTENT)
     }
-
 
 }
 

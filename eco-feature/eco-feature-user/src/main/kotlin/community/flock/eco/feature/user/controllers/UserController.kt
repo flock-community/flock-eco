@@ -16,9 +16,7 @@ class UserController(private val userRepository: UserRepository) {
 
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
-    fun findMe(principal: Principal): Principal {
-        return principal
-    }
+    fun findMe(principal: Principal): Principal = principal
 
     @GetMapping("/me/mail")
     @PreAuthorize("isAuthenticated()")
@@ -29,40 +27,26 @@ class UserController(private val userRepository: UserRepository) {
 
     @GetMapping("/strategy")
     @PreAuthorize("isAuthenticated()")
-    fun findStrategy(): String? {
-        return SecurityContextHolder.getContextHolderStrategy().javaClass.name
-    }
+    fun findStrategy(): String? = SecurityContextHolder.getContextHolderStrategy().javaClass.name
 
     @GetMapping()
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
-    fun findAll(pageable: Pageable): Page<User> {
-        return userRepository.findAll(pageable)
-    }
+    fun findAll(pageable: Pageable): Page<User> = userRepository.findAll(pageable)
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
-    fun findById(@PathVariable id: Long): User {
-        return userRepository.findById(id).orElse(null)
-    }
+    fun findById(@PathVariable id: Long): User = userRepository.findById(id).orElse(null)
 
     @PostMapping()
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
-    fun create(@RequestBody user: User): User {
-        return userRepository.save(user.copy(
-                id = 0))
-    }
+    fun create(@RequestBody user: User): User = userRepository.save(user.copy(id = 0))
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
-    fun update(@RequestBody user: User, @PathVariable id: String): User {
-        return userRepository.save(user.copy(
-                id = id.toLong()))
-    }
+    fun update(@RequestBody user: User, @PathVariable id: String): User = userRepository.save(user.copy(id = id.toLong()))
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
-    fun update(@PathVariable id: String) {
-        return userRepository.deleteById(id.toLong())
-    }
+    fun update(@PathVariable id: String) = userRepository.deleteById(id.toLong())
 
 }

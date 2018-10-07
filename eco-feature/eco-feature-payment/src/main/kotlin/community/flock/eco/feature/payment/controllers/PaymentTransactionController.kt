@@ -9,15 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-
 @RestController
 @RequestMapping("/api/payment/transactions")
 class PaymentTransactionController(private val paymentTransactionRepository: PaymentTransactionRepository) {
 
     @GetMapping()
     @PreAuthorize("hasAuthority('TransactionAuthorities.READ')")
-    fun findAll(pageable: Pageable): Page<PaymentTransaction> {
-        return paymentTransactionRepository.findAll(pageable)
-    }
+    fun findAll(pageable: Pageable): Page<PaymentTransaction> = paymentTransactionRepository.findAll(pageable)
 
 }

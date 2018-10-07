@@ -13,9 +13,7 @@ class MemberGroupController(private val memberGroupRepository: MemberGroupReposi
 
     @GetMapping
     @PreAuthorize("hasAuthority('MemberFieldAuthority.READ')")
-    fun findAll(): List<MemberGroup> {
-        return memberGroupRepository.findAll().toList()
-    }
+    fun findAll(): List<MemberGroup> = memberGroupRepository.findAll().toList()
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('MemberFieldAuthority.READ')")
@@ -23,32 +21,23 @@ class MemberGroupController(private val memberGroupRepository: MemberGroupReposi
 
         val memberGroupOptional = memberGroupRepository.findById(id)
 
-        return if (memberGroupOptional.isPresent) {
-            ResponseEntity(memberGroupOptional.get(), HttpStatus.OK)
-        } else {
-            ResponseEntity(HttpStatus.NOT_FOUND)
+        return when (memberGroupOptional.isPresent) {
+            true -> ResponseEntity(memberGroupOptional.get(), HttpStatus.OK)
+            else -> ResponseEntity(HttpStatus.NOT_FOUND)
         }
 
     }
 
     @PostMapping
     @PreAuthorize("hasAuthority('MemberFieldAuthority.WRITE')")
-    fun create(@RequestBody memberGroup: MemberGroup): MemberGroup {
-        return memberGroupRepository.save(memberGroup)
-    }
+    fun create(@RequestBody memberGroup: MemberGroup): MemberGroup = memberGroupRepository.save(memberGroup)
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('MemberFieldAuthority.WRITE')")
-    fun update(@PathVariable("id") id: Long, @RequestBody memberGroup: MemberGroup): MemberGroup {
-        return memberGroupRepository.save(
-                memberGroup.copy(id = id)
-        )
-    }
+    fun update(@PathVariable("id") id: Long, @RequestBody memberGroup: MemberGroup): MemberGroup = memberGroupRepository.save(memberGroup.copy(id = id))
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('MemberFieldAuthority.WRITE')")
-    fun delete(@PathVariable("id") id: Long) {
-        memberGroupRepository.deleteById(id)
-    }
+    fun delete(@PathVariable("id") id: Long) = memberGroupRepository.deleteById(id)
 
 }

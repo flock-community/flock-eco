@@ -14,11 +14,9 @@ class UserAuthorityController(
 
     @GetMapping()
     @PreAuthorize("isAuthenticated()")
-    fun findMe(): List<String> {
-        return userAuthorityService.classes
-                .filter { it.isEnum }
-                .flatMap { it.enumConstants.toList() }
-                .map { it.toName() }
-    }
+    fun findMe(): List<String> = userAuthorityService.classes
+            .filter { it.isEnum }
+            .flatMap { it.enumConstants.toList() }
+            .map { it.toName() }
 
 }

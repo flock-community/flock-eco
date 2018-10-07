@@ -15,7 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @RunWith(SpringRunner::class)
 @SpringBootTest(classes = [PaymentConfiguration::class])
 @AutoConfigureTestDatabase
-open class PaymentTransactionRepositoryTest {
+class PaymentTransactionRepositoryTest {
 
     @Autowired
     lateinit var paymentTransactionRepository: PaymentTransactionRepository

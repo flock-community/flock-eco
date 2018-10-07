@@ -9,18 +9,18 @@ import javax.persistence.Id
 @Entity
 data class PaymentTransaction(
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Long = 0,
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    val id: Long = 0,
 
-        val amount: Double,
+    val amount: Double,
 
-        val reference: String,
-        val nonce: String,
+    val reference: String,
+    val nonce: String,
 
-        val status: PaymentTransactionStatus,
+    val status: PaymentTransactionStatus,
 
-        val confirmed: Date? = null,
-        val created: Date = Date()
+    val confirmed: Date? = null,
+    val created: Date = Date()
 
 )

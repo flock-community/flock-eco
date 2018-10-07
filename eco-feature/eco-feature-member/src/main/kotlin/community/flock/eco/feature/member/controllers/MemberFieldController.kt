@@ -14,9 +14,7 @@ class MemberFieldController(
 
     @GetMapping
     @PreAuthorize("hasAuthority('MemberFieldAuthority.READ')")
-    fun findAll(): List<MemberField> {
-        return memberFieldRepository.findAll().toList()
-    }
+    fun findAll(): List<MemberField> = memberFieldRepository.findAll().toList()
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('MemberFieldAuthority.READ')")
@@ -34,28 +32,21 @@ class MemberFieldController(
 
     @PostMapping
     @PreAuthorize("hasAuthority('MemberFieldAuthority.WRITE')")
-    fun create(@RequestBody memberField: MemberField): MemberField {
-        return memberFieldRepository.save(memberField.copy(
-                name = memberField.name
-                        .replace(" ", "_")
-                        .toLowerCase()
-        ))
-    }
+    fun create(@RequestBody memberField: MemberField): MemberField = memberFieldRepository.save(
+            memberField.copy(name = memberField.name.replace(" ", "_").toLowerCase())
+    )
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('MemberFieldAuthority.WRITE')")
-    fun update(@PathVariable("id") id: Long, @RequestBody memberField: MemberField): MemberField {
-        return memberFieldRepository.save(
-                memberField.copy(
-                        id = id,
-                        name = memberField.name.toLowerCase())
-        )
-    }
+    fun update(@PathVariable("id") id: Long, @RequestBody memberField: MemberField): MemberField = memberFieldRepository.save(
+            memberField.copy(
+                    id = id,
+                    name = memberField.name.toLowerCase()
+            )
+    )
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('MemberFieldAuthority.WRITE')")
-    fun delete(@PathVariable("id") id: Long) {
-        memberFieldRepository.deleteById(id)
-    }
+    fun delete(@PathVariable("id") id: Long) = memberFieldRepository.deleteById(id)
 
 }
