@@ -7,21 +7,20 @@ import community.flock.eco.feature.payment.model.PaymentType
 import community.flock.eco.feature.payment.repositories.PaymentMandateRepository
 import java.time.LocalDate
 import java.time.Month
+import java.util.*
 
 class PaymentSepaService(
         private val paymentMandateRepository: PaymentMandateRepository
 ) {
 
     data class PaymentSepa(
-            val code: String,
+            val code: String = UUID.randomUUID().toString(),
 
             val amount: Double,
             val frequency: PaymentFrequency,
             val collectionMonth: Month? = null,
 
-            val name: String,
-            val iban: String,
-            val bic: String
+            val bankAccount: PaymentBankAccount
     )
 
     data class SepaResult(
@@ -53,11 +52,7 @@ class PaymentSepaService(
 
                 collectionMonth = this.collectionMonth ?: now.month,
 
-                bankAccount = PaymentBankAccount(
-                        name = this.name,
-                        iban = this.iban,
-                        bic = this.bic
-                )
+                bankAccount = this.bankAccount
         )
     }
 }

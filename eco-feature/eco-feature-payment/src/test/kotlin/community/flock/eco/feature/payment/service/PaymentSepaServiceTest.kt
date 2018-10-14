@@ -1,6 +1,7 @@
 package community.flock.eco.feature.payment.service
 
 import community.flock.eco.feature.payment.PaymentConfiguration
+import community.flock.eco.feature.payment.model.PaymentBankAccount
 import community.flock.eco.feature.payment.model.PaymentFrequency
 import community.flock.eco.feature.payment.repositories.PaymentMandateRepository
 import community.flock.eco.feature.payment.services.PaymentSepaService
@@ -37,9 +38,11 @@ class PaymentSepaServiceTest {
                 code = code,
                 amount = 10.12,
                 frequency = PaymentFrequency.MONTHLY,
-                name = "W.F. Veelenturf",
-                iban = "NL00ABCD0012345678",
-                bic = "BIC123"
+                bankAccount = PaymentBankAccount(
+                        name = "W.F. Veelenturf",
+                        iban = "NL00ABCD0012345678",
+                        bic = "BIC123"
+                )
         )
 
         service.create(sepa)
@@ -66,9 +69,11 @@ class PaymentSepaServiceTest {
                 amount = 10.12,
                 frequency = PaymentFrequency.YEARLY,
                 collectionMonth = Month.APRIL,
-                name = "W.F. Veelenturf",
-                iban = "NL00ABCD0012345678",
-                bic = "BIC123"
+                bankAccount = PaymentBankAccount(
+                        name = "W.F. Veelenturf",
+                        iban = "NL00ABCD0012345678",
+                        bic = "BIC123"
+                )
         )
 
         service.create(sepa)
