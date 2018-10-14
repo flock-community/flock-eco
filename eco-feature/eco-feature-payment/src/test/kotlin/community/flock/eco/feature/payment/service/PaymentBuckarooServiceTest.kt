@@ -6,6 +6,7 @@ import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit4.SpringRunner
@@ -13,7 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @DataJpaTest
 @RunWith(SpringRunner::class)
 @SpringBootTest(classes = [PaymentConfiguration::class])
-@Ignore
+@AutoConfigureTestDatabase
 class PaymentBuckarooServiceTest {
 
     @Autowired
@@ -21,13 +22,13 @@ class PaymentBuckarooServiceTest {
 
     @Test
     fun createCreditcardTransaction() {
-        val url = service.createTransaction(PaymentBuckarooService.PaymentMethod.CreditCard(issuer = "visa", amount = 10.00, description = "Creditcard"))
+        val url = service.create(PaymentBuckarooService.PaymentMethod.CreditCard(issuer = "visa", amount = 10.00, description = "Creditcard"))
         System.out.println(url)
     }
 
     @Test
     fun createIdealTransaction() {
-        val url = service.createTransaction(PaymentBuckarooService.PaymentMethod.Ideal(issuer = "INGBNL2A", amount = 11.00, description = "Ideal"))
+        val url = service.create(PaymentBuckarooService.PaymentMethod.Ideal(issuer = "INGBNL2A", amount = 11.00, description = "Ideal"))
         System.out.println(url)
     }
 }

@@ -1,10 +1,7 @@
 package community.flock.eco.feature.payment.model
 
 import java.util.*
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
+import javax.persistence.*
 
 @Entity
 data class PaymentTransaction(
@@ -16,11 +13,14 @@ data class PaymentTransaction(
     val amount: Double,
 
     val reference: String,
-    val nonce: String,
 
+    @Enumerated(EnumType.STRING)
     val status: PaymentTransactionStatus,
 
     val confirmed: Date? = null,
-    val created: Date = Date()
+    val created: Date = Date(),
+
+    @ManyToOne
+    val mandate: PaymentMandate
 
 )

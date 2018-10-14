@@ -30,7 +30,7 @@ class PaymentBuckarooController(
 
         val key = obj["Transaction"]["Key"].asText()
 
-        transactionRepository.findByReference(key)?.let {
+        transactionRepository.findByReference(key).ifPresent {
             transactionRepository.save(it.copy(
                     confirmed = Date(),
                     status = PaymentTransactionStatus.SUCCESS
@@ -48,7 +48,7 @@ class PaymentBuckarooController(
 
         val key = obj["Transaction"]["Key"].asText()
 
-        transactionRepository.findByReference(key)?.let {
+        transactionRepository.findByReference(key).ifPresent {
             transactionRepository.save(it.copy(
                     confirmed = Date(),
                     status = PaymentTransactionStatus.ERROR

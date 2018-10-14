@@ -1,8 +1,8 @@
 package community.flock.eco.feature.payment.services
 
 import com.fasterxml.jackson.databind.node.ObjectNode
-import community.flock.eco.feature.payment.model.PaymentTransaction
-import community.flock.eco.feature.payment.model.PaymentTransactionStatus
+import community.flock.eco.feature.payment.model.*
+import community.flock.eco.feature.payment.repositories.PaymentMandateRepository
 import community.flock.eco.feature.payment.repositories.PaymentTransactionRepository
 import org.apache.commons.lang3.RandomStringUtils
 import org.springframework.beans.factory.annotation.Value
@@ -30,14 +30,18 @@ class PaymentBuckarooService(
         @Value("\${buckaroo.secretKey}")
         private val secretKey: String,
 
+        private val paymentMandateRepository: PaymentMandateRepository,
         private val paymentTransactionRepository: PaymentTransactionRepository
 ) {
 
     sealed class PaymentMethod {
         abstract val amount: Double
+        abstract fun getType(): PaymentType
+        abstract fun getContent(): String
 
         data class Ideal(override val amount: Double, val description: String, val issuer: String) : PaymentMethod() {
-            fun getContent(): String = """{
+            override fun getType() = PaymentType.IDEAL
+            override fun getContent(): String = """{
                 "Currency": "EUR",
                 "AmountDebit": $amount,
                 "Invoice": "$description",
@@ -62,7 +66,8 @@ class PaymentBuckarooService(
         }
 
         data class CreditCard(override val amount: Double, val description: String, val issuer: String) : PaymentMethod() {
-            fun getContent(): String = """{
+            override fun getType() = PaymentType.CREDIT_CARD
+            override fun getContent(): String = """{
               "Currency": "EUR",
               "AmountDebit": $amount,
               "Invoice": "$description",
@@ -82,16 +87,14 @@ class PaymentBuckarooService(
         }
     }
 
-    data class BuckarooTransaction(
+    data class BuckarooResult(
+            val mandate: PaymentMandate,
             val transaction: PaymentTransaction,
             val redirectUrl: String
     )
 
-    fun createTransaction(paymentMethod: PaymentMethod): BuckarooTransaction {
-        val postContent = when (paymentMethod) {
-            is PaymentMethod.Ideal -> paymentMethod.getContent()
-            is PaymentMethod.CreditCard -> paymentMethod.getContent()
-        }
+    fun create(paymentMethod: PaymentMethod): BuckarooResult {
+        val postContent = paymentMethod.getContent()
         val nonce = getNonce()
         val httpMethod = HttpMethod.POST.name
         val authHeader = authHeader(requestUri, postContent, httpMethod, nonce)
@@ -107,14 +110,26 @@ class PaymentBuckarooService(
         val reference = res.get("Key").asText()
         val redirectUrl = res.get("RequiredAction").get("RedirectURL").asText()
 
-        val transaction = paymentTransactionRepository.save(PaymentTransaction(
+        val mandate = PaymentMandate(
+                code = UUID.randomUUID().toString(),
                 amount = paymentMethod.amount,
-                nonce = nonce,
-                reference = reference,
-                status = PaymentTransactionStatus.PENDING
-        ))
+                frequency = PaymentFrequency.ONCE,
+                type = paymentMethod.getType()
+        ).let {
+            paymentMandateRepository.save(it)
+        }
 
-        return BuckarooTransaction(
+        val transaction = PaymentTransaction(
+                amount = paymentMethod.amount,
+                reference = reference,
+                status = PaymentTransactionStatus.PENDING,
+                mandate = mandate
+        ).let {
+            paymentTransactionRepository.save(it)
+        }
+
+        return BuckarooResult(
+                mandate = mandate,
                 transaction = transaction,
                 redirectUrl = redirectUrl
         )
