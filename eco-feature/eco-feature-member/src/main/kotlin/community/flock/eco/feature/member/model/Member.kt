@@ -1,5 +1,6 @@
 package community.flock.eco.feature.member.model
 
+import java.time.LocalDate
 import java.util.*
 import javax.persistence.*
 
@@ -23,9 +24,10 @@ data class Member(
     val houseNumberExtension: String? = null,
     val postalCode: String? = null,
     val city: String? = null,
+    val country: String? = null,
 
     val gender: MemberGender? = null,
-    val birthDate: Date? = null,
+    val birthDate: LocalDate? = null,
 
     @ManyToMany()
     val groups: Set<MemberGroup> = setOf(),
@@ -33,6 +35,7 @@ data class Member(
     @ElementCollection
     val fields: Map<String, String> = mapOf(),
 
-    val status: MemberStatus = MemberStatus.NEW
+    val status: MemberStatus = MemberStatus.NEW,
 
+    val create: LocalDate = LocalDate.now()
 )

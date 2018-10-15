@@ -7,16 +7,38 @@ import community.flock.eco.feature.payment.repositories.PaymentTransactionReposi
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/payment/mandates")
-class PaymentMandateController(private val paymentMandateRepository: PaymentMandateRepository) {
+class PaymentMandateController(private val paymentMandateRepository: PaymentMandateRepository,
+                               private val paymentTransactionRepository: PaymentTransactionRepository) {
 
     @GetMapping()
     @PreAuthorize("hasAuthority('PaymentMandateAuthority.READ')")
-    fun findAll(pageable: Pageable): Page<PaymentMandate> = paymentMandateRepository.findAll(pageable)
+    fun findByAll(pageable: Pageable): Page<PaymentMandate> = paymentMandateRepository.findAll(pageable)
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('PaymentMandateAuthority.READ')")
+    fun findById(@PathVariable id: Long): PaymentMandate = paymentMandateRepository.findById(id)
+            .orElse(null)
+
+    @GetMapping("/{id}/transactions")
+    @PreAuthorize("hasAuthority('PaymentMandateAuthority.READ')")
+    fun findByIdTransactions(@PathVariable id: Long): List<PaymentTransaction> = paymentMandateRepository.findById(id)
+            .map {
+                paymentTransactionRepository.findByMandate(it)
+            }
+            .orElse(listOf())
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('PaymentMandateAuthority.READ')")
+    fun update(@PathVariable id: Long, @RequestBody form: PaymentMandate): PaymentMandate = paymentMandateRepository.findById(id)
+            .map {
+                paymentMandateRepository.save(form.copy(
+                        id = it.id
+                ))
+            }
+            .orElse(null)
 
 }
