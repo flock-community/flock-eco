@@ -37,5 +37,5 @@ data class Member(
 
     val status: MemberStatus = MemberStatus.NEW,
 
-    val create: LocalDate = LocalDate.now()
+    val created: LocalDate = LocalDate.now()
 )
