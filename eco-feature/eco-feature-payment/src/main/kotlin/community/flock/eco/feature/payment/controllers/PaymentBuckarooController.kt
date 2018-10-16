@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.time.LocalDate
 import java.util.*
 
 @RestController
@@ -32,7 +33,7 @@ class PaymentBuckarooController(
 
         transactionRepository.findByReference(key).ifPresent {
             transactionRepository.save(it.copy(
-                    confirmed = Date(),
+                    confirmed = LocalDate.now(),
                     status = PaymentTransactionStatus.SUCCESS
             ))
         }
@@ -50,7 +51,7 @@ class PaymentBuckarooController(
 
         transactionRepository.findByReference(key).ifPresent {
             transactionRepository.save(it.copy(
-                    confirmed = Date(),
+                    confirmed = LocalDate.now(),
                     status = PaymentTransactionStatus.ERROR
             ))
         }

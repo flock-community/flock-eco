@@ -1,26 +1,27 @@
 package community.flock.eco.feature.payment.model
 
+import java.time.LocalDate
 import java.util.*
 import javax.persistence.*
 
 @Entity
 data class PaymentTransaction(
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    val id: Long = 0,
+        @Id
+        @GeneratedValue(strategy = GenerationType.AUTO)
+        val id: Long = 0,
 
-    val amount: Double,
+        val amount: Double,
 
-    val reference: String,
+        val reference: String = UUID.randomUUID().toString(),
 
-    @Enumerated(EnumType.STRING)
-    val status: PaymentTransactionStatus,
+        @Enumerated(EnumType.STRING)
+        val status: PaymentTransactionStatus = PaymentTransactionStatus.PENDING,
 
-    val confirmed: Date? = null,
-    val created: Date = Date(),
+        val confirmed: LocalDate? = null,
+        val created: LocalDate = LocalDate.now(),
 
-    @ManyToOne
-    val mandate: PaymentMandate
+        @ManyToOne
+        val mandate: PaymentMandate
 
 )
