@@ -4,6 +4,6 @@ import java.io.Serializable
 
 interface Authority : Serializable {
 
-    fun toName(): String = javaClass.simpleName + "." + toString()
+    fun toName() = "${javaClass.simpleName}."
 
 }

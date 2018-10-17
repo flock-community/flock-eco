@@ -7,5 +7,7 @@ import java.util.*
 
 @Service
 interface MemberFieldRepository : CrudRepository<MemberField, Long> {
-    fun findByName(name: String?): Optional<MemberField>
+
+    fun findByName(name: String): MemberField?
+
 }

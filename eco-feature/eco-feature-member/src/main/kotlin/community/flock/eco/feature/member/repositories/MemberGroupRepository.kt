@@ -8,6 +8,9 @@ import java.util.*
 
 @Service
 interface MemberGroupRepository : CrudRepository<MemberGroup, Long> {
-    fun findByCode(code: String): Optional<MemberGroup>
+
+    fun findByCode(code: String): MemberGroup?
+
     fun deleteByCode(code: String)
+
 }

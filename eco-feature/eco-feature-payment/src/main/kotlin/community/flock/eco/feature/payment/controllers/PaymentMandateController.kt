@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/payment/mandates")
-class PaymentMandateController(private val paymentMandateRepository: PaymentMandateRepository,
-                               private val paymentTransactionRepository: PaymentTransactionRepository) {
+class PaymentMandateController(
+        private val paymentMandateRepository: PaymentMandateRepository,
+        private val paymentTransactionRepository: PaymentTransactionRepository
+) {
 
     @GetMapping()
     @PreAuthorize("hasAuthority('PaymentMandateAuthority.READ')")
@@ -20,25 +22,23 @@ class PaymentMandateController(private val paymentMandateRepository: PaymentMand
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('PaymentMandateAuthority.READ')")
-    fun findById(@PathVariable id: Long): PaymentMandate = paymentMandateRepository.findById(id)
+    fun findById(@PathVariable id: Long): PaymentMandate? = paymentMandateRepository.findById(id)
             .orElse(null)
 
     @GetMapping("/{id}/transactions")
     @PreAuthorize("hasAuthority('PaymentMandateAuthority.READ')")
     fun findByIdTransactions(@PathVariable id: Long): List<PaymentTransaction> = paymentMandateRepository.findById(id)
-            .map {
-                paymentTransactionRepository.findByMandate(it)
-            }
+            .map { paymentTransactionRepository.findByMandate(it) }
             .orElse(listOf())
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('PaymentMandateAuthority.READ')")
-    fun update(@PathVariable id: Long, @RequestBody form: PaymentMandate): PaymentMandate = paymentMandateRepository.findById(id)
-            .map {
-                paymentMandateRepository.save(form.copy(
-                        id = it.id
-                ))
-            }
-            .orElse(null)
+    fun update(@PathVariable id: Long, @RequestBody form: PaymentMandate): PaymentMandate? {
+        val mandate = paymentMandateRepository.findById(id)
+        return when (mandate.isPresent) {
+            true -> paymentMandateRepository.save(form.copy(id = mandate.get().id))
+            else -> null
+        }
+    }
 
 }

@@ -105,7 +105,7 @@ class PaymentBuckarooService(
 
         val entity = HttpEntity(postContent, headers)
 
-        val res = restTemplate.postForObject("https://$requestUri", entity, ObjectNode::class.java)
+        val res = restTemplate.postForObject("https://$requestUri", entity, ObjectNode::class.java) ?: throw NullPointerException()
 
         val reference = res.get("Key").asText()
         val redirectUrl = res.get("RequiredAction").get("RedirectURL").asText()
@@ -150,7 +150,7 @@ class PaymentBuckarooService(
             timeStamp: String,
             requestUri: String,
             content: String
-    ): String? {
+    ): String {
         val encodedContent = getEncodedContent(content)
         val rawData = websiteKey + httpMethod + requestUri + timeStamp + nonce + encodedContent
 

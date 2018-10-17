@@ -2,7 +2,7 @@ package community.flock.eco.feature.member.controllers
 
 import community.flock.eco.feature.member.model.MemberGroup
 import community.flock.eco.feature.member.repositories.MemberGroupRepository
-import org.springframework.http.HttpStatus
+import community.flock.eco.feature.member.safeRespond
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
@@ -17,16 +17,7 @@ class MemberGroupController(private val memberGroupRepository: MemberGroupReposi
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('MemberFieldAuthority.READ')")
-    fun findById(@PathVariable("id") id: Long): ResponseEntity<MemberGroup> {
-
-        val memberGroupOptional = memberGroupRepository.findById(id)
-
-        return when (memberGroupOptional.isPresent) {
-            true -> ResponseEntity(memberGroupOptional.get(), HttpStatus.OK)
-            else -> ResponseEntity(HttpStatus.NOT_FOUND)
-        }
-
-    }
+    fun findById(@PathVariable("id") id: Long): ResponseEntity<MemberGroup> = memberGroupRepository.findById(id).safeRespond()
 
     @PostMapping
     @PreAuthorize("hasAuthority('MemberFieldAuthority.WRITE')")

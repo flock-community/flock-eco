@@ -49,9 +49,9 @@ class PaymentSepaServiceTest {
 
         val res = repository.findByCode(code)
 
-        Assert.assertTrue("Mandate not found", res.isPresent)
+        Assert.assertTrue("Mandate not found", res != null)
 
-        res.ifPresent {
+        res?.let {
             Assert.assertEquals(code, it.code)
             Assert.assertEquals(10.12, it.amount, 0.0)
             Assert.assertEquals(LocalDate.now().month, it.collectionMonth)
@@ -80,9 +80,9 @@ class PaymentSepaServiceTest {
 
         val res = repository.findByCode(code)
 
-        Assert.assertTrue("Mandate not found", res.isPresent)
+        Assert.assertTrue("Mandate not found", res != null)
 
-        res.ifPresent {
+        res?.let {
             Assert.assertEquals(code, it.code)
             Assert.assertEquals(Month.APRIL, it.collectionMonth)
         }

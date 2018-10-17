@@ -22,7 +22,7 @@ class PaymentBuckarooController(
         private val eventService: EventService
 ) {
 
-    val mapper = ObjectMapper()
+    private val mapper = ObjectMapper()
 
     @PostMapping("success")
     fun success(@RequestBody json: String): ResponseEntity<Unit> {
@@ -31,7 +31,7 @@ class PaymentBuckarooController(
 
         val key = obj["Transaction"]["Key"].asText()
 
-        transactionRepository.findByReference(key).ifPresent {
+        transactionRepository.findByReference(key)?.let {
             transactionRepository.save(it.copy(
                     confirmed = LocalDate.now(),
                     status = PaymentTransactionStatus.SUCCESS
@@ -49,7 +49,7 @@ class PaymentBuckarooController(
 
         val key = obj["Transaction"]["Key"].asText()
 
-        transactionRepository.findByReference(key).ifPresent {
+        transactionRepository.findByReference(key)?.let {
             transactionRepository.save(it.copy(
                     confirmed = LocalDate.now(),
                     status = PaymentTransactionStatus.ERROR

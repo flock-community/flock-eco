@@ -8,6 +8,6 @@ import java.util.*
 @Service
 interface UserRepository : PagingAndSortingRepository<User, Long> {
 
-    fun findByReference(name: String): Optional<User>
+    fun findByReference(name: String): User?
 
 }
