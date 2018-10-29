@@ -6,3 +6,7 @@ node_modules
 
 *.releaseBackup
 *.versionsBackup
+*.xml.next
+*.xml.tag
+
+release.properties
