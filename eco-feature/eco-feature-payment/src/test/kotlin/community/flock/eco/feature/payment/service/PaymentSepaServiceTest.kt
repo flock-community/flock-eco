@@ -51,7 +51,7 @@ class PaymentSepaServiceTest {
 
         Assert.assertTrue("Mandate not found", res != null)
 
-        res?.let {
+        res.ifPresent {
             Assert.assertEquals(code, it.code)
             Assert.assertEquals(10.12, it.amount, 0.0)
             Assert.assertEquals(LocalDate.now().month, it.collectionMonth)
@@ -82,7 +82,7 @@ class PaymentSepaServiceTest {
 
         Assert.assertTrue("Mandate not found", res != null)
 
-        res?.let {
+        res.ifPresent {
             Assert.assertEquals(code, it.code)
             Assert.assertEquals(Month.APRIL, it.collectionMonth)
         }
