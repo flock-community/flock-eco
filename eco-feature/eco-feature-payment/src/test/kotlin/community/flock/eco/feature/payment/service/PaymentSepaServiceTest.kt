@@ -41,7 +41,8 @@ class PaymentSepaServiceTest {
                 bankAccount = PaymentBankAccount(
                         name = "W.F. Veelenturf",
                         iban = "NL00ABCD0012345678",
-                        bic = "BIC123"
+                        bic = "BIC123",
+                        country = "NL"
                 )
         )
 
@@ -72,7 +73,8 @@ class PaymentSepaServiceTest {
                 bankAccount = PaymentBankAccount(
                         name = "W.F. Veelenturf",
                         iban = "NL00ABCD0012345678",
-                        bic = "BIC123"
+                        bic = "BIC123",
+                        country = "NL"
                 )
         )
 
