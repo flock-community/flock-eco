@@ -26,6 +26,7 @@ data class Member(
     val city: String? = null,
     val country: String? = null,
 
+    @Enumerated(EnumType.STRING)
     val gender: MemberGender? = null,
     val birthDate: LocalDate? = null,
 
@@ -35,6 +36,7 @@ data class Member(
     @ElementCollection
     val fields: Map<String, String> = mapOf(),
 
+    @Enumerated(EnumType.STRING)
     val status: MemberStatus = MemberStatus.NEW,
 
     val created: LocalDate = LocalDate.now()

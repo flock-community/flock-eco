@@ -5,6 +5,9 @@ import community.flock.eco.feature.user.model.User
 import community.flock.eco.feature.user.repositories.UserRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
@@ -31,7 +34,14 @@ class UserController(private val userRepository: UserRepository) {
 
     @GetMapping()
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
-    fun findAll(pageable: Pageable): Page<User> = userRepository.findAll(pageable)
+    fun findAll(page: Pageable): ResponseEntity<List<User>> {
+        val res = userRepository.findAll(page)
+        val headers = HttpHeaders()
+        headers.set("x-page", page.pageNumber.toString())
+        headers.set("x-total", res.totalElements.toString())
+        return ResponseEntity(res.content.toList(), headers, HttpStatus.OK)
+
+    }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('UserAuthority.READ')")

@@ -1,7 +1,5 @@
 import React from "react";
-
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
 
@@ -15,20 +13,21 @@ const styles = theme => ({});
 
 class UserDialog extends React.Component {
 
-  constructor(props){
-    super(props);
-    this.handleClose = () => {
-      this.props.onClose();
-    };
+  handleClose = () => {
+    this.props.onClose();
+  };
 
-    this.handleSave = () => {
-      this.props.onSave();
-    };
+  handleSave = () => {
+    this.props.onSave();
+  };
 
-  }
+  handleDelete = () => {
+    this.props.onDelete();
+  };
+
 
   render() {
-    const { classes, open, onClose, selectedValue } = this.props;
+    const {classes, open, onClose, selectedValue} = this.props;
 
     return (
       <Dialog

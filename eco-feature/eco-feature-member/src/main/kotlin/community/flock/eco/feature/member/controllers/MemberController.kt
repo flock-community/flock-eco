@@ -55,7 +55,14 @@ class MemberController(
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('MemberAuthority.WRITE')")
-    fun delete(@PathVariable("id") id: String) = memberRepository.deleteById(id.toLong())
+    fun delete(@PathVariable("id") id: String) = memberRepository.findById(id.toLong()).ifPresent { member ->
+        member
+                .copy(
+                        status = MemberStatus.DELETED
+                ).let {
+                    memberRepository.save(it)
+                }
+    }
 
     private fun MemberGroupRepository.findGroups(member: Member): Set<MemberGroup> = this.findAllById(member.groups.map { it.id }).toSet()
 

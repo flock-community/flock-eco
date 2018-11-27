@@ -2,7 +2,7 @@ import React from "react";
 import {withStyles} from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
+import Paper from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
 
 import AddIcon from '@material-ui/icons/Add';
@@ -93,7 +93,7 @@ class MemberFeature extends React.Component {
 
     return (
 
-      <Paper className={classes.root}>
+      <Card className={classes.root}>
 
         <Grid
           container
@@ -127,7 +127,7 @@ class MemberFeature extends React.Component {
           <AddIcon/>
         </Button>
 
-      </Paper>
+      </Card>
     )
   }
 

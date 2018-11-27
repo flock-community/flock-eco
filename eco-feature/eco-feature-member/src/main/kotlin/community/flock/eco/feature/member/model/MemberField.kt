@@ -13,6 +13,8 @@ data class MemberField(
         @Column(unique = true)
         val name: String,
         val label: String,
+
+        @Enumerated(EnumType.STRING)
         val type: MemberFieldType,
 
         val required: Boolean = true,

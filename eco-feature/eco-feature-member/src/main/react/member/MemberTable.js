@@ -10,19 +10,16 @@ import TablePagination from '@material-ui/core/TablePagination';
 
 class MemberTable extends React.Component {
 
-  constructor(props){
-    super();
-
-    this.handleChangePage = (event, page) => {
-      if (props.onChangePage)
-        return props.onChangePage(event, page)
-    }
-
-    this.handleRowClick = (event, user) => {
-      if (this.props.onRowClick)
-        return this.props.onRowClick(event, user)
-    }
+  handleChangePage = (event, page) => {
+    if (this.props.onChangePage)
+      return this.props.onChangePage(event, page)
   }
+
+  handleRowClick = (event, user) => {
+    if (this.props.onRowClick)
+      return this.props.onRowClick(event, user)
+  }
+
 
   render() {
 
@@ -34,6 +31,8 @@ class MemberTable extends React.Component {
           <TableRow>
             <TableCell>Name</TableCell>
             <TableCell>Email</TableCell>
+            <TableCell>Created</TableCell>
+            <TableCell>Status</TableCell>
           </TableRow>
         </TableHead>
 
@@ -45,6 +44,8 @@ class MemberTable extends React.Component {
           >
             <TableCell component="th" scope="row">{this.memberToName(it)}</TableCell>
             <TableCell>{it.email}</TableCell>
+            <TableCell>{it.created}</TableCell>
+            <TableCell>{it.status}</TableCell>
           </TableRow>
         ))}
         </TableBody>
@@ -63,9 +64,6 @@ class MemberTable extends React.Component {
       </Table>
     )
   }
-
-
-
 
 
   memberToName(it) {
