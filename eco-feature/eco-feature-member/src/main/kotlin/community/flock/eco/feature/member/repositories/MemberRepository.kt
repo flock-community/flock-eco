@@ -24,10 +24,18 @@ interface MemberRepository : PagingAndSortingRepository<Member, Long> {
 
     fun findByEmail(email: String): List<Member>
 
-    @Query("SELECT m FROM Member m WHERE m.firstName LIKE %?1% OR m.surName LIKE %?1% OR m.email LIKE %?1%")
+    @Query("SELECT m " +
+            "FROM Member m " +
+            "WHERE (m.firstName LIKE %?1% OR m.surName LIKE %?1% OR m.email LIKE %?1%) " +
+            "AND m.status != 'DELETED' " +
+            "ORDER BY m.surName")
     fun findBySearch(search: String): List<Member>
 
-    @Query("SELECT m FROM Member m WHERE (m.firstName LIKE %?1% OR m.surName LIKE %?1% OR m.email LIKE %?1%) AND m.status != 'DELETED'")
+    @Query("SELECT m " +
+            "FROM Member m " +
+            "WHERE (m.firstName LIKE %?1% OR m.surName LIKE %?1% OR m.email LIKE %?1%) " +
+            "AND m.status != 'DELETED' " +
+            "ORDER BY m.surName")
     fun findBySearch(search: String, page: Pageable): Page<Member>
 
 }

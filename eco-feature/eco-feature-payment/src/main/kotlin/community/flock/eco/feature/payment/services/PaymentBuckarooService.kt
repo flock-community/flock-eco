@@ -1,6 +1,7 @@
 package community.flock.eco.feature.payment.services
 
 import com.fasterxml.jackson.databind.node.ObjectNode
+import community.flock.eco.feature.payment.exceptions.PaymentNotCreatedException
 import community.flock.eco.feature.payment.model.*
 import community.flock.eco.feature.payment.repositories.PaymentMandateRepository
 import community.flock.eco.feature.payment.repositories.PaymentTransactionRepository
@@ -11,6 +12,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
+import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 import java.net.URLEncoder
 import java.security.MessageDigest
@@ -105,34 +107,38 @@ class PaymentBuckarooService(
 
         val entity = HttpEntity(postContent, headers)
 
-        val res = restTemplate.postForObject("https://$requestUri", entity, ObjectNode::class.java) ?: throw NullPointerException()
+        try {
+            val res = restTemplate.postForObject("https://$requestUri", entity, ObjectNode::class.java)
 
-        val reference = res.get("Key").asText()
-        val redirectUrl = res.get("RequiredAction").get("RedirectURL").asText()
+            val reference = res.get("Key").asText()
+            val redirectUrl = res.get("RequiredAction").get("RedirectURL").asText()
 
-        val mandate = PaymentMandate(
-                code = UUID.randomUUID().toString(),
-                amount = paymentMethod.amount,
-                frequency = PaymentFrequency.ONCE,
-                type = paymentMethod.getType()
-        ).let {
-            paymentMandateRepository.save(it)
+            val mandate = PaymentMandate(
+                    code = UUID.randomUUID().toString(),
+                    amount = paymentMethod.amount,
+                    frequency = PaymentFrequency.ONCE,
+                    type = paymentMethod.getType()
+            ).let {
+                paymentMandateRepository.save(it)
+            }
+
+            val transaction = PaymentTransaction(
+                    amount = paymentMethod.amount,
+                    reference = reference,
+                    status = PaymentTransactionStatus.PENDING,
+                    mandate = mandate
+            ).let {
+                paymentTransactionRepository.save(it)
+            }
+
+            return BuckarooResult(
+                    mandate = mandate,
+                    transaction = transaction,
+                    redirectUrl = redirectUrl
+            )
+        }catch (ex: HttpClientErrorException){
+            throw PaymentNotCreatedException(ex.responseBodyAsString)
         }
-
-        val transaction = PaymentTransaction(
-                amount = paymentMethod.amount,
-                reference = reference,
-                status = PaymentTransactionStatus.PENDING,
-                mandate = mandate
-        ).let {
-            paymentTransactionRepository.save(it)
-        }
-
-        return BuckarooResult(
-                mandate = mandate,
-                transaction = transaction,
-                redirectUrl = redirectUrl
-        )
 
     }
 

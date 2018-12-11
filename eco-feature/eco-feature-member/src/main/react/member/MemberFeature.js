@@ -12,8 +12,11 @@ import MemberSearch from "./MemberSearch";
 import MemberDialog from "./MemberDialog";
 
 const styles = theme => ({
-  root: {
-    marginBottom: 48
+  tablePaper: {
+    marginBottom: 50,
+    width: '100%',
+    marginTop: theme.spacing.unit * 3,
+    overflowX: 'auto',
   },
   button: {
     position: 'fixed',
@@ -93,7 +96,7 @@ class MemberFeature extends React.Component {
 
     return (
 
-      <Card className={classes.root}>
+      <Paper className={classes.tablePaper}>
 
         <Grid
           container
@@ -127,7 +130,7 @@ class MemberFeature extends React.Component {
           <AddIcon/>
         </Button>
 
-      </Card>
+      </Paper>
     )
   }
 
