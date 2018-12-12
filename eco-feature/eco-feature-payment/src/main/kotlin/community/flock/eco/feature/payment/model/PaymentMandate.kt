@@ -22,7 +22,11 @@ data class PaymentMandate(
 
     @Enumerated(EnumType.STRING)
     val frequency: PaymentFrequency,
+
+    @Enumerated(EnumType.STRING)
     val type: PaymentType,
+
+    @Enumerated(EnumType.STRING)
     val collectionMonth: Month? = null,
 
     @Embedded
