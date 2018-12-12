@@ -3,6 +3,10 @@ import {withStyles} from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Card';
+
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+
 import Grid from '@material-ui/core/Grid';
 
 import AddIcon from '@material-ui/icons/Add';
@@ -96,7 +100,7 @@ class MemberFeature extends React.Component {
 
     return (
 
-      <Paper className={classes.tablePaper}>
+      <React.Fragment>
 
         <Grid
           container
@@ -104,17 +108,23 @@ class MemberFeature extends React.Component {
           spacing={16}
         >
           <Grid item>
-            <MemberSearch onChange={this.handleSearch}/>
+            <Card>
+              <CardContent>
+              <MemberSearch onChange={this.handleSearch}/>
+              </CardContent>
+            </Card>
           </Grid>
           <Grid item>
-            <MemberTable
-              data={this.state.members}
-              count={this.state.count}
-              page={this.state.page}
-              size={this.state.size}
-              onRowClick={this.handleRowClick}
-              onChangePage={this.handleChangePage}
-            />
+            <Paper className={classes.tablePaper}>
+              <MemberTable
+                data={this.state.members}
+                count={this.state.count}
+                page={this.state.page}
+                size={this.state.size}
+                onRowClick={this.handleRowClick}
+                onChangePage={this.handleChangePage}
+              />
+            </Paper>
           </Grid>
         </Grid>
 
@@ -130,14 +140,15 @@ class MemberFeature extends React.Component {
           <AddIcon/>
         </Button>
 
-      </Paper>
+      </React.Fragment>
+
     )
   }
 
   renderDialog() {
 
     return (<MemberDialog
-      value = {this.state.item}
+      value={this.state.item}
       onComplete={this.handleComplete}/>)
   }
 

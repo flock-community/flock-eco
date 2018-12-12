@@ -38,13 +38,11 @@ class MemberForm extends React.Component {
     const {classes, item} = this.props;
 
     return (
-      <div style={{padding: "8px 24px"}}>
-        <TextField
-          label="Search"
-          value={this.state.search}
-          className={classes.textField}
-          onChange={this.handleChange('search')}/>
-      </div>
+      <TextField
+        label="Search"
+        value={this.state.search}
+        className={classes.textField}
+        onChange={this.handleChange('search')}/>
     )
   }
 }
