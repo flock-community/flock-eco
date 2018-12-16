@@ -22,7 +22,9 @@ class MemberController(
 
     @GetMapping
     @PreAuthorize("hasAuthority('MemberAuthority.READ')")
-    fun findAll(@RequestParam("s") search: String = "", page: Pageable?): ResponseEntity<List<Member>> {
+    fun findAll(
+            @RequestParam("s") search: String = "",
+            page: Pageable?): ResponseEntity<List<Member>> {
 
         val res = memberRepository.findBySearch(search, page!!)
         val headers = HttpHeaders()
@@ -32,13 +34,21 @@ class MemberController(
 
     }
 
+    @GetMapping("/")
+    @PreAuthorize("hasAuthority('MemberAuthority.READ')")
+    fun findByStatus(@RequestParam("status") status: MemberStatus): List<Member> = memberRepository
+            .findByStatus(status).toList()
+
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('MemberAuthority.READ')")
-    fun findById(@PathVariable("id") id: String): Optional<Member> = memberRepository.findById(id.toLong())
+    fun findById(@PathVariable("id") id: String): Optional<Member> = memberRepository
+            .findById(id.toLong())
 
     @GetMapping("/{ids}")
     @PreAuthorize("hasAuthority('MemberAuthority.READ')")
-    fun findByIds(@PathVariable("ids") ids: List<String>): List<Member> = memberRepository.findByIds(ids.map { it.toLong() })
+    fun findByIds(@PathVariable("ids") ids: List<String>): List<Member> = memberRepository
+            .findByIds(ids.map { it.toLong() })
+            .toList()
 
     @PostMapping
     @PreAuthorize("hasAuthority('MemberAuthority.WRITE')")

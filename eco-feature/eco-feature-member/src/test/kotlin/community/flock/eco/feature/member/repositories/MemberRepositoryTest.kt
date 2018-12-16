@@ -57,13 +57,13 @@ class MemberRepositoryTest{
     @Test
     fun testsFindByName() {
         val res = memberRepository.findByName("member3")
-        assertEquals(1, res.size)
+        assertEquals(1, res.toList().size)
     }
 
     @Test
     fun testsFindBySearch() {
         val res = memberRepository.findBySearch("member3")
-        assertEquals(1, res.size)
+        assertEquals(1, res.toList().size)
     }
 
     @Test
@@ -84,8 +84,8 @@ class MemberRepositoryTest{
     @Ignore
     fun testsFindByIds() {
         val res = memberRepository.findByIds(listOf(1, 2))
-        assertEquals("member1", res[0].firstName)
-        assertEquals("member2", res[1].firstName)
+        assertEquals("member1", res.toList()[0].firstName)
+        assertEquals("member2", res.toList()[1].firstName)
     }
 
     @Test
