@@ -15,9 +15,8 @@ import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 import javax.annotation.PostConstruct
 
-@DataJpaTest
 @RunWith(SpringRunner::class)
-@SpringBootTest(classes = [MemberConfiguration::class])
+@DataJpaTest
 @AutoConfigureTestDatabase
 class MemberRepositoryTest{
 
@@ -57,26 +56,20 @@ class MemberRepositoryTest{
     @Test
     fun testsFindByName() {
         val res = memberRepository.findByName("member3")
-        assertEquals(1, res.toList().size)
-    }
+        assertEquals(1, res.toList().size) }
 
-    @Test
-    fun testsFindBySearch() {
-        val res = memberRepository.findBySearch("member3")
-        assertEquals(1, res.toList().size)
-    }
 
     @Test
     fun testsFindBySearch2Page() {
         val page = PageRequest.of(0, 1)
-        val res = memberRepository.findBySearch("jo", page)
+        val res = memberRepository.findBySearch(search = "jo", page = page)
         assertEquals("joop", res.content[0].firstName)
     }
 
     @Test
     fun testsFindBySearchPage() {
         val page = PageRequest.of(0, 10)
-        val res = memberRepository.findBySearch("member3", page)
+        val res = memberRepository.findBySearch(search = "member3", page =  page)
         assertEquals(1, res.totalElements)
     }
 

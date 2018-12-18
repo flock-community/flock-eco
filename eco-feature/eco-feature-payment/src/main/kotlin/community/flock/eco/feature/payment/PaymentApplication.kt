@@ -1,13 +1,13 @@
-package community.flock.eco.feature.mailchimp
+package community.flock.eco.feature.payment
 
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Import
 
 @SpringBootApplication
-@Import(MailchimpConfiguration::class)
-class MailchimpApplication
+@Import(PaymentConfiguration::class)
+class PaymentApplication
 
 fun main(args: Array<String>) {
-    SpringApplication.run(MailchimpApplication::class.java, *args)
+    SpringApplication.run(PaymentApplication::class.java, *args)
 }

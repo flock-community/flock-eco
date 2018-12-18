@@ -17,9 +17,8 @@ import java.time.LocalDate
 import java.time.Month
 import java.util.*
 
-@DataJpaTest
 @RunWith(SpringRunner::class)
-@SpringBootTest(classes = [PaymentConfiguration::class])
+@DataJpaTest
 @AutoConfigureTestDatabase
 class PaymentSepaServiceTest {
 

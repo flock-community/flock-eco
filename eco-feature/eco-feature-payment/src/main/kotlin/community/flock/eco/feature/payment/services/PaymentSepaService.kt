@@ -5,10 +5,12 @@ import community.flock.eco.feature.payment.model.PaymentFrequency
 import community.flock.eco.feature.payment.model.PaymentMandate
 import community.flock.eco.feature.payment.model.PaymentType
 import community.flock.eco.feature.payment.repositories.PaymentMandateRepository
+import org.springframework.stereotype.Component
 import java.time.LocalDate
 import java.time.Month
 import java.util.*
 
+@Component
 class PaymentSepaService(
         private val paymentMandateRepository: PaymentMandateRepository
 ) {

@@ -11,7 +11,7 @@ import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
-import org.springframework.stereotype.Service
+import org.springframework.stereotype.Component
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 import java.net.URLEncoder
@@ -21,15 +21,15 @@ import java.util.Base64.getEncoder
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
-@Service
+@Component
 class PaymentBuckarooService(
-        @Value("\${buckaroo.requestUri}")
+        @Value("\${flock.eco.feature.payment.buckaroo.requestUri}")
         private val requestUri: String,
 
-        @Value("\${buckaroo.websiteKey}")
+        @Value("\${flock.eco.feature.payment.buckaroo.websiteKey}")
         private val websiteKey: String,
 
-        @Value("\${buckaroo.secretKey}")
+        @Value("\${flock.eco.feature.payment.buckaroo.secretKey}")
         private val secretKey: String,
 
         private val paymentMandateRepository: PaymentMandateRepository,
@@ -136,7 +136,7 @@ class PaymentBuckarooService(
                     transaction = transaction,
                     redirectUrl = redirectUrl
             )
-        }catch (ex: HttpClientErrorException){
+        } catch (ex: HttpClientErrorException) {
             throw PaymentNotCreatedException(ex.responseBodyAsString)
         }
 

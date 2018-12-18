@@ -24,20 +24,19 @@ class MemberController(
     @PreAuthorize("hasAuthority('MemberAuthority.READ')")
     fun findAll(
             @RequestParam("s") search: String = "",
+            @RequestParam("status") status: MemberStatus?,
             page: Pageable?): ResponseEntity<List<Member>> {
 
-        val res = memberRepository.findBySearch(search, page!!)
+        val res = memberRepository.findBySearch(
+                search = search,
+                status = status?.let { arrayOf(it) },
+                page = page!!)
         val headers = HttpHeaders()
         headers.set("x-page", page.pageNumber.toString())
         headers.set("x-total", res.totalElements.toString())
         return ResponseEntity(res.content.toList(), headers, HttpStatus.OK)
 
     }
-
-    @GetMapping("/")
-    @PreAuthorize("hasAuthority('MemberAuthority.READ')")
-    fun findByStatus(@RequestParam("status") status: MemberStatus): List<Member> = memberRepository
-            .findByStatus(status).toList()
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('MemberAuthority.READ')")
