@@ -23,13 +23,13 @@ class MemberController(
     @GetMapping
     @PreAuthorize("hasAuthority('MemberAuthority.READ')")
     fun findAll(
-            @RequestParam("s") search: String = "",
+            @RequestParam("s") search: String?,
             @RequestParam("status") status: MemberStatus?,
             page: Pageable?): ResponseEntity<List<Member>> {
 
         val res = memberRepository.findBySearch(
-                search = search,
-                status = status?.let { arrayOf(it) },
+                search = search ?: "",
+                status = status?.let { arrayOf(it) } ?: arrayOf(MemberStatus.NEW, MemberStatus.ACTIVE),
                 page = page!!)
         val headers = HttpHeaders()
         headers.set("x-page", page.pageNumber.toString())

@@ -35,5 +35,5 @@ interface MemberRepository : PagingAndSortingRepository<Member, Long> {
             "WHERE (m.firstName LIKE %?1% OR m.surName LIKE %?1% OR m.email LIKE %?1%) " +
             "AND m.status IN ?2 " +
             "ORDER BY m.surName")
-    fun findBySearch(search: String, status: Array<MemberStatus>? = arrayOf(MemberStatus.NEW, MemberStatus.ACTIVE), page: Pageable): Page<Member>
+    fun findBySearch(search: String, status: Array<MemberStatus> = arrayOf(MemberStatus.NEW, MemberStatus.ACTIVE), page: Pageable): Page<Member>
 }

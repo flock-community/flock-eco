@@ -66,6 +66,7 @@ class MailchimpClient(
                     .map {
                         Campaign(
                                 id = it.get("id").asText(),
+                                webId = it.get("web_id").asText(),
                                 name = it.get("settings").get("title").asText()
                         )
                     }
