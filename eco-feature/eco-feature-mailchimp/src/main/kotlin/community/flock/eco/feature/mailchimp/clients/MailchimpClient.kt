@@ -63,7 +63,26 @@ class MailchimpClient(
         try {
             val entity = HttpEntity<String>(headers)
             val res = restTemplate.exchange("$requestUrl/templates", HttpMethod.POST, entity, ObjectNode::class.java)
-            return Campaign(id="x")
+            return Campaign(id="id",name = "name")
+        } catch (ex: HttpClientErrorException) {
+            throw FetchTemplateException(ex.responseBodyAsString)
+        }
+    }
+
+    fun fetchCampaigns(): List<Campaign> {
+        val restTemplate = restTemplateBuilder
+                .basicAuthorization("any", apiKey)
+                .build()
+        try {
+            val entity = HttpEntity<String>(headers)
+            val res = restTemplate.exchange("$requestUrl/templates", HttpMethod.GET, entity, ObjectNode::class.java)
+            return res.body.get("templates").asIterable()
+                    .map {
+                        Campaign(
+                                id = it.get("id").asText(),
+                                name = it.get("name").asText()
+                        )
+                    }
         } catch (ex: HttpClientErrorException) {
             throw FetchTemplateException(ex.responseBodyAsString)
         }
