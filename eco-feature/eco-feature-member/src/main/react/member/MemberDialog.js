@@ -19,8 +19,36 @@ const styles = theme => ({});
 class MemberDialog extends React.Component {
 
   state = {
-    value: this.props.value,
-    message: null
+    item: null,
+    message: null,
+    action: null,
+  }
+
+  componentDidUpdate(prevProps) {
+
+    if (prevProps.action !== this.props.action) {
+      const action = this.props.action && this.props.action.toUpperCase()
+      this.setState({
+        action: action
+      });
+    }
+
+    if (prevProps.id !== this.props.id) {
+
+      if (this.props.id === null)
+        this.setState({item: {}});
+      else
+        fetch(`/api/members/${this.props.id}`)
+          .then(res => {
+            return res.json()
+          })
+          .then(json => {
+            this.setState({item: json});
+          })
+          .catch(e => {
+            this.setState({message: "Cannot load groups"});
+          })
+    }
   }
 
   componentDidMount() {
@@ -47,12 +75,6 @@ class MemberDialog extends React.Component {
       })
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.value !== prevProps.value) {
-      this.setState({value: this.props.value});
-    }
-  }
-
   handleClose = () => {
     this.props.onComplete();
   };
@@ -61,7 +83,7 @@ class MemberDialog extends React.Component {
     const opts = {
       method: "DELETE",
     };
-    fetch(`/api/members/${this.state.value.id}`, opts)
+    fetch(`/api/members/${this.state.item.id}`, opts)
       .then((res) => {
         if (!res.ok) {
           res.json().then(e => {
@@ -73,15 +95,15 @@ class MemberDialog extends React.Component {
   };
 
   handleSave = () => {
-    if (this.state.value.id) {
+    if (this.state.action === 'EDIT') {
       const opts = {
         method: "PUT",
         headers: {
           "Content-Type": "application/json; charset=utf-8",
         },
-        body: JSON.stringify(this.state.value),
+        body: JSON.stringify(this.state.item),
       };
-      fetch(`/api/members/${this.state.value.id}`, opts)
+      fetch(`/api/members/${this.state.item.id}`, opts)
         .then((res) => {
           if (!res.ok) {
             res.json().then(e => {
@@ -90,13 +112,14 @@ class MemberDialog extends React.Component {
           }
           this.props.onComplete();
         })
-    } else {
+    }
+    if (this.state.action === 'NEW') {
       const opts = {
         method: "POST",
         headers: {
           "Content-Type": "application/json; charset=utf-8",
         },
-        body: JSON.stringify(this.state.value),
+        body: JSON.stringify(this.state.item),
       };
       fetch('/api/members', opts)
         .then((res) => {
@@ -112,7 +135,7 @@ class MemberDialog extends React.Component {
   };
 
   handleFormUpdate = (value) => {
-    this.setState({value: value});
+    this.setState({item: value});
   };
 
 
@@ -125,13 +148,12 @@ class MemberDialog extends React.Component {
   }
 
   render() {
-    const {classes, open} = this.props;
-
     return (<React.Fragment>
+
         <Dialog
           fullWidth
           maxWidth={'md'}
-          open={this.state.value !== null}
+          open={this.state.action !== null}
           onClose={this.handleClose}
           aria-labelledby="simple-dialog-title"
         >
@@ -142,8 +164,9 @@ class MemberDialog extends React.Component {
               onSubmit={this.handleSubmit}
               onError={errors => console.log(errors)}
             >
+              ID: {this.state.item && this.state.item.id}
               <MemberForm
-                value={this.state.value}
+                value={this.state.item}
                 groups={this.state.groups}
                 fields={this.state.fields}
                 onChange={this.handleFormUpdate}
@@ -151,7 +174,7 @@ class MemberDialog extends React.Component {
             </ValidatorForm>
           </DialogContent>
           <DialogActions>
-            {this.state.value && this.state.value.id && (<Button onClick={this.handleDelete} color="secondary">
+            {this.state.item && this.state.item.id && (<Button onClick={this.handleDelete} color="secondary">
               Delete
             </Button>)}
             <Button onClick={this.handleClose} color="primary">

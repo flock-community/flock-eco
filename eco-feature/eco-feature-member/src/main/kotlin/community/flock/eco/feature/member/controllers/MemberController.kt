@@ -1,6 +1,7 @@
 package community.flock.eco.feature.member.controllers
 
 import community.flock.eco.feature.member.model.Member
+import community.flock.eco.feature.member.model.MemberGender
 import community.flock.eco.feature.member.model.MemberGroup
 import community.flock.eco.feature.member.model.MemberStatus
 import community.flock.eco.feature.member.repositories.MemberGroupRepository
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
+import java.time.LocalDate
 import java.util.*
 
 @RestController
@@ -19,6 +21,32 @@ class MemberController(
         private val memberRepository: MemberRepository,
         private val memberGroupRepository: MemberGroupRepository
 ) {
+
+
+    data class MemberForm(
+
+            val firstName: String,
+            val infix: String? = null,
+            val surName: String,
+
+            val email: String? = null,
+
+            val phoneNumber: String? = null,
+
+            val street: String? = null,
+            val houseNumber: String? = null,
+            val houseNumberExtension: String? = null,
+            val postalCode: String? = null,
+            val city: String? = null,
+            val country: String? = null,
+
+            val gender: MemberGender? = null,
+            val birthDate: LocalDate? = null,
+
+            val groups: Set<MemberGroup> = setOf(),
+            val fields: Map<String, String> = mapOf()
+    )
+
 
     @GetMapping
     @PreAuthorize("hasAuthority('MemberAuthority.READ')")
@@ -40,21 +68,17 @@ class MemberController(
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('MemberAuthority.READ')")
-    fun findById(@PathVariable("id") id: String): Optional<Member> = memberRepository
+    fun findById(
+            @PathVariable("id") id: String): Optional<Member> = memberRepository
             .findById(id.toLong())
-
-    @GetMapping("/{ids}")
-    @PreAuthorize("hasAuthority('MemberAuthority.READ')")
-    fun findByIds(@PathVariable("ids") ids: List<String>): List<Member> = memberRepository
-            .findByIds(ids.map { it.toLong() })
-            .toList()
 
     @PostMapping
     @PreAuthorize("hasAuthority('MemberAuthority.WRITE')")
-    fun create(@RequestBody member: Member): Member = memberRepository.save(member.copy(
-            id = 0,
-            status = MemberStatus.NEW,
-            groups = memberGroupRepository.findGroups(member)))
+    fun create(@RequestBody form: MemberForm): Member {
+        return form.toMember().let {
+            memberRepository.save(it)
+        }
+    }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('MemberAuthority.WRITE')")
@@ -74,5 +98,24 @@ class MemberController(
     }
 
     private fun MemberGroupRepository.findGroups(member: Member): Set<MemberGroup> = this.findAllById(member.groups.map { it.id }).toSet()
+
+    private fun MemberForm.toMember(): Member {
+        return Member(
+                firstName = this.firstName,
+                infix = this.infix,
+                surName = this.surName,
+                email = this.email,
+                phoneNumber = this.phoneNumber,
+                street = this.street,
+                houseNumber = this.houseNumber,
+                houseNumberExtension = this.houseNumberExtension,
+                postalCode = this.postalCode,
+                city = this.postalCode,
+                country = this.country,
+                gender = this.gender,
+                groups = this.groups,
+                fields = this.fields
+        )
+    }
 
 }

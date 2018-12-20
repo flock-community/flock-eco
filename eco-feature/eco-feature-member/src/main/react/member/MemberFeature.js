@@ -3,7 +3,6 @@ import {withStyles} from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Card';
-
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 
@@ -36,6 +35,7 @@ class MemberFeature extends React.Component {
     size: 10,
     search: this.props.search || '',
     members: this.props.members || [],
+    action: null,
     item: null,
     groups: [],
     count: 0,
@@ -47,11 +47,11 @@ class MemberFeature extends React.Component {
   }
 
   handleRowClick = (item) => {
-    this.setState({item})
+    this.setState({item, action: 'EDIT'})
   };
 
   handleNewClick = () => {
-    this.setState({item: {}})
+    this.setState({item: null, action: 'NEW'})
   };
 
   handleSearch = (val) => {
@@ -72,7 +72,8 @@ class MemberFeature extends React.Component {
 
   handleComplete = () => {
     this.setState({
-      item: null
+      item: null,
+      action: null
     }, () => {
       this.load()
     })
@@ -110,7 +111,7 @@ class MemberFeature extends React.Component {
           <Grid item>
             <Card>
               <CardContent>
-              <MemberSearch onChange={this.handleSearch}/>
+                <MemberSearch onChange={this.handleSearch}/>
               </CardContent>
             </Card>
           </Grid>
@@ -148,7 +149,8 @@ class MemberFeature extends React.Component {
   renderDialog() {
 
     return (<MemberDialog
-      value={this.state.item}
+      id={this.state.item && this.state.item.id}
+      action={this.state.action}
       onComplete={this.handleComplete}/>)
   }
 

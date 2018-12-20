@@ -10,6 +10,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>4.12</junit.version>
         <kotlin.version>1.2.60</kotlin.version>
+        <jackson.version>2.9.7</jackson.version>
         <main.basedir>${project.basedir}</main.basedir>
         <spring.boot.version>2.1.0.RELEASE</spring.boot.version>
     </properties>

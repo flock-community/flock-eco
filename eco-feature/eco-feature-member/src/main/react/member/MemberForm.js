@@ -26,9 +26,12 @@ const styles = theme => ({
 
 class MemberForm extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = props.value || {}
+  state = {}
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.value !== this.props.value) {
+      this.setState(this.props.value)
+    }
   }
 
   handleChange(name) {
@@ -42,7 +45,6 @@ class MemberForm extends React.Component {
   handleChangeGroup(name) {
     return (event) => {
       const value = event.target.value.map(this.resolverGroup)
-      console.log('value', value)
       this.setState({[name]: value}, () => {
         this.props.onChange(this.state)
       })
@@ -53,8 +55,6 @@ class MemberForm extends React.Component {
 
     return (event) => {
       const value = event.target.value
-
-      console.log(name, value)
 
       const fields = Object.assign(this.state.fields, {[name]: Array.isArray(value) ? value.join(',') : value})
       this.setState({fields}, () => {
@@ -69,11 +69,12 @@ class MemberForm extends React.Component {
     const {classes} = this.props;
 
     return (
+
       <Grid
         container
         spacing={16}>
         <Grid item xs={5}>
-
+          {this.state.firstName || ''}
           <TextValidator
             required
             name="firstName"
@@ -132,6 +133,14 @@ class MemberForm extends React.Component {
               <MenuItem value="FEMALE">Female</MenuItem>
             </Select>
           </FormControl>
+        </Grid>
+
+        <Grid item xs={12}>
+          <TextField
+            className={classes.input}
+            label="Phone number"
+            value={this.state.phoneNumber || ''}
+            onChange={this.handleChange('phoneNumber')}/>
         </Grid>
 
         <Grid item xs={12}>
