@@ -164,7 +164,6 @@ class MemberDialog extends React.Component {
               onSubmit={this.handleSubmit}
               onError={errors => console.log(errors)}
             >
-              ID: {this.state.item && this.state.item.id}
               <MemberForm
                 value={this.state.item}
                 groups={this.state.groups}

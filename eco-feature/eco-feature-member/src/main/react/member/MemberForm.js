@@ -73,8 +73,8 @@ class MemberForm extends React.Component {
       <Grid
         container
         spacing={16}>
+
         <Grid item xs={5}>
-          {this.state.firstName || ''}
           <TextValidator
             required
             name="firstName"
