@@ -1,5 +1,6 @@
 package community.flock.eco.feature.member.data
 
+import community.flock.eco.core.data.LoadData
 import community.flock.eco.feature.member.model.*
 import community.flock.eco.feature.member.repositories.MemberFieldRepository
 import community.flock.eco.feature.member.repositories.MemberGroupRepository
@@ -9,13 +10,13 @@ import org.springframework.boot.ApplicationRunner
 import org.springframework.stereotype.Component
 
 @Component
-class LoadData(
+class MemberLoadData(
         private val memberRepository: MemberRepository,
         private val memberGroupRepository: MemberGroupRepository,
         private val memberFieldRepository: MemberFieldRepository
-) : ApplicationRunner {
+) : LoadData {
 
-    override fun run(args: ApplicationArguments?) {
+    override fun load() {
         memberRepository.saveAll((1..1000).map {
             Member(
                     firstName = "firstName-$it",

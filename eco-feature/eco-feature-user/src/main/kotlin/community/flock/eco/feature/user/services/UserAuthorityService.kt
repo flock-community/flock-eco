@@ -9,10 +9,15 @@ class UserAuthorityService {
 
     private final val reflections = Reflections("community.flock.eco")
 
-    val classes: MutableSet<Class<out Authority>> = reflections.getSubTypesOf(Authority::class.java).toMutableSet()
+    private val classes: MutableSet<Class<out Authority>> = reflections.getSubTypesOf(Authority::class.java).toMutableSet()
 
     fun addAuthority(clazz: Class<out Authority>) {
         this.classes.add(clazz)
     }
+
+    fun allAuthorities(): List<Authority> = classes
+            .filter { it.isEnum }
+            .flatMap { it.enumConstants.toList() }
+
 
 }
