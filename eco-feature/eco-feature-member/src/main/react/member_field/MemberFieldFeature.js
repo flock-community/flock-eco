@@ -38,12 +38,10 @@ class MemberManager extends React.Component {
   };
 
   handleFormClose = () => {
-    console.log("handleClose", this.state.item)
     this.setState({item: null});
   };
 
   handleFormSave = () => {
-    console.log("handleSave", this.state.item)
     if (this.state.item.id) {
       this.update(this.state.item)
     } else {
@@ -52,12 +50,10 @@ class MemberManager extends React.Component {
   };
 
   handleFormDelete = () => {
-    console.log("handleDelete", this.state.item)
     this.delete(this.state.item)
   };
 
   handleFormUpdate = (value) => {
-    console.log("handleFormUpdate", value)
     this.setState({item: value});
   };
 
@@ -105,7 +101,6 @@ class MemberManager extends React.Component {
     return fetch('/api/member_fields')
       .then(res => res.json())
       .then(json => {
-        console.log(json)
         this.setState({list: json});
       })
   }

@@ -6,6 +6,7 @@ import community.flock.eco.feature.member.model.MemberGroup
 import community.flock.eco.feature.member.model.MemberStatus
 import community.flock.eco.feature.member.repositories.MemberGroupRepository
 import community.flock.eco.feature.member.repositories.MemberRepository
+import community.flock.eco.feature.member.specifications.MemberSpecification
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -51,19 +52,24 @@ class MemberController(
     @GetMapping
     @PreAuthorize("hasAuthority('MemberAuthority.READ')")
     fun findAll(
-            @RequestParam("s") search: String?,
-            @RequestParam("status") status: MemberStatus?,
-            page: Pageable?): ResponseEntity<List<Member>> {
+            @RequestParam search: String?,
+            @RequestParam statuses: Set<MemberStatus>?,
+            @RequestParam groups: Set<String>?,
+            page: Pageable): ResponseEntity<List<Member>> {
 
-        val res = memberRepository.findBySearch(
+        val specification = MemberSpecification(
                 search = search ?: "",
-                status = status?.let { arrayOf(it) } ?: arrayOf(MemberStatus.NEW, MemberStatus.ACTIVE),
-                page = page!!)
+                statuses = statuses ?: setOf(
+                        MemberStatus.NEW,
+                        MemberStatus.ACTIVE,
+                        MemberStatus.DISABLED),
+                groups = groups?.let { memberGroupRepository.findByCodes(it).toSet() } ?: setOf()
+        )
+        val res = memberRepository.findAll(specification, page)
         val headers = HttpHeaders()
         headers.set("x-page", page.pageNumber.toString())
         headers.set("x-total", res.totalElements.toString())
         return ResponseEntity(res.content.toList(), headers, HttpStatus.OK)
-
     }
 
     @GetMapping("/{id}")

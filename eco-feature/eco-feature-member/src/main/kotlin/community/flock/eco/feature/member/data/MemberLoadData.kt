@@ -5,8 +5,6 @@ import community.flock.eco.feature.member.model.*
 import community.flock.eco.feature.member.repositories.MemberFieldRepository
 import community.flock.eco.feature.member.repositories.MemberGroupRepository
 import community.flock.eco.feature.member.repositories.MemberRepository
-import org.springframework.boot.ApplicationArguments
-import org.springframework.boot.ApplicationRunner
 import org.springframework.stereotype.Component
 
 @Component
@@ -17,63 +15,64 @@ class MemberLoadData(
 ) : LoadData {
 
     override fun load() {
-        memberRepository.saveAll((1..1000).map {
-            Member(
-                    firstName = "firstName-$it",
-                    surName = "surName-$it",
-                    gender = MemberGender.MALE,
-                    email = "email-$it",
-                    fields = mapOf(
-                            "field_text" to "123",
-                            "field_checkbox" to "true",
-                            "field_single_select" to "Option 1",
-                            "field_multi_select" to "Option 3,Option 4")
-            )
-        })
 
-        memberGroupRepository.saveAll((1..10).map {
-            MemberGroup(
-                    code = "GROUP_$it",
-                    name = "Group_$it"
-            )
-        })
 
-        val field1 = MemberField(
-                name = "field_text",
-                label = "Field Text",
-                type = MemberFieldType.TEXT
-        )
+        val groups = (1..10)
+                .map {
+                    MemberGroup(
+                            code = "GROUP_$it",
+                            name = "Group_$it")
+                }
+                .let { memberGroupRepository.saveAll(it) }
 
-        val field2a = MemberField(
-                name = "field_checkbox",
-                label = "Field Checkbox",
-                type = MemberFieldType.CHECKBOX
-        )
+        val fields = listOf(
+                MemberField(
+                        name = "field_text",
+                        label = "Field Text",
+                        type = MemberFieldType.TEXT),
+                MemberField(
+                        name = "field_checkbox",
+                        label = "Field Checkbox",
+                        type = MemberFieldType.CHECKBOX),
+                MemberField(
+                        name = "field_single_select",
+                        label = "Field Single Select",
+                        type = MemberFieldType.SINGLE_SELECT,
+                        options = sortedSetOf("Option 1", "Option 2")),
+                MemberField(
+                        name = "field_multi_select",
+                        label = "Field Multi Select",
+                        type = MemberFieldType.MULTI_SELECT,
+                        options = sortedSetOf("Option 3", "Option 4", "Option 5")),
+                MemberField(
+                        name = "field_checkbox_disabled",
+                        label = "Field Checkbox",
+                        type = MemberFieldType.CHECKBOX,
+                        disabled = true))
+                .let { memberFieldRepository.saveAll(it) }
 
-        val field2b = MemberField(
-                name = "field_checkbox_disabled",
-                label = "Field Checkbox",
-                type = MemberFieldType.CHECKBOX,
-                disabled = true
-        )
-
-        val field3 = MemberField(
-                name = "field_single_select",
-                label = "Field Single Select",
-                type = MemberFieldType.SINGLE_SELECT,
-                options = sortedSetOf("Option 1", "Option 2"))
-
-        val field4 = MemberField(
-                name = "field_multi_select",
-                label = "Field Multi Select",
-                type = MemberFieldType.MULTI_SELECT,
-                options = sortedSetOf("Option 3", "Option 4", "Option 5"))
-
-        memberFieldRepository.save(field1)
-        memberFieldRepository.save(field2a)
-        memberFieldRepository.save(field2b)
-        memberFieldRepository.save(field3)
-        memberFieldRepository.save(field4)
+        val members = (0..999)
+                .map {
+                    Member(
+                            firstName = "first-name-$it",
+                            surName = "sur-name-$it",
+                            gender = MemberGender.MALE,
+                            email = "$it@email",
+                            groups = when (it % 4) {
+                                0 -> setOf(groups.toList()[2], groups.toList()[3])
+                                1 -> setOf(groups.toList()[2])
+                                2 -> setOf(groups.toList()[2], groups.toList()[0])
+                                3 -> setOf(groups.toList()[2], groups.toList()[1])
+                                else -> setOf()
+                            },
+                            fields = mapOf(
+                                    fields.toList()[0].name to "123",
+                                    fields.toList()[1].name to "true",
+                                    fields.toList()[2].name to "Option 1",
+                                    fields.toList()[3].name to "Option 3,Option 4"),
+                            status = if (it % 2 == 0) MemberStatus.NEW else MemberStatus.ACTIVE
+                    )
+                }.let { memberRepository.saveAll(it) }
 
     }
 }

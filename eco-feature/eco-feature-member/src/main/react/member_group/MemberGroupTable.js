@@ -39,7 +39,6 @@ class MemberTable extends React.Component {
   handleClick(event, item) {
     if (this.props.handleRowClick)
       return this.props.handleRowClick(event, item)
-    console.log(user)
   }
 
 

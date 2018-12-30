@@ -1,7 +1,7 @@
 import React from "react";
 import {withStyles} from '@material-ui/core/styles';
 
-import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 import Paper from '@material-ui/core/Card';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -10,8 +10,9 @@ import Grid from '@material-ui/core/Grid';
 
 import AddIcon from '@material-ui/icons/Add';
 
+
 import MemberTable from "./MemberTable";
-import MemberSearch from "./MemberSearch";
+import MemberSpecification from "./MemberSpecification";
 import MemberDialog from "./MemberDialog";
 
 const styles = theme => ({
@@ -34,17 +35,11 @@ class MemberFeature extends React.Component {
   state = {
     size: 10,
     search: this.props.search || '',
-    members: this.props.members || [],
     action: null,
     item: null,
-    groups: [],
-    count: 0,
-    page: 0,
+    filter: {},
+    refresh: false
   };
-
-  componentDidMount() {
-    this.load();
-  }
 
   handleRowClick = (item) => {
     this.setState({item, action: 'EDIT'})
@@ -54,46 +49,20 @@ class MemberFeature extends React.Component {
     this.setState({item: null, action: 'NEW'})
   };
 
-  handleSearch = (val) => {
+  handleSpecification = (specification) => {
     this.setState({
       page: 0,
-      search: val.search
-    }, () => {
-      this.load()
+      specification
     });
-
-  };
-
-  handleChangePage = (event, page) => {
-    this.setState({page}, () => {
-      this.load()
-    })
   };
 
   handleComplete = () => {
     this.setState({
       item: null,
-      action: null
-    }, () => {
-      this.load()
+      action: null,
+      refresh: !this.state.refresh
     })
-  }
-
-  load = () => {
-    fetch(`/api/members?s=${this.state.search}&page=${this.state.page}&size=${this.state.size}`)
-      .then(res => {
-        this.setState({
-          count: parseInt(res.headers.get('x-total'))
-        })
-        return res.json()
-      })
-      .then(json => {
-        this.setState({members: json});
-      })
-      .catch(e => {
-        this.setState({message: "Cannot load members"})
-      })
-  }
+  };
 
   render() {
 
@@ -111,17 +80,18 @@ class MemberFeature extends React.Component {
           <Grid item>
             <Card>
               <CardContent>
-                <MemberSearch onChange={this.handleSearch}/>
+                <MemberSpecification
+                  onChange={this.handleSpecification}/>
               </CardContent>
             </Card>
           </Grid>
           <Grid item>
             <Paper className={classes.tablePaper}>
               <MemberTable
-                data={this.state.members}
-                count={this.state.count}
+                specification={this.state.specification}
                 page={this.state.page}
                 size={this.state.size}
+                refresh={this.state.refresh}
                 onRowClick={this.handleRowClick}
                 onChangePage={this.handleChangePage}
               />
@@ -129,29 +99,23 @@ class MemberFeature extends React.Component {
           </Grid>
         </Grid>
 
-        {this.renderDialog()}
+        <MemberDialog
+          id={this.state.item && this.state.item.id}
+          action={this.state.action}
+          onComplete={this.handleComplete}/>
 
-        <Button
-          variant="fab"
+        <Fab
           color="primary"
           aria-label="Add"
           className={classes.button}
           onClick={this.handleNewClick}
         >
           <AddIcon/>
-        </Button>
+        </Fab>
 
       </React.Fragment>
 
     )
-  }
-
-  renderDialog() {
-
-    return (<MemberDialog
-      id={this.state.item && this.state.item.id}
-      action={this.state.action}
-      onComplete={this.handleComplete}/>)
   }
 
 };

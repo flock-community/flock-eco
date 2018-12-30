@@ -37,12 +37,10 @@ class MemberManager extends React.Component {
     };
 
     this.handleFormClose = () => {
-      console.log("handleClose", this.state.item)
       this.setState({item: null});
     };
 
     this.handleFormSave = () => {
-      console.log("handleSave", this.state.item)
       if(this.state.item.id){
         this.update(this.state.item)
       }else{
@@ -52,12 +50,10 @@ class MemberManager extends React.Component {
     };
 
     this.handleFormDelete = () => {
-      console.log("handleDelete", this.state.item)
       this.delete(this.state.item)
     };
 
     this.handleFormUpdate = (value) => {
-      console.log("handleFormUpdate", value)
       this.setState({item: value});
     };
 
@@ -107,7 +103,6 @@ class MemberManager extends React.Component {
     return fetch('/api/member_groups')
       .then(res => res.json())
       .then(json => {
-        console.log(json)
         this.setState({list: json});
       })
   }
