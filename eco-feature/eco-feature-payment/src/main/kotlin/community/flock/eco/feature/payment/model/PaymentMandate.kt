@@ -1,11 +1,13 @@
 package community.flock.eco.feature.payment.model;
 
+import community.flock.eco.core.events.EventEntityListeners
 import java.time.LocalDate
 import java.time.Month
 import java.util.*
 import javax.persistence.*
 
 @Entity
+@EntityListeners(EventEntityListeners::class)
 data class PaymentMandate(
 
     @Id

@@ -1,11 +1,11 @@
 package community.flock.eco.feature.mailchimp.model
 
-data class Template(
+data class MailchimpTemplate(
         val id: String,
         val name: String,
-        val type: TemplateType
+        val type: MailchimpTemplateType
 )
 
-enum class TemplateType {
+enum class MailchimpTemplateType {
     USER, BASE, GALLERY
 }

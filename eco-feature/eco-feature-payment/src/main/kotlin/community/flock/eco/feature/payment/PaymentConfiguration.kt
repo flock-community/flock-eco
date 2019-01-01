@@ -1,6 +1,5 @@
 package community.flock.eco.feature.payment
 
-import community.flock.eco.core.services.EventService
 import community.flock.eco.feature.payment.controllers.PaymentBuckarooController
 import community.flock.eco.feature.payment.controllers.PaymentMandateController
 import community.flock.eco.feature.payment.controllers.PaymentTransactionController
@@ -18,6 +17,5 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
         PaymentSepaService::class,
         PaymentMandateController::class,
         PaymentTransactionController::class,
-        PaymentBuckarooController::class,
-        EventService::class)
+        PaymentBuckarooController::class)
 class PaymentConfiguration
