@@ -34,7 +34,7 @@ class MemberSpecification extends React.Component {
     name: [],
     anchorEl: null,
     groups: [],
-    statuses: ['NEW', 'ACTIVE', 'DISABLED', 'DELETED'],
+    statuses: ['NEW', 'ACTIVE', 'DISABLED', 'DELETED', 'MERGED'],
     specifications: {
       search: [''],
       groups: [],

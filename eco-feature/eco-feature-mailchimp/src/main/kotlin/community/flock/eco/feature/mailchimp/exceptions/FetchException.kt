@@ -1,4 +1,4 @@
 package community.flock.eco.feature.payment.exceptions
 
-class FetchTemplateException(
+class FetchException(
         override val message: String):RuntimeException()

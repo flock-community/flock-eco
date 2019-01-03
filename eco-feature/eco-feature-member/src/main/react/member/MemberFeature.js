@@ -14,6 +14,7 @@ import AddIcon from '@material-ui/icons/Add';
 import MemberTable from "./MemberTable";
 import MemberSpecification from "./MemberSpecification";
 import MemberDialog from "./MemberDialog";
+import MemberMerger from './MemberMerger'
 
 const styles = theme => ({
   tablePaper: {
@@ -38,7 +39,9 @@ class MemberFeature extends React.Component {
     action: null,
     item: null,
     filter: {},
-    refresh: false
+    refresh: false,
+    refreshSelection: false,
+    mergeMemberIds: null,
   };
 
   handleRowClick = (item) => {
@@ -60,9 +63,24 @@ class MemberFeature extends React.Component {
     this.setState({
       item: null,
       action: null,
-      refresh: !this.state.refresh
+      refresh: !this.state.refresh,
+      mergeMemberIds: null,
     })
   };
+
+  handleMergeComplete = () =>
+    this.setState(state => ({
+      mergeMemberIds: null,
+      refresh: !this.state.refresh,
+      refreshSelection: !state.refreshSelection,
+    }))
+
+  mergeMembers = (mergeMemberIds) => this.setState({mergeMemberIds});
+
+  handleMergerCancel = () =>
+    this.setState({
+      mergeMemberIds: null
+    })
 
   render() {
 
@@ -93,7 +111,8 @@ class MemberFeature extends React.Component {
                 size={this.state.size}
                 refresh={this.state.refresh}
                 onRowClick={this.handleRowClick}
-                onChangePage={this.handleChangePage}
+                refreshSelection={this.state.refreshSelection}
+                onMergeMembers={this.mergeMembers}
               />
             </Paper>
           </Grid>
@@ -103,6 +122,11 @@ class MemberFeature extends React.Component {
           id={this.state.item && this.state.item.id}
           action={this.state.action}
           onComplete={this.handleComplete}/>
+
+        <MemberMerger
+          mergeMemberIds={this.state.mergeMemberIds}
+          onComplete={this.handleMergeComplete}
+          onCancel={this.handleMergerCancel}/>
 
         <Fab
           color="primary"

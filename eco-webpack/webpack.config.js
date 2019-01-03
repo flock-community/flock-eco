@@ -16,6 +16,7 @@ module.exports = {
     path: path.join(__dirname, root, 'target/generated-resources')
   },
 
+  devtool: 'eval-source-map',
   module: {
     rules: [
       {

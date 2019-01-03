@@ -4,5 +4,6 @@ enum class MemberStatus {
     NEW,
     ACTIVE,
     DISABLED,
-    DELETED
+    DELETED,
+    MERGED,
 }
