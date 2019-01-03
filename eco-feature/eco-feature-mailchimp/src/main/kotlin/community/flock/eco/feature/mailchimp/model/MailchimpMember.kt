@@ -1,10 +1,9 @@
 package community.flock.eco.feature.mailchimp.model
 
 data class MailchimpMember(
-        val id:String? = null,
+        val email:String,
         val firstName:String? = null,
         val lastName:String? = null,
-        val email:String,
-        val status: MailchimpMemberStatus,
+        val status: MailchimpMemberStatus = MailchimpMemberStatus.UNSUBSCRIBED,
         val tags: Set<String> = setOf()
 )
