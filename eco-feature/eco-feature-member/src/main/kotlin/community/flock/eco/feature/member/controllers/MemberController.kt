@@ -50,8 +50,12 @@ class MemberController(
             val birthDate: LocalDate? = null,
 
             val groups: Set<MemberGroup> = setOf(),
-            val fields: Map<String, String> = mapOf()
+            val fields: Map<String, String> = mapOf(),
+
+            val status: MemberStatus = MemberStatus.NEW
     )
+
+    data class MergeForm(val mergeMemberIds: List<Long>, val newMember: MemberForm)
 
     @GetMapping
     @PreAuthorize("hasAuthority('MemberAuthority.READ')")
@@ -107,6 +111,19 @@ class MemberController(
                 }
     }
 
+    @PostMapping("/merge")
+    @PreAuthorize("hasAuthority('MemberAuthority.WRITE')")
+    fun merge(@RequestBody form: MergeForm): Member {
+        form.mergeMemberIds.map { merge(it) }
+        return form.newMember.toMember().let { memberRepository.save(it) }
+    }
+
+    private fun merge(id: Long) = memberRepository
+            .findById(id)
+            .ifPresent { member ->
+                member.copy(status = MemberStatus.MERGED).let { memberRepository.save(it) }
+            }
+
     private fun MemberGroupRepository.findGroups(member: Member): Set<MemberGroup> = this.findAllById(member.groups.map { it.id }).toSet()
 
     private fun MemberForm.toMember(): Member {
@@ -124,7 +141,9 @@ class MemberController(
                 country = this.country,
                 gender = this.gender,
                 groups = this.groups,
-                fields = this.fields
+                fields = this.fields,
+                birthDate = this.birthDate,
+                status = this.status
         )
     }
 
