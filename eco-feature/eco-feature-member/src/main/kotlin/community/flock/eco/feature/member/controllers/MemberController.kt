@@ -23,6 +23,7 @@ sealed class MemberEvent(open val member: Member) : Event
 data class CreateMemberEvent(override val member: Member) : MemberEvent(member)
 data class UpdateMemberEvent(override val member: Member) : MemberEvent(member)
 data class DeleteMemberEvent(override val member: Member) : MemberEvent(member)
+data class MergeMemberEvent(override val member: Member, val mergeMembers: Set<Member>) : MemberEvent(member)
 
 @RestController
 @RequestMapping("/api/members")
@@ -123,7 +124,12 @@ class MemberController(
     @PreAuthorize("hasAuthority('MemberAuthority.WRITE')")
     fun merge(@RequestBody form: MergeForm): Member {
         form.mergeMemberIds.map { merge(it) }
-        return form.newMember.toMember().let { memberRepository.save(it) }
+        return form.newMember.toMember()
+                .let { memberRepository.save(it) }
+                .apply {
+                    val mergeMembers = memberRepository.findByIds(form.mergeMemberIds).toSet()
+                    publisher.publishEvent(MergeMemberEvent(this, mergeMembers))
+                }
     }
 
     private fun merge(id: Long) = memberRepository
