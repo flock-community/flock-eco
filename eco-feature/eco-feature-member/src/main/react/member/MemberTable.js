@@ -1,13 +1,81 @@
-import React from "react";
+import React from 'react'
+import classNames from 'classnames'
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableFooter from '@material-ui/core/TableFooter'
+import TableCell from '@material-ui/core/TableCell'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
+import TablePagination from '@material-ui/core/TablePagination'
+import TableSortLabel from '@material-ui/core/TableSortLabel'
+import Checkbox from '@material-ui/core/Checkbox'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
+import Tooltip from '@material-ui/core/Tooltip'
+import {withStyles} from '@material-ui/core/styles'
+import IconButton from '@material-ui/core/IconButton'
+import MergeIcon from '@material-ui/icons/CallMerge'
+import {lighten} from '@material-ui/core/es/styles/colorManipulator'
+import * as Member from '../model/Member'
 
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableFooter from '@material-ui/core/TableFooter';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
+const EnhancedTableToolbar = withStyles(theme => ({
+  root: {
+    paddingRight: theme.spacing.unit,
+  },
+  highlight:
+    theme.palette.type === 'light'
+      ? {
+          color: theme.palette.secondary.main,
+          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+        }
+      : {
+          color: theme.palette.text.primary,
+          backgroundColor: theme.palette.secondary.dark,
+        },
+  spacer: {
+    flex: '1 1 100%',
+  },
+  actions: {
+    color: theme.palette.text.secondary,
+  },
+  title: {
+    flex: '0 0 auto',
+  },
+}))(({classes, onMergeMembers, selectedIds}) => {
+  const numSelected = selectedIds.length
+  return (
+    <Toolbar
+      className={classNames(classes.root, {
+        [classes.highlight]: numSelected > 0,
+      })}
+    >
+      <div className={classes.title}>
+        {numSelected > 0 ? (
+          <Typography color="inherit" variant="subtitle1">
+            {numSelected} selected
+          </Typography>
+        ) : (
+          <Typography variant="h6" id="tableTitle">
+            Members
+          </Typography>
+        )}
+      </div>
+      <div className={classes.spacer} />
+      <div className={classes.actions}>
+        {numSelected >= 2 ? (
+          <Tooltip title="Merge">
+            <IconButton
+              aria-label="Merge"
+              onClick={() => onMergeMembers(selectedIds)}
+            >
+              <MergeIcon />
+            </IconButton>
+          </Tooltip>
+        ) : null}
+      </div>
+    </Toolbar>
+  )
+})
 
 class MemberTable extends React.Component {
 
@@ -19,6 +87,7 @@ class MemberTable extends React.Component {
     specification: {},
     order: 'surName',
     direction: 'asc',
+    selectedIds: [],
   }
 
   handleChangePage = (event, page) => {
@@ -73,14 +142,29 @@ class MemberTable extends React.Component {
         page: 0,
       }, this.loadData)
 
-    if (prevProps.refresh !== this.props.refresh)
+    if (prevProps.refresh !== this.props.refresh) {
       this.loadData()
+    }
+    if (prevProps.refreshSelection !== this.props.refreshSelection)
+      this.setState({
+        selectedIds: [],
+      })
+  }
 
+  isSelected = id => this.state.selectedIds.indexOf(id) !== -1
+
+  onCheckboxChange = (checked, id) => {
+    if (checked) {
+      this.setState({selectedIds: [...this.state.selectedIds, id]})
+    } else {
+      this.setState({
+        selectedIds: this.state.selectedIds.filter(it => it !== id),
+      })
+    }
   }
 
   render() {
-
-    const {page} = this.props;
+    const {onMergeMembers} = this.props
 
     const rows = [
       {id: 'surName', label: 'Name'},
@@ -90,56 +174,80 @@ class MemberTable extends React.Component {
     ]
 
     return (
-      <Table>
-        <TableHead>
-          <TableRow>
-            {rows.map(row => (<TableCell key={row.id}>
-              <TableSortLabel
-                active={this.state.order === row.id}
-                direction={this.state.direction}
-                onClick={this.handleChangeSort(row.id)}
-              >{row.label}</TableSortLabel>
-            </TableCell>))}
-          </TableRow>
-        </TableHead>
+      <div>
+        <EnhancedTableToolbar
+          onMergeMembers={onMergeMembers}
+          selectedIds={this.state.selectedIds}
+        />
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell style={{width: 25}} padding="checkbox" />
+              {rows.map(row => (
+                <TableCell key={row.id}>
+                  <TableSortLabel
+                    active={this.state.order === row.id}
+                    direction={this.state.direction}
+                    onClick={this.handleChangeSort(row.id)}
+                  >
+                    {row.label}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
 
-        <TableBody>{this.state.data.map(it => (
-          <TableRow
-            key={it.id}
-            hover
-            onClick={event => this.handleRowClick(it)}
-          >
-            <TableCell component="th" scope="row">{this.memberToName(it)}</TableCell>
-            <TableCell>{it.email}</TableCell>
-            <TableCell>{it.created}</TableCell>
-            <TableCell>{it.status}</TableCell>
-          </TableRow>
-        ))}
-        </TableBody>
+          <TableBody>
+            {this.state.data.map(it => (
+              <TableRow
+                key={it.id}
+                hover
+                selected={this.isSelected(it.id)}
+                aria-checked={this.isSelected(it.id)}
+              >
+                <TableCell style={{width: 25}} padding="checkbox">
+                  <Checkbox
+                    onChange={e =>
+                      this.onCheckboxChange(e.target.checked, it.id)
+                    }
+                    checked={this.isSelected(it.id)}
+                  />
+                </TableCell>
+                <TableCell
+                  onClick={_ => this.handleRowClick(it)}
+                  component="th"
+                  scope="row"
+                >
+                  {Member.toName(it)}
+                </TableCell>
+                <TableCell onClick={_ => this.handleRowClick(it)}>
+                  {it.email}
+                </TableCell>
+                <TableCell onClick={_ => this.handleRowClick(it)}>
+                  {it.created}
+                </TableCell>
+                <TableCell onClick={_ => this.handleRowClick(it)}>
+                  {it.status}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
 
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              count={this.state.count}
-              rowsPerPage={this.props.size}
-              page={this.state.page}
-              rowsPerPageOptions={[]}
-              onChangePage={this.handleChangePage}
-            />
-          </TableRow>
-        </TableFooter>
-      </Table>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                count={this.state.count}
+                rowsPerPage={this.props.size}
+                page={this.state.page}
+                rowsPerPageOptions={[]}
+                onChangePage={this.handleChangePage}
+              />
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </div>
     )
   }
-
-
-  memberToName(it) {
-    if (it.infix) {
-      return `${it.firstName} ${it.infix} ${it.surName}`
-    }
-    return `${it.firstName} ${it.surName}`
-  }
-
 }
 
-export default MemberTable;
+export default MemberTable

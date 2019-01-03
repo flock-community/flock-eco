@@ -23,6 +23,7 @@ sealed class MemberEvent(open val member: Member) : Event
 data class CreateMemberEvent(override val member: Member) : MemberEvent(member)
 data class UpdateMemberEvent(override val member: Member) : MemberEvent(member)
 data class DeleteMemberEvent(override val member: Member) : MemberEvent(member)
+data class MergeMemberEvent(override val member: Member, val mergeMembers: Set<Member>) : MemberEvent(member)
 
 @RestController
 @RequestMapping("/api/members")
@@ -54,8 +55,12 @@ class MemberController(
             val birthDate: LocalDate? = null,
 
             val groups: Set<MemberGroup> = setOf(),
-            val fields: Map<String, String> = mapOf()
+            val fields: Map<String, String> = mapOf(),
+
+            val status: MemberStatus = MemberStatus.NEW
     )
+
+    data class MergeForm(val mergeMemberIds: List<Long>, val newMember: MemberForm)
 
     @GetMapping
     @PreAuthorize("hasAuthority('MemberAuthority.READ')")
@@ -115,6 +120,24 @@ class MemberController(
                         .apply { publisher.publishEvent(DeleteMemberEvent(this)) }
             }
 
+    @PostMapping("/merge")
+    @PreAuthorize("hasAuthority('MemberAuthority.WRITE')")
+    fun merge(@RequestBody form: MergeForm): Member {
+        form.mergeMemberIds.map { merge(it) }
+        return form.newMember.toMember()
+                .let { memberRepository.save(it) }
+                .apply {
+                    val mergeMembers = memberRepository.findByIds(form.mergeMemberIds).toSet()
+                    publisher.publishEvent(MergeMemberEvent(this, mergeMembers))
+                }
+    }
+
+    private fun merge(id: Long) = memberRepository
+            .findById(id)
+            .ifPresent { member ->
+                member.copy(status = MemberStatus.MERGED).let { memberRepository.save(it) }
+            }
+
     private fun MemberForm.toMember(): Member {
         return Member(
                 firstName = this.firstName,
@@ -130,7 +153,9 @@ class MemberController(
                 country = this.country,
                 gender = this.gender,
                 groups = this.groups,
-                fields = this.fields
+                fields = this.fields,
+                birthDate = this.birthDate,
+                status = this.status
         )
     }
 
