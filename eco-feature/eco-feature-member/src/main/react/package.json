@@ -1,0 +1,9 @@
+{
+  "name": "eco-feature-member",
+  "version": "0.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "babel": {
+    "presets": ["env", "react", "stage-2"]
+  }
+}

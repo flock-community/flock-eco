@@ -96,6 +96,7 @@ class MemberFeature extends React.Component {
           <Grid item>
             <Paper className={classes.tablePaper}>
               <MemberTable
+                data={this.props.data}
                 specification={this.state.specification}
                 page={this.state.page}
                 size={this.state.size}

@@ -15,7 +15,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import {withStyles} from '@material-ui/core/styles'
 import IconButton from '@material-ui/core/IconButton'
 import MergeIcon from '@material-ui/icons/CallMerge'
-import {lighten} from '@material-ui/core/es/styles/colorManipulator'
+import {lighten} from '@material-ui/core/styles/colorManipulator'
 import * as Member from '../model/Member'
 
 const EnhancedTableToolbar = withStyles(theme => ({
@@ -79,7 +79,7 @@ const EnhancedTableToolbar = withStyles(theme => ({
 
 class MemberTable extends React.Component {
   state = {
-    data: [],
+    data: this.props.data || [],
     count: 0,
     page: 0,
     size: 10,

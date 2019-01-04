@@ -1,0 +1,22 @@
+{
+  "name": "eco-server",
+  "dependencies": {
+    "eco-feature-member": "0.0.0",
+    "express": "^4.16.4",
+    "jss": "^9.8.7",
+    "react-jss": "^8.6.1"
+  },
+  "scripts": {
+    "start": "babel-node server.js"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0"
+  },
+  "babel": {
+    "presets": [
+      "env",
+      "react",
+      "stage-2"
+    ]
+  }
+}
