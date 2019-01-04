@@ -8,11 +8,8 @@ import {
   createMuiTheme,
   MuiThemeProvider,
 } from '@material-ui/core/styles'
-import green from '@material-ui/core/colors/green'
-import red from '@material-ui/core/colors/red'
 import MemberFeature from 'eco-feature-member/member/MemberFeature'
 import proxy from 'http-proxy-middleware'
-import 'babel-polyfill'
 import fetch from 'node-fetch'
 
 const data = [
@@ -64,9 +61,9 @@ function renderHydrate(html, css) {
         <title>Material-UI</title>
       </head>
       <body>
-        <script async src="build/client_hydrate.js"></script>
-        <div id="root">${html}</div>
         <style id="jss-server-side">${css}</style>
+        <div id="root">${html}</div>
+        <script async src="build/client_hydrate.js"></script>
       </body>
     </html>
   `
@@ -96,11 +93,6 @@ function handleHydrate(req, res) {
 
   // Create a theme instance.
   const theme = createMuiTheme({
-    palette: {
-      primary: green,
-      accent: red,
-      type: 'light',
-    },
     typography: {
       useNextVariants: true,
     },

@@ -1,5 +1,5 @@
-const path = require('path');
 
+const path = require('path');
 module.exports = {
   entry: {
     client_hydrate: './client_hydrate.js',
@@ -15,8 +15,29 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        exclude: /node_modules/,
         loader: 'babel-loader',
+        exclude: /node_modules/,
+        options: {
+          "presets": [
+            "@babel/preset-env",
+            "@babel/preset-react"
+          ],
+          "plugins": [
+            "@babel/plugin-syntax-dynamic-import",
+            "@babel/plugin-syntax-import-meta",
+            [
+              "@babel/plugin-proposal-class-properties",
+              {
+                "loose": true
+              }
+            ],
+            "@babel/plugin-proposal-json-strings",
+            "@babel/plugin-proposal-function-sent",
+            "@babel/plugin-proposal-export-namespace-from",
+            "@babel/plugin-proposal-numeric-separator",
+            "@babel/plugin-proposal-throw-expressions"
+          ]
+        }
       },
     ],
   },
@@ -28,4 +49,7 @@ module.exports = {
       '/login': 'http://localhost:8080',
     },
   },
+  resolve: {
+    symlinks: true
+  }
 };

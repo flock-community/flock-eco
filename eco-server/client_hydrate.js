@@ -1,17 +1,20 @@
 import 'babel-polyfill';
-import React from 'react';
-import ReactDOM from 'react-dom';
+
+import React from 'react'
+import ReactDOM from 'react-dom'
+import MemberFeature from 'eco-feature-member/member/MemberFeature'
 import JssProvider from 'react-jss/lib/JssProvider';
 import {
   MuiThemeProvider,
   createMuiTheme,
   createGenerateClassName,
 } from '@material-ui/core/styles';
-import green from '@material-ui/core/colors/green';
-import red from '@material-ui/core/colors/red';
-import MemberFeature from 'eco-feature-member/member/MemberFeature'
+
 
 class Main extends React.Component {
+  state = {
+    a: 1
+  }
   // Remove the server-side injected CSS.
   componentDidMount() {
     const jssStyles = document.getElementById('jss-server-side');
@@ -21,30 +24,14 @@ class Main extends React.Component {
   }
 
   render() {
-    return <MemberFeature />;
+    return <MemberFeature/>
   }
 }
-
-// Create a theme instance.
-const theme = createMuiTheme({
-  palette: {
-    primary: green,
-    accent: red,
-    type: 'light',
-  },
-  typography: {
-    useNextVariants: true,
-  },
-});
 
 // Create a new class name generator.
 const generateClassName = createGenerateClassName();
 
-ReactDOM.hydrate(
-  <JssProvider generateClassName={generateClassName}>
-    <MuiThemeProvider theme={theme}>
-      <Main/>
-    </MuiThemeProvider>
-  </JssProvider>,
-  document.querySelector('#root'),
-);
+
+ReactDOM.hydrate( <JssProvider generateClassName={generateClassName}>
+    <Main />
+</JssProvider>, document.querySelector('#root'))
