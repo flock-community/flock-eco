@@ -1,6 +1,6 @@
 package community.flock.eco.core.data
 
-interface LoadData {
+interface LoadData<T> {
 
-    fun load()
+    fun load():Iterable<T>
 }
