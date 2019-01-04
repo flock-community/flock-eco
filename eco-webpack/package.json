@@ -1,43 +1,19 @@
 {
-  "name": "react_search",
-  "version": "1.0.0",
-  "description": "Search app using React",
-  "main": "index.js",
+  "name": "eco-webpack",
   "scripts": {
     "docker": "npm i && npm start",
-    "start": "./node_modules/.bin/webpack-dev-server --mode development",
-    "build": "./node_modules/.bin/webpack --mode production"
+    "start": "webpack-dev-server --mode development",
+    "build": "webpack --mode production"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.5",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1",
     "html-webpack-plugin": "^3.2.0",
     "prettier": "^1.15.3",
     "webpack": "^4.28.2",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.5"
-  },
-  "dependencies": {
-    "@material-ui/core": "^3.6.2",
-    "@material-ui/icons": "^3.0.1",
-    "babel-polyfill": "^6.26.0",
-    "classnames": "^2.2.6",
-    "react": "^16.4.2",
-    "react-dom": "^16.4.2",
-    "react-material-ui-form-validator": "^2.0.1",
-    "react-router-dom": "^4.3.1",
-    "whatwg-fetch": "^3.0.0"
-  },
-  "prettier": {
-    "singleQuote": true,
-    "trailingComma": "all",
-    "semi": false,
-    "bracketSpacing": false
+    "webpack-dev-server": "^3.1.5",
+    "babel-loader": "^7.1.5"
   }
 }
