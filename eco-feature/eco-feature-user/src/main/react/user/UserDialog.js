@@ -1,33 +1,30 @@
-import React from "react";
-import {withStyles} from '@material-ui/core/styles';
+import React from 'react'
+import {withStyles} from '@material-ui/core/styles'
 
-import Button from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button'
 
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogTitle from '@material-ui/core/DialogTitle'
 
-
-const styles = theme => ({});
+const styles = theme => ({})
 
 class UserDialog extends React.Component {
-
   handleClose = () => {
-    this.props.onClose();
-  };
+    this.props.onClose()
+  }
 
   handleSave = () => {
-    this.props.onSave();
-  };
+    this.props.onSave()
+  }
 
   handleDelete = () => {
-    this.props.onDelete();
-  };
-
+    this.props.onDelete()
+  }
 
   render() {
-    const {classes, open, onClose, selectedValue} = this.props;
+    const {classes, open, onClose, selectedValue} = this.props
 
     return (
       <Dialog
@@ -39,9 +36,7 @@ class UserDialog extends React.Component {
         classes={classes}
       >
         <DialogTitle id="simple-dialog-title">Set backup account</DialogTitle>
-        <DialogContent>
-          {this.props.children}
-        </DialogContent>
+        <DialogContent>{this.props.children}</DialogContent>
         <DialogActions>
           <Button onClick={this.handleClose} color="primary">
             Cancel
@@ -54,8 +49,8 @@ class UserDialog extends React.Component {
           </Button>
         </DialogActions>
       </Dialog>
-    );
+    )
   }
 }
 
-export default withStyles(styles)(UserDialog);
+export default withStyles(styles)(UserDialog)

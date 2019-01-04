@@ -1,23 +1,22 @@
-import React from "react";
-import {withStyles} from '@material-ui/core/styles';
+import React from 'react'
+import {withStyles} from '@material-ui/core/styles'
 
-import Button from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button'
 
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogTitle from '@material-ui/core/DialogTitle'
 
-import Snackbar from '@material-ui/core/Snackbar';
+import Snackbar from '@material-ui/core/Snackbar'
 
-import {ValidatorForm} from 'react-material-ui-form-validator';
+import {ValidatorForm} from 'react-material-ui-form-validator'
 
-import MemberForm from './MemberForm';
+import MemberForm from './MemberForm'
 
-const styles = theme => ({});
+const styles = theme => ({})
 
 class MemberDialog extends React.Component {
-
   state = {
     item: null,
     message: null,
@@ -25,28 +24,25 @@ class MemberDialog extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-
     if (prevProps.action !== this.props.action) {
       const action = this.props.action && this.props.action.toUpperCase()
       this.setState({
-        action: action
-      });
+        action: action,
+      })
     }
 
     if (prevProps.id !== this.props.id) {
-
-      if (this.props.id === null)
-        this.setState({item: {}});
+      if (this.props.id === null) this.setState({item: {}})
       else
         fetch(`/api/members/${this.props.id}`)
           .then(res => {
             return res.json()
           })
           .then(json => {
-            this.setState({item: json});
+            this.setState({item: json})
           })
           .catch(e => {
-            this.setState({message: "Cannot load groups"});
+            this.setState({message: 'Cannot load groups'})
           })
     }
   }
@@ -57,10 +53,10 @@ class MemberDialog extends React.Component {
         return res.json()
       })
       .then(json => {
-        this.setState({groups: json});
+        this.setState({groups: json})
       })
       .catch(e => {
-        this.setState({message: "Cannot load groups"});
+        this.setState({message: 'Cannot load groups'})
       })
 
     fetch(`/api/member_fields`)
@@ -68,76 +64,71 @@ class MemberDialog extends React.Component {
         return res.json()
       })
       .then(json => {
-        this.setState({fields: json});
+        this.setState({fields: json})
       })
       .catch(e => {
-        this.setState({message: "Cannot load fields"});
+        this.setState({message: 'Cannot load fields'})
       })
   }
 
   handleClose = () => {
-    this.props.onComplete();
-  };
+    this.props.onComplete()
+  }
 
   handleDelete = () => {
     const opts = {
-      method: "DELETE",
-    };
-    fetch(`/api/members/${this.state.item.id}`, opts)
-      .then((res) => {
-        if (!res.ok) {
-          res.json().then(e => {
-            this.setState({message: e.message || "Cannot delete member"});
-          })
-        }
-        this.props.onComplete();
-      })
-  };
+      method: 'DELETE',
+    }
+    fetch(`/api/members/${this.state.item.id}`, opts).then(res => {
+      if (!res.ok) {
+        res.json().then(e => {
+          this.setState({message: e.message || 'Cannot delete member'})
+        })
+      }
+      this.props.onComplete()
+    })
+  }
 
   handleSave = () => {
     if (this.state.action === 'EDIT') {
       const opts = {
-        method: "PUT",
+        method: 'PUT',
         headers: {
-          "Content-Type": "application/json; charset=utf-8",
+          'Content-Type': 'application/json; charset=utf-8',
         },
         body: JSON.stringify(this.state.item),
-      };
-      fetch(`/api/members/${this.state.item.id}`, opts)
-        .then((res) => {
-          if (!res.ok) {
-            res.json().then(e => {
-              this.setState({message: e.message || "Cannot update member"});
-            })
-          }
-          this.props.onComplete();
-        })
+      }
+      fetch(`/api/members/${this.state.item.id}`, opts).then(res => {
+        if (!res.ok) {
+          res.json().then(e => {
+            this.setState({message: e.message || 'Cannot update member'})
+          })
+        }
+        this.props.onComplete()
+      })
     }
     if (this.state.action === 'NEW') {
       const opts = {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json; charset=utf-8",
+          'Content-Type': 'application/json; charset=utf-8',
         },
         body: JSON.stringify(this.state.item),
-      };
-      fetch('/api/members', opts)
-        .then((res) => {
-          if (!res.ok) {
-            res.json().then(e => {
-              this.setState({message: e.message || "Cannot create member"});
-            })
-
-          }
-          this.props.onComplete();
-        })
+      }
+      fetch('/api/members', opts).then(res => {
+        if (!res.ok) {
+          res.json().then(e => {
+            this.setState({message: e.message || 'Cannot create member'})
+          })
+        }
+        this.props.onComplete()
+      })
     }
-  };
+  }
 
-  handleFormUpdate = (value) => {
-    this.setState({item: value});
-  };
-
+  handleFormUpdate = value => {
+    this.setState({item: value})
+  }
 
   handleSubmit = () => {
     this.handleSave()
@@ -148,8 +139,8 @@ class MemberDialog extends React.Component {
   }
 
   render() {
-    return (<React.Fragment>
-
+    return (
+      <React.Fragment>
         <Dialog
           fullWidth
           maxWidth={'md'}
@@ -173,9 +164,11 @@ class MemberDialog extends React.Component {
             </ValidatorForm>
           </DialogContent>
           <DialogActions>
-            {this.state.item && this.state.item.id && (<Button onClick={this.handleDelete} color="secondary">
-              Delete
-            </Button>)}
+            {this.state.item && this.state.item.id && (
+              <Button onClick={this.handleDelete} color="secondary">
+                Delete
+              </Button>
+            )}
             <Button onClick={this.handleClose} color="primary">
               Cancel
             </Button>
@@ -193,11 +186,11 @@ class MemberDialog extends React.Component {
             vertical: 'bottom',
             horizontal: 'left',
           }}
-          message={this.state.message}/>
-
+          message={this.state.message}
+        />
       </React.Fragment>
-    );
+    )
   }
 }
 
-export default withStyles(styles)(MemberDialog);
+export default withStyles(styles)(MemberDialog)
