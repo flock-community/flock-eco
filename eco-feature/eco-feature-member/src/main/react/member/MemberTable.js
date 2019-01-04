@@ -78,7 +78,6 @@ const EnhancedTableToolbar = withStyles(theme => ({
 })
 
 class MemberTable extends React.Component {
-
   state = {
     data: [],
     count: 0,
@@ -95,52 +94,61 @@ class MemberTable extends React.Component {
   }
 
   handleRowClick = (event, user) => {
-    if (this.props.onRowClick)
-      return this.props.onRowClick(event, user)
+    if (this.props.onRowClick) return this.props.onRowClick(event, user)
   }
 
-  handleChangeSort = (id) => (event) => {
-    const toggleDirection = () => this.state.direction === 'desc' ? 'asc' : 'desc'
-    this.setState({
-      order: id,
-      page: 0,
-      direction: this.state.order === id ? toggleDirection() : this.state.direction,
-    }, this.loadData)
+  handleChangeSort = id => event => {
+    const toggleDirection = () =>
+      this.state.direction === 'desc' ? 'asc' : 'desc'
+    this.setState(
+      {
+        order: id,
+        page: 0,
+        direction:
+          this.state.order === id ? toggleDirection() : this.state.direction,
+      },
+      this.loadData,
+    )
   }
 
   loadData = () => {
     const query = Object.entries(this.state.specification)
       .filter(entry => entry[1].length)
-      .map(entry => entry[1]
-        .map(value => entry[0] + '=' + value)
-        .join('&'))
+      .map(entry => entry[1].map(value => entry[0] + '=' + value).join('&'))
       .join('&')
 
-    fetch(`/api/members?${query && query + '&'}page=${this.state.page}&size=${this.state.size}&sort=${this.state.order},${this.state.direction}`)
+    fetch(
+      `/api/members?${query && query + '&'}page=${this.state.page}&size=${
+        this.state.size
+      }&sort=${this.state.order},${this.state.direction}`,
+    )
       .then(res => {
         this.setState({
-          count: parseInt(res.headers.get('x-total'))
+          count: parseInt(res.headers.get('x-total')),
         })
         return res.json()
       })
       .then(json => {
-        this.setState({data: json});
+        this.setState({data: json})
       })
       .catch(e => {
-        this.setState({message: "Cannot load members"})
+        this.setState({message: 'Cannot load members'})
       })
   }
 
   componentDidMount() {
-    this.loadData();
+    this.loadData()
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.specification !== this.props.specification)
-      this.setState({
-        specification: this.props.specification,
-        page: 0,
-      }, this.loadData)
+      this.setState(
+        {
+          specification: this.props.specification,
+          page: 0,
+        },
+        this.loadData,
+      )
 
     if (prevProps.refresh !== this.props.refresh) {
       this.loadData()

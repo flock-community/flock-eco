@@ -1,24 +1,19 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react'
+import ReactDOM from 'react-dom'
 
-import Button from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button'
 
-import AddIcon from '@material-ui/icons/Add';
+import AddIcon from '@material-ui/icons/Add'
 
-import UserManager from "./user/UserFeature";
+import UserManager from './user/UserFeature'
 
 class App extends React.Component {
-
   render() {
     const divStyle = {
-      background: 'red'
-    };
-    return (
-      <UserManager/>
-    )
+      background: 'red',
+    }
+    return <UserManager />
   }
-};
+}
 
-ReactDOM.render(
-  <App/>,
-  document.getElementById("index"));
+ReactDOM.render(<App />, document.getElementById('index'))

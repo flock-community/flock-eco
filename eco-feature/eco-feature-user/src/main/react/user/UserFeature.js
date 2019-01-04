@@ -1,14 +1,13 @@
-import React from "react";
-import {withStyles} from '@material-ui/core/styles';
+import React from 'react'
+import {withStyles} from '@material-ui/core/styles'
 
-import Button from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button'
 
-import AddIcon from '@material-ui/icons/Add';
+import AddIcon from '@material-ui/icons/Add'
 
-import UserTable from "./UserTable";
-import UserForm from "./UserForm";
-import UserDialog from "./UserDialog";
-
+import UserTable from './UserTable'
+import UserForm from './UserForm'
+import UserDialog from './UserDialog'
 
 const styles = theme => ({
   button: {
@@ -16,12 +15,10 @@ const styles = theme => ({
     right: 20,
     bottom: 20,
     margin: theme.spacing.unit,
-  }
-});
+  },
+})
 
 class itemManager extends React.Component {
-
-
   state = {
     size: 10,
     members: this.props.members || [],
@@ -29,35 +26,35 @@ class itemManager extends React.Component {
     groups: [],
     count: 0,
     page: 0,
-  };
+  }
 
   componentDidMount() {
     fetch('/api/authorities')
       .then(res => res.json())
       .then(json => {
-        this.setState({authorities: json});
+        this.setState({authorities: json})
       })
-    this.load();
+    this.load()
   }
 
   handleChangePage = (event, page) => {
     this.setState({page}, () => {
       this.load()
     })
-  };
+  }
 
-  handleRowClick = (item) => {
-    console.log("123")
+  handleRowClick = item => {
+    console.log('123')
     this.setState({item})
-  };
+  }
 
   handleNewClick = () => {
     this.setState({item: {}})
-  };
+  }
 
   handleClose = value => {
-    this.setState({item: null});
-  };
+    this.setState({item: null})
+  }
 
   handleSave = value => {
     if (this.state.item.id) {
@@ -65,39 +62,36 @@ class itemManager extends React.Component {
     } else {
       this.create(this.state.item)
     }
-  };
+  }
 
   handleDelete = value => {
     this.delete(this.state.item)
-  };
+  }
 
-
-  handleFormUpdate = (value) => {
-    this.setState({item: value});
-  };
+  handleFormUpdate = value => {
+    this.setState({item: value})
+  }
 
   load = () => {
     fetch(`/api/users?page=${this.state.page}&size=${this.state.size}`)
       .then(res => {
         this.setState({
-          count: parseInt(res.headers.get('x-total'))
+          count: parseInt(res.headers.get('x-total')),
         })
         return res.json()
       })
       .then(json => {
-        this.setState({list: json});
+        this.setState({list: json})
       })
       .catch(e => {
-        this.setState({message: "Cannot load users"})
+        this.setState({message: 'Cannot load users'})
       })
   }
 
   render() {
-
-    const {classes} = this.props;
+    const {classes} = this.props
 
     return (
-
       <div>
         <UserTable
           data={this.state.list}
@@ -113,7 +107,6 @@ class itemManager extends React.Component {
           onClose={this.handleClose}
           onSave={this.handleSave}
           onDelete={this.handleDelete}
-
         >
           <UserForm
             authorities={this.state.authorities}
@@ -129,57 +122,52 @@ class itemManager extends React.Component {
           className={classes.button}
           onClick={this.handleNewClick}
         >
-          <AddIcon/>
+          <AddIcon />
         </Button>
       </div>
     )
   }
 
-
   create(item) {
     const opts = {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json; charset=utf-8",
+        'Content-Type': 'application/json; charset=utf-8',
       },
       body: JSON.stringify(item),
-    };
-    fetch('/api/users', opts)
-      .then(() => {
-        this.setState({item: null});
-        this.load();
-      })
+    }
+    fetch('/api/users', opts).then(() => {
+      this.setState({item: null})
+      this.load()
+    })
   }
 
   update(item) {
-
     const opts = {
-      method: "PUT",
+      method: 'PUT',
       headers: {
-        "Content-Type": "application/json; charset=utf-8",
+        'Content-Type': 'application/json; charset=utf-8',
       },
       body: JSON.stringify(item),
-    };
-    fetch(`/api/users/${item.id}`, opts)
-      .then(() => {
-        this.setState({item: null});
-        this.load();
-      })
+    }
+    fetch(`/api/users/${item.id}`, opts).then(() => {
+      this.setState({item: null})
+      this.load()
+    })
   }
 
   delete(item) {
     const opts = {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
-        "Content-Type": "application/json; charset=utf-8",
+        'Content-Type': 'application/json; charset=utf-8',
       },
-    };
-    fetch(`/api/users/${item.id}`, opts)
-      .then(() => {
-        this.setState({item: null});
-        this.load();
-      })
+    }
+    fetch(`/api/users/${item.id}`, opts).then(() => {
+      this.setState({item: null})
+      this.load()
+    })
   }
-};
+}
 
-export default withStyles(styles)(itemManager);
+export default withStyles(styles)(itemManager)

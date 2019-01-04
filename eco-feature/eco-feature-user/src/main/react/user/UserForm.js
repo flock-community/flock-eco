@@ -1,57 +1,52 @@
-import React from "react";
-import {withStyles} from '@material-ui/core/styles';
+import React from 'react'
+import {withStyles} from '@material-ui/core/styles'
 
-import Grid from '@material-ui/core/Grid';
+import Grid from '@material-ui/core/Grid'
 
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
 
-import TextField from '@material-ui/core/TextField';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
+import TextField from '@material-ui/core/TextField'
+import Checkbox from '@material-ui/core/Checkbox'
+import FormControl from '@material-ui/core/FormControl'
+import InputLabel from '@material-ui/core/InputLabel'
 
 const styles = theme => ({
   input: {
-    width: '100%'
+    width: '100%',
   },
-});
+})
 
 class UserForm extends React.Component {
-
   constructor(props) {
-    super(props);
+    super(props)
     this.init(props.item)
   }
 
   init(item) {
     const user = {
-      name: "",
-      email:"",
-      reference:"",
+      name: '',
+      email: '',
+      reference: '',
       disabled: false,
       authorities: [],
-    };
+    }
 
-    this.state = Object.assign(user, item);
+    this.state = Object.assign(user, item)
   }
 
   handleChange(name) {
-    return (value) => {
+    return value => {
       console.log(value)
-      this.setState(
-        {[name]: value},
-        () => {
-          this.props.onChange(this.state)
-        })
-
+      this.setState({[name]: value}, () => {
+        this.props.onChange(this.state)
+      })
     }
-  };
+  }
 
   render() {
-
-    const {classes} = this.props;
+    const {classes} = this.props
 
     return (
       <React.Fragment>
@@ -67,7 +62,8 @@ class UserForm extends React.Component {
               label="Name"
               className={classes.input}
               value={this.state.name}
-              onChange={ev => this.handleChange('name')(ev.target.value)}/>
+              onChange={ev => this.handleChange('name')(ev.target.value)}
+            />
           </Grid>
 
           <Grid item xs={12}>
@@ -75,7 +71,8 @@ class UserForm extends React.Component {
               label="Email"
               className={classes.input}
               value={this.state.email}
-              onChange={ev => this.handleChange('email')(ev.target.value)}/>
+              onChange={ev => this.handleChange('email')(ev.target.value)}
+            />
           </Grid>
 
           <Grid item xs={12}>
@@ -83,36 +80,35 @@ class UserForm extends React.Component {
               label="Reference"
               className={classes.input}
               value={this.state.reference}
-              onChange={ev => this.handleChange('reference')(ev.target.value)}/>
+              onChange={ev => this.handleChange('reference')(ev.target.value)}
+            />
           </Grid>
 
-          <Grid item style={{marginTop:10}}>
+          <Grid item style={{marginTop: 10}}>
             {this.renderList()}
           </Grid>
-
         </Grid>
-      </React.Fragment>)
+      </React.Fragment>
+    )
   }
 
-
   renderList() {
+    const {classes, authorities} = this.props
 
-    const {classes, authorities} = this.props;
-
-    const handleClick = (value) => {
+    const handleClick = value => {
       if (this.state.authorities.includes(value)) {
-        this.handleChange('authorities')(this.state.authorities.filter(it => value !== it))
+        this.handleChange('authorities')(
+          this.state.authorities.filter(it => value !== it),
+        )
       } else {
         this.handleChange('authorities')(this.state.authorities.concat(value))
       }
-
     }
 
     return (
       <FormControl className={classes.formControl}>
         <InputLabel shrink>Authorities</InputLabel>
-        <List
-          className={classes.input}>
+        <List className={classes.input}>
           {authorities.map(value => (
             <ListItem
               className={classes.input}
@@ -123,7 +119,7 @@ class UserForm extends React.Component {
               onClick={ev => handleClick(value)}
               style={{
                 margin: 0,
-                padding: 0
+                padding: 0,
               }}
             >
               <Checkbox
@@ -131,20 +127,16 @@ class UserForm extends React.Component {
                 tabIndex={-1}
                 disableRipple
                 style={{
-                  width: 32
+                  width: 32,
                 }}
               />
-              <ListItemText
-                primary={value}
-              />
+              <ListItemText primary={value} />
             </ListItem>
           ))}
         </List>
       </FormControl>
     )
   }
-
 }
 
-
-export default withStyles(styles)(UserForm);
+export default withStyles(styles)(UserForm)

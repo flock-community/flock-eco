@@ -1,39 +1,36 @@
-import React from "react";
+import React from 'react'
 
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types'
+import {withStyles} from '@material-ui/core/styles'
 
-import Button from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button'
 
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogTitle from '@material-ui/core/DialogTitle'
 
-
-const styles = theme => ({});
+const styles = theme => ({})
 
 class MemberDialog extends React.Component {
-
-  constructor(props){
-    super(props);
+  constructor(props) {
+    super(props)
 
     this.handleClose = () => {
-      this.props.onClose();
-    };
+      this.props.onClose()
+    }
 
     this.handleSave = () => {
-      this.props.onSave();
-    };
+      this.props.onSave()
+    }
 
     this.handleDelete = () => {
-      this.props.onDelete();
-    };
-
+      this.props.onDelete()
+    }
   }
 
   render() {
-    const { classes, open, config} = this.props;
+    const {classes, open, config} = this.props
 
     return (
       <Dialog
@@ -45,25 +42,23 @@ class MemberDialog extends React.Component {
         classes={classes}
       >
         <DialogTitle id="simple-dialog-title">Member Group</DialogTitle>
-        <DialogContent>
-          {this.props.children}
-        </DialogContent>
+        <DialogContent>{this.props.children}</DialogContent>
         <DialogActions>
           <Button onClick={this.handleClose} color="primary">
             Cancel
           </Button>
-          { this.handleDelete &&
+          {this.handleDelete && (
             <Button onClick={this.handleDelete} color="secondary">
               Delete
             </Button>
-          }
+          )}
           <Button onClick={this.handleSave} color="primary" autoFocus>
             Save
           </Button>
         </DialogActions>
       </Dialog>
-    );
+    )
   }
 }
 
-export default withStyles(styles)(MemberDialog);
+export default withStyles(styles)(MemberDialog)

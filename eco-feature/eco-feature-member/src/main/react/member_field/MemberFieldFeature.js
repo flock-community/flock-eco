@@ -1,14 +1,13 @@
-import React from "react";
-import {withStyles} from '@material-ui/core/styles';
+import React from 'react'
+import {withStyles} from '@material-ui/core/styles'
 
-import Button from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button'
 
-import AddIcon from '@material-ui/icons/Add';
+import AddIcon from '@material-ui/icons/Add'
 
-import MemberGroupTable from "./MemberFieldTable";
-import MemberGroupForm from "./MemberFieldForm";
-import MemberGroupDialog from "./MemberFieldDialog";
-
+import MemberGroupTable from './MemberFieldTable'
+import MemberGroupForm from './MemberFieldForm'
+import MemberGroupDialog from './MemberFieldDialog'
 
 const styles = theme => ({
   button: {
@@ -16,30 +15,29 @@ const styles = theme => ({
     right: 20,
     bottom: 20,
     margin: theme.spacing.unit,
-  }
-});
+  },
+})
 
 class MemberManager extends React.Component {
-
   state = {
-    list: this.props.list || []
-  };
+    list: this.props.list || [],
+  }
 
-  componentDidMount(){
+  componentDidMount() {
     this.load()
   }
 
-  rowClick = (item) => {
+  rowClick = item => {
     this.setState({item})
-  };
+  }
 
   newClick = () => {
     this.setState({item: {}})
-  };
+  }
 
   handleFormClose = () => {
-    this.setState({item: null});
-  };
+    this.setState({item: null})
+  }
 
   handleFormSave = () => {
     if (this.state.item.id) {
@@ -47,23 +45,20 @@ class MemberManager extends React.Component {
     } else {
       this.create(this.state.item)
     }
-  };
+  }
 
   handleFormDelete = () => {
     this.delete(this.state.item)
-  };
+  }
 
-  handleFormUpdate = (value) => {
-    this.setState({item: value});
-  };
-
+  handleFormUpdate = value => {
+    this.setState({item: value})
+  }
 
   render() {
-
-    const {classes} = this.props;
+    const {classes} = this.props
 
     return (
-
       <div>
         <MemberGroupTable
           list={this.state.list}
@@ -75,13 +70,11 @@ class MemberManager extends React.Component {
           onClose={this.handleFormClose}
           onSave={this.handleFormSave}
           onDelete={this.handleFormDelete}
-
         >
           <MemberGroupForm
             value={this.state.item}
             onChange={this.handleFormUpdate}
           />
-
         </MemberGroupDialog>
 
         <Button
@@ -91,7 +84,7 @@ class MemberManager extends React.Component {
           className={classes.button}
           onClick={this.newClick}
         >
-          <AddIcon/>
+          <AddIcon />
         </Button>
       </div>
     )
@@ -101,55 +94,50 @@ class MemberManager extends React.Component {
     return fetch('/api/member_fields')
       .then(res => res.json())
       .then(json => {
-        this.setState({list: json});
+        this.setState({list: json})
       })
   }
 
   create() {
     const opts = {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json; charset=utf-8",
+        'Content-Type': 'application/json; charset=utf-8',
       },
       body: JSON.stringify(this.state.item),
-    };
-    fetch('/api/member_fields', opts)
-      .then(() => {
-        this.setState({item: null});
-        this.load();
-      })
+    }
+    fetch('/api/member_fields', opts).then(() => {
+      this.setState({item: null})
+      this.load()
+    })
   }
 
   update() {
-
     const opts = {
-      method: "PUT",
+      method: 'PUT',
       headers: {
-        "Content-Type": "application/json; charset=utf-8",
+        'Content-Type': 'application/json; charset=utf-8',
       },
       body: JSON.stringify(this.state.item),
-    };
-    fetch(`/api/member_fields/${this.state.item.id}`, opts)
-      .then(() => {
-        this.setState({item: null});
-        this.load();
-      })
+    }
+    fetch(`/api/member_fields/${this.state.item.id}`, opts).then(() => {
+      this.setState({item: null})
+      this.load()
+    })
   }
 
   delete() {
     const opts = {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
-        "Content-Type": "application/json; charset=utf-8",
+        'Content-Type': 'application/json; charset=utf-8',
       },
-    };
-    fetch(`/api/member_fields/${this.state.item.id}`, opts)
-      .then(() => {
-        this.setState({item: null});
-        this.load();
-      })
+    }
+    fetch(`/api/member_fields/${this.state.item.id}`, opts).then(() => {
+      this.setState({item: null})
+      this.load()
+    })
   }
-
 }
 
-export default withStyles(styles)(MemberManager);
+export default withStyles(styles)(MemberManager)

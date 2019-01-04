@@ -1,19 +1,18 @@
-import React from "react";
-import {withStyles} from '@material-ui/core/styles';
+import React from 'react'
+import {withStyles} from '@material-ui/core/styles'
 
-import Fab from '@material-ui/core/Fab';
-import Paper from '@material-ui/core/Card';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import Fab from '@material-ui/core/Fab'
+import Paper from '@material-ui/core/Card'
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
 
-import Grid from '@material-ui/core/Grid';
+import Grid from '@material-ui/core/Grid'
 
-import AddIcon from '@material-ui/icons/Add';
+import AddIcon from '@material-ui/icons/Add'
 
-
-import MemberTable from "./MemberTable";
-import MemberSpecification from "./MemberSpecification";
-import MemberDialog from "./MemberDialog";
+import MemberTable from './MemberTable'
+import MemberSpecification from './MemberSpecification'
+import MemberDialog from './MemberDialog'
 import MemberMerger from './MemberMerger'
 
 const styles = theme => ({
@@ -29,10 +28,9 @@ const styles = theme => ({
     bottom: 20,
     margin: theme.spacing.unit,
   },
-});
+})
 
 class MemberFeature extends React.Component {
-
   state = {
     size: 10,
     search: this.props.search || '',
@@ -42,22 +40,22 @@ class MemberFeature extends React.Component {
     refresh: false,
     refreshSelection: false,
     mergeMemberIds: null,
-  };
+  }
 
-  handleRowClick = (item) => {
+  handleRowClick = item => {
     this.setState({item, action: 'EDIT'})
-  };
+  }
 
   handleNewClick = () => {
     this.setState({item: null, action: 'NEW'})
-  };
+  }
 
-  handleSpecification = (specification) => {
+  handleSpecification = specification => {
     this.setState({
       page: 0,
-      specification
-    });
-  };
+      specification,
+    })
+  }
 
   handleComplete = () => {
     this.setState({
@@ -66,7 +64,7 @@ class MemberFeature extends React.Component {
       refresh: !this.state.refresh,
       mergeMemberIds: null,
     })
-  };
+  }
 
   handleMergeComplete = () =>
     this.setState(state => ({
@@ -75,31 +73,23 @@ class MemberFeature extends React.Component {
       refreshSelection: !state.refreshSelection,
     }))
 
-  mergeMembers = (mergeMemberIds) => this.setState({mergeMemberIds});
+  mergeMembers = mergeMemberIds => this.setState({mergeMemberIds})
 
   handleMergerCancel = () =>
     this.setState({
-      mergeMemberIds: null
+      mergeMemberIds: null,
     })
 
   render() {
-
-    const {classes} = this.props;
+    const {classes} = this.props
 
     return (
-
       <React.Fragment>
-
-        <Grid
-          container
-          direction="column"
-          spacing={16}
-        >
+        <Grid container direction="column" spacing={16}>
           <Grid item>
             <Card>
               <CardContent>
-                <MemberSpecification
-                  onChange={this.handleSpecification}/>
+                <MemberSpecification onChange={this.handleSpecification} />
               </CardContent>
             </Card>
           </Grid>
@@ -121,12 +111,14 @@ class MemberFeature extends React.Component {
         <MemberDialog
           id={this.state.item && this.state.item.id}
           action={this.state.action}
-          onComplete={this.handleComplete}/>
+          onComplete={this.handleComplete}
+        />
 
         <MemberMerger
           mergeMemberIds={this.state.mergeMemberIds}
           onComplete={this.handleMergeComplete}
-          onCancel={this.handleMergerCancel}/>
+          onCancel={this.handleMergerCancel}
+        />
 
         <Fab
           color="primary"
@@ -134,14 +126,11 @@ class MemberFeature extends React.Component {
           className={classes.button}
           onClick={this.handleNewClick}
         >
-          <AddIcon/>
+          <AddIcon />
         </Fab>
-
       </React.Fragment>
-
     )
   }
+}
 
-};
-
-export default withStyles(styles)(MemberFeature);
+export default withStyles(styles)(MemberFeature)

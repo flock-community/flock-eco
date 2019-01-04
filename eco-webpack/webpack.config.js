@@ -1,19 +1,19 @@
-const path = require('path');
-const HtmlWebPackPlugin = require('html-webpack-plugin');
+const path = require('path')
+const HtmlWebPackPlugin = require('html-webpack-plugin')
 
-const root = process.env.BASE_DIR || `../eco-feature/eco-feature-${process.env.FEATURE}/`;
+const root =
+  process.env.BASE_DIR || `../eco-feature/eco-feature-${process.env.FEATURE}/`
 
 const htmlPlugin = new HtmlWebPackPlugin({
   template: path.join(__dirname, root, 'src/main/react/index.html'),
-  filename: "./index.html"
-});
+  filename: './index.html',
+})
 
 module.exports = {
-
   entry: path.join(__dirname, root, 'src/main/react'),
 
   output: {
-    path: path.join(__dirname, root, 'target/generated-resources')
+    path: path.join(__dirname, root, 'target/generated-resources'),
   },
 
   devtool: 'eval-source-map',
@@ -25,15 +25,11 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: [
-              'env',
-              'react',
-              'stage-2'
-            ]
+            presets: ['env', 'react', 'stage-2'],
           },
-        }
-      }
-    ]
+        },
+      },
+    ],
   },
 
   plugins: [htmlPlugin],
@@ -43,8 +39,7 @@ module.exports = {
     host: '0.0.0.0',
     proxy: {
       '/api/**': 'http://localhost:8080',
-      '/login': 'http://localhost:8080'
-    }
-  }
-
-};
+      '/login': 'http://localhost:8080',
+    },
+  },
+}
