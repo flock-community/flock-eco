@@ -12,9 +12,9 @@ class MemberLoadData(
         private val memberRepository: MemberRepository,
         private val memberGroupRepository: MemberGroupRepository,
         private val memberFieldRepository: MemberFieldRepository
-) : LoadData {
+) : LoadData<Member> {
 
-    override fun load() {
+    override fun load(): Iterable<Member> {
 
 
         val groups = (1..10)
@@ -73,6 +73,8 @@ class MemberLoadData(
                             status = if (it % 2 == 0) MemberStatus.NEW else MemberStatus.ACTIVE
                     )
                 }.let { memberRepository.saveAll(it) }
+
+        return members
 
     }
 }
