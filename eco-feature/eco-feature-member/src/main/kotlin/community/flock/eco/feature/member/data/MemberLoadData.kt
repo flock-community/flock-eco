@@ -14,7 +14,7 @@ class MemberLoadData(
         private val memberFieldRepository: MemberFieldRepository
 ) : LoadData<Member> {
 
-    override fun load(): Iterable<Member> {
+    override fun load(n:Int): Iterable<Member> {
 
 
         val groups = (1..10)
@@ -51,13 +51,13 @@ class MemberLoadData(
                         disabled = true))
                 .let { memberFieldRepository.saveAll(it) }
 
-        val members = (0..999)
+        val members = (0..n)
                 .map {
                     Member(
                             firstName = "first-name-$it",
                             surName = "sur-name-$it",
                             gender = MemberGender.MALE,
-                            email = "$it@email",
+                            email = "$it@member.com",
                             groups = when (it % 4) {
                                 0 -> setOf(groups.toList()[2], groups.toList()[3])
                                 1 -> setOf(groups.toList()[2])

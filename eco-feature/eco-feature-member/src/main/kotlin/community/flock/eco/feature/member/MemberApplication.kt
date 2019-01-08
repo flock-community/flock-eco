@@ -17,7 +17,7 @@ class MemberApplication {
 
     @PostConstruct
     fun init() {
-        memberLoadData.load()
+        memberLoadData.load(999)
     }
 }
 

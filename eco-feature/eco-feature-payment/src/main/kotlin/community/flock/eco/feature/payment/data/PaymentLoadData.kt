@@ -14,17 +14,17 @@ class PaymentLoadData(
         private val paymentMandateRepository: PaymentMandateRepository
 ) : LoadData<PaymentMandate> {
 
-    override fun load(): Iterable<PaymentMandate> {
+    override fun load(n:Int): Iterable<PaymentMandate> {
         return listOf<PaymentMandate>()
-                .plus(loadMandateIdeal())
-                .plus(loadMandateCreditCard())
-                .plus(loadMandateSepa())
+                .plus(loadMandateIdeal(n))
+                .plus(loadMandateCreditCard(n))
+                .plus(loadMandateSepa(n))
 
 
     }
 
-    private fun loadMandateIdeal(): Iterable<PaymentMandate> {
-        return (0..100)
+    private fun loadMandateIdeal(n:Int = 100): Iterable<PaymentMandate> {
+        return (0..n)
                 .map {
                     PaymentMandate(
                             amount = when(it % 4){
@@ -43,8 +43,8 @@ class PaymentLoadData(
                 }
     }
 
-    private fun loadMandateCreditCard(): Iterable<PaymentMandate> {
-        return (0..100)
+    private fun loadMandateCreditCard(n:Int = 100): Iterable<PaymentMandate> {
+        return (0..n)
                 .map {
                     PaymentMandate(
                             amount = when(it % 4){
@@ -63,8 +63,8 @@ class PaymentLoadData(
                 }
     }
 
-    private fun loadMandateSepa(): Iterable<PaymentMandate> {
-        return (0..100)
+    private fun loadMandateSepa(n:Int = 100): Iterable<PaymentMandate> {
+        return (0..n)
                 .map {
                     PaymentMandate(
                             amount = when(it % 4){

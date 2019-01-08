@@ -11,8 +11,8 @@ class UserLoadData(
         private val userRepository: UserRepository
 ) : LoadData<User> {
 
-    override fun load(): Iterable<User> {
-       val users = (1..100)
+    override fun load(n:Int): Iterable<User> {
+       val users = (1..n)
                 .map {
                     User(
                             name = "name-$it",
