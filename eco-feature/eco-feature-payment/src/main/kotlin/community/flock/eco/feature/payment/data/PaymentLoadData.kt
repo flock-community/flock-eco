@@ -1,17 +1,16 @@
 package community.flock.eco.feature.payment.data
 
 import community.flock.eco.core.data.LoadData
-import community.flock.eco.feature.payment.model.PaymentBankAccount
-import community.flock.eco.feature.payment.model.PaymentFrequency
-import community.flock.eco.feature.payment.model.PaymentMandate
-import community.flock.eco.feature.payment.model.PaymentType
+import community.flock.eco.feature.payment.model.*
 import community.flock.eco.feature.payment.repositories.PaymentMandateRepository
+import community.flock.eco.feature.payment.repositories.PaymentTransactionRepository
 import org.springframework.stereotype.Component
 import java.time.Month
 
 @Component
 class PaymentLoadData(
-        private val paymentMandateRepository: PaymentMandateRepository
+        private val paymentMandateRepository: PaymentMandateRepository,
+        private val paymentTransactionRepository: PaymentTransactionRepository
 ) : LoadData<PaymentMandate> {
 
     override fun load(n:Int): Iterable<PaymentMandate> {
@@ -24,7 +23,7 @@ class PaymentLoadData(
     }
 
     private fun loadMandateIdeal(n:Int = 100): Iterable<PaymentMandate> {
-        return (0..n)
+        val mandates = (0..n)
                 .map {
                     PaymentMandate(
                             amount = when(it % 4){
@@ -41,6 +40,18 @@ class PaymentLoadData(
                 .let {
                     paymentMandateRepository.saveAll(it)
                 }
+
+        mandates.map {
+                    PaymentTransaction(
+                            amount = 10.0,
+                            mandate = it
+                    )
+                }
+                .let {
+                    paymentTransactionRepository.saveAll(it)
+                }
+
+        return mandates
     }
 
     private fun loadMandateCreditCard(n:Int = 100): Iterable<PaymentMandate> {

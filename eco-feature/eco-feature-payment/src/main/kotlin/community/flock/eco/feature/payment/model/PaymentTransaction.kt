@@ -1,5 +1,6 @@
 package community.flock.eco.feature.payment.model
 
+import com.fasterxml.jackson.annotation.*
 import community.flock.eco.core.events.EventEntityListeners
 import java.time.LocalDate
 import java.util.*
@@ -24,6 +25,7 @@ data class PaymentTransaction(
         val created: LocalDate = LocalDate.now(),
 
         @ManyToOne
+        @JsonBackReference
         val mandate: PaymentMandate
 
 )

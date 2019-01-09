@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.junit4.SpringRunner
+import java.time.LocalDate
+import kotlin.test.assertEquals
 
 @RunWith(SpringRunner::class)
 @DataJpaTest
@@ -46,5 +48,14 @@ class PaymentRepositoryTest {
 
     }
 
+    @Test
+    fun testBetween(){
+        val now =  LocalDate.now()
+        val startDate =now.withDayOfMonth(1)
+        val endDate =now.withDayOfMonth(now.lengthOfMonth())
+        val transactions = paymentTransactionRepository.findBetweenDate(startDate, endDate)
+                .map { it.mandate }
+        assertEquals(101, transactions.size)
+    }
 
 }
