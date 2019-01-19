@@ -28,7 +28,7 @@ class MailchimpController(
 
     @GetMapping("/members")
     @PreAuthorize("hasAuthority('MailchimpMemberAuthority.READ')")
-    fun members(page: Pageable): ResponseEntity<List<MailchimpMember>> = mailchimpClient.getMembers(page)
+    fun getMembers(page: Pageable): ResponseEntity<List<MailchimpMember>> = mailchimpClient.getMembers(page)
             .let {
                 val headers = HttpHeaders()
                 headers.set("x-page", page.pageNumber.toString())
@@ -38,15 +38,18 @@ class MailchimpController(
 
     @GetMapping("/templates")
     @PreAuthorize("hasAuthority('MailchimpTemplateAuthority.READ')")
-    fun templates(): List<MailchimpTemplate> = mailchimpClient.getTemplates()
+    fun getTemplates(): List<MailchimpTemplate> = mailchimpClient.getTemplates()
             .filter { it.type == MailchimpTemplateType.USER }
 
     @GetMapping("/campaigns")
     @PreAuthorize("hasAuthority('MailchimpCampaignAuthority.READ')")
-    fun campaigns(): List<MailchimpCampaign> = mailchimpClient.getCampaigns()
+    fun getCampaigns(): List<MailchimpCampaign> = mailchimpClient.getCampaigns()
+
+    @GetMapping("/webhook")
+    fun getWebhook():ResponseEntity<*> = ResponseEntity<Any>(HttpStatus.OK)
 
     @PostMapping("/webhook", consumes = [MediaType.APPLICATION_FORM_URLENCODED_VALUE])
-    fun webhook(@RequestBody formData: MultiValueMap<String, String>) {
+    fun postWebhook(@RequestBody formData: MultiValueMap<String, String>) {
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
         val event = MailchimpWebhookEvent(
                 type = formData.getFirst("type")

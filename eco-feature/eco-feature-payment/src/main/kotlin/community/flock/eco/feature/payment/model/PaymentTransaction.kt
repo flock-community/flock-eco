@@ -25,7 +25,7 @@ data class PaymentTransaction(
         val created: LocalDate = LocalDate.now(),
 
         @ManyToOne
-        @JsonBackReference
+        @JsonManagedReference
         val mandate: PaymentMandate
 
 )

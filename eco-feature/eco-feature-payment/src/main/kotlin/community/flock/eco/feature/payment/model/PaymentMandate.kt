@@ -1,5 +1,6 @@
 package community.flock.eco.feature.payment.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import com.fasterxml.jackson.annotation.JsonManagedReference
 import community.flock.eco.core.events.EventEntityListeners
 import java.time.LocalDate
@@ -37,7 +38,7 @@ data class PaymentMandate(
         val bankAccount: PaymentBankAccount? = null,
 
         @OneToMany(mappedBy = "mandate")
-        @JsonManagedReference
+        @JsonBackReference
         val transactions: Set<PaymentTransaction> = setOf()
 
 ) {
