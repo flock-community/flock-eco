@@ -1,6 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <modules>
+        <module>eco-feature-mailchimp</module>
+        <module>eco-feature-user</module>
+        <module>eco-feature-member</module>
+        <module>eco-feature-payment</module>
+        <module>eco-feature-gcp-runtimeconfig</module>
+    </modules>
+
     <parent>
         <groupId>com.github.flock-se.flock-eco</groupId>
         <artifactId>flock-eco-parent</artifactId>
@@ -106,16 +114,17 @@
             <artifactId>jackson-datatype-hibernate5</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.module</groupId>
-            <artifactId>jackson-module-kotlin</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.11</version>
         </dependency>
 
     </dependencies>

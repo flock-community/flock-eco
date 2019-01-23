@@ -18,10 +18,6 @@
     <modules>
         <module>eco-core</module>
         <module>eco-feature</module>
-        <module>eco-feature/eco-feature-mailchimp</module>
-        <module>eco-feature/eco-feature-user</module>
-        <module>eco-feature/eco-feature-member</module>
-        <module>eco-feature/eco-feature-payment</module>
     </modules>
 
     <dependencyManagement>
