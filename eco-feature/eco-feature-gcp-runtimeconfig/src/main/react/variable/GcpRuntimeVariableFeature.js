@@ -3,7 +3,7 @@ import {withStyles} from '@material-ui/core/styles'
 
 import GcpRuntimeVariableTable from './GcpRuntimeVariableTable'
 
-import Button from '@material-ui/core/Button'
+import Fab from '@material-ui/core/Fab'
 
 import AddIcon from '@material-ui/icons/Add'
 
@@ -19,21 +19,20 @@ const styles = theme => ({
 class GcpRuntimeVariableFeature extends React.Component {
 
   render() {
-    const {classes} = this.props
+    const {classes, config} = this.props
 
     return (
       <div>
-        <GcpRuntimeVariableTable config="igudes_prod"/>
+        <GcpRuntimeVariableTable config={config}/>
 
-        <Button
-          variant="fab"
+        <Fab
           color="primary"
           aria-label="Add"
           className={classes.button}
           onClick={this.handleNewClick}
         >
           <AddIcon />
-        </Button>
+        </Fab>
       </div>
     )
   }

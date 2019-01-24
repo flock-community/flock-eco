@@ -15,7 +15,7 @@ import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.DefaultUriBuilderFactory
 
 @Component
-class RuntimeConfigurationClient {
+class GcpRuntimeConfigurationClient {
 
     @Autowired
     lateinit var idProvider: GcpProjectIdProvider

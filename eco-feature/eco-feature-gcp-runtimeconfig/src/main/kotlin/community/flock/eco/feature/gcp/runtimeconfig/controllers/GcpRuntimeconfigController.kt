@@ -1,6 +1,6 @@
 package community.flock.eco.feature.gcp.runtimeconfig.controllers
 
-import community.flock.eco.feature.gcp.runtimeconfig.clients.RuntimeConfigurationClient
+import community.flock.eco.feature.gcp.runtimeconfig.clients.GcpRuntimeConfigurationClient
 import community.flock.eco.feature.gcp.runtimeconfig.model.GcpRuntimeConfig
 import community.flock.eco.feature.gcp.runtimeconfig.model.GcpRuntimeVariable
 import org.springframework.security.access.prepost.PreAuthorize
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/gcp/runtimeconfig")
-class GcpRuntimeconfigController(private val runtimeConfigurationClient: RuntimeConfigurationClient) {
+class GcpRuntimeconfigController(private val runtimeConfigurationClient: GcpRuntimeConfigurationClient) {
 
     @GetMapping("/configs")
     @PreAuthorize("hasAuthority('GcpRuntimconfigConfigAuthority.READ')")
