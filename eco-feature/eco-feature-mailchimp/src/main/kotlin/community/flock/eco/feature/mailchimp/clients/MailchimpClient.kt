@@ -26,13 +26,13 @@ class MailchimpClient(
         val restTemplateBuilder: RestTemplateBuilder) {
 
 
-    @Value("\${flock.eco.feature.mailchimp.apiKey}")
+    @Value("\${flock.eco.feature.mailchimp.apiKey:@null}")
     private lateinit var apiKey: String
 
-    @Value("\${flock.eco.feature.mailchimp.requestUrl}")
+    @Value("\${flock.eco.feature.mailchimp.requestUrl:@null}")
     private lateinit var requestUrl: String
 
-    @Value("\${flock.eco.feature.mailchimp.listId}")
+    @Value("\${flock.eco.feature.mailchimp.listId:@null}")
     private lateinit var listId: String
 
     private val headers: HttpHeaders
