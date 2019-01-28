@@ -11,7 +11,7 @@
     </modules>
 
     <parent>
-        <groupId>com.github.flock-se.flock-eco</groupId>
+        <groupId>com.github.flock-community.flock-eco</groupId>
         <artifactId>flock-eco-parent</artifactId>
         <version>1.20</version>
     </parent>
@@ -83,7 +83,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.flock-se.flock-eco</groupId>
+            <groupId>com.github.flock-community.flock-eco</groupId>
             <artifactId>flock-eco-core</artifactId>
             <version>${project.version}</version>
         </dependency>

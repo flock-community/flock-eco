@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.github.flock-se.flock-eco</groupId>
+        <groupId>com.github.flock-community.flock-eco</groupId>
         <artifactId>flock-eco-feature-parent</artifactId>
         <version>1.20</version>
     </parent>
