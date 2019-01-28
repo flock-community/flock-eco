@@ -7,8 +7,8 @@ import community.flock.eco.feature.member.model.MemberGroup
 import community.flock.eco.feature.member.model.MemberStatus
 import community.flock.eco.feature.member.repositories.MemberGroupRepository
 import community.flock.eco.feature.member.repositories.MemberRepository
+import community.flock.eco.feature.member.services.MemberService
 import community.flock.eco.feature.member.specifications.MemberSpecification
-import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -30,7 +30,7 @@ data class MergeMemberEvent(override val member: Member, val mergeMembers: Set<M
 class MemberController(
         private val memberRepository: MemberRepository,
         private val memberGroupRepository: MemberGroupRepository,
-        private val publisher: ApplicationEventPublisher
+        private val memberService: MemberService
 ) {
 
 
@@ -93,50 +93,21 @@ class MemberController(
 
     @PostMapping
     @PreAuthorize("hasAuthority('MemberAuthority.WRITE')")
-    fun create(@RequestBody form: MemberForm): Member {
-        return form.toMember()
-                .let { memberRepository.save(it) }
-                .apply { publisher.publishEvent(CreateMemberEvent(this)) }
-    }
+    fun create(@RequestBody form: MemberForm): Member = memberService.create(form.toMember())
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('MemberAuthority.WRITE')")
-    fun update(@PathVariable("id") id: String, @RequestBody member: Member): Member = member
-            .copy(
-                    id = id.toLong(),
-                    groups = memberGroupRepository
-                            .findAllById(member.groups.map { it.id })
-                            .toSet())
-            .let { memberRepository.save(it) }
-            .apply { publisher.publishEvent(UpdateMemberEvent(this)) }
+    fun update(@PathVariable("id") id: String, @RequestBody member: Member): Member = memberService.update(id.toLong(), member)
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('MemberAuthority.WRITE')")
-    fun delete(@PathVariable("id") id: String) = memberRepository.findById(id.toLong())
-            .ifPresent { member ->
-                member
-                        .copy(status = MemberStatus.DELETED)
-                        .let { memberRepository.save(it) }
-                        .apply { publisher.publishEvent(DeleteMemberEvent(this)) }
-            }
+    fun delete(@PathVariable("id") id: String) = memberService.delete(id.toLong())
 
     @PostMapping("/merge")
     @PreAuthorize("hasAuthority('MemberAuthority.WRITE')")
-    fun merge(@RequestBody form: MergeForm): Member {
-        form.mergeMemberIds.map { merge(it) }
-        return form.newMember.toMember()
-                .let { memberRepository.save(it) }
-                .apply {
-                    val mergeMembers = memberRepository.findByIds(form.mergeMemberIds).toSet()
-                    publisher.publishEvent(MergeMemberEvent(this, mergeMembers))
-                }
-    }
-
-    private fun merge(id: Long) = memberRepository
-            .findById(id)
-            .ifPresent { member ->
-                member.copy(status = MemberStatus.MERGED).let { memberRepository.save(it) }
-            }
+    fun merge(@RequestBody form: MergeForm): Member = memberService.merge(
+            form.mergeMemberIds,
+            form.newMember.toMember())
 
     private fun MemberForm.toMember(): Member {
         return Member(

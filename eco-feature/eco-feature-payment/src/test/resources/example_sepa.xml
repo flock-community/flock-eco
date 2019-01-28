@@ -47,13 +47,13 @@
       <ChrgBr>SLEV</ChrgBr>
       <DrctDbtTxInf>
         <PmtId>
-          <EndToEndId>20190126-0</EndToEndId>
+          <EndToEndId>20190101-0</EndToEndId>
         </PmtId>
         <InstdAmt Ccy="EUR">5.0</InstdAmt>
         <DrctDbtTx>
           <MndtRltdInf>
             <MndtId>2</MndtId>
-            <DtOfSgntr>2019-01-26</DtOfSgntr>
+            <DtOfSgntr>2019-01-01</DtOfSgntr>
             <AmdmntInd>false</AmdmntInd>
           </MndtRltdInf>
           <CdtrSchmeId>
@@ -94,13 +94,13 @@
       </DrctDbtTxInf>
       <DrctDbtTxInf>
         <PmtId>
-          <EndToEndId>20190126-1</EndToEndId>
+          <EndToEndId>20190101-1</EndToEndId>
         </PmtId>
         <InstdAmt Ccy="EUR">5.0</InstdAmt>
         <DrctDbtTx>
           <MndtRltdInf>
             <MndtId>256</MndtId>
-            <DtOfSgntr>2019-01-26</DtOfSgntr>
+            <DtOfSgntr>2019-01-01</DtOfSgntr>
             <AmdmntInd>false</AmdmntInd>
           </MndtRltdInf>
           <CdtrSchmeId>

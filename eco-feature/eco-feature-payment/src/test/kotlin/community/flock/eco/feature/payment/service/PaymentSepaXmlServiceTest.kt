@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 import java.io.StringWriter
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.Month
 import java.time.format.DateTimeFormatter
@@ -28,6 +29,7 @@ class PaymentSepaXmlServiceTest {
     @Autowired
     lateinit var paymentSepaXmlService: PaymentSepaXmlService
 
+    val date: LocalDate = LocalDate.of(2019, 1,1)
     val data = listOf(
             PaymentTransaction(
                     amount = 5.00,
@@ -41,8 +43,10 @@ class PaymentSepaXmlServiceTest {
                                     iban = "NL97ZZZ342160180000",
                                     bic = "TRIONL2U",
                                     country = "NL"
-                            )
-                    )
+                            ),
+                            startDate = date
+                    ),
+                    created = date
             ),
             PaymentTransaction(
                     amount = 5.00,
@@ -56,13 +60,14 @@ class PaymentSepaXmlServiceTest {
                                     iban = "NL00TRIO0000000",
                                     bic = "TRIONL2U",
                                     country = "NL"
-                            )
-                    )
+                            ),
+                            startDate = date
+                    ),
+                    created = date
             ))
 
     @Test
     fun test() {
-        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
         val sepa = PaymentSepaXmlService.Sepa(
                 id = "90000000092",
                 message = "HARTELIJK DANK VOOR UW BIJDRAGE",
