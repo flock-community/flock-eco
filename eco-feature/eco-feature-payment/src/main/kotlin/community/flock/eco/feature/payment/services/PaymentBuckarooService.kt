@@ -23,13 +23,13 @@ import javax.crypto.spec.SecretKeySpec
 
 @Component
 class PaymentBuckarooService(
-        @Value("\${flock.eco.feature.payment.buckaroo.requestUri}")
+        @Value("\${flock.eco.feature.payment.buckaroo.requestUri:@null}")
         private val requestUri: String,
 
-        @Value("\${flock.eco.feature.payment.buckaroo.websiteKey}")
+        @Value("\${flock.eco.feature.payment.buckaroo.websiteKey:@null}")
         private val websiteKey: String,
 
-        @Value("\${flock.eco.feature.payment.buckaroo.secretKey}")
+        @Value("\${flock.eco.feature.payment.buckaroo.secretKey:@null}")
         private val secretKey: String,
 
         private val paymentMandateRepository: PaymentMandateRepository,
