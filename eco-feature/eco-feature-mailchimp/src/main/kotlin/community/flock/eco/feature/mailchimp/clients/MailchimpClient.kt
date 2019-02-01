@@ -17,23 +17,24 @@ import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
+import org.springframework.web.util.DefaultUriBuilderFactory
 import java.security.MessageDigest
 import javax.xml.bind.DatatypeConverter
-
 
 @Component
 class MailchimpClient(
         val restTemplateBuilder: RestTemplateBuilder) {
 
-
-    @Value("\${flock.eco.feature.mailchimp.apiKey:@null}")
+    @Value("\${flock.eco.feature.mailchimp.apiKey:}")
     private lateinit var apiKey: String
 
-    @Value("\${flock.eco.feature.mailchimp.requestUrl:@null}")
+    @Value("\${flock.eco.feature.mailchimp.requestUrl:}")
     private lateinit var requestUrl: String
 
-    @Value("\${flock.eco.feature.mailchimp.listId:@null}")
+    @Value("\${flock.eco.feature.mailchimp.listId:}")
     private lateinit var listId: String
+
+    val mapper = ObjectMapper()
 
     private val headers: HttpHeaders
         get() {
@@ -42,12 +43,16 @@ class MailchimpClient(
             return headers
         }
 
-    val mapper = ObjectMapper()
-
     val restTemplate: RestTemplate
         get() {
+
+            if (requestUrl.isBlank() || apiKey.isBlank()) {
+                throw RuntimeException("Cannot connect to Mailchimp: requestUrl or apiKey not available")
+            }
+
             return restTemplateBuilder
                     .basicAuthorization("any", apiKey)
+                    .uriTemplateHandler(DefaultUriBuilderFactory(requestUrl))
                     .build()
         }
 
@@ -56,7 +61,7 @@ class MailchimpClient(
 
         try {
             val entity = HttpEntity<String>(headers)
-            val res = restTemplate.exchange("$requestUrl/templates", HttpMethod.GET, entity, ObjectNode::class.java)
+            val res = restTemplate.exchange("/templates", HttpMethod.GET, entity, ObjectNode::class.java)
             return res.body.get("templates").asIterable()
                     .map {
                         MailchimpTemplate(
@@ -76,7 +81,7 @@ class MailchimpClient(
 
         try {
             val entity = HttpEntity<String>(headers)
-            val res = restTemplate.exchange("$requestUrl/campaigns", HttpMethod.GET, entity, ObjectNode::class.java)
+            val res = restTemplate.exchange("/campaigns", HttpMethod.GET, entity, ObjectNode::class.java)
             return res.body.get("campaigns").asIterable()
                     .map {
                         MailchimpCampaign(
@@ -94,7 +99,7 @@ class MailchimpClient(
         val offset = page.offset
         try {
             val entity = HttpEntity<String>(headers)
-            val res = restTemplate.exchange("$requestUrl/lists/$listId/members?offset=$offset&count=10", HttpMethod.GET, entity, ObjectNode::class.java)
+            val res = restTemplate.exchange("/lists/$listId/members?offset=$offset&count=10", HttpMethod.GET, entity, ObjectNode::class.java)
             fun printName(mergeFields: JsonNode): String {
                 return mergeFields.get("FNAME").asText() + " " + mergeFields.get("LNAME").asText()
             }
@@ -113,10 +118,13 @@ class MailchimpClient(
         val md5 = calculateMd5(email)
         val entity = HttpEntity<Unit>(headers)
         try {
-            val res = restTemplate.exchange("$requestUrl/lists/$listId/members/$md5", HttpMethod.GET, entity, ObjectNode::class.java)
+            val res = restTemplate.exchange("/lists/$listId/members/$md5", HttpMethod.GET, entity, ObjectNode::class.java)
             return convertObjectNodetoMailchimpMember(res.body)
         } catch (ex: HttpClientErrorException) {
-            return null
+            if (ex.statusCode == HttpStatus.NOT_FOUND) {
+                return null
+            }
+            throw FetchException(ex.responseBodyAsString)
         }
     }
 
@@ -124,10 +132,10 @@ class MailchimpClient(
         val obj = convertMailchimpMembertoObjectNode(member)
         val entity = HttpEntity(obj, headers)
         try {
-            val res = restTemplate.exchange("$requestUrl/lists/$listId/members", HttpMethod.POST, entity, ObjectNode::class.java)
+            val res = restTemplate.exchange("/lists/$listId/members", HttpMethod.POST, entity, ObjectNode::class.java)
             return convertObjectNodetoMailchimpMember(res.body)
         } catch (ex: HttpClientErrorException) {
-            return null
+            throw FetchException(ex.responseBodyAsString)
         }
     }
 
@@ -135,11 +143,11 @@ class MailchimpClient(
         val md5 = calculateMd5(member.email)
         val obj = convertMailchimpMembertoObjectNode(member)
         val entity = HttpEntity(obj, headers)
-        val res = restTemplate.exchange("$requestUrl/lists/$listId/members/$md5", HttpMethod.PUT, entity, ObjectNode::class.java)
-        return if (res.statusCode == HttpStatus.OK) {
-            convertObjectNodetoMailchimpMember(res.body)
-        } else {
-            null
+        val res = restTemplate.exchange("/lists/$listId/members/$md5", HttpMethod.PUT, entity, ObjectNode::class.java)
+        try {
+            return convertObjectNodetoMailchimpMember(res.body)
+        } catch (ex: HttpClientErrorException) {
+            throw FetchException(ex.responseBodyAsString)
         }
     }
 
@@ -151,7 +159,7 @@ class MailchimpClient(
                     .addAll(members
                             .map(this::convertMailchimpMembertoObjectNode))
             val entity = HttpEntity(body, headers)
-            val res = restTemplate.exchange("$requestUrl/lists/$listId", HttpMethod.POST, entity, ObjectNode::class.java)
+            val res = restTemplate.exchange("/lists/$listId", HttpMethod.POST, entity, ObjectNode::class.java)
         } catch (ex: HttpClientErrorException) {
             throw FetchException(ex.responseBodyAsString)
         }
@@ -163,7 +171,7 @@ class MailchimpClient(
             body.put("name", tag)
             body.putArray("static_segment")
             val entity = HttpEntity(body, headers)
-            val res = restTemplate.exchange("$requestUrl/lists/$listId/segments", HttpMethod.POST, entity, ObjectNode::class.java)
+            val res = restTemplate.exchange("/lists/$listId/segments", HttpMethod.POST, entity, ObjectNode::class.java)
             return res.body.get("name").asText()
         } catch (ex: HttpClientErrorException) {
             val res = mapper.readTree(ex.responseBodyAsString)
@@ -180,6 +188,8 @@ class MailchimpClient(
             email: String,
             active: Set<String>,
             inactive: Set<String>) {
+
+
         val md5 = calculateMd5(email)
         val body = mapper.createObjectNode()
         val tags = body.putArray("tags")
@@ -195,14 +205,13 @@ class MailchimpClient(
         }
         val entity = HttpEntity(body, headers)
         try {
-            val res = restTemplate.exchange("$requestUrl/lists/$listId/members/$md5/tags", HttpMethod.POST, entity, ObjectNode::class.java)
+            val res = restTemplate.exchange("/lists/$listId/members/$md5/tags", HttpMethod.POST, entity, ObjectNode::class.java)
         } catch (ex: HttpClientErrorException) {
             throw FetchException(ex.responseBodyAsString)
         }
     }
 
-
-    fun calculateMd5(email: String): String {
+    private fun calculateMd5(email: String): String {
         val digest = MessageDigest.getInstance("MD5")
                 .digest(email
                         .toLowerCase()
@@ -211,7 +220,7 @@ class MailchimpClient(
         return md5.toLowerCase()
     }
 
-    fun convertMailchimpMembertoObjectNode(member: MailchimpMember): ObjectNode {
+    private fun convertMailchimpMembertoObjectNode(member: MailchimpMember): ObjectNode {
         val json = mapper.createObjectNode()
         json.put("email_address", member.email)
         json.put("status", member.status.toString().toLowerCase())
@@ -222,7 +231,7 @@ class MailchimpClient(
         return json
     }
 
-    fun convertObjectNodetoMailchimpMember(obj: JsonNode): MailchimpMember {
+    private fun convertObjectNodetoMailchimpMember(obj: JsonNode): MailchimpMember {
         return MailchimpMember(
                 firstName = obj.get("merge_fields")
                         .get("FNAME")
