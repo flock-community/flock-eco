@@ -8,8 +8,15 @@ import AddIcon from '@material-ui/icons/Add'
 import UserTable from './UserTable'
 import UserForm from './UserForm'
 import UserDialog from './UserDialog'
+import Paper from '@material-ui/core/es/Paper/Paper'
 
 const styles = theme => ({
+  tablePaper: {
+    marginBottom: 50,
+    width: '100%',
+    marginTop: theme.spacing.unit * 3,
+    overflowX: 'auto',
+  },
   button: {
     position: 'fixed',
     right: 20,
@@ -93,14 +100,16 @@ class itemManager extends React.Component {
 
     return (
       <div>
-        <UserTable
-          data={this.state.list}
-          count={this.state.count}
-          page={this.state.page}
-          size={this.state.size}
-          onRowClick={this.handleRowClick}
-          onChangePage={this.handleChangePage}
-        />
+        <Paper className={classes.tablePaper}>
+          <UserTable
+            data={this.state.list}
+            count={this.state.count}
+            page={this.state.page}
+            size={this.state.size}
+            onRowClick={this.handleRowClick}
+            onChangePage={this.handleChangePage}
+          />
+        </Paper>
 
         <UserDialog
           open={this.state.item != null}
@@ -122,7 +131,7 @@ class itemManager extends React.Component {
           className={classes.button}
           onClick={this.handleNewClick}
         >
-          <AddIcon />
+          <AddIcon/>
         </Button>
       </div>
     )

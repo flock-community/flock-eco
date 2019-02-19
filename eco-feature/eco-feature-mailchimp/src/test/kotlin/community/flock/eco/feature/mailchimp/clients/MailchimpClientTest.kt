@@ -14,6 +14,7 @@ import kotlin.test.assertNull
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
+@Ignore
 class MailchimpClientTest {
 
     @Autowired
