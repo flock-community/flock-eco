@@ -9,6 +9,7 @@ import UserTable from './UserTable'
 import UserForm from './UserForm'
 import UserDialog from './UserDialog'
 import Paper from '@material-ui/core/es/Paper/Paper'
+import Fab from '@material-ui/core/Fab'
 
 const styles = theme => ({
   tablePaper: {
@@ -41,13 +42,7 @@ class itemManager extends React.Component {
       .then(json => {
         this.setState({authorities: json})
       })
-    this.load()
-  }
-
-  handleChangePage = (event, page) => {
-    this.setState({page}, () => {
-      this.load()
-    })
+    //this.load()
   }
 
   handleRowClick = item => {
@@ -79,21 +74,6 @@ class itemManager extends React.Component {
     this.setState({item: value})
   }
 
-  load = () => {
-    fetch(`/api/users?page=${this.state.page}&size=${this.state.size}`)
-      .then(res => {
-        this.setState({
-          count: parseInt(res.headers.get('x-total')),
-        })
-        return res.json()
-      })
-      .then(json => {
-        this.setState({list: json})
-      })
-      .catch(e => {
-        this.setState({message: 'Cannot load users'})
-      })
-  }
 
   render() {
     const {classes} = this.props
@@ -102,12 +82,7 @@ class itemManager extends React.Component {
       <div>
         <Paper className={classes.tablePaper}>
           <UserTable
-            data={this.state.list}
-            count={this.state.count}
-            page={this.state.page}
-            size={this.state.size}
             onRowClick={this.handleRowClick}
-            onChangePage={this.handleChangePage}
           />
         </Paper>
 
@@ -124,15 +99,14 @@ class itemManager extends React.Component {
           />
         </UserDialog>
 
-        <Button
-          variant="fab"
+        <Fab
           color="primary"
           aria-label="Add"
           className={classes.button}
           onClick={this.handleNewClick}
         >
           <AddIcon/>
-        </Button>
+        </Fab>
       </div>
     )
   }
@@ -147,7 +121,7 @@ class itemManager extends React.Component {
     }
     fetch('/api/users', opts).then(() => {
       this.setState({item: null})
-      this.load()
+      //this.load()
     })
   }
 
@@ -174,7 +148,7 @@ class itemManager extends React.Component {
     }
     fetch(`/api/users/${item.id}`, opts).then(() => {
       this.setState({item: null})
-      this.load()
+      //this.load()
     })
   }
 }

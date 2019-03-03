@@ -1,4 +1,8 @@
-import React from 'react'
+import * as React from 'react'
+import {Component} from 'react'
+
+import {createStyles, WithStyles} from '@material-ui/core'
+import {Theme} from '@material-ui/core/styles/createMuiTheme'
 import {withStyles} from '@material-ui/core/styles'
 
 import Grid from '@material-ui/core/Grid'
@@ -11,39 +15,53 @@ import TextField from '@material-ui/core/TextField'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
+import {User} from '../../../../../generated/src/main/frontend/models/user.model.json'
+import {AuthoritiesClient} from '../../clients/AuthoritiesClient'
 
-const styles = theme => ({
+const styles = (theme: Theme) => createStyles({
   input: {
     width: '100%',
   },
 })
 
-class UserForm extends React.Component {
-  constructor(props) {
-    super(props)
-    this.init(props.item)
+interface Props<T> extends WithStyles<typeof styles> {
+  value: T,
+  authorities:string[]
+
+  onChange(item: T): Function
+}
+
+class UserForm extends Component<Props<User>, User> {
+
+  state: User = {
+    name: '',
+    email: '',
+    reference: '',
+    authorities: [],
   }
 
-  init(item) {
-    const user = {
-      name: '',
-      email: '',
-      reference: '',
-      disabled: false,
-      authorities: [],
+  componentDidUpdate(prevProps: Props<User>) {
+    if (prevProps.value !== this.props.value) {
+      this.setState(this.props.value)
     }
-
-    this.state = Object.assign(user, item)
   }
 
-  handleChange(name) {
-    return value => {
-      console.log(value)
-      this.setState({[name]: value}, () => {
+  handleChangeEvent(name: string) {
+    return (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>): void => {
+      this.setState({[name]: event.target.value}, () => {
         this.props.onChange(this.state)
       })
     }
   }
+
+  handleChangeValue(name: string) {
+    return (authorities: string[]): void => {
+      this.setState({[name]: authorities}, () => {
+        this.props.onChange(this.state)
+      })
+    }
+  }
+
 
   render() {
     const {classes} = this.props
@@ -56,37 +74,28 @@ class UserForm extends React.Component {
           justify="space-evenly"
           alignItems="stretch"
           spacing={16}
-        >
-          <Grid item xs={12}>
-            <TextField
-              label="Name"
-              className={classes.input}
-              value={this.state.name}
-              onChange={ev => this.handleChange('name')(ev.target.value)}
-            />
-          </Grid>
-
-          <Grid item xs={12}>
-            <TextField
-              label="Email"
-              className={classes.input}
-              value={this.state.email}
-              onChange={ev => this.handleChange('email')(ev.target.value)}
-            />
-          </Grid>
+        > <Grid item xs={12}>
+          <TextField
+            label="Email"
+            className={classes.input}
+            value={this.state.email}
+            onChange={this.handleChangeEvent('email')}
+          />
+        </Grid>
 
           <Grid item xs={12}>
             <TextField
               label="Reference"
               className={classes.input}
               value={this.state.reference}
-              onChange={ev => this.handleChange('reference')(ev.target.value)}
+              onChange={this.handleChangeEvent('reference')}
             />
           </Grid>
 
           <Grid item style={{marginTop: 10}}>
             {this.renderList()}
           </Grid>
+
         </Grid>
       </React.Fragment>
     )
@@ -95,18 +104,18 @@ class UserForm extends React.Component {
   renderList() {
     const {classes, authorities} = this.props
 
-    const handleClick = value => {
-      if (this.state.authorities.includes(value)) {
-        this.handleChange('authorities')(
-          this.state.authorities.filter(it => value !== it),
-        )
+    const handleClick = (value: string) => {
+      if (this.state.authorities.indexOf(value) > 0) {
+        this.handleChangeValue('authorities')(this.state.authorities
+          .filter(it => value !== it))
       } else {
-        this.handleChange('authorities')(this.state.authorities.concat(value))
+        this.handleChangeValue('authorities')(this.state.authorities
+          .concat(value))
       }
     }
 
     return (
-      <FormControl className={classes.formControl}>
+      <FormControl>
         <InputLabel shrink>Authorities</InputLabel>
         <List className={classes.input}>
           {authorities.map(value => (
@@ -123,14 +132,14 @@ class UserForm extends React.Component {
               }}
             >
               <Checkbox
-                checked={this.state.authorities.includes(value)}
+                checked={this.state.authorities.indexOf(value) > 0}
                 tabIndex={-1}
                 disableRipple
                 style={{
                   width: 32,
                 }}
               />
-              <ListItemText primary={value} />
+              <ListItemText primary={value}/>
             </ListItem>
           ))}
         </List>

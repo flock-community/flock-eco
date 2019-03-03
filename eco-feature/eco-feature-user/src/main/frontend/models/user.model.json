@@ -1,0 +1,6 @@
+{
+  "name": "string",
+  "email": "string",
+  "reference": "string?",
+  "authorities": ["string"]
+}

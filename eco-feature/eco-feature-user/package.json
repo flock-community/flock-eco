@@ -1,4 +1,26 @@
 {
   "name": "eco-feature-user",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "start": "webpack-dev-server --mode development",
+    "generate": "jsonmodel2ts 'src/**/*.model.json'",
+    "compile": "tsc"
+  },
+  "dependencies": {
+    "@types/react": "^16.8.6",
+    "@types/react-dom": "^16.8.2",
+    "react": "^16.8.3",
+    "react-dom": "^16.8.3",
+    "@material-ui/core": "^3.9.2",
+    "@material-ui/icons": "^3.0.1"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-typescript": "^7.3.2",
+    "ts-loader": "^5.3.3",
+    "tsc": "^1.20150623.0",
+    "typescript": "^3.3.3",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.2.1"
+  }
 }

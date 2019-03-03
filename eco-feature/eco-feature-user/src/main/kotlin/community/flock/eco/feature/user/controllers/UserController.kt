@@ -37,7 +37,7 @@ class UserController(private val userRepository: UserRepository) {
     fun findAll(page: Pageable): ResponseEntity<List<User>> {
         val res = userRepository.findAll(page)
         val headers = HttpHeaders()
-        headers.set("x-page", page.pageNumber.toString())
+        headers.set("x-page", res.pageable.pageNumber.toString())
         headers.set("x-total", res.totalElements.toString())
         return ResponseEntity(res.content.toList(), headers, HttpStatus.OK)
 

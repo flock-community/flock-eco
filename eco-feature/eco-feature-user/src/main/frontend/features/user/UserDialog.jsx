@@ -35,7 +35,7 @@ class UserDialog extends React.Component {
         aria-labelledby="simple-dialog-title"
         classes={classes}
       >
-        <DialogTitle id="simple-dialog-title">Set backup account</DialogTitle>
+        <DialogTitle id="simple-dialog-title">User</DialogTitle>
         <DialogContent>{this.props.children}</DialogContent>
         <DialogActions>
           <Button onClick={this.handleClose} color="primary">

@@ -1,12 +1,14 @@
 {
-  "name": "root",
+  "name": "flock-eco",
   "private": true,
   "scripts": {
     "postinstall": "npm run bootstrap",
     "bootstrap": "lerna bootstrap --hoist",
-    "prettier": "prettier --write \"{**/*.js,**/*.json,**/*.html}\""
+    "prettier": "prettier --write \"{**/*.js,**/*.json,**/*.html}\"",
+    "generate": "lerna run generate"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.2.5",
     "@material-ui/core": "^3.6.2",
     "@material-ui/icons": "^3.0.1",
     "babel-polyfill": "^6.26.0",
@@ -15,15 +17,25 @@
     "react-dom": "^16.4.2",
     "react-material-ui-form-validator": "^2.0.1",
     "react-router-dom": "^4.3.1",
+    "tsc": "^1.20150623.0",
+    "typescript": "^3.3.3",
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.3.4",
+    "@babel/plugin-proposal-class-properties": "^7.3.4",
+    "@babel/preset-env": "^7.3.4",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-stage-2": "^7.0.0",
+    "@babel/preset-typescript": "^7.3.3",
+    "awesome-typescript-loader": "^5.2.1",
+    "babel-loader": "^8.0.5",
+    "html-webpack-plugin": "^3.2.0",
     "lerna": "^3.8.4",
-    "babel-core": "^6.26.3",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1",
-    "prettier": "^1.15.3"
+    "prettier": "^1.15.3",
+    "webpack": "^4.28.2",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.5"
   },
   "prettier": {
     "singleQuote": true,
