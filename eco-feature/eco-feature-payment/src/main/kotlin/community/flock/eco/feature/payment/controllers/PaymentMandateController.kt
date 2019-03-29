@@ -16,14 +16,13 @@ class PaymentMandateController(
         private val paymentTransactionRepository: PaymentTransactionRepository
 ) {
 
-    @GetMapping()
+    @GetMapping
     @PreAuthorize("hasAuthority('PaymentMandateAuthority.READ')")
     fun findByAll(pageable: Pageable): Page<PaymentMandate> = paymentMandateRepository.findAll(pageable)
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('PaymentMandateAuthority.READ')")
-    fun findById(@PathVariable id: Long): PaymentMandate? = paymentMandateRepository.findById(id)
-            .orElse(null)
+    fun findById(@PathVariable id: Long): PaymentMandate? = paymentMandateRepository.findById(id).orElse(null)
 
     @GetMapping("/{id}/transactions")
     @PreAuthorize("hasAuthority('PaymentMandateAuthority.READ')")
@@ -33,12 +32,9 @@ class PaymentMandateController(
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('PaymentMandateAuthority.READ')")
-    fun update(@PathVariable id: Long, @RequestBody form: PaymentMandate): PaymentMandate? {
-        val mandate = paymentMandateRepository.findById(id)
-        return when (mandate.isPresent) {
-            true -> paymentMandateRepository.save(form.copy(id = mandate.get().id))
-            else -> null
-        }
-    }
+    fun update(@PathVariable id: Long, @RequestBody form: PaymentMandate): PaymentMandate? = paymentMandateRepository.findById(id)
+            .let {
+                it.orElse(null).apply { paymentMandateRepository.save(form.copy(id = this.id)) }
+            }
 
 }

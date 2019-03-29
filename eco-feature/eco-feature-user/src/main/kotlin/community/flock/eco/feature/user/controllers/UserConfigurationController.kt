@@ -8,24 +8,17 @@ import java.security.Principal
 
 @RestController
 @RequestMapping("/login")
-class UserConfigurationConrtoller {
-
+class UserConfigurationController {
 
     data class Configuration(
             val isLoggedIn: Boolean,
             val authorities: List<String>
     )
 
-
     @GetMapping("/status")
-    fun index(principal: Principal?): Configuration {
-        return Configuration(
-                isLoggedIn = principal != null,
-                authorities = when (principal) {
-                    is AbstractAuthenticationToken -> principal.authorities
-                            .map { it.authority }
-                    else -> listOf()
-                }
-        )
-    }
+    fun index(principal: Principal?) = Configuration(
+            isLoggedIn = principal != null,
+            authorities = if (principal is AbstractAuthenticationToken) principal.authorities.map { it.authority } else listOf()
+    )
+
 }

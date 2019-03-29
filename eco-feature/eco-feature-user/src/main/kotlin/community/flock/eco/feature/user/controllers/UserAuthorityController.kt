@@ -12,10 +12,10 @@ class UserAuthorityController(
         private val userAuthorityService: UserAuthorityService
 ) {
 
-    @GetMapping()
+    @GetMapping
     @PreAuthorize("isAuthenticated()")
     fun findMe(): List<String> = userAuthorityService
             .allAuthorities()
-            .map{it.toName()}
+            .map { it.toName() }
 
 }
