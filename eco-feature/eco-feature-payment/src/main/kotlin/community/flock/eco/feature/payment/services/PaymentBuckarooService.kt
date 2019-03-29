@@ -97,44 +97,40 @@ class PaymentBuckarooService(
 
     fun create(paymentMethod: PaymentMethod): BuckarooResult {
         val postContent = paymentMethod.getContent()
-        val nonce = getNonce()
-        val httpMethod = HttpMethod.POST.name
-        val authHeader = authHeader(requestUri, postContent, httpMethod, nonce)
         val restTemplate = RestTemplate()
-        val headers = HttpHeaders()
-        headers.set("Authorization", authHeader)
-        headers.contentType = MediaType.APPLICATION_JSON
-
-        val entity = HttpEntity(postContent, headers)
+        val headers = HttpHeaders().apply {
+            set("Authorization", AuthHeader(
+                    websiteKey = websiteKey,
+                    nonce = RandomStringUtils.randomAlphanumeric(32),
+                    secretKey = secretKey,
+                    requestUri = requestUri,
+                    content = postContent,
+                    httpMethod = HttpMethod.POST.name
+            ).toString())
+            contentType = MediaType.APPLICATION_JSON
+        }
 
         try {
-            val res = restTemplate.postForObject("https://$requestUri", entity, ObjectNode::class.java)
-
-            val reference = res.get("Key").asText()
-            val redirectUrl = res.get("RequiredAction").get("RedirectURL").asText()
+            val res = restTemplate.postForObject("https://$requestUri", HttpEntity(postContent, headers), ObjectNode::class.java)!!
 
             val mandate = PaymentMandate(
                     code = UUID.randomUUID().toString(),
                     amount = paymentMethod.amount,
                     frequency = PaymentFrequency.ONCE,
                     type = paymentMethod.getType()
-            ).let {
-                paymentMandateRepository.save(it)
-            }
+            ).also { paymentMandateRepository.save(it) }
 
             val transaction = PaymentTransaction(
                     amount = paymentMethod.amount,
-                    reference = reference,
+                    reference = res["Key"].asText(),
                     status = PaymentTransactionStatus.PENDING,
                     mandate = mandate
-            ).let {
-                paymentTransactionRepository.save(it)
-            }
+            ).also { paymentTransactionRepository.save(it) }
 
             return BuckarooResult(
                     mandate = mandate,
                     transaction = transaction,
-                    redirectUrl = redirectUrl
+                    redirectUrl = res["RequiredAction"]["RedirectURL"].asText()
             )
         } catch (ex: HttpClientErrorException) {
             throw PaymentNotCreatedException(ex.responseBodyAsString)
@@ -142,52 +138,56 @@ class PaymentBuckarooService(
 
     }
 
-    private fun getEncodedContent(content: String): String {
-        val md = MessageDigest.getInstance("MD5")
-        val md5 = md.digest(content.toByteArray())
-        return getEncoder().encodeToString(md5)
+    private class AuthHeader(
+            private val websiteKey: String,
+            private val nonce: String,
+            secretKey: String,
+            requestUri: String,
+            content: String,
+            httpMethod: String
+    ) {
+
+        private val timeStamp = (Date().time / 1000).toString()
+        private val hash = Hash(
+                secretKey = secretKey,
+                websiteKey = websiteKey,
+                httpMethod = httpMethod,
+                nonce = nonce,
+                timeStamp = timeStamp,
+                requestUri = URLEncoder.encode(requestUri, "UTF-8").toLowerCase(),
+                content = content
+        ).toString()
+
+        override fun toString(): String = "hmac $websiteKey:$hash:$nonce:$timeStamp"
+
     }
 
-    private fun getHash(
-            websiteKey: String,
+    private class Hash(
             secretKey: String,
+            websiteKey: String,
             httpMethod: String,
             nonce: String,
             timeStamp: String,
             requestUri: String,
             content: String
-    ): String {
-        val encodedContent = getEncodedContent(content)
-        val rawData = websiteKey + httpMethod + requestUri + timeStamp + nonce + encodedContent
+    ) {
 
-        val sha256HMAC = Mac.getInstance("HmacSHA256")
-        val secretkey = SecretKeySpec(secretKey.toByteArray(), "HmacSHA256")
-        sha256HMAC.init(secretkey)
-        return getEncoder().encodeToString(sha256HMAC.doFinal(rawData.toByteArray()))
-    }
+        private val secretKey: ByteArray = secretKey.toByteArray()
+        private val params: ByteArray = arrayOf(websiteKey, httpMethod, requestUri, timeStamp, nonce, getEncodedContent(content))
+                .reduce { acc, cur -> acc + cur }
+                .toByteArray()
 
-    private fun getTimeStamp(): String = (Date().time / 1000).toString()
-
-    private fun getNonce(): String = RandomStringUtils.randomAlphanumeric(32)
-
-    private fun authHeader(
-            requestUri: String,
-            content: String,
-            httpMethod: String,
-            nonce: String
-    ): String {
-        val timeStamp = getTimeStamp()
-        val url = URLEncoder.encode(requestUri, "UTF-8").toLowerCase()
-        val hash = getHash(
-                websiteKey,
-                secretKey,
-                httpMethod,
-                nonce,
-                timeStamp,
-                url,
-                content
+        override fun toString(): String = getEncoder().encodeToString(
+                Mac.getInstance("HmacSHA256")
+                        .apply { init(SecretKeySpec(secretKey, "HmacSHA256")) }
+                        .doFinal(params)
         )
-        return "hmac $websiteKey:$hash:$nonce:$timeStamp"
+
+        private fun getEncodedContent(content: String): String = getEncoder().encodeToString(
+                MessageDigest.getInstance("MD5")
+                        .digest(content.toByteArray())
+        )
+
     }
 
 }

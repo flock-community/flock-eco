@@ -35,16 +35,16 @@ class PaymentSepaService(
 
     private fun PaymentSepa.toPaymentMandate(): PaymentMandate = LocalDate.now().let {
         PaymentMandate(
-                code = this.code,
+                code = code,
                 startDate = it,
 
-                amount = this.amount,
-                frequency = this.frequency,
+                amount = amount,
+                frequency = frequency,
                 type = PaymentType.SEPA,
 
-                collectionMonth = this.collectionMonth ?: it.month,
+                collectionMonth = collectionMonth ?: it.month,
 
-                bankAccount = this.bankAccount
+                bankAccount = bankAccount
         )
     }
 

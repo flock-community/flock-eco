@@ -35,12 +35,8 @@ class PaymentSepaXmlService {
     }
 
     fun generate(sepa: Sepa): Document {
-
         val count = sepa.transactions.size.toString()
-        val total = sepa.transactions
-                .map { it.amount }
-                .reduce { acc, cur -> acc + cur }
-                .toString()
+        val total = sepa.transactions.map { it.amount }.reduce { acc, cur -> acc + cur }.toString()
 
         return document {
 
@@ -171,32 +167,36 @@ class PaymentSepaXmlService {
         }
     }
 
-    private fun document(init: Document.() -> Document): Document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument().init()
+    private fun document(init: Document.() -> Document): Document = DocumentBuilderFactory
+            .newInstance()
+            .newDocumentBuilder()
+            .newDocument()
+            .init()
 
-    private fun Document.element(name: String, init: Element.() -> Unit): Document = this.apply {
-        this.createElement(name)
-                .also { this.appendChild(it) }
-                .also(init)
+    private fun Document.element(name: String, init: Element.() -> Unit): Document = apply {
+        createElement(name)
+                .also { appendChild(it) }
+                .init()
     }
 
     private fun Element.element(name: String, init: Element.() -> Unit) {
-        val node = this.ownerDocument.createElement(name)
-        this.appendChild(node)
-        init(node)
+        ownerDocument.createElement(name)
+                .also { appendChild(it) }
+                .init()
     }
 
     private fun Element.element(name: String, value: String) {
-        val node = this.ownerDocument.createElement(name)
-        node.appendChild(this.ownerDocument.createTextNode(value))
-        this.appendChild(node)
+        ownerDocument.createElement(name)
+                .also { it.appendChild(ownerDocument.createTextNode(value)) }
+                .also { appendChild(it) }
     }
 
     private fun Element.attribute(name: String, value: String) {
-        this.setAttribute(name, value)
+        setAttribute(name, value)
     }
 
     private fun Element.value(value: String) {
-        this.appendChild(this.ownerDocument.createTextNode(value))
+        appendChild(ownerDocument.createTextNode(value))
     }
 
 }
