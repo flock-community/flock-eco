@@ -88,7 +88,7 @@ class MemberSpecificationTest {
         val group2 = memberGroupRepository.findByCode("GROUP_2").get()
         val group4 = memberGroupRepository.findByCode("GROUP_4").get()
         val specification = MemberSpecification(
-                groups = setOf(group2,group4))
+                groups = setOf(group2, group4))
         val res = memberRepository.findAll(specification)
         Assert.assertEquals(500, res.size)
         Assert.assertEquals(250, res.filter { it.groups.contains(group2) }.size)
