@@ -29,32 +29,23 @@ class PaymentSepaService(
             val mandate: PaymentMandate
     )
 
-    fun create(paymentSepa: PaymentSepa): SepaResult {
+    fun create(paymentSepa: PaymentSepa): SepaResult = paymentSepa.toPaymentMandate()
+            .also { paymentMandateRepository.save(it) }
+            .let { SepaResult(mandate = it) }
 
-        val mandate = paymentSepa.toPaymentMandate()
-                .let {
-                    paymentMandateRepository.save(it)
-                }
+    private fun PaymentSepa.toPaymentMandate(): PaymentMandate = LocalDate.now().let {
+        PaymentMandate(
+                code = code,
+                startDate = it,
 
-        return SepaResult(
-                mandate = mandate
-        )
-
-    }
-
-    private fun PaymentSepa.toPaymentMandate(): PaymentMandate {
-        val now = LocalDate.now()
-        return PaymentMandate(
-                code = this.code,
-                startDate = now,
-
-                amount = this.amount,
-                frequency = this.frequency,
+                amount = amount,
+                frequency = frequency,
                 type = PaymentType.SEPA,
 
-                collectionMonth = this.collectionMonth ?: now.month,
+                collectionMonth = collectionMonth ?: it.month,
 
-                bankAccount = this.bankAccount
+                bankAccount = bankAccount
         )
     }
+
 }

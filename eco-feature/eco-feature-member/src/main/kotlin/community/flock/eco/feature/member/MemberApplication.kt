@@ -7,16 +7,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Import
 import javax.annotation.PostConstruct
 
-
 @SpringBootApplication
 @Import(MemberConfiguration::class, MemberLoadData::class)
-class MemberApplication {
+class MemberApplication(memberLoadData: MemberLoadData) {
 
-    @Autowired
-    lateinit var memberLoadData: MemberLoadData
-
-    @PostConstruct
-    fun init() {
+    init {
         memberLoadData.load(999)
     }
 }

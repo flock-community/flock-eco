@@ -1,12 +1,10 @@
 package community.flock.eco.feature.user.controllers
 
 import community.flock.eco.core.services.MailService
+import community.flock.eco.core.utils.toResponse
 import community.flock.eco.feature.user.model.User
 import community.flock.eco.feature.user.repositories.UserRepository
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
@@ -23,10 +21,7 @@ class UserController(private val userRepository: UserRepository) {
 
     @GetMapping("/me/mail")
     @PreAuthorize("isAuthenticated()")
-    fun mailMe(mailService: MailService, principal: Principal): String {
-        mailService.sendMail(principal)
-        return "mail sent"
-    }
+    fun mailMe(mailService: MailService, principal: Principal) = "mail sent".also { mailService.sendMail(principal) }
 
     @GetMapping("/strategy")
     @PreAuthorize("isAuthenticated()")
@@ -34,14 +29,7 @@ class UserController(private val userRepository: UserRepository) {
 
     @GetMapping()
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
-    fun findAll(page: Pageable): ResponseEntity<List<User>> {
-        val res = userRepository.findAll(page)
-        val headers = HttpHeaders()
-        headers.set("x-page", page.pageNumber.toString())
-        headers.set("x-total", res.totalElements.toString())
-        return ResponseEntity(res.content.toList(), headers, HttpStatus.OK)
-
-    }
+    fun findAll(page: Pageable): ResponseEntity<List<User>> = userRepository.findAll(page).toResponse(page)
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('UserAuthority.READ')")

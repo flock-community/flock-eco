@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import community.flock.eco.feature.payment.event.PaymentFailureEvent
 import community.flock.eco.feature.payment.event.PaymentSuccessEvent
 import community.flock.eco.feature.payment.model.PaymentTransactionStatus
+import community.flock.eco.feature.payment.model.PaymentTransactionStatus.*
 import community.flock.eco.feature.payment.repositories.PaymentTransactionRepository
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.http.HttpStatus
@@ -25,41 +26,31 @@ class PaymentBuckarooController(
     private val mapper = ObjectMapper()
 
     @PostMapping("success")
-    fun success(@RequestBody json: String): ResponseEntity<Unit> {
-
-        val obj = mapper.readValue(json, ObjectNode::class.java)
-
-        val key = obj["Transaction"]["Key"].asText()
-
-        transactionRepository.findByReference(key)?.let {
-            transactionRepository.save(it.copy(
-                    confirmed = LocalDate.now(),
-                    status = PaymentTransactionStatus.SUCCESS
-            ))
-        }
-
-        publisher.publishEvent(PaymentSuccessEvent())
-
-        return ResponseEntity(HttpStatus.NO_CONTENT)
-    }
+    fun success(@RequestBody json: String): ResponseEntity<Unit> = respond(json, SUCCESS)
 
     @PostMapping("error")
-    fun error(@RequestBody json: String): ResponseEntity<Void> {
-        val obj = mapper.readValue(json, ObjectNode::class.java)
+    fun error(@RequestBody json: String): ResponseEntity<Unit> = respond(json, ERROR)
 
-        val key = obj["Transaction"]["Key"].asText()
 
-        transactionRepository.findByReference(key)?.let {
-            transactionRepository.save(it.copy(
-                    confirmed = LocalDate.now(),
-                    status = PaymentTransactionStatus.ERROR
-            ))
-        }
+    private fun respond(json: String, status: PaymentTransactionStatus): ResponseEntity<Unit> = mapper.readValue(json, ObjectNode::class.java)
+            .let { it["Transaction"]["Key"].asText() }
+            .apply {
+                transactionRepository.findByReference(this)?.let {
+                    transactionRepository.save(it.copy(
+                            confirmed = LocalDate.now(),
+                            status = status
+                    ))
+                }
+            }
+            .also { publisher.publishEvent(selectEvent(status)) }
+            .let { ResponseEntity(HttpStatus.NO_CONTENT) }
 
-        publisher.publishEvent(PaymentFailureEvent())
-
-        return ResponseEntity(HttpStatus.NO_CONTENT)
+    private fun selectEvent(status: PaymentTransactionStatus) = when (status) {
+        SUCCESS -> PaymentSuccessEvent()
+        ERROR -> PaymentFailureEvent()
+        PENDING -> TODO()
+        CANCELED -> TODO()
+        FAILED -> TODO()
     }
 
 }
-

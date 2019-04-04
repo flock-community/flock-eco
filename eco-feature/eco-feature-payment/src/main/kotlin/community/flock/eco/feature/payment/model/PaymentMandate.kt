@@ -1,7 +1,6 @@
-package community.flock.eco.feature.payment.model;
+package community.flock.eco.feature.payment.model
 
-import com.fasterxml.jackson.annotation.JsonBackReference
-import com.fasterxml.jackson.annotation.JsonManagedReference
+import com.fasterxml.jackson.annotation.*
 import community.flock.eco.core.events.EventEntityListeners
 import java.time.LocalDate
 import java.time.Month
@@ -42,13 +41,27 @@ data class PaymentMandate(
         val transactions: Set<PaymentTransaction> = setOf()
 
 ) {
-    override fun equals(o: Any?): Boolean {
-        if (this === o) return true
-        if (o == null || javaClass != o.javaClass) return false
-        return this.id == (o as PaymentMandate).id
+
+    constructor(int: Int, type: PaymentType = PaymentType.IDEAL):this(
+            amount = when (int % 4) {
+                0 -> 2.0
+                1 -> 4.0
+                2 -> 8.0
+                3 -> 16.0
+                else -> 0.0
+            },
+            type = type,
+            frequency = PaymentFrequency.ONCE
+    )
+
+    override fun equals(other: Any?): Boolean {
+        return if (this === other) true
+        else if (other == null || javaClass != other.javaClass) false
+        else this.id == (other as PaymentMandate).id
     }
 
     override fun hashCode(): Int {
         return this.id.hashCode()
     }
+
 }
