@@ -8,5 +8,3 @@ node_modules
 *.versionsBackup
 *.xml.next
 *.xml.tag
-
-release.properties
