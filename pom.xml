@@ -145,7 +145,7 @@
         <repository>
             <id>bintray-flock-community</id>
             <name>flock-community-maven-flock-eco-snapshots</name>
-            <url>https://api.bintray.com/maven/flock-community/flock-eco-maven/flock-eco/;publish=1</url>
+            <url>https://api.bintray.com/maven/flock-community/flock-maven/flock-eco/;publish=1</url>
         </repository>
     </distributionManagement>
 
