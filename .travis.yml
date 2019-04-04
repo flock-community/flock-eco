@@ -9,11 +9,7 @@ cache:
 script: mvn verify
 
 deploy:
-  provider: bintray
-  file: Path to a descriptor file, containing information for the Bintray upload
-  user: Bintray user
-  key:
-    secure: cmJDCDd+3RW9i+u1Uf2ZFKUVACibG9TOUCrjEmknrUpWe+U8el3xcrADy8EVz4HZhqhkLw427eVvG4O04Ofna2jOQsSEt4uWuCP+U0TIazU6cGjwVcR2C95um5l/ttbMYS3vdR4n2T8M9WjmMYlcqAUR5DJRLn5qPnCeInVhE+vH0oI+qEMUKq2izc6U3o9csxJybQBMpKpFsSp/ZfqL/0A8VL+m8fdlN5IaJmJZM0/p/FoFBir0pk64yNr43FKi9kKd/dn7fWFoiosQ8byPN6HwBGZrq2cqvosFfy7w1en1Nk2wwvI3rOWv0Lp61GznFfAvg14Ia5GZxd74C6YtJVIu/f/zyctXGvAzM57G/JIYnzs/7EQYkq8pkb4OoxxLzsOyZE/v9K+n4TXStj4qS/iCkDx9bsjfev8XJlx9exBeAlhiG6lynKp1c4ErknqWJlx2TOeg7YVH7VCdPKtLIgqi6frBMmlxLcsMueEiltiM3K0JtX2owwQocbRuwDpkLD84OTqJhbfZxgVJ0svZwdg1abv1YgM7yessgLUz8eojW2/I7Hl06EFil9Vs2qcGzlEX4fMnnZt5ND33NJ94ICdZbhMUQ9BPQOm52MWOExUEVVpOju8umXgJGSASqHmF/rLIIVeJjAuq+6YnH1+6qTyLRxnPKkKyGuU1vG3+35U=
-  passphrase: Optional. In case a passphrase is configured on Bintray and GPG signing
-    is used
-  skip_cleanup: true
+  provider: script
+  script: mvn release:perform
+  on:
+    tags: true
