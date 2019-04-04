@@ -10,6 +10,6 @@ script: mvn verify
 
 deploy:
   provider: script
-  script: mvn release:perform
+  script: mvn deploy
   on:
     tags: true
