@@ -1,4 +1,6 @@
 {
-  "packages": ["eco-feature/*"],
-  "version": "1.38"
+  "packages": [
+    "eco-feature/*"
+  ],
+  "version": "1.0.0"
 }
