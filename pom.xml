@@ -140,7 +140,7 @@
                 <version>2.5.3</version>
                 <configuration>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <preparationGoals>exec:exec --non-recursive</preparationGoals>
+                    <preparationGoals>frontend:npm@version --non-recursive</preparationGoals>
                 </configuration>
             </plugin>
             <plugin>
@@ -179,7 +179,7 @@
                             <goal>npm</goal>
                         </goals>
                         <configuration>
-                            <arguments>run version -- 1.1.1</arguments>
+                            <arguments>run version -- ${project.version}</arguments>
                         </configuration>
                         <phase>none</phase>
                     </execution>
