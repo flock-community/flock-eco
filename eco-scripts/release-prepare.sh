@@ -20,7 +20,7 @@ set_version() {
 }
 
 check_changes
-set_version
+set_version $@
 
 
 
