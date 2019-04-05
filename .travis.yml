@@ -25,6 +25,6 @@ deploy:
 
   # deploy npm
   - provider: script
-    script: npm run lerna -- publish from-package
+    script: npm run lerna -- publish --yes from-package
     on:
       tags: true
