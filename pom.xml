@@ -140,7 +140,7 @@
                 <version>2.5.3</version>
                 <configuration>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <preparationGoals>exec:exec</preparationGoals>
+                    <preparationGoals>exec:exec --non-recursive</preparationGoals>
                 </configuration>
             </plugin>
             <plugin>
