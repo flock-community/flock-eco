@@ -37,6 +37,7 @@ mvn versions:set -DnewVersion=${version} -DgenerateBackupPoms=false
 
 find . -name 'pom.xml' | xargs git add
 find . -name 'package.json' | xargs git add
+find . -name 'lerna.json' | xargs git add
 
 git commit -m "$(commit_message ${version})"
 git tag "$(tag_name ${version})"
