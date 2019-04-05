@@ -2,17 +2,26 @@ git_reset () {
   git reset --hard
 }
 
-if ! git diff-index --quiet HEAD --; then
+check_changes () {
+  if ! git diff-index --quiet HEAD --; then
     echo "Uncommitted changes found";
     exit 0;
-fi
+  fi
+}
 
-if ! [ "$1" != "" ]; then
+set_version() {
+  if ! [ "$1" != "" ]; then
     read -p 'Version: ' version
-else
+  else
     version=$1
-fi
+    echo "Version: $version"
+  fi
+}
 
-echo "Version: $version"
+check_changes
+set_version
+
+
+
 # npm run lerna version $version
 # mvn release
