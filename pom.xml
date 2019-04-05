@@ -178,7 +178,7 @@
                             <goal>npm</goal>
                         </goals>
                         <configuration>
-                            <arguments>run version -- ${project.version}</arguments>
+                            <arguments>run lerna -- version --yes ${project.version}</arguments>
                         </configuration>
                         <phase>none</phase>
                     </execution>
