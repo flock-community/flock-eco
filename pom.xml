@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.flock-community.flock-eco</groupId>
@@ -143,25 +144,52 @@
                 </configuration>
             </plugin>
             <plugin>
-                <artifactId>exec-maven-plugin</artifactId>
-                <groupId>org.codehaus.mojo</groupId>
-                <version>1.6.0</version>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.7.5</version>
                 <inherited>false</inherited>
                 <executions>
-                    <execution><!-- Run our version calculation script -->
+                    <execution>
+                        <id>init</id>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>install</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>build</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>run bootstrap</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>version</id>
                         <goals>
-                            <goal>exec</goal>
+                            <goal>npm</goal>
                         </goals>
+                        <configuration>
+                            <arguments>run version -- 1.1.1</arguments>
+                        </configuration>
+                        <phase>none</phase>
                     </execution>
                 </executions>
                 <configuration>
-                    <executable>echo</executable>
-                    <arguments>
-                        <argument>version ${project.version}</argument>
-                    </arguments>
+                    <nodeVersion>v8.11.3</nodeVersion>
+                    <installDirectory>${project.build.directory}</installDirectory>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 

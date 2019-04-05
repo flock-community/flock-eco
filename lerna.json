@@ -1,4 +1,4 @@
 {
-  "packages": ["eco-webpack", "eco-feature/*"],
+  "packages": ["eco-feature/*"],
   "version": "1.38"
 }
