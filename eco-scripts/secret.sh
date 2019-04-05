@@ -1,2 +1,2 @@
-tar cvf secrets.tar foo bar
+tar cvf secrets.tar .npmrc settings.xml
 travis encrypt-file secrets.tar
