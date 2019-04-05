@@ -13,6 +13,6 @@ else
     version = $1
 fi
 
-echo "Version: $1"
-npx lerna version $1
-mvn release
+echo "Version: $version"
+# npm run lerna version $version
+# mvn release
