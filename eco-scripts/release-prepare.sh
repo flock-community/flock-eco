@@ -10,7 +10,7 @@ fi
 if ! [ "$1" != "" ]; then
     read -p 'Version: ' version
 else
-    version = $1
+    version=$1
 fi
 
 echo "Version: $version"
