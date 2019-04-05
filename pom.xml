@@ -178,7 +178,7 @@
                             <goal>npm</goal>
                         </goals>
                         <configuration>
-                            <arguments>run lerna -- version --yes ${project.version}</arguments>
+                            <arguments>run lerna -- version --yes --no-git-tag-version ${project.version}</arguments>
                         </configuration>
                         <phase>none</phase>
                     </execution>
