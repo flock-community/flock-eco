@@ -147,6 +147,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <groupId>org.codehaus.mojo</groupId>
                 <version>1.6.0</version>
+                <inherited>false</inherited>
                 <executions>
                     <execution><!-- Run our version calculation script -->
                         <id>version</id>
