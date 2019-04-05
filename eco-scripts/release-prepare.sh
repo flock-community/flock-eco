@@ -24,4 +24,4 @@ version=$(set_version $@)
 echo "Set version: $version"
 
 npm run lerna -- version --yes --no-git-tag-version ${version}
-mvn versions:set ${version} -DgenerateBackupPoms=false
+mvn versions:set -DnewVersion=${version} -DgenerateBackupPoms=false
