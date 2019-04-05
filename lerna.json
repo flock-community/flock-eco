@@ -2,7 +2,7 @@
   "packages": [
     "eco-feature/*"
   ],
-  "version": "1.0.1",
+  "version": "1.0.1-SNAPSHOT",
   "publishConfig": {
     "registry": "https://api.bintray.com/npm/flock-community/flock-npm"
   }
