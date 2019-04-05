@@ -35,5 +35,10 @@ echo "Tag name: $(tag_name ${version})"
 npm run lerna -- version --yes --no-git-tag-version ${version}
 mvn versions:set -DnewVersion=${version} -DgenerateBackupPoms=false
 
-git add .
+find . -name 'pom.xml' | xargs git add
+find . -name 'package.json' | xargs git add
+
 git commit -m "$(commit_message ${version})"
+git tag "$(tag_name ${version})"
+
+git push origin --tags
