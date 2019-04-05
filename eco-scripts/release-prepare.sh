@@ -10,6 +10,7 @@ check_changes () {
 }
 
 set_version() {
+  echo "$1: $1"
   if ! [ "$1" != "" ]; then
     read -p 'Version: ' version
   else
