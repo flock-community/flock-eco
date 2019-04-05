@@ -15,7 +15,8 @@ set_version() {
   else
     local version=$1
   fi
-  echo $version
+  echo ${version}
+
 }
 
 check_changes
