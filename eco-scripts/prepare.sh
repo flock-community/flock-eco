@@ -36,4 +36,4 @@ npm run lerna -- version --yes --no-git-tag-version ${version}
 mvn versions:set -DnewVersion=${version} -DgenerateBackupPoms=false
 
 git add .
-git commit -m $(commit_message ${version})
+git commit -m "$(commit_message ${version})"
