@@ -10,19 +10,20 @@ cache:
 before_install:
   - npm config set cache "$HOME/.npm-cache"
   - openssl aes-256-cbc -K $encrypted_44c02787e156_key -iv $encrypted_44c02787e156_iv -in settings.xml.enc -out ~/.m2/settings.xml -d
+  - openssl aes-256-cbc -K $encrypted_44c02787e156_key -iv $encrypted_44c02787e156_iv -in .npmrc.enc -out ~/.npmrc -d
 
 script: mvn verify --quiet
 
 deploy:
 
-  # deploy master to production
+  # deploy maven
   - provider: script
     script: mvn deploy --quiet
     on:
       tags: true
 
-  # deploy master to production
+  # deploy npm
   - provider: script
-      script: mvn deploy --quiet
+      script: npm run lerna -- publish from-package
       on:
         tags: true
