@@ -16,16 +16,12 @@ set_version() {
     local version=$1
   fi
   echo ${version}
-
 }
 
 check_changes
 version=$(set_version $@)
 
 echo "Set version: $version"
-echo "Set version: $version"
-
-
 
 # npm run lerna version $version
 # mvn release
