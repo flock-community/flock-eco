@@ -8,9 +8,10 @@ if ! git diff-index --quiet HEAD --; then
 fi
 
 if ! [ "$1" != "" ]; then
-    echo "No version set";
-    exit 0;
-f
+    read -p 'Version: ' version
+else
+    version = $1
+fi
 
 echo "Version: $1"
 npx lerna version $1
