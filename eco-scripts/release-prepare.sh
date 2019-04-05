@@ -10,17 +10,18 @@ check_changes () {
 }
 
 set_version() {
-  echo "$1: $1"
   if ! [ "$1" != "" ]; then
     read -p 'Version: ' version
   else
-    version=$1
-    echo "Version: $version"
+    local version=$1
   fi
+  echo $version
 }
 
 check_changes
-set_version $@
+version $(set_version $@)
+
+echo "Set version: $version"
 
 
 
