@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit4.SpringRunner
 
 @RunWith(SpringRunner::class)
-@DataJpaTest
+@DataJpaTest(showSql=false)
 @AutoConfigureTestDatabase
 @Ignore
 class PaymentBuckarooServiceTest {
@@ -23,12 +23,10 @@ class PaymentBuckarooServiceTest {
     @Test
     fun createCreditcardTransaction() {
         val url = service.create(PaymentBuckarooService.PaymentMethod.CreditCard(issuer = "visa", amount = 10.00, description = "Creditcard"))
-        System.out.println(url)
     }
 
     @Test
     fun createIdealTransaction() {
         val url = service.create(PaymentBuckarooService.PaymentMethod.Ideal(issuer = "INGBNL2A", amount = 11.00, description = "Ideal"))
-        System.out.println(url)
     }
 }

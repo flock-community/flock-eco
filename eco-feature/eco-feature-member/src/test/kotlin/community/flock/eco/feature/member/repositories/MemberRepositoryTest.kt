@@ -13,7 +13,7 @@ import java.util.*
 import javax.annotation.PostConstruct
 
 @RunWith(SpringRunner::class)
-@DataJpaTest
+@DataJpaTest(showSql=false)
 @AutoConfigureTestDatabase
 @Ignore
 class MemberRepositoryTest {

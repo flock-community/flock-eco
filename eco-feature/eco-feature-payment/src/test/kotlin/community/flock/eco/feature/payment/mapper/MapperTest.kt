@@ -17,7 +17,7 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 
 
 @RunWith(SpringRunner::class)
-@DataJpaTest
+@DataJpaTest(showSql=false)
 @AutoConfigureTestDatabase
 class MapperTest {
 

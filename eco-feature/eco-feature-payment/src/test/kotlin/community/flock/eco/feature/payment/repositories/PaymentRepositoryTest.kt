@@ -12,7 +12,7 @@ import java.time.LocalDate
 import kotlin.test.assertEquals
 
 @RunWith(SpringRunner::class)
-@DataJpaTest
+@DataJpaTest(showSql=false)
 @AutoConfigureTestDatabase
 class PaymentRepositoryTest {
 

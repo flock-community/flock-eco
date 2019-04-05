@@ -101,7 +101,6 @@ class PaymentSepaXmlServiceTest {
 
         Assert.assertEquals(example, output)
 
-        System.out.println(output)
     }
 
 
