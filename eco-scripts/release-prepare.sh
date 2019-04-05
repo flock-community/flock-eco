@@ -20,8 +20,9 @@ set_version() {
 }
 
 check_changes
-version $(set_version $@)
+version=$(set_version $@)
 
+echo "Set version: $version"
 echo "Set version: $version"
 
 
