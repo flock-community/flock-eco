@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.flock-community.flock-eco</groupId>
@@ -139,6 +140,26 @@
                 <version>2.5.3</version>
                 <configuration>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <preparationGoals>exec:exec</preparationGoals>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>exec-maven-plugin</artifactId>
+                <groupId>org.codehaus.mojo</groupId>
+                <version>1.6.0</version>
+                <executions>
+                    <execution><!-- Run our version calculation script -->
+                        <id>version</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <executable>echo</executable>
+                    <arguments>
+                        <argument>version ${project.version}</argument>
+                    </arguments>
                 </configuration>
             </plugin>
         </plugins>
@@ -156,7 +177,7 @@
         <url>https://github.com/flock-community/flock-eco</url>
         <connection>scm:git:git://github.com/flock-community/flock-eco.git</connection>
         <developerConnection>scm:git:git@github.com:flock-community/flock-eco.git</developerConnection>
-      <tag>flock-eco-parent-1.37</tag>
-  </scm>
+        <tag>flock-eco-parent-1.37</tag>
+    </scm>
 
 </project>
