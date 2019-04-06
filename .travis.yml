@@ -20,7 +20,7 @@ deploy:
 
   # deploy maven
   - provider: script
-    script: mvn deploy -DskipTests=true -Dmaven.javadoc.skip=true --quiet
+    script: mvn deploy -DskipTests=true -Dmaven.javadoc.skip=true
     on:
       tags: true
 
