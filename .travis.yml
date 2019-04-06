@@ -13,7 +13,8 @@ before_install:
   - tar xvf secrets.tar
   - mv settings.xml $HOME/.m2/settings.xml
   - mv .npmrc $HOME/.npmrc
-script: mvn verify --quiet -B
+
+script: mvn verify
 
 deploy:
 
