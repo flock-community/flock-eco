@@ -2,10 +2,5 @@
   "packages": [
     "eco-feature/*"
   ],
-  "version": "1.0.12",
-  "command": {
-    "publish": {
-      "npmClient": "npm"
-    }
-  }
+  "version": "1.0.12"
 }
