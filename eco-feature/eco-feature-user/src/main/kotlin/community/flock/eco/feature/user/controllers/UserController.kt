@@ -1,13 +1,12 @@
 package community.flock.eco.feature.user.controllers
 
-import community.flock.eco.core.services.MailService
 import community.flock.eco.core.utils.toResponse
 import community.flock.eco.feature.user.model.User
 import community.flock.eco.feature.user.repositories.UserRepository
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
 
@@ -17,15 +16,13 @@ class UserController(private val userRepository: UserRepository) {
 
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
-    fun findMe(principal: Principal): Principal = principal
-
-    @GetMapping("/me/mail")
-    @PreAuthorize("isAuthenticated()")
-    fun mailMe(mailService: MailService, principal: Principal) = "mail sent".also { mailService.sendMail(principal) }
-
-    @GetMapping("/strategy")
-    @PreAuthorize("isAuthenticated()")
-    fun findStrategy(): String? = SecurityContextHolder.getContextHolderStrategy().javaClass.name
+    fun findMe(principal: Principal?): ResponseEntity<User> = principal
+            ?.let {
+                val authentication = it as Authentication
+                val user = authentication.details as User
+                return ResponseEntity.ok(user)
+            }
+            ?:ResponseEntity.notFound().build()
 
     @GetMapping()
     @PreAuthorize("hasAuthority('UserAuthority.READ')")

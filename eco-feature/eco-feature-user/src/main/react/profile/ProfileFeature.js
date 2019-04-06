@@ -1,84 +1,45 @@
 import React from 'react'
 import {withStyles} from '@material-ui/core/styles'
-
-import Button from '@material-ui/core/Button'
-
-import AddIcon from '@material-ui/icons/Add'
-
-import UserTable from './UserTable'
-import UserForm from './UserForm'
-import UserDialog from './UserDialog'
+import Paper from '@material-ui/core/Paper'
 
 const styles = theme => ({
-  button: {
-    position: 'fixed',
-    right: 20,
-    bottom: 20,
-    margin: theme.spacing.unit,
+  tablePaper: {
+    marginBottom: 50,
+    width: '100%',
+    marginTop: theme.spacing.unit * 3,
+    overflowX: 'auto',
   },
 })
 
 class ProfileFeature extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      users: props.users || [],
-    }
 
-    this.rowClick = user => {
-      this.setState({user})
-    }
+  state = {}
 
-    this.newClick = () => {
-      this.setState({user: {}})
-    }
-
-    this.handleClose = value => {
-      this.setState({user: null})
-    }
-
-    fetch('/api/authorities')
+  componentDidMount() {
+    fetch('/api/users/me')
       .then(res => res.json())
       .then(json => {
-        console.log(json)
-        this.setState({authorities: json})
-      })
-
-    fetch('/api/user')
-      .then(res => res.json())
-      .then(json => {
-        console.log(json)
-        this.setState({users: json.content})
+        this.setState({user: json.content})
       })
   }
 
   render() {
     const {classes} = this.props
+    const {user} = this.state
+
+    if(!user)
+      return <h1>test</h1>
 
     return (
       <div>
-        <UserTable data={this.state.users} handleRowClick={this.rowClick} />
-
-        <UserDialog
-          open={this.state.user != null}
-          onClose={this.handleClose}
-          classes={classes}
-        >
-          <UserForm
-            authorities={this.state.authorities}
-            user={this.state.user}
-          />
-        </UserDialog>
-
-        <Button
-          variant="fab"
-          color="primary"
-          aria-label="Add"
-          className={classes.button}
-          onClick={this.newClick}
-        >
-          <AddIcon />
-        </Button>
+        <Paper className={classes.tablePaper}>
+          <p>Name: {user.name}</p>
+          <p>Email: {user.email}</p>
+          {user.authorities.length > 0 && <p>Roles: </p>}
+          {user.authorities.length > 0 && <ul>{user.authorities
+            .map(it => (<li key={it}>{it}</li>))}
+          </ul>}
+        </Paper>
       </div>
     )
   }
