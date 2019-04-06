@@ -32,8 +32,8 @@ version=$(set_version $@)
 echo "Set version: ${version}"
 echo "Tag name: $(tag_name ${version})"
 
-npm run lerna -- version --yes --no-git-tag-version ${version}
 mvn versions:set -DnewVersion=${version} -DgenerateBackupPoms=false
+npx lerna version --yes --no-git-tag-version ${version}
 
 find . -name 'pom.xml' | xargs git add
 find . -name 'package.json' | xargs git add
