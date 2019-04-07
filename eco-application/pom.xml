@@ -12,6 +12,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>flock-eco-application-parent</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>eco-application-example</module>
+    </modules>
 
     <dependencies>
 
