@@ -176,7 +176,7 @@
                             <goal>npm</goal>
                         </goals>
                         <configuration>
-                            <arguments>install</arguments>
+                            <arguments>ci</arguments>
                         </configuration>
                     </execution>
                     <execution>
@@ -187,16 +187,6 @@
                         <configuration>
                             <arguments>run bootstrap</arguments>
                         </configuration>
-                    </execution>
-                    <execution>
-                        <id>version</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>run lerna -- version --yes --no-git-tag-version ${project.version}</arguments>
-                        </configuration>
-                        <phase>none</phase>
                     </execution>
                 </executions>
                 <configuration>
