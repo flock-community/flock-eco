@@ -1,15 +1,16 @@
 package community.flock.eco.feature.user.controllers
 
-import community.flock.eco.core.services.MailService
 import community.flock.eco.core.utils.toResponse
 import community.flock.eco.feature.user.model.User
 import community.flock.eco.feature.user.repositories.UserRepository
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
+import org.springframework.security.core.userdetails.User as UserDetail
 
 @RestController
 @RequestMapping("/api/users")
@@ -17,15 +18,18 @@ class UserController(private val userRepository: UserRepository) {
 
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
-    fun findMe(principal: Principal): Principal = principal
-
-    @GetMapping("/me/mail")
-    @PreAuthorize("isAuthenticated()")
-    fun mailMe(mailService: MailService, principal: Principal) = "mail sent".also { mailService.sendMail(principal) }
-
-    @GetMapping("/strategy")
-    @PreAuthorize("isAuthenticated()")
-    fun findStrategy(): String? = SecurityContextHolder.getContextHolderStrategy().javaClass.name
+    fun findMe(principal: Principal?): ResponseEntity<User> = principal
+            ?.let {
+                when (principal) {
+                    is OAuth2AuthenticationToken -> principal.principal.attributes["email"].toString()
+                    is UsernamePasswordAuthenticationToken -> (principal.principal as UserDetail).username
+                    else -> null
+                }
+            }
+            ?.let { username ->
+                userRepository.findByReference(username).toResponse()
+            }
+            ?: ResponseEntity.notFound().build()
 
     @GetMapping()
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
@@ -48,3 +52,5 @@ class UserController(private val userRepository: UserRepository) {
     fun update(@PathVariable id: String) = userRepository.deleteById(id.toLong())
 
 }
+
+

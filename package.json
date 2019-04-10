@@ -4,7 +4,9 @@
   "scripts": {
     "bootstrap": "lerna bootstrap --hoist",
     "lerna": "lerna",
-    "prettier": "prettier --write \"{**/*.js,**/*.json,**/*.html}\""
+    "prettier": "prettier --write \"{**/*.js,**/*.json,**/*.html}\"",
+    "start": "webpack-dev-server --mode development --config ./eco-webpack/webpack.config.js",
+    "build": "webpack --mode production"
   },
   "dependencies": {
     "@material-ui/core": "^3.6.2",
@@ -23,7 +25,12 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
-    "prettier": "^1.15.3"
+    "babel-loader": "^7.1.5",
+    "prettier": "^1.15.3",
+    "webpack": "^4.28.2",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.5",
+    "html-webpack-plugin": "^3.2.0"
   },
   "prettier": {
     "singleQuote": true,

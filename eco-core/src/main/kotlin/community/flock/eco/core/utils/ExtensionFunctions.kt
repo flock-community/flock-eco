@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import java.util.*
 
 fun <T> Page<T>.toResponse(page: Pageable): ResponseEntity<List<T>> = ResponseEntity(
         this.content.toList(),
@@ -14,3 +15,8 @@ fun <T> Page<T>.toResponse(page: Pageable): ResponseEntity<List<T>> = ResponseEn
         },
         HttpStatus.OK
 )
+
+
+fun <T> Optional<T>.toResponse(): ResponseEntity<T> = this
+            .map { ResponseEntity.ok(it) }
+            .orElseGet { ResponseEntity.notFound().build<T>() }
