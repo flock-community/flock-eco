@@ -18,7 +18,6 @@
     <modules>
         <module>eco-core</module>
         <module>eco-feature</module>
-        <module>eco-configuration</module>
         <module>eco-application</module>
     </modules>
 

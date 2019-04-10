@@ -1,7 +1,7 @@
 package community.flock.eco.application.example
 
+import community.flock.eco.application.example.configuration.WebSecurityConfig
 import community.flock.eco.fundraising.config.WebMvcConfig
-import community.flock.eco.fundraising.config.WebSecurityConfig
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.autoconfigure.data.rest.RepositoryRestMvcAutoConfiguration

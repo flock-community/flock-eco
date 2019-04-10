@@ -9,6 +9,7 @@ import UserTable from './UserTable'
 import UserForm from './UserForm'
 import UserDialog from './UserDialog'
 import Paper from '@material-ui/core/es/Paper/Paper'
+import Fab from '@material-ui/core/Fab'
 
 const styles = theme => ({
   tablePaper: {
@@ -25,7 +26,7 @@ const styles = theme => ({
   },
 })
 
-class itemManager extends React.Component {
+class UserFeature extends React.Component {
   state = {
     size: 10,
     members: this.props.members || [],
@@ -124,15 +125,14 @@ class itemManager extends React.Component {
           />
         </UserDialog>
 
-        <Button
-          variant="fab"
+        <Fab
           color="primary"
           aria-label="Add"
           className={classes.button}
           onClick={this.handleNewClick}
         >
           <AddIcon/>
-        </Button>
+        </Fab>
       </div>
     )
   }
@@ -179,4 +179,4 @@ class itemManager extends React.Component {
   }
 }
 
-export default withStyles(styles)(itemManager)
+export default withStyles(styles)(UserFeature)

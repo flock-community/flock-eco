@@ -6,9 +6,11 @@ import community.flock.eco.feature.user.repositories.UserRepository
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.security.core.Authentication
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
+import org.springframework.security.core.userdetails.User as UserDetail
 
 @RestController
 @RequestMapping("/api/users")
@@ -18,11 +20,16 @@ class UserController(private val userRepository: UserRepository) {
     @PreAuthorize("isAuthenticated()")
     fun findMe(principal: Principal?): ResponseEntity<User> = principal
             ?.let {
-                val authentication = it as Authentication
-                val user = authentication.details as User
-                return ResponseEntity.ok(user)
+                when (principal) {
+                    is OAuth2AuthenticationToken -> principal.principal.attributes["email"].toString()
+                    is UsernamePasswordAuthenticationToken -> (principal.principal as UserDetail).username
+                    else -> null
+                }
             }
-            ?:ResponseEntity.notFound().build()
+            ?.let { username ->
+                userRepository.findByReference(username).toResponse()
+            }
+            ?: ResponseEntity.notFound().build()
 
     @GetMapping()
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
@@ -45,3 +52,5 @@ class UserController(private val userRepository: UserRepository) {
     fun update(@PathVariable id: String) = userRepository.deleteById(id.toLong())
 
 }
+
+
