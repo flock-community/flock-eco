@@ -1,7 +1,7 @@
 {
   "packages": [
-    "eco-feature/*",
-    "eco-application/*"
+    "eco-application/*",
+    "eco-feature/*"
   ],
-  "version": "1.0.17"
+  "version": "1.1.0"
 }
