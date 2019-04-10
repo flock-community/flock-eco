@@ -42,4 +42,5 @@ find . -name 'lerna.json' | xargs git add
 git commit -m "$(commit_message ${version})"
 git tag "$(tag_name ${version})"
 
+git push origin
 git push origin --tags
