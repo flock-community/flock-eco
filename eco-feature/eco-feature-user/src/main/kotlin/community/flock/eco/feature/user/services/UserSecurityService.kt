@@ -3,6 +3,8 @@ package community.flock.eco.feature.user.services
 import community.flock.eco.feature.user.model.User
 import community.flock.eco.feature.user.repositories.UserRepository
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer
+import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -18,7 +20,7 @@ class UserSecurityService(
         val passwordEncoder: PasswordEncoder
 ) {
 
-    fun testLogin(http: HttpSecurity): HttpSecurity {
+    fun testLogin(http: HttpSecurity): FormLoginConfigurer<HttpSecurity>? {
 
         http.userDetailsService { ref ->
 
@@ -30,7 +32,9 @@ class UserSecurityService(
                             .map { it.toName() }
                             .toSet()
             ).let {
-                userRepository.save(it)
+                userRepository.findByReference(ref)
+                        .orElseGet { userRepository.save(it) }
+
             }.let { user ->
                 UserDetail.builder()
                         .username(ref)
@@ -44,12 +48,10 @@ class UserSecurityService(
             }
         }
 
-        http.formLogin()
-
-        return http
+        return http.formLogin()
     }
 
-    fun databaseLogin(http: HttpSecurity): HttpSecurity {
+    fun databaseLogin(http: HttpSecurity): FormLoginConfigurer<HttpSecurity> {
 
         http.userDetailsService { ref ->
             userRepository.findByReference(ref)
@@ -63,14 +65,13 @@ class UserSecurityService(
                     .orElseThrow { UsernameNotFoundException("User '$ref' not found") }
         }
 
-        http.formLogin()
+        return http.formLogin()
 
-        return http
     }
 
-    fun googleLogin(http: HttpSecurity): HttpSecurity {
+    fun googleLogin(http: HttpSecurity): OAuth2LoginConfigurer<HttpSecurity>.UserInfoEndpointConfig {
 
-        http
+        return http
                 .oauth2Login()
                 .userInfoEndpoint()
                 .userAuthoritiesMapper { it ->
@@ -100,7 +101,6 @@ class UserSecurityService(
                             .let { user -> user.getGrantedAuthority() }
 
                 }
-        return http
     }
 
     private fun User.getGrantedAuthority(): List<out GrantedAuthority> {
