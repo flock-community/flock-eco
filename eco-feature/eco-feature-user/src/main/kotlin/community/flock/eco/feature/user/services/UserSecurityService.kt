@@ -21,51 +21,50 @@ class UserSecurityService(
 ) {
 
     fun testLogin(http: HttpSecurity): FormLoginConfigurer<HttpSecurity>? {
+        return http
+                .userDetailsService { ref ->
 
-        http.userDetailsService { ref ->
+                    User(
+                            reference = ref,
+                            name = ref,
+                            email = ref,
+                            authorities = userAuthorityService.allAuthorities()
+                                    .map { it.toName() }
+                                    .toSet()
+                    ).let {
+                        userRepository.findByReference(ref)
+                                .orElseGet { userRepository.save(it) }
 
-            User(
-                    reference = ref,
-                    name = ref,
-                    email = ref,
-                    authorities = userAuthorityService.allAuthorities()
-                            .map { it.toName() }
-                            .toSet()
-            ).let {
-                userRepository.findByReference(ref)
-                        .orElseGet { userRepository.save(it) }
-
-            }.let { user ->
-                UserDetail.builder()
-                        .username(ref)
-                        .password(ref
-                                .let { passwordEncoder.encode(it) })
-                        .authorities(*user.authorities
-                                .map { SimpleGrantedAuthority(it) }
-                                .plus(SimpleGrantedAuthority(DEFAULT_ROLE))
-                                .toTypedArray())
-                        .build()
-            }
-        }
-
-        return http.formLogin()
+                    }.let { user ->
+                        UserDetail.builder()
+                                .username(ref)
+                                .password(ref
+                                        .let { passwordEncoder.encode(it) })
+                                .authorities(*user.authorities
+                                        .map { SimpleGrantedAuthority(it) }
+                                        .plus(SimpleGrantedAuthority(DEFAULT_ROLE))
+                                        .toTypedArray())
+                                .build()
+                    }
+                }
+                .formLogin()
     }
 
     fun databaseLogin(http: HttpSecurity): FormLoginConfigurer<HttpSecurity> {
 
-        http.userDetailsService { ref ->
-            userRepository.findByReference(ref)
-                    .map {
-                        UserDetail.builder()
-                                .username(it.reference)
-                                .password(it.secret)
-                                .authorities(it.getGrantedAuthority())
-                                .build()
-                    }
-                    .orElseThrow { UsernameNotFoundException("User '$ref' not found") }
-        }
-
-        return http.formLogin()
+        return http
+                .userDetailsService { ref ->
+                    userRepository.findByReference(ref)
+                            .map {
+                                UserDetail.builder()
+                                        .username(it.reference)
+                                        .password(it.secret)
+                                        .authorities(it.getGrantedAuthority())
+                                        .build()
+                            }
+                            .orElseThrow { UsernameNotFoundException("User '$ref' not found") }
+                }
+                .formLogin()
 
     }
 
