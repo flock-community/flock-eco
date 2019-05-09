@@ -27,10 +27,11 @@ set_version() {
 }
 
 set_prerelease() {
-  if ! [[ "$2" != "" ]]; then
-    read -p 'Prerelease: ' prerelease
+  branch_name=$(git symbolic-ref -q HEAD)
+  if ! [[ "$branch_name" != "refs/heads/master" ]]; then
+    local prerelease=""
   else
-    local prerelease=$2
+    local prerelease=$(git rev-parse --short HEAD)
   fi
   echo ${prerelease}
 }
@@ -53,13 +54,14 @@ set_npm_version() {
 
 }
 
-check_changes
+#check_changes
 version=$(set_version $@)
 prerelease=$(set_prerelease $@)
 
 mvn_version=$(set_mvn_version $version $prerelease)
 npm_version=$(set_npm_version $version $prerelease)
 
+echo "---"
 echo "Version: ${version}"
 echo "Prerelease: ${prerelease}"
 
@@ -68,15 +70,15 @@ echo "Npm version: ${npm_version}"
 
 echo "Tag name: $(tag_name ${mvn_version})"
 
-mvn versions:set -DnewVersion=${mvn_version} -DgenerateBackupPoms=false
-npx lerna version --yes --no-git-tag-version ${npm_version}
-
-find . -name 'pom.xml' | xargs git add
-find . -name 'package.json' | xargs git add
-find . -name 'lerna.json' | xargs git add
-
-git commit -m "$(commit_message ${mvn_version})"
-git tag "$(tag_name ${mvn_version})"
-
-git push origin
-git push origin --tags
+#mvn versions:set -DnewVersion=${mvn_version} -DgenerateBackupPoms=false
+#npx lerna version --yes --no-git-tag-version ${npm_version}
+#
+#find . -name 'pom.xml' | xargs git add
+#find . -name 'package.json' | xargs git add
+#find . -name 'lerna.json' | xargs git add
+#
+#git commit -m "$(commit_message ${mvn_version})"
+#git tag "$(tag_name ${mvn_version})"
+#
+#git push origin
+#git push origin --tags
