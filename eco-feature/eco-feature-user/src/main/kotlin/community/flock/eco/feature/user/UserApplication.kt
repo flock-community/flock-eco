@@ -11,7 +11,8 @@ import org.springframework.context.annotation.Import
 @SpringBootApplication(exclude = [
     SecurityAutoConfiguration::class])
 @Import(UserConfiguration::class,
-        UserLoadData::class)
+        UserLoadData::class,
+        UserGroupLoadData::class)
 class UserApplication(
         userLoadData: UserLoadData,
         userGroupLoadData: UserGroupLoadData) {

@@ -6,6 +6,7 @@ import community.flock.eco.feature.user.controllers.UserController
 import community.flock.eco.feature.user.controllers.UserGroupController
 import community.flock.eco.feature.user.services.UserAuthorityService
 import community.flock.eco.feature.user.services.UserSecurityService
+import community.flock.eco.feature.user.services.UserService
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
@@ -23,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
         UserGroupController::class,
         UserAuthorityController::class,
         UserStatusController::class,
+        UserService::class,
         UserAuthorityService::class,
         UserSecurityService::class)
 class UserConfiguration {
