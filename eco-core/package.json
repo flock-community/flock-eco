@@ -1,6 +1,6 @@
 {
   "name": "@flock-eco/core",
-  "version": "1.2.0-next.usergroup",
+  "version": "1.2.1-next.usergroup",
   "main": "src/main/react/index.js",
   "module": "src/main/react/index.js",
   "dependencies": {
