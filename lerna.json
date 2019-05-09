@@ -1,9 +1,9 @@
 {
   "packages": [
     "eco-application/*",
-    "eco-feature/*",
     "eco-core",
+    "eco-feature/*",
     "eco-webpack"
   ],
-  "version": "1.1.8"
+  "version": "1.1.8-next.usergroup"
 }
