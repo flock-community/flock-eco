@@ -18,9 +18,9 @@ data class UserSecretReset(
         @Column(unique = true)
         val code: String = UUID.randomUUID().toString(),
 
-        val expireDateTime: LocalDateTime,
-
         @ManyToOne
-        val user: User
+        val user: User,
+
+        val expireDateTime: LocalDateTime = LocalDateTime.now()
 
 ) : Serializable

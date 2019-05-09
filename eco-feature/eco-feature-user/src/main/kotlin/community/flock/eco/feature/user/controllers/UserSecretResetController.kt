@@ -2,22 +2,25 @@ package community.flock.eco.feature.user.controllers
 
 import community.flock.eco.core.utils.toResponse
 import community.flock.eco.feature.user.model.User
-import community.flock.eco.feature.user.repositories.UserRepository
-import org.springframework.data.domain.Pageable
+import community.flock.eco.feature.user.services.UserService
 import org.springframework.http.ResponseEntity
-import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken
-import org.springframework.web.bind.annotation.*
-import java.security.Principal
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import org.springframework.security.core.userdetails.User as UserDetail
 
 @RestController
 @RequestMapping("/api/users/{id}/reset")
-class UserSecretResetController(private val userRepository: UserRepository) {
+class UserSecretResetController(private val userService: UserService) {
 
     @PostMapping()
-    fun reset(@PathVariable id:String): ResponseEntity<*> = TODO()
+    fun reset(@PathVariable id: String): ResponseEntity<User> = userService
+            .read(id)
+            ?.let {
+                userService.resetSecret(it)
+            }
+            .toResponse()
 
 }
 

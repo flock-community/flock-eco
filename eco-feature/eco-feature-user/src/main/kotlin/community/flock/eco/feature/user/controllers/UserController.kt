@@ -3,6 +3,7 @@ package community.flock.eco.feature.user.controllers
 import community.flock.eco.core.utils.toResponse
 import community.flock.eco.feature.user.model.User
 import community.flock.eco.feature.user.repositories.UserRepository
+import community.flock.eco.feature.user.services.UserService
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -14,7 +15,9 @@ import org.springframework.security.core.userdetails.User as UserDetail
 
 @RestController
 @RequestMapping("/api/users")
-class UserController(private val userRepository: UserRepository) {
+class UserController(
+        private val userRepository: UserRepository,
+        private val userService: UserService) {
 
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
@@ -39,21 +42,25 @@ class UserController(private val userRepository: UserRepository) {
             .findAllByNameLikeOrEmailLike("%$search%", "%$search%", page)
             .toResponse(page)
 
-    @GetMapping("/{id}")
+    @GetMapping("/{code}")
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
-    fun findById(@PathVariable id: Long): User = userRepository.findById(id).orElse(null)
+    fun findById(@PathVariable code: String): ResponseEntity<User> = userService
+            .read(code).toResponse()
 
     @PostMapping()
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
-    fun create(@RequestBody user: User): User = userRepository.save(user.copy(id = 0))
+    fun create(@RequestBody user: User): ResponseEntity<User> = userService
+            .create(user).toResponse()
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
-    fun update(@RequestBody user: User, @PathVariable id: String): User = userRepository.save(user.copy(id = id.toLong()))
+    fun update(@RequestBody user: User, @PathVariable id: String): ResponseEntity<User> = userService
+            .update(id, user).toResponse()
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
-    fun update(@PathVariable id: String) = userRepository.deleteById(id.toLong())
+    fun update(@PathVariable id: String) = userService
+            .delete(id)
 
 }
 

@@ -23,6 +23,10 @@ class UserDialog extends React.Component {
     this.props.onDelete()
   }
 
+  handleReset = () => {
+    this.props.onReset()
+  }
+
   render() {
     const {classes, open, onClose, selectedValue} = this.props
 
@@ -37,6 +41,9 @@ class UserDialog extends React.Component {
         <DialogTitle>User</DialogTitle>
         <DialogContent>{this.props.children}</DialogContent>
         <DialogActions>
+          <Button onClick={this.handleReset} color="primary">
+            Reset secret
+          </Button>
           <Button onClick={this.handleClose} color="primary">
             Cancel
           </Button>

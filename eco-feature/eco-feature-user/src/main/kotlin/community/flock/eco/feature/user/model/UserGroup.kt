@@ -1,8 +1,8 @@
 package community.flock.eco.feature.user.model
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import community.flock.eco.core.events.EventEntityListeners
 import java.io.Serializable
+import java.time.LocalDateTime
 import java.util.*
 import javax.persistence.*
 
@@ -20,6 +20,9 @@ data class UserGroup(
         val name: String,
 
         @ManyToMany()
-        val users: Set<User> = setOf()
+        val users: Set<User> = setOf(),
+
+        val created: LocalDateTime = LocalDateTime.now(),
+        val updated: LocalDateTime = LocalDateTime.now()
 
 ) : Serializable

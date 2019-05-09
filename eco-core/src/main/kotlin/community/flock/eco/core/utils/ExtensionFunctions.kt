@@ -18,5 +18,14 @@ fun <T> Page<T>.toResponse(page: Pageable): ResponseEntity<List<T>> = ResponseEn
 
 
 fun <T> Optional<T>.toResponse(): ResponseEntity<T> = this
-            .map { ResponseEntity.ok(it) }
-            .orElseGet { ResponseEntity.notFound().build<T>() }
+        .map { ResponseEntity.ok(it) }
+        .orElseGet { ResponseEntity.notFound().build<T>() }
+
+fun <T> Any?.toResponse(): ResponseEntity<T> = if (this == null) {
+    ResponseEntity.ok(this)
+} else {
+    ResponseEntity.notFound().build<T>()
+}
+
+fun <T : Any> Optional<T>.toNullable(): T? = this
+        .orElse(null)

@@ -7,6 +7,7 @@ import community.flock.eco.feature.user.controllers.UserGroupController
 import community.flock.eco.feature.user.services.UserAuthorityService
 import community.flock.eco.feature.user.services.UserSecurityService
 import org.springframework.boot.autoconfigure.domain.EntityScan
+import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 @Configuration
 @EnableJpaRepositories
 @EntityScan
+@EnableConfigurationProperties(UserProperties::class)
 @Import(UserController::class,
         UserGroupController::class,
         UserAuthorityController::class,
