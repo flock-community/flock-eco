@@ -75,8 +75,8 @@ find . -name 'pom.xml' | xargs git add
 find . -name 'package.json' | xargs git add
 find . -name 'lerna.json' | xargs git add
 
-git commit -m "$(commit_message ${version})"
-git tag "$(tag_name ${version})"
+git commit -m "$(commit_message ${mvn_version})"
+git tag "$(tag_name ${mvn_version})"
 
 git push origin
 git push origin --tags
