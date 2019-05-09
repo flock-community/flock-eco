@@ -8,7 +8,7 @@ import javax.persistence.*
 
 @Entity
 @EntityListeners(EventEntityListeners::class)
-data class User(
+data class UserGroup(
 
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,16 +17,9 @@ data class User(
         @Column(unique = true)
         val code: String = UUID.randomUUID().toString(),
 
-        @Column(unique = true)
-        val reference: String,
-
-        @JsonIgnore
-        val secret: String? = null,
-
         val name: String,
-        val email: String,
 
-        @ElementCollection(fetch = FetchType.EAGER)
-        val authorities: Set<String> = setOf()
+        @ManyToMany()
+        val users: Set<User> = setOf()
 
 ) : Serializable

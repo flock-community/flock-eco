@@ -52,7 +52,6 @@ class UserFeature extends React.Component {
   }
 
   handleRowClick = item => {
-    console.log('123')
     this.setState({item})
   }
 

@@ -3,12 +3,13 @@ package community.flock.eco.feature.user.model
 import com.fasterxml.jackson.annotation.JsonIgnore
 import community.flock.eco.core.events.EventEntityListeners
 import java.io.Serializable
+import java.time.LocalDateTime
 import java.util.*
 import javax.persistence.*
 
 @Entity
 @EntityListeners(EventEntityListeners::class)
-data class User(
+data class UserSecretReset(
 
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,16 +18,9 @@ data class User(
         @Column(unique = true)
         val code: String = UUID.randomUUID().toString(),
 
-        @Column(unique = true)
-        val reference: String,
+        val expireDateTime: LocalDateTime,
 
-        @JsonIgnore
-        val secret: String? = null,
-
-        val name: String,
-        val email: String,
-
-        @ElementCollection(fetch = FetchType.EAGER)
-        val authorities: Set<String> = setOf()
+        @ManyToOne
+        val user: User
 
 ) : Serializable

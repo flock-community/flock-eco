@@ -1,8 +1,9 @@
 package community.flock.eco.feature.user
 
 import community.flock.eco.feature.user.controllers.UserAuthorityController
-import community.flock.eco.feature.user.controllers.UserConfigurationController
+import community.flock.eco.feature.user.controllers.UserStatusController
 import community.flock.eco.feature.user.controllers.UserController
+import community.flock.eco.feature.user.controllers.UserGroupController
 import community.flock.eco.feature.user.services.UserAuthorityService
 import community.flock.eco.feature.user.services.UserSecurityService
 import org.springframework.boot.autoconfigure.domain.EntityScan
@@ -17,8 +18,9 @@ import org.springframework.security.crypto.password.PasswordEncoder
 @EnableJpaRepositories
 @EntityScan
 @Import(UserController::class,
+        UserGroupController::class,
         UserAuthorityController::class,
-        UserConfigurationController::class,
+        UserStatusController::class,
         UserAuthorityService::class,
         UserSecurityService::class)
 class UserConfiguration {

@@ -33,7 +33,11 @@ class UserController(private val userRepository: UserRepository) {
 
     @GetMapping()
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
-    fun findAll(page: Pageable): ResponseEntity<List<User>> = userRepository.findAll(page).toResponse(page)
+    fun findAll(
+            @RequestParam(defaultValue = "", required = false) search: String,
+            page: Pageable): ResponseEntity<List<User>> = userRepository
+            .findAllByNameLikeOrEmailLike("%$search%", "%$search%", page)
+            .toResponse(page)
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
