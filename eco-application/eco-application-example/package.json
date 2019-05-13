@@ -1,6 +1,6 @@
 {
   "name": "@flock-eco/application-example",
-  "version": "1.2.1-next.a36d544",
+  "version": "1.2.1-next.c135a6c",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@flock-eco/feature-user": "^1.2.1-next.a36d544",
+    "@flock-eco/feature-user": "^1.2.1-next.c135a6c",
     "@material-ui/core": "^3.6.2",
     "@material-ui/icons": "^3.0.1",
     "babel-polyfill": "^6.26.0",
