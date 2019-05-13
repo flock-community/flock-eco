@@ -1,5 +1,6 @@
 package community.flock.eco.feature.user.controllers
 
+import community.flock.eco.core.utils.toNullable
 import community.flock.eco.core.utils.toResponse
 import community.flock.eco.feature.user.model.User
 import community.flock.eco.feature.user.repositories.UserRepository
@@ -19,20 +20,18 @@ class UserController(
         private val userRepository: UserRepository,
         private val userService: UserService) {
 
+    data class UserForm(
+            val reference: String,
+            val name: String,
+            val email: String,
+            val authorities: Set<String> = setOf()
+    )
+
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
     fun findMe(principal: Principal?): ResponseEntity<User> = principal
-            ?.let {
-                when (principal) {
-                    is OAuth2AuthenticationToken -> principal.principal.attributes["email"].toString()
-                    is UsernamePasswordAuthenticationToken -> (principal.principal as UserDetail).username
-                    else -> null
-                }
-            }
-            ?.let { username ->
-                userRepository.findByReference(username).toResponse()
-            }
-            ?: ResponseEntity.notFound().build()
+            ?.let { userRepository.findByReference(it.name).toNullable() }
+            .toResponse()
 
     @GetMapping()
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
@@ -49,19 +48,25 @@ class UserController(
 
     @PostMapping()
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
-    fun create(@RequestBody user: User): ResponseEntity<User> = userService
-            .create(user).toResponse()
+    fun create(@RequestBody user: UserForm): ResponseEntity<User> = userService
+            .create(user.toUser()).toResponse()
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
-    fun update(@RequestBody user: User, @PathVariable id: String): ResponseEntity<User> = userService
-            .update(id, user).toResponse()
+    fun update(@RequestBody user: UserForm, @PathVariable id: String): ResponseEntity<User> = userService
+            .update(id, user.toUser()).toResponse()
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
     fun update(@PathVariable id: String) = userService
             .delete(id)
 
+    fun UserForm.toUser():User = User(
+            name = this.name,
+            email = this.email,
+            reference = this.reference,
+            authorities = this.authorities
+    )
 }
 
 

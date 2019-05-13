@@ -11,6 +11,7 @@ import community.flock.eco.feature.user.repositories.UserSecretResetRepository
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 import java.security.SecureRandom
+import java.time.LocalDateTime
 
 
 @Component
@@ -30,15 +31,18 @@ class UserService(
 
     override fun update(id: String, item: User): User? = userRepository
             .findByCode(id)
-            .map {
+            .toNullable()
+            ?.let {
                 item.copy(
                         id = it.id,
-                        code = it.code
-                ).let {
-                    userRepository.save(it)
-                }
+                        code = it.code,
+                        secret = it.secret,
+                        updated = LocalDateTime.now()
+                )
+            }.let {
+                userRepository.save(it)
             }
-            .toNullable()
+
 
     override fun delete(id: String) = userRepository
             .findByCode(id)
