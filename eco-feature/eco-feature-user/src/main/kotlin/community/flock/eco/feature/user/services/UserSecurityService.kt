@@ -9,15 +9,17 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
-import org.springframework.security.oauth2.core.user.OAuth2UserAuthority
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser
 import org.springframework.security.core.userdetails.User as UserDetail
 
-val DEFAULT_ROLE = "ROLE_USER"
+
+const val DEFAULT_ROLE = "ROLE_USER"
 
 class UserSecurityService(
-        val userAuthorityService: UserAuthorityService,
-        val userRepository: UserRepository,
-        val passwordEncoder: PasswordEncoder
+        private val userAuthorityService: UserAuthorityService,
+        private val userRepository: UserRepository,
+        private val passwordEncoder: PasswordEncoder
 ) {
 
     fun testLogin(http: HttpSecurity): FormLoginConfigurer<HttpSecurity>? {
@@ -28,9 +30,7 @@ class UserSecurityService(
                             reference = ref,
                             name = ref,
                             email = ref,
-                            authorities = userAuthorityService.allAuthorities()
-                                    .map { it.toName() }
-                                    .toSet()
+                            authorities = allAuthorities()
                     ).let {
                         userRepository.findByReference(ref)
                                 .orElseGet { userRepository.save(it) }
@@ -40,10 +40,7 @@ class UserSecurityService(
                                 .username(ref)
                                 .password(ref
                                         .let { passwordEncoder.encode(it) })
-                                .authorities(*user.authorities
-                                        .map { SimpleGrantedAuthority(it) }
-                                        .plus(SimpleGrantedAuthority(DEFAULT_ROLE))
-                                        .toTypedArray())
+                                .authorities(user.getGrantedAuthority())
                                 .build()
                     }
                 }
@@ -73,17 +70,14 @@ class UserSecurityService(
         return http
                 .oauth2Login()
                 .userInfoEndpoint()
-                .userAuthoritiesMapper { it ->
+                .oidcUserService { it ->
 
-                    val authority = it.first() as OAuth2UserAuthority
-                    val name = authority.attributes.get("name").toString()
-                    val email = authority.attributes.get("email").toString()
+                    val delegate = OidcUserService()
+                    val oidcUser = delegate.loadUser(it)
+
+                    val name = it.additionalParameters["name"].toString()
+                    val email = it.additionalParameters["email"].toString()
                     val count = userRepository.count()
-
-                    val allAuthorities = userAuthorityService
-                            .allAuthorities()
-                            .map { it.toName() }
-                            .toSet()
 
                     userRepository.findByReference(email)
                             .orElseGet {
@@ -91,21 +85,26 @@ class UserSecurityService(
                                         reference = email,
                                         name = name,
                                         email = email,
-                                        authorities = if (count == 0L) allAuthorities else setOf()
+                                        authorities = if (count == 0L) allAuthorities() else setOf()
                                 ).let { user ->
                                     userRepository.save(user)
                                 }
 
                             }
-                            .let { user -> user.getGrantedAuthority() }
+                            .let { user -> DefaultOidcUser(user.getGrantedAuthority(), oidcUser.idToken, oidcUser.userInfo, "email") }
 
                 }
     }
 
-    private fun User.getGrantedAuthority(): List<out GrantedAuthority> {
+    private fun User.getGrantedAuthority(): List<GrantedAuthority> {
         return this.authorities.map { SimpleGrantedAuthority(it) }
                 .plus(SimpleGrantedAuthority(DEFAULT_ROLE))
     }
+
+    private fun allAuthorities() = userAuthorityService
+            .allAuthorities()
+            .map { it.toName() }
+            .toSet()
 
 }
 

@@ -4,6 +4,7 @@ import community.flock.eco.feature.user.controllers.UserAuthorityController
 import community.flock.eco.feature.user.controllers.UserStatusController
 import community.flock.eco.feature.user.controllers.UserController
 import community.flock.eco.feature.user.controllers.UserGroupController
+import community.flock.eco.feature.user.model.User
 import community.flock.eco.feature.user.services.UserAuthorityService
 import community.flock.eco.feature.user.services.UserSecurityService
 import community.flock.eco.feature.user.services.UserService
@@ -12,6 +13,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
+import org.springframework.context.annotation.Scope
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -27,7 +29,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
         UserService::class,
         UserAuthorityService::class,
         UserSecurityService::class)
-class UserConfiguration {
+class UserConfiguration() {
 
     @Bean
     fun passwordEncoder(): PasswordEncoder {

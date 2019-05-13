@@ -21,8 +21,8 @@ fun <T> Optional<T>.toResponse(): ResponseEntity<T> = this
         .map { ResponseEntity.ok(it) }
         .orElseGet { ResponseEntity.notFound().build<T>() }
 
-fun <T> Any?.toResponse(): ResponseEntity<T> = if (this == null) {
-    ResponseEntity.ok(this)
+fun <T> T?.toResponse(): ResponseEntity<T> = if (this != null) {
+    ResponseEntity.ok<T>(this)
 } else {
     ResponseEntity.notFound().build<T>()
 }

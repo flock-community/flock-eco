@@ -19,7 +19,7 @@ data class UserGroup(
 
         val name: String,
 
-        @ManyToMany()
+        @ManyToMany
         val users: Set<User> = setOf(),
 
         val created: LocalDateTime = LocalDateTime.now(),
