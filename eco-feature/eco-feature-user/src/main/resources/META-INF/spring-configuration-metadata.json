@@ -24,9 +24,21 @@
       "sourceType": "community.flock.eco.feature.user.UserProperties"
     },
     {
-      "name": "flock.eco.feature.user.secretResetMail",
+      "name": "flock.eco.feature.user.secretResetMailFrom",
       "type": "java.lang.String",
-      "description": "Secret reset mail",
+      "description": "Secret reset mail from",
+      "sourceType": "community.flock.eco.feature.user.UserProperties"
+    },
+    {
+      "name": "flock.eco.feature.user.secretResetMailSubject",
+      "type": "java.lang.String",
+      "description": "Secret reset mail subject",
+      "sourceType": "community.flock.eco.feature.user.UserProperties"
+    },
+    {
+      "name": "flock.eco.feature.user.secretResetMailMessage",
+      "type": "java.lang.String",
+      "description": "Secret reset mail message",
       "sourceType": "community.flock.eco.feature.user.UserProperties"
     }
   ],

@@ -1,6 +1,8 @@
 package community.flock.eco.feature.user.services
 
+import community.flock.eco.core.model.MailMessage
 import community.flock.eco.core.services.CrudService
+import community.flock.eco.core.services.MailService
 import community.flock.eco.core.utils.toNullable
 import community.flock.eco.feature.user.SecretType
 import community.flock.eco.feature.user.UserProperties
@@ -12,10 +14,12 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 import java.security.SecureRandom
 import java.time.LocalDateTime
+import javax.mail.internet.InternetAddress
 
 
 @Component
 class UserService(
+        val mailService: MailService,
         val passwordEncoder: PasswordEncoder,
         val userRepository: UserRepository,
         val userSecretResetRepository: UserSecretResetRepository,
@@ -52,6 +56,7 @@ class UserService(
             .toNullable()
 
     fun resetSecret(user: User): User {
+        val password = generatePassword(userProperties.secretLength.toInt())
         return when (userProperties.secretType) {
             SecretType.NONE -> user
                     .copy(secret = null)
@@ -65,13 +70,15 @@ class UserService(
 
             SecretType.GENERATED -> user
                     .copy(
-                            secret = generateSecret(userProperties.secretLength.toInt())
+                            secret = password
+                                    .let { passwordEncoder.encode(it) }
                     )
                     .let { userRepository.save(it) }
+                    .also { sendSecret(password, it) }
         }
     }
 
-    private fun generateSecret(length: Int): String {
+    private fun generatePassword(length: Int): String {
         val random = SecureRandom()
         val alphabet = userProperties.secretAlphabet
         return (0..length)
@@ -79,7 +86,20 @@ class UserService(
                     alphabet[random.nextInt(alphabet.length)]
                 }
                 .joinToString { "" }
-                .let { passwordEncoder.encode(it) }
+    }
+
+    private fun sendSecret(password: String, user: User) {
+        MailMessage(
+                from = InternetAddress(userProperties.secretResetMailFrom),
+                recipients = listOf(
+                        InternetAddress(user.email, user.name)
+                ),
+                subject = userProperties.secretResetMailSubject,
+                text = String.format(userProperties.secretResetMessage, password)
+        ).also {
+            mailService.sendMail(it)
+        }
+
     }
 
 
