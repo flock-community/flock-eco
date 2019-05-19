@@ -6,9 +6,11 @@ import org.springframework.stereotype.Component
 @Component
 @ConfigurationProperties(prefix = "flock.eco.feature.user")
 data class UserProperties(
-        var secretType: SecretType = SecretType.NONE,
-        var secretLength: Integer = Integer(8),
-        var secretAlphabet: String = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+        val secretType: SecretType = SecretType.NONE,
+        val secretLength: Integer = Integer(8),
+        val secretAlphabet: String = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
+
+        val secretResetMail:String
 )
 
 enum class SecretType {

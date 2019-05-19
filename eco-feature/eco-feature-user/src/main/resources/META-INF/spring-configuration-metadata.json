@@ -22,6 +22,12 @@
       "type": "java.lang.String",
       "description": "Secret alphabet",
       "sourceType": "community.flock.eco.feature.user.UserProperties"
+    },
+    {
+      "name": "flock.eco.feature.user.secretResetMail",
+      "type": "java.lang.String",
+      "description": "Secret reset mail",
+      "sourceType": "community.flock.eco.feature.user.UserProperties"
     }
   ],
   "hints": [
