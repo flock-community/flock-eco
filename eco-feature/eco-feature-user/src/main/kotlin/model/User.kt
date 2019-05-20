@@ -2,6 +2,10 @@ package community.flock.eco.feature.user.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import community.flock.eco.core.events.EventEntityListeners
+import org.springframework.security.config.core.GrantedAuthorityDefaults
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
 import java.io.Serializable
 import java.security.Principal
 import java.time.LocalDateTime
@@ -28,6 +32,8 @@ data class User(
         val name: String,
         val email: String,
 
+        val enabled: Boolean = true,
+
         @ElementCollection(fetch = FetchType.EAGER)
         val authorities: Set<String> = setOf(),
 
@@ -37,4 +43,18 @@ data class User(
 ) : Serializable
 
 fun User.getPrincipal(): Principal = Principal { this.email }
+fun User.getUserDetails(): UserDetails {
+    val user = this
+     return object : UserDetails {
+        override fun getAuthorities() = user.authorities
+                .map { SimpleGrantedAuthority(it) }
+                .toList()
+        override fun isEnabled() = user.enabled
+        override fun getUsername() = user.reference
+        override fun getPassword() = user.secret
+        override fun isCredentialsNonExpired() = true
+        override fun isAccountNonExpired() = true
+        override fun isAccountNonLocked() = true
+    }
+}
 
