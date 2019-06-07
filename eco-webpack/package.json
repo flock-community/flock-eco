@@ -1,6 +1,6 @@
 {
   "name": "@flock-eco/webpack",
-  "version": "1.2.2-next.db8633a",
+  "version": "1.2.2-next.a227a92",
   "dependencies": {
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
