@@ -75,8 +75,8 @@ class UserSecurityService(
                     val delegate = OidcUserService()
                     val oidcUser = delegate.loadUser(it)
 
-                    val name = it.additionalParameters["name"].toString()
-                    val email = it.additionalParameters["email"].toString()
+                    val name = oidcUser.attributes["name"].toString()
+                    val email = oidcUser.attributes["email"].toString()
                     val count = userRepository.count()
 
                     userRepository.findByReference(email)
