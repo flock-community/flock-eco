@@ -6,7 +6,7 @@
     <parent>
         <artifactId>flock-eco-parent</artifactId>
         <groupId>com.github.flock-community.flock-eco</groupId>
-        <version>1.2.1</version>
+        <version>1.2.3-2b95491</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -55,6 +55,7 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
+        <!-- Spring cloud -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-gcp-starter</artifactId>
@@ -76,14 +77,6 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-oauth2-jose</artifactId>
-        </dependency>
-
-        <!-- Database -->
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>1.4.194</version>
-            <scope>runtime</scope>
         </dependency>
 
         <!-- Servlet -->
@@ -150,6 +143,16 @@
             <dependency>
                 <groupId>com.github.flock-community.flock-eco</groupId>
                 <artifactId>flock-eco-feature-gcp-runtimeconfig</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.flock-community.flock-eco</groupId>
+                <artifactId>flock-eco-feature-gcp-sql</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.flock-community.flock-eco</groupId>
+                <artifactId>flock-eco-feature-gcp-mail</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
         </dependencies>

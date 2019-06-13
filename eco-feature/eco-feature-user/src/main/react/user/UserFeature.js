@@ -52,7 +52,6 @@ class UserFeature extends React.Component {
   }
 
   handleRowClick = item => {
-    console.log('123')
     this.setState({item})
   }
 
@@ -65,7 +64,7 @@ class UserFeature extends React.Component {
   }
 
   handleSave = value => {
-    if (this.state.item.id) {
+    if (this.state.item.code) {
       this.update(this.state.item)
     } else {
       this.create(this.state.item)
@@ -74,6 +73,10 @@ class UserFeature extends React.Component {
 
   handleDelete = value => {
     this.delete(this.state.item)
+  }
+
+  handleReset = value => {
+    this.reset(this.state.item)
   }
 
   handleFormUpdate = value => {
@@ -117,6 +120,7 @@ class UserFeature extends React.Component {
           onClose={this.handleClose}
           onSave={this.handleSave}
           onDelete={this.handleDelete}
+          onReset={this.handleReset}
         >
           <UserForm
             authorities={this.state.authorities}
@@ -159,7 +163,7 @@ class UserFeature extends React.Component {
       },
       body: JSON.stringify(item),
     }
-    fetch(`/api/users/${item.id}`, opts).then(() => {
+    fetch(`/api/users/${item.code}`, opts).then(() => {
       this.setState({item: null})
       this.load()
     })
@@ -172,7 +176,17 @@ class UserFeature extends React.Component {
         'Content-Type': 'application/json; charset=utf-8',
       },
     }
-    fetch(`/api/users/${item.id}`, opts).then(() => {
+    fetch(`/api/users/${item.code}`, opts).then(() => {
+      this.setState({item: null})
+      this.load()
+    })
+  }
+
+  reset(item) {
+    const opts = {
+      method: 'POST',
+    }
+    fetch(`/api/users/${item.code}/reset`, opts).then(() => {
       this.setState({item: null})
       this.load()
     })

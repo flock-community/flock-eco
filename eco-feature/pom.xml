@@ -8,12 +8,13 @@
         <module>eco-feature-payment</module>
         <module>eco-feature-gcp-runtimeconfig</module>
         <module>eco-feature-gcp-sql</module>
+        <module>eco-feature-gcp-mail</module>
     </modules>
 
     <parent>
         <groupId>com.github.flock-community.flock-eco</groupId>
         <artifactId>flock-eco-parent</artifactId>
-        <version>1.2.1</version>
+        <version>1.2.3-2b95491</version>
     </parent>
 
     <artifactId>flock-eco-feature-parent</artifactId>

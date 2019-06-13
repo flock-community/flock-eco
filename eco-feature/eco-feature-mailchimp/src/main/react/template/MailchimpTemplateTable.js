@@ -16,7 +16,6 @@ class MailchimpTemplateTable extends React.Component {
   }
 
   load() {
-    console.log('123')
     fetch(`/api/mailchimp/templates`)
       .then(res => {
         this.setState({

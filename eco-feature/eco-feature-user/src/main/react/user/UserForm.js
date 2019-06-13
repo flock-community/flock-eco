@@ -38,7 +38,6 @@ class UserForm extends React.Component {
 
   handleChange(name) {
     return value => {
-      console.log(value)
       this.setState({[name]: value}, () => {
         this.props.onChange(this.state)
       })
