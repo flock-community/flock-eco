@@ -85,7 +85,7 @@ class MemberFeature extends React.Component {
 
     return (
       <React.Fragment>
-        <Grid container direction="column" spacing={16}>
+        <Grid container direction="column" spacing={1}>
           <Grid item>
             <Card>
               <CardContent>

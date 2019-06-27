@@ -117,7 +117,7 @@ class MemberSpecification extends React.Component {
             onClose={this.handleFilterClose}
           >
             <div className={classes.popoverContent}>
-              <Grid container spacing={16}>
+              <Grid container spacing={1}>
                 <Grid item xs={12}>
                   {this.renderGroupsSelect()}
                 </Grid>

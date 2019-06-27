@@ -101,7 +101,7 @@ class UserGroupDialog extends React.Component {
               direction="column"
               justify="space-evenly"
               alignItems="stretch"
-              spacing={16}
+              spacing={1}
             >
               <Grid item xs={12}>
                 <TextField

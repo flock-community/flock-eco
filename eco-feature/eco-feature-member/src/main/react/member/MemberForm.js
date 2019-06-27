@@ -69,7 +69,7 @@ class MemberForm extends React.Component {
     const {classes} = this.props
 
     return (
-      <Grid container spacing={16}>
+      <Grid container spacing={1}>
         <Grid item xs={5}>
           <TextValidator
             required
