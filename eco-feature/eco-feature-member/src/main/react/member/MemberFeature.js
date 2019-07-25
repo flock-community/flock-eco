@@ -19,14 +19,14 @@ const styles = theme => ({
   tablePaper: {
     marginBottom: 50,
     width: '100%',
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing(3),
     overflowX: 'auto',
   },
   button: {
     position: 'fixed',
     right: 20,
     bottom: 20,
-    margin: theme.spacing.unit,
+    margin: theme.spacing(1),
   },
 })
 
@@ -85,7 +85,7 @@ class MemberFeature extends React.Component {
 
     return (
       <React.Fragment>
-        <Grid container direction="column" spacing={16}>
+        <Grid container direction="column" spacing={1}>
           <Grid item>
             <Card>
               <CardContent>

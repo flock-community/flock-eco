@@ -25,10 +25,12 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: [
-              'env',
-              'react',
-              'stage-2'
+            "plugins": [
+              "@babel/plugin-proposal-class-properties"
+            ],
+            "presets": [
+              "@babel/preset-env",
+              "@babel/preset-react"
             ]
           }
         }

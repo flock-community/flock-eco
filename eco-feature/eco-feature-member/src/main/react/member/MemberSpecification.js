@@ -24,7 +24,7 @@ import FilterListIcon from '@material-ui/icons/FilterList'
 const styles = theme => ({
   popoverContent: {
     width: 250,
-    margin: theme.spacing.unit * 2,
+    margin: theme.spacing(2),
   },
 })
 
@@ -117,7 +117,7 @@ class MemberSpecification extends React.Component {
             onClose={this.handleFilterClose}
           >
             <div className={classes.popoverContent}>
-              <Grid container spacing={16}>
+              <Grid container spacing={1}>
                 <Grid item xs={12}>
                   {this.renderGroupsSelect()}
                 </Grid>
