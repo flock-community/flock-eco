@@ -24,7 +24,7 @@ import FilterListIcon from '@material-ui/icons/FilterList'
 const styles = theme => ({
   popoverContent: {
     width: 250,
-    margin: theme.spacing.unit * 2,
+    margin: theme.spacing(2),
   },
 })
 
