@@ -6,22 +6,26 @@
     "lerna": "lerna",
     "prettier": "prettier --write \"{**/*.js,**/*.json,**/*.html}\"",
     "start": "webpack-dev-server --mode development --config ./eco-webpack/webpack.config.js",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "storybook": "start-storybook"
   },
   "dependencies": {
     "@material-ui/core": "^4.1.1",
     "@material-ui/icons": "^4.2.0",
     "@material-ui/lab": "^4.0.0-alpha.16",
     "@material-ui/styles": "^4.1.1",
+    "@storybook/react": "^5.1.4",
     "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.6",
     "downshift": "^3.2.10",
+    "formik": "^1.5.7",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-material-ui-form-validator": "^2.0.8",
     "react-router-dom": "^4.3.1",
     "react-select": "^2.4.3",
-    "whatwg-fetch": "^3.0.0"
+    "whatwg-fetch": "^3.0.0",
+    "yup": "^0.27.0"
   },
   "devDependencies": {
     "lerna": "^3.13.1",

@@ -21,10 +21,16 @@ module.exports = {
         test: /\.js|jsx$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
+          loader: "babel-loader",
           options: {
-            presets: ['env', 'react', 'stage-2'],
-          },
+            "plugins": [
+              "@babel/plugin-proposal-class-properties"
+            ],
+            "presets": [
+              "@babel/preset-env",
+              "@babel/preset-react"
+            ]
+          }
         },
       },
     ],
