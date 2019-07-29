@@ -15,8 +15,9 @@ before_install:
   - mv .npmrc $HOME/.npmrc
 
 script:
-  - mvn verify
+  - mvn clean verify -DskipTests
   - git status
+  - git diff
 
 deploy:
 
