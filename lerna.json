@@ -1,7 +1,9 @@
 {
   "packages": [
     "eco-application/*",
-    "eco-feature/*"
+    "eco-core",
+    "eco-feature/*",
+    "eco-webpack"
   ],
-  "version": "1.1.0"
+  "version": "1.3.3"
 }

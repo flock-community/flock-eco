@@ -1,9 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.flock-community.flock-eco</groupId>
     <artifactId>flock-eco-parent</artifactId>
-    <version>1.1.0</version>
+    <version>1.3.3</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -159,6 +160,20 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
                 <version>1.7.5</version>
@@ -176,7 +191,7 @@
                             <goal>npm</goal>
                         </goals>
                         <configuration>
-                            <arguments>install</arguments>
+                            <arguments>ci</arguments>
                         </configuration>
                     </execution>
                     <execution>
@@ -188,19 +203,10 @@
                             <arguments>run bootstrap</arguments>
                         </configuration>
                     </execution>
-                    <execution>
-                        <id>version</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>run lerna -- version --yes --no-git-tag-version ${project.version}</arguments>
-                        </configuration>
-                        <phase>none</phase>
-                    </execution>
                 </executions>
                 <configuration>
-                    <nodeVersion>v8.11.3</nodeVersion>
+                    <nodeVersion>v10.16.0</nodeVersion>
+                    <npmVersion>6.9.0</npmVersion>
                     <installDirectory>${project.build.directory}</installDirectory>
                 </configuration>
             </plugin>

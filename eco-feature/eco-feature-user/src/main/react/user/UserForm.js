@@ -38,7 +38,6 @@ class UserForm extends React.Component {
 
   handleChange(name) {
     return value => {
-      console.log(value)
       this.setState({[name]: value}, () => {
         this.props.onChange(this.state)
       })
@@ -55,7 +54,7 @@ class UserForm extends React.Component {
           direction="column"
           justify="space-evenly"
           alignItems="stretch"
-          spacing={16}
+          spacing={1}
         >
           <Grid item xs={12}>
             <TextField

@@ -14,20 +14,23 @@ before_install:
   - mv settings.xml $HOME/.m2/settings.xml
   - mv .npmrc $HOME/.npmrc
 
-script: mvn verify
+script:
+  - mvn surefire:test
+  - git status
+  - git diff
 
 deploy:
-
-  # deploy maven
-  - provider: script
-    skip_cleanup: true
-    script: mvn deploy -DskipTests=true -Dmaven.javadoc.skip=true
-    on:
-      tags: true
 
   # deploy npm
   - provider: script
     skip_cleanup: true
     script: node_modules/.bin/lerna publish from-package --yes --no-verify-access
+    on:
+      tags: true
+
+  # deploy maven
+  - provider: script
+    skip_cleanup: true
+    script: mvn deploy -DskipTests=true -Dmaven.javadoc.skip=true
     on:
       tags: true

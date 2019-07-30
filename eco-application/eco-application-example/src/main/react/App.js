@@ -13,7 +13,6 @@ class App extends React.Component {
   }
 
   handleFeatureChange = component => {
-    console.log('123123123', component)
     this.setState({component})
   }
 

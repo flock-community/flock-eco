@@ -36,7 +36,7 @@ class MemberForm extends React.Component {
         direction="column"
         justify="space-evenly"
         alignItems="stretch"
-        spacing={16}
+        spacing={1}
       >
         <Grid item sx={12}>
           <TextField

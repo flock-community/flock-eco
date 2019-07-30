@@ -20,7 +20,6 @@ class FeatureList extends React.Component {
   }
 
   render() {
-    console.log(features)
     return (<React.Fragment>
         <List component="nav">
           {

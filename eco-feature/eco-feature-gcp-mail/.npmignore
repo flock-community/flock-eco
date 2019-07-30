@@ -1,0 +1,10 @@
+.idea
+*.iml
+
+src/**/kotlin/**/*.kt
+src/**/resources/**/*.properties
+
+pom.xml
+pom.xml.*
+
+target

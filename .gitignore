@@ -13,5 +13,7 @@ node_modules
 
 release.properties
 
+settings.xml
+.npmrc
 .secrets
 secrets.tar
