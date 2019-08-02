@@ -1,196 +1,83 @@
-import React from 'react'
-import {withStyles} from '@material-ui/core/styles'
-
-import Button from '@material-ui/core/Button'
-
+import React, {useEffect, useState} from 'react'
 import AddIcon from '@material-ui/icons/Add'
-
-import UserTable from './UserTable'
-import UserForm from './UserForm'
-import UserDialog from './UserDialog'
+import {UserTable} from './UserTable'
+import {UserDialog} from './UserDialog'
 import Paper from '@material-ui/core/es/Paper/Paper'
 import Fab from '@material-ui/core/Fab'
+import {makeStyles} from '@material-ui/styles'
+import UserClient from './UserClient'
 
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
+  root:{
+    position: 'relative',
+  },
+  content:{
+    height: '100%',
+    overflow:'scroll'
+  },
   tablePaper: {
     marginBottom: 50,
-    width: '100%',
-    marginTop: theme.spacing(3),
-    overflowX: 'auto',
+    height: '100%',
   },
   button: {
-    position: 'fixed',
+    position: 'absolute',
     right: 20,
     bottom: 20,
-    margin: theme.spacing(1),
   },
-})
+}))
 
-class UserFeature extends React.Component {
-  state = {
-    size: 10,
-    members: this.props.members || [],
-    item: null,
-    groups: [],
-    count: 0,
-    page: 0,
-  }
+export function UserFeature() {
 
-  componentDidMount() {
-    fetch('/api/authorities')
-      .then(res => res.json())
-      .then(json => {
-        this.setState({authorities: json})
-      })
-    this.load()
-  }
+  const classes = useStyles()
 
-  handleChangePage = (event, page) => {
-    this.setState({page}, () => {
-      this.load()
+  const [dialogState, setDialogState] = useState({
+    open: false,
+    code: null
+  })
+
+  const [reload, setReload] = useState(false)
+
+  const handleRowClick = (ev, item) => {
+    setDialogState({
+      open: true,
+      code: item.code
     })
   }
 
-  handleRowClick = item => {
-    this.setState({item})
+  const handleNewClick = () => {
+    setDialogState({
+      open: true,
+      code: null
+    })
   }
 
-  handleNewClick = () => {
-    this.setState({item: {}})
+  const handleComplete = value => {
+    console.log(listRef)
+    setDialogState({
+      open: false,
+      code: null
+    })
   }
 
-  handleClose = value => {
-    this.setState({item: null})
-  }
+  return (
+    <div className={classes.root}>
+      <div className={classes.content}>
 
-  handleSave = value => {
-    if (this.state.item.code) {
-      this.update(this.state.item)
-    } else {
-      this.create(this.state.item)
-    }
-  }
-
-  handleDelete = value => {
-    this.delete(this.state.item)
-  }
-
-  handleReset = value => {
-    this.reset(this.state.item)
-  }
-
-  handleFormUpdate = value => {
-    this.setState({item: value})
-  }
-
-  load = () => {
-    fetch(`/api/users?page=${this.state.page}&size=${this.state.size}`)
-      .then(res => {
-        this.setState({
-          count: parseInt(res.headers.get('x-total')),
-        })
-        return res.json()
-      })
-      .then(json => {
-        this.setState({list: json})
-      })
-      .catch(e => {
-        this.setState({message: 'Cannot load users'})
-      })
-  }
-
-  render() {
-    const {classes} = this.props
-
-    return (
-      <div>
-        <Paper className={classes.tablePaper}>
-          <UserTable
-            data={this.state.list}
-            count={this.state.count}
-            page={this.state.page}
-            size={this.state.size}
-            onRowClick={this.handleRowClick}
-            onChangePage={this.handleChangePage}
-          />
-        </Paper>
-
-        <UserDialog
-          open={this.state.item != null}
-          onClose={this.handleClose}
-          onSave={this.handleSave}
-          onDelete={this.handleDelete}
-          onReset={this.handleReset}
-        >
-          <UserForm
-            authorities={this.state.authorities}
-            item={this.state.item}
-            onChange={this.handleFormUpdate}
-          />
-        </UserDialog>
-
-        <Fab
-          color="primary"
-          aria-label="Add"
-          className={classes.button}
-          onClick={this.handleNewClick}
-        >
-          <AddIcon/>
-        </Fab>
+        <UserTable
+          onRowClick={handleRowClick}
+        />
       </div>
-    )
-  }
 
-  create(item) {
-    const opts = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-      },
-      body: JSON.stringify(item),
-    }
-    fetch('/api/users', opts).then(() => {
-      this.setState({item: null})
-      this.load()
-    })
-  }
+      <UserDialog open={dialogState.open} code={dialogState.code} onComplete={handleComplete}/>
 
-  update(item) {
-    const opts = {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-      },
-      body: JSON.stringify(item),
-    }
-    fetch(`/api/users/${item.code}`, opts).then(() => {
-      this.setState({item: null})
-      this.load()
-    })
-  }
-
-  delete(item) {
-    const opts = {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-      },
-    }
-    fetch(`/api/users/${item.code}`, opts).then(() => {
-      this.setState({item: null})
-      this.load()
-    })
-  }
-
-  reset(item) {
-    const opts = {
-      method: 'POST',
-    }
-    fetch(`/api/users/${item.code}/reset`, opts).then(() => {
-      this.setState({item: null})
-      this.load()
-    })
-  }
+      <Fab
+        color="primary"
+        aria-label="Add"
+        className={classes.button}
+        onClick={handleNewClick}
+      >
+        <AddIcon />
+      </Fab>
+    </div>
+  )
 }
-
-export default withStyles(styles)(UserFeature)

@@ -1,141 +1,115 @@
-import React from 'react'
-import {withStyles} from '@material-ui/core/styles'
+import React, {useEffect, useState} from 'react'
 
 import Grid from '@material-ui/core/Grid'
 
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
-
-import TextField from '@material-ui/core/TextField'
-import Checkbox from '@material-ui/core/Checkbox'
 import FormControl from '@material-ui/core/FormControl'
-import InputLabel from '@material-ui/core/InputLabel'
+import UserClient from './UserClient'
+import {Field, Form, Formik} from 'formik'
+import {Checkbox, TextField} from 'formik-material-ui'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import FormGroup from '@material-ui/core/FormGroup'
+import FormLabel from '@material-ui/core/FormLabel'
+import * as Yup from 'yup'
 
-const styles = theme => ({
-  input: {
-    width: '100%',
-  },
-})
+export const USER_FORM_ID = 'user-form-id'
 
-class UserForm extends React.Component {
-  constructor(props) {
-    super(props)
-    this.init(props.item)
+export function UserForm({value, onSummit, ...props}) {
+
+  const [formRef, setFormRef] = useState(null)
+  const [authorities, setAuthorities] = useState(null)
+
+  const init = {
+    name: '',
+    email: '',
+    reference: '',
+    authorities: [true, true, true, true],
   }
 
-  init(item) {
-    const user = {
-      name: '',
-      email: '',
-      reference: '',
-      disabled: false,
-      authorities: [],
+  const [state, setState] = useState(init)
+
+  useEffect(() => {
+    if(!props.authorities){
+      UserClient.findAllAuthorities()
+        .then(setAuthorities)
+    }else {
+      setAuthorities(props.authorities)
     }
 
-    this.state = Object.assign(user, item)
-  }
+  }, [])
 
-  handleChange(name) {
-    return value => {
-      this.setState({[name]: value}, () => {
-        this.props.onChange(this.state)
+  useEffect(() => {
+    if(value &&  authorities){
+      console.log(JSON.stringify(value))
+      console.log(JSON.stringify(authorities))
+      setState({
+        ...init,
+        ...value,
+        authorities: authorities.map(it => true),
       })
     }
+  }, [value, authorities])
+
+  useEffect(() => {
+    formRef && formRef.resetForm()
+  }, [state])
+
+  const handleSubmit = value => {
+    onSummit && onSummit(value)
   }
 
-  render() {
-    const {classes} = this.props
+  const validation = Yup.object({
+    name: Yup.string('Enter name')
+      .required('Name is required'),
+    email: Yup.string('Enter email')
+      .email('Enter a valid email'),
+    reference: Yup.string('Enter reference')
+      .required('Reference is required'),
+  })
 
-    return (
-      <React.Fragment>
-        <Grid
-          container
-          direction="column"
-          justify="space-evenly"
-          alignItems="stretch"
-          spacing={1}
-        >
+  return authorities && (
+     <Formik
+      ref={setFormRef}
+      onSubmit={handleSubmit}
+      initialValues={state}
+      validationSchema={validation}
+    >
+      <Form id={USER_FORM_ID}>
+        <Grid container spacing={1}>
           <Grid item xs={12}>
-            <TextField
-              label="Name"
-              className={classes.input}
-              value={this.state.name}
-              onChange={ev => this.handleChange('name')(ev.target.value)}
-            />
+            <Field fullWidth name="name" label="Name" component={TextField}/>
           </Grid>
 
           <Grid item xs={12}>
-            <TextField
-              label="Email"
-              className={classes.input}
-              value={this.state.email}
-              onChange={ev => this.handleChange('email')(ev.target.value)}
-            />
+            <Field fullWidth name="email" label="Email" component={TextField}/>
           </Grid>
 
           <Grid item xs={12}>
-            <TextField
+            <Field
+              fullWidth
+              name="reference"
               label="Reference"
-              className={classes.input}
-              value={this.state.reference}
-              onChange={ev => this.handleChange('reference')(ev.target.value)}
+              component={TextField}
             />
           </Grid>
 
-          <Grid item style={{marginTop: 10}}>
-            {this.renderList()}
+          <Grid item xs={12}>
+            <FormControl component="fieldset">
+              <FormLabel component="legend">Authorities</FormLabel>
+              <FormGroup>
+                {authorities.map((value, i) => (
+                  <FormControlLabel
+                    key={`user-form-authorities-${i}`}
+                    control={
+                      <Field name={`authorities[${i}]`} component={Checkbox}/>
+                    }
+                    label={value}
+                  />
+                ))}
+              </FormGroup>
+            </FormControl>
           </Grid>
         </Grid>
-      </React.Fragment>
-    )
-  }
-
-  renderList() {
-    const {classes, authorities} = this.props
-
-    const handleClick = value => {
-      if (this.state.authorities.includes(value)) {
-        this.handleChange('authorities')(
-          this.state.authorities.filter(it => value !== it),
-        )
-      } else {
-        this.handleChange('authorities')(this.state.authorities.concat(value))
-      }
-    }
-
-    return (
-      <FormControl className={classes.formControl}>
-        <InputLabel shrink>Authorities</InputLabel>
-        <List className={classes.input}>
-          {authorities.map(value => (
-            <ListItem
-              className={classes.input}
-              key={value}
-              role={undefined}
-              dense
-              button
-              onClick={ev => handleClick(value)}
-              style={{
-                margin: 0,
-                padding: 0,
-              }}
-            >
-              <Checkbox
-                checked={this.state.authorities.includes(value)}
-                tabIndex={-1}
-                disableRipple
-                style={{
-                  width: 32,
-                }}
-              />
-              <ListItemText primary={value} />
-            </ListItem>
-          ))}
-        </List>
-      </FormControl>
-    )
-  }
+      </Form>
+    </Formik>
+  )
 }
-
-export default withStyles(styles)(UserForm)
