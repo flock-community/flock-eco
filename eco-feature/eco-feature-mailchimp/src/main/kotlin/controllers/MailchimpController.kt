@@ -3,10 +3,7 @@ package community.flock.eco.feature.mailchimp.controllers
 import community.flock.eco.feature.mailchimp.clients.MailchimpClient
 import community.flock.eco.feature.mailchimp.events.MailchimpWebhookEvent
 import community.flock.eco.feature.mailchimp.events.MailchimpWebhookEventType
-import community.flock.eco.feature.mailchimp.model.MailchimpCampaign
-import community.flock.eco.feature.mailchimp.model.MailchimpMember
-import community.flock.eco.feature.mailchimp.model.MailchimpTemplate
-import community.flock.eco.feature.mailchimp.model.MailchimpTemplateType
+import community.flock.eco.feature.mailchimp.model.*
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpHeaders
@@ -40,6 +37,10 @@ class MailchimpController(
     @PreAuthorize("hasAuthority('MailchimpTemplateAuthority.READ')")
     fun getTemplates(): List<MailchimpTemplate> = mailchimpClient.getTemplates()
             .filter { it.type == MailchimpTemplateType.USER }
+
+    @GetMapping("/interest-categories")
+    @PreAuthorize("hasAuthority('MailchimpTemplateAuthority.READ')")
+    fun getInterestCategories(): List<MailchimpInterestCategory> = mailchimpClient.getInterestsCategories()
 
     @GetMapping("/campaigns")
     @PreAuthorize("hasAuthority('MailchimpCampaignAuthority.READ')")
