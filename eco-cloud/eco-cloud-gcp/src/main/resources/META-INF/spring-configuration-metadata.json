@@ -1,0 +1,17 @@
+{
+  "groups": [
+    {
+      "name": "flock.eco.cloud.gcp",
+      "type": "community.flock.eco.cloud.gcp.StubCloudProperties",
+      "sourceType": "community.flock.eco.cloud.gcp.AwsCloudProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "flock.eco.cloud.gcp.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Stub cloud enabled",
+      "sourceType": "community.flock.eco.cloud.gcp.StubCloudProperties#enabled"
+    }
+  ]
+}

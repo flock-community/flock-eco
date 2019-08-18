@@ -178,8 +178,8 @@ class MailchimpClient(
         val md5 = calculateMd5(member.email)
         val obj = convertMailchimpMembertoObjectNode(member)
         val entity = HttpEntity(obj, headers)
-        val res = restTemplate.exchange("/lists/$listId/members/$md5", HttpMethod.PUT, entity, ObjectNode::class.java)
         try {
+            val res = restTemplate.exchange("/lists/$listId/members/$md5", HttpMethod.PUT, entity, ObjectNode::class.java)
             return convertObjectNodetoMailchimpMember(res.body)
         } catch (ex: HttpClientErrorException) {
             throw MailchimpFetchException(ex.responseBodyAsString)
@@ -260,6 +260,7 @@ class MailchimpClient(
         json.put("email_address", member.email)
         json.put("status", member.status.toString().toLowerCase())
         json.putPOJO("tags", member.tags)
+        json.putPOJO("interests", mapper.valueToTree(member.interests))
         val merge = json.putObject("merge_fields")
         if (!member.firstName.isNullOrEmpty()) merge.put("FNAME", member.firstName)
         if (!member.lastName.isNullOrEmpty()) merge.put("LNAME", member.lastName)
@@ -281,7 +282,13 @@ class MailchimpClient(
                         .let { MailchimpMemberStatus.valueOf(it.toUpperCase()) },
                 tags = obj.get("tags").asIterable()
                         .map { it.get("name").asText() }
-                        .toSet()
+                        .toSet(),
+                interests = obj.get("interests")
+                        .fields()
+                        .asSequence()
+                        .map { it.key to it.value.asBoolean() }
+                        .toMap()
+
         )
     }
 

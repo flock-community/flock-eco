@@ -1,7 +1,8 @@
-package community.flock.eco.feature.gcp.mail.services
+package community.flock.eco.cloud.gcp.services
 
 import community.flock.eco.core.model.MailMessage
 import community.flock.eco.core.services.MailService
+import org.springframework.stereotype.Component
 import java.io.UnsupportedEncodingException
 import java.util.*
 import javax.mail.Message
@@ -11,6 +12,7 @@ import javax.mail.Transport
 import javax.mail.internet.AddressException
 import javax.mail.internet.MimeMessage
 
+@Component
 class GpcMailService : MailService {
 
     override fun sendMail(message: MailMessage) {
