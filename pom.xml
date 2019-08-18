@@ -248,7 +248,6 @@
         <url>https://github.com/flock-community/flock-eco</url>
         <connection>scm:git:git://github.com/flock-community/flock-eco.git</connection>
         <developerConnection>scm:git:git@github.com:flock-community/flock-eco.git</developerConnection>
-        <tag>flock-eco-parent-1.37</tag>
     </scm>
 
 </project>
