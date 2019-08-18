@@ -119,9 +119,9 @@ class AwsStorageService : StorageService {
         val list = s3Client.listParts(requestParts)
 
         val eTags = list.parts()
-                .mapIndexed { i, part ->
+                .map {part ->
                     CompletedPart.builder()
-                            .partNumber(i+1)
+                            .partNumber(part.partNumber())
                             .eTag(part.eTag())
                             .build()
                 }
