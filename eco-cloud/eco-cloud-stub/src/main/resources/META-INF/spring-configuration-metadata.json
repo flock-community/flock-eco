@@ -1,0 +1,17 @@
+{
+  "groups": [
+    {
+      "name": "flock.eco.cloud.stub",
+      "type": "community.flock.eco.cloud.stub.StubCloudProperties",
+      "sourceType": "community.flock.eco.cloud.stub.AwsCloudProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "flock.eco.cloud.stub.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Stub cloud enabled",
+      "sourceType": "community.flock.eco.cloud.stub.StubCloudProperties#enabled"
+    }
+  ]
+}

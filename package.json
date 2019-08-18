@@ -19,6 +19,7 @@
     "classnames": "^2.2.6",
     "downshift": "^3.2.10",
     "formik": "^1.5.7",
+    "formik-material-ui": "0.0.20",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-material-ui-form-validator": "^2.0.8",

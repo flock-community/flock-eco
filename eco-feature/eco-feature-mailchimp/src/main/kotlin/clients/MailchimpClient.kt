@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import community.flock.eco.feature.mailchimp.model.*
-import community.flock.eco.feature.payment.exceptions.FetchException
+import community.flock.eco.feature.payment.exceptions.MailchimpFetchException
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.data.domain.Page
@@ -73,7 +73,42 @@ class MailchimpClient(
                         )
                     }
         } catch (ex: HttpClientErrorException) {
-            throw FetchException(ex.responseBodyAsString)
+            throw MailchimpFetchException(ex.responseBodyAsString)
+        }
+    }
+
+    fun getInterestsCategories(): List<MailchimpInterestCategory> {
+        try {
+            val entity = HttpEntity<String>(headers)
+            val res = restTemplate.exchange("/lists/$listId/interest-categories", HttpMethod.GET, entity, ObjectNode::class.java)
+            return res.body.get("categories").asIterable()
+                    .map {
+                        MailchimpInterestCategory(
+                                id = it.get("id").asText(),
+                                title = it.get("title").asText(),
+                                type = it.get("type").asText().let {
+                                    MailchimpInterestCategoryType.valueOf(it.toUpperCase())
+                                }
+                        )
+                    }
+        } catch (ex: HttpClientErrorException) {
+            throw MailchimpFetchException(ex.responseBodyAsString)
+        }
+    }
+
+    fun getInterests(interestCategoryId:String): List<MailchimpInterest> {
+        try {
+            val entity = HttpEntity<String>(headers)
+            val res = restTemplate.exchange("/lists/$listId/interest-categories/$interestCategoryId/interests", HttpMethod.GET, entity, ObjectNode::class.java)
+            return res.body.get("interests").asIterable()
+                    .map {
+                        MailchimpInterest(
+                                id = it.get("id").asText(),
+                                name = it.get("name").asText()
+                        )
+                    }
+        } catch (ex: HttpClientErrorException) {
+            throw MailchimpFetchException(ex.responseBodyAsString)
         }
     }
 
@@ -91,7 +126,7 @@ class MailchimpClient(
                         )
                     }
         } catch (ex: HttpClientErrorException) {
-            throw FetchException(ex.responseBodyAsString)
+            throw MailchimpFetchException(ex.responseBodyAsString)
         }
     }
 
@@ -110,7 +145,7 @@ class MailchimpClient(
                     .let { PageImpl(it, page, total) }
 
         } catch (ex: HttpClientErrorException) {
-            throw FetchException(ex.responseBodyAsString)
+            throw MailchimpFetchException(ex.responseBodyAsString)
         }
     }
 
@@ -124,7 +159,7 @@ class MailchimpClient(
             if (ex.statusCode == HttpStatus.NOT_FOUND) {
                 return null
             }
-            throw FetchException(ex.responseBodyAsString)
+            throw MailchimpFetchException(ex.responseBodyAsString)
         }
     }
 
@@ -135,7 +170,7 @@ class MailchimpClient(
             val res = restTemplate.exchange("/lists/$listId/members", HttpMethod.POST, entity, ObjectNode::class.java)
             return convertObjectNodetoMailchimpMember(res.body)
         } catch (ex: HttpClientErrorException) {
-            throw FetchException(ex.responseBodyAsString)
+            throw MailchimpFetchException(ex.responseBodyAsString)
         }
     }
 
@@ -143,11 +178,11 @@ class MailchimpClient(
         val md5 = calculateMd5(member.email)
         val obj = convertMailchimpMembertoObjectNode(member)
         val entity = HttpEntity(obj, headers)
-        val res = restTemplate.exchange("/lists/$listId/members/$md5", HttpMethod.PUT, entity, ObjectNode::class.java)
         try {
+            val res = restTemplate.exchange("/lists/$listId/members/$md5", HttpMethod.PUT, entity, ObjectNode::class.java)
             return convertObjectNodetoMailchimpMember(res.body)
         } catch (ex: HttpClientErrorException) {
-            throw FetchException(ex.responseBodyAsString)
+            throw MailchimpFetchException(ex.responseBodyAsString)
         }
     }
 
@@ -161,7 +196,7 @@ class MailchimpClient(
             val entity = HttpEntity(body, headers)
             val res = restTemplate.exchange("/lists/$listId", HttpMethod.POST, entity, ObjectNode::class.java)
         } catch (ex: HttpClientErrorException) {
-            throw FetchException(ex.responseBodyAsString)
+            throw MailchimpFetchException(ex.responseBodyAsString)
         }
     }
 
@@ -179,7 +214,7 @@ class MailchimpClient(
             return if (ex.statusCode == HttpStatus.BAD_REQUEST && detail == "Sorry, that tag already exists.") {
                 tag
             } else {
-                throw FetchException(ex.responseBodyAsString)
+                throw MailchimpFetchException(ex.responseBodyAsString)
             }
         }
     }
@@ -207,7 +242,7 @@ class MailchimpClient(
         try {
             val res = restTemplate.exchange("/lists/$listId/members/$md5/tags", HttpMethod.POST, entity, ObjectNode::class.java)
         } catch (ex: HttpClientErrorException) {
-            throw FetchException(ex.responseBodyAsString)
+            throw MailchimpFetchException(ex.responseBodyAsString)
         }
     }
 
@@ -225,6 +260,7 @@ class MailchimpClient(
         json.put("email_address", member.email)
         json.put("status", member.status.toString().toLowerCase())
         json.putPOJO("tags", member.tags)
+        json.putPOJO("interests", mapper.valueToTree(member.interests))
         val merge = json.putObject("merge_fields")
         if (!member.firstName.isNullOrEmpty()) merge.put("FNAME", member.firstName)
         if (!member.lastName.isNullOrEmpty()) merge.put("LNAME", member.lastName)
@@ -246,7 +282,13 @@ class MailchimpClient(
                         .let { MailchimpMemberStatus.valueOf(it.toUpperCase()) },
                 tags = obj.get("tags").asIterable()
                         .map { it.get("name").asText() }
-                        .toSet()
+                        .toSet(),
+                interests = obj.get("interests")
+                        .fields()
+                        .asSequence()
+                        .map { it.key to it.value.asBoolean() }
+                        .toMap()
+
         )
     }
 

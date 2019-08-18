@@ -5,5 +5,6 @@ data class MailchimpMember(
         val firstName:String? = null,
         val lastName:String? = null,
         val status: MailchimpMemberStatus = MailchimpMemberStatus.UNSUBSCRIBED,
-        val tags: Set<String> = setOf()
+        val tags: Set<String> = setOf(),
+        val interests: Map<String, Boolean> = mapOf()
 )

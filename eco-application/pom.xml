@@ -55,16 +55,6 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
-        <!-- Spring cloud -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-gcp-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-gcp-starter-config</artifactId>
-        </dependency>
-
         <!-- Spring security -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -120,6 +110,28 @@
                 <artifactId>flock-eco-core</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.github.flock-community.flock-eco</groupId>
+                <artifactId>flock-eco-cloud-aws</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.flock-community.flock-eco</groupId>
+                <artifactId>flock-eco-cloud-aws</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.flock-community.flock-eco</groupId>
+                <artifactId>flock-eco-cloud-azure</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.flock-community.flock-eco</groupId>
+                <artifactId>flock-eco-cloud-stub</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>com.github.flock-community.flock-eco</groupId>
                 <artifactId>flock-eco-feature-user</artifactId>

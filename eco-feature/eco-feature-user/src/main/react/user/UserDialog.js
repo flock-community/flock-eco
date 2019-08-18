@@ -1,5 +1,4 @@
-import React from 'react'
-import {withStyles} from '@material-ui/core/styles'
+import React, {useEffect, useState} from 'react'
 
 import Button from '@material-ui/core/Button'
 
@@ -7,56 +6,66 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
+import {USER_FORM_ID, UserForm} from './UserForm'
+import UserClient from './UserClient'
+import * as Yup from 'yup'
 
-const styles = theme => ({})
+export function UserDialog({open, code, onComplete}) {
+  const [state, setState] = useState(null)
 
-class UserDialog extends React.Component {
-  handleClose = () => {
-    this.props.onClose()
+  useEffect(() => {
+    if(code !== null){
+      UserClient.findUserByCode(code).then(res =>
+        setState(res),
+      )
+    }else{
+      setState(null)
+    }
+
+  }, [code])
+
+  const handleDelete = ev => {
+    UserClient.deleteUser(state.code)
   }
 
-  handleSave = () => {
-    this.props.onSave()
+  const handleReset = ev => {
+    UserClient.resetUserPassword(state.code)
   }
 
-  handleDelete = () => {
-    this.props.onDelete()
+  const handleClose = ev => {
+    onComplete && onComplete()
   }
 
-  handleReset = () => {
-    this.props.onReset()
+  const handleSubmit = value => {
+    if (value.code) {
+      UserClient.updateUser(value.code, value)
+    } else {
+      UserClient.createUser(value)
+    }
+    onComplete && onComplete(state)
   }
 
-  render() {
-    const {classes, open, onClose, selectedValue} = this.props
-
-    return (
-      <Dialog
-        fullWidth
-        maxWidth={'md'}
-        open={open}
-        onClose={this.handleClose}
-        classes={classes}
-      >
-        <DialogTitle>User</DialogTitle>
-        <DialogContent>{this.props.children}</DialogContent>
-        <DialogActions>
-          <Button onClick={this.handleReset} color="primary">
-            Reset secret
-          </Button>
-          <Button onClick={this.handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={this.handleDelete} color="secondary">
-            Delete
-          </Button>
-          <Button onClick={this.handleSave} color="primary" autoFocus>
-            Save
-          </Button>
-        </DialogActions>
-      </Dialog>
-    )
-  }
+  return (
+    <Dialog fullWidth maxWidth={'md'} open={open} onClose={handleClose}>
+      <DialogTitle>User</DialogTitle>
+      <DialogContent>
+        <UserForm value={state} onSummit={handleSubmit} />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleReset}>Reset secret</Button>
+        <Button onClick={handleClose}>Cancel</Button>
+        {state && state.code && (
+          <Button onClick={handleDelete}>Delete</Button>
+        )}
+        <Button
+          variant="contained"
+          color="primary"
+          form={USER_FORM_ID}
+          type="submit"
+        >
+          Save
+        </Button>
+      </DialogActions>
+    </Dialog>
+  )
 }
-
-export default withStyles(styles)(UserDialog)

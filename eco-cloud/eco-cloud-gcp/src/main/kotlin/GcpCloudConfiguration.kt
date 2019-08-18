@@ -1,6 +1,6 @@
-package community.flock.eco.feature.gcp.mail
+package community.flock.eco.cloud.gcp
 
-import community.flock.eco.feature.gcp.mail.services.GpcMailService
+import community.flock.eco.cloud.gcp.services.GpcMailService
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
 
