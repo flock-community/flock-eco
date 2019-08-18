@@ -101,7 +101,7 @@ class AwsStorageService : StorageService {
                 .bucket(bucket)
                 .key(key)
                 .uploadId(uploadId)
-                .partNumber(index)
+                .partNumber(index+1)
                 .build()
         val body = RequestBody.fromInputStream(input, length)
         return s3Client.uploadPart(uploadRequest, body)
@@ -121,7 +121,7 @@ class AwsStorageService : StorageService {
         val eTags = list.parts()
                 .mapIndexed { i, part ->
                     CompletedPart.builder()
-                            .partNumber(i)
+                            .partNumber(i+1)
                             .eTag(part.eTag())
                             .build()
                 }
