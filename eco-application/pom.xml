@@ -118,7 +118,7 @@
             </dependency>
             <dependency>
                 <groupId>com.github.flock-community.flock-eco</groupId>
-                <artifactId>flock-eco-cloud-aws</artifactId>
+                <artifactId>flock-eco-cloud-gcp</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
             <dependency>
@@ -169,5 +169,17 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <profiles>
+        <profile>
+            <id>develop</id>
+            <dependencies>
+                <dependency>
+                    <groupId>com.github.flock-community.flock-eco</groupId>
+                    <artifactId>flock-eco-cloud-stub</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 
 </project>

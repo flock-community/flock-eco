@@ -41,15 +41,7 @@
                 <version>1.4.7</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>Greenwich.RC2</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
         </dependencies>
-
     </dependencyManagement>
 
 </project>

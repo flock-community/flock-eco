@@ -7,6 +7,15 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import java.util.*
 
+fun <T> Page<T>.toResponse(): ResponseEntity<List<T>> = ResponseEntity(
+        this.content.toList(),
+        HttpHeaders().also {
+            it.set("x-total", this.totalElements.toString())
+        },
+        HttpStatus.OK
+)
+
+@Deprecated("Page is already part of the request use Page<T>.toResponse()")
 fun <T> Page<T>.toResponse(page: Pageable): ResponseEntity<List<T>> = ResponseEntity(
         this.content.toList(),
         HttpHeaders().also {

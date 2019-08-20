@@ -11,16 +11,17 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.security.core.userdetails.User as UserDetail
 
 @RestController
-@RequestMapping("/api/users/{id}/reset")
+@RequestMapping("/api/users/{code}/reset")
 class UserSecretResetController(private val userService: UserService) {
 
     @PostMapping()
-    fun reset(@PathVariable id: String): ResponseEntity<User> = userService
-            .read(id)
-            ?.let {
-                userService.resetSecret(it)
-            }
+    fun reset(@PathVariable code: String): ResponseEntity<User> = userService
+            .read(code)
             .toResponse()
+//            ?.let {
+//                userService.resetSecret(it)
+//            }
+//            .toResponse()
 
 }
 

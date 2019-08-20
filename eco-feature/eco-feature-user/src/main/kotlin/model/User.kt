@@ -23,13 +23,9 @@ data class User(
         @Column(unique = true)
         val code: String = UUID.randomUUID().toString(),
 
+        val name: String? = null,
+
         @Column(unique = true)
-        val reference: String,
-
-        @JsonIgnore
-        val secret: String? = null,
-
-        val name: String,
         val email: String,
 
         val enabled: Boolean = true,
@@ -37,24 +33,15 @@ data class User(
         @ElementCollection(fetch = FetchType.EAGER)
         val authorities: Set<String> = setOf(),
 
-        val created: LocalDateTime = LocalDateTime.now(),
-        val updated: LocalDateTime = LocalDateTime.now()
+        @OneToMany
+        val accounts: Set<UserAccount> = setOf(),
 
-) : Serializable
+        val created: LocalDateTime = LocalDateTime.now()
 
-fun User.getPrincipal(): Principal = Principal { this.email }
-fun User.getUserDetails(): UserDetails {
-    val user = this
-     return object : UserDetails {
-        override fun getAuthorities() = user.authorities
-                .map { SimpleGrantedAuthority(it) }
-                .toList()
-        override fun isEnabled() = user.enabled
-        override fun getUsername() = user.reference
-        override fun getPassword() = user.secret
-        override fun isCredentialsNonExpired() = true
-        override fun isAccountNonExpired() = true
-        override fun isAccountNonLocked() = true
-    }
+) : Serializable{
+    fun getPrincipal(): Principal = Principal { code }
 }
+
+
+
 

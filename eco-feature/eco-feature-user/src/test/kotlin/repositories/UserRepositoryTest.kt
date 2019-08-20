@@ -1,6 +1,8 @@
 package community.flock.eco.feature.user.repositories
 
+import community.flock.eco.core.utils.toNullable
 import community.flock.eco.feature.user.model.User
+import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -9,7 +11,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.junit4.SpringRunner
 
 @RunWith(SpringRunner::class)
-@DataJpaTest(showSql=false)
+@DataJpaTest
 @AutoConfigureTestDatabase
 class UserRepositoryTest {
 
@@ -17,12 +19,16 @@ class UserRepositoryTest {
     lateinit var userRepository: UserRepository
 
     @Test
-    fun testsSave() {
+    fun `save user via repository`() {
         userRepository.save(User(
-                name = "member1",
-                email = "member1@gmail.com",
-                reference = "kdjhqif"
+                name = "User Name",
+                email = "user@gmail.com"
         ))
+
+        val res = userRepository.findByEmail("user@gmail.com")
+                .toNullable()
+
+        assertEquals("User Name", res!!.name)
 
     }
 

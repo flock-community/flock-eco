@@ -1,42 +1,34 @@
 package community.flock.eco.feature.user.controllers
 
-import community.flock.eco.core.utils.toNullable
 import community.flock.eco.core.utils.toResponse
+import community.flock.eco.feature.user.forms.UserAccountPasswordForm
 import community.flock.eco.feature.user.model.User
+import community.flock.eco.feature.user.model.UserAccount
+import community.flock.eco.feature.user.model.UserAccountPassword
 import community.flock.eco.feature.user.repositories.UserRepository
+import community.flock.eco.feature.user.services.UserAccountService
 import community.flock.eco.feature.user.services.UserService
-import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
-import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken
-import org.springframework.web.bind.annotation.*
-import java.security.Principal
-import org.springframework.security.core.userdetails.User as UserDetail
+import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/users")
 class UserRegisterController(
+        private val passwordEncoder: PasswordEncoder,
         private val userRepository: UserRepository,
-        private val userService: UserService) {
+        private val userService: UserService,
+        private val userAccountService: UserAccountService) {
 
-    data class UserRegisterForm(
-            val name: String?,
-            val email: String,
-            val password: String
-    )
 
     @PostMapping("/register")
-    fun register(@RequestBody user: UserRegisterForm): ResponseEntity<User> = userService
-            .create(user.toUser())
+    fun register(@RequestBody form: UserAccountPasswordForm): ResponseEntity<UserAccount> = userAccountService
+            .createUserAccountPassword(form)
             .toResponse()
 
-    fun UserRegisterForm.toUser():User = User(
-            name = this.name?: "",
-            email = this.email,
-            reference = this.email,
-            secret = this.password
-    )
 }
 
 

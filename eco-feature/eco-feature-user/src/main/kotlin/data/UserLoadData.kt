@@ -21,9 +21,7 @@ class UserLoadData(
 
     private fun user(int: Int) = User(
             name = "name-$int",
-            reference = "reference-$int",
             email = "email-$int@email-$int.xx",
-            secret = passwordEncoder.encode(int.toString()),
             authorities = userAuthorityService.allAuthorities()
                     .map { it.toName() }
                     .toSet()
