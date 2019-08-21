@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import software.amazon.awssdk.core.sync.RequestBody
+import software.amazon.awssdk.core.sync.ResponseTransformer
 import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.s3.model.*
 import java.io.File
@@ -30,31 +31,40 @@ class AwsStorageService : StorageService {
         }
     }
 
-    override fun uploadFile(bucket: String, key: String, file: File): StorageService.StorageFile {
+    override fun getObject(bucket: String, key: String): ByteArray? {
+        val request = GetObjectRequest.builder()
+                .bucket(bucket)
+                .key(key)
+                .build()
+        return s3Client.getObject(request, ResponseTransformer.toBytes())
+                .asByteArray()
+    }
+
+    override fun putObject(bucket: String, key: String, file: File): StorageService.StorageObject {
         val request: PutObjectRequest = PutObjectRequest.builder()
                 .bucket(bucket)
                 .key(key)
                 .build()
         val body = RequestBody.fromFile(file)
         return s3Client.putObject(request, body)
-                .let { StorageService.StorageFile() }
+                .let { StorageService.StorageObject() }
     }
 
-    override fun uploadFile(bucket: String, key: String, file: MultipartFile): StorageService.StorageFile {
-        return uploadFile(bucket, key, file.inputStream, file.size)
+    override fun putObject(bucket: String, key: String, file: MultipartFile): StorageService.StorageObject {
+        return putObject(bucket, key, file.inputStream, file.size)
     }
 
-    override fun uploadFile(bucket: String, key: String, input: InputStream, length: Long): StorageService.StorageFile {
+    override fun putObject(bucket: String, key: String, input: InputStream, length: Long): StorageService.StorageObject {
         val request: PutObjectRequest = PutObjectRequest.builder()
                 .bucket(bucket)
                 .key(key)
                 .build()
         val body = RequestBody.fromInputStream(input, length)
         return s3Client.putObject(request, body)
-                .let { StorageService.StorageFile() }
+                .let { StorageService.StorageObject() }
     }
 
-    override fun initChunk(bucket: String, key: String, metadata: Map<String, String>?): StorageService.StorageMultipartFile {
+    override fun initChunk(bucket: String, key: String, metadata: Map<String, String>?): StorageService.StorageMultipartObject {
         val request = CreateMultipartUploadRequest.builder()
                 .bucket(bucket)
                 .key(key)
@@ -62,18 +72,18 @@ class AwsStorageService : StorageService {
                 .build()
         return s3Client.createMultipartUpload(request)
                 .let {
-                    StorageService.StorageMultipartFile(
+                    StorageService.StorageMultipartObject(
                             uploadId = it.uploadId())
                 }
     }
 
-    override fun uploadChunk(bucket: String, key: String, uploadId: String, index: Int, file: MultipartFile): StorageService.StorageChuck {
+    override fun putChunk(bucket: String, key: String, uploadId: String, index: Int, file: MultipartFile): StorageService.StorageChuck {
 
         val uploadRequest = UploadPartRequest.builder()
                 .bucket(bucket)
                 .key(key)
                 .uploadId(uploadId)
-                .partNumber(index+1)
+                .partNumber(index + 1)
                 .build()
         val body = RequestBody.fromInputStream(file.inputStream, file.size)
         return s3Client.uploadPart(uploadRequest, body)
@@ -81,13 +91,13 @@ class AwsStorageService : StorageService {
 
     }
 
-    override fun uploadChunk(bucket: String, key: String, uploadId: String, index: Int, file: File): StorageService.StorageChuck {
+    override fun putChunk(bucket: String, key: String, uploadId: String, index: Int, file: File): StorageService.StorageChuck {
 
         val uploadRequest = UploadPartRequest.builder()
                 .bucket(bucket)
                 .key(key)
                 .uploadId(uploadId)
-                .partNumber(index+1)
+                .partNumber(index + 1)
                 .build()
         val body = RequestBody.fromFile(file)
         return s3Client.uploadPart(uploadRequest, body)
@@ -95,13 +105,13 @@ class AwsStorageService : StorageService {
 
     }
 
-    override fun uploadChunk(bucket: String, key: String, uploadId: String, index: Int, length: Long, input: InputStream): StorageService.StorageChuck {
+    override fun putChunk(bucket: String, key: String, uploadId: String, index: Int, length: Long, input: InputStream): StorageService.StorageChuck {
 
         val uploadRequest = UploadPartRequest.builder()
                 .bucket(bucket)
                 .key(key)
                 .uploadId(uploadId)
-                .partNumber(index+1)
+                .partNumber(index + 1)
                 .build()
         val body = RequestBody.fromInputStream(input, length)
         return s3Client.uploadPart(uploadRequest, body)
@@ -109,7 +119,7 @@ class AwsStorageService : StorageService {
 
     }
 
-    override fun completeChunk(bucket: String, key: String, uploadId: String): StorageService.StorageFile {
+    override fun completeChunk(bucket: String, key: String, uploadId: String): StorageService.StorageObject {
         val requestParts = ListPartsRequest.builder()
                 .bucket(bucket)
                 .key(key)
@@ -119,7 +129,7 @@ class AwsStorageService : StorageService {
         val list = s3Client.listParts(requestParts)
 
         val eTags = list.parts()
-                .map {part ->
+                .map { part ->
                     CompletedPart.builder()
                             .partNumber(part.partNumber())
                             .eTag(part.eTag())
@@ -138,7 +148,7 @@ class AwsStorageService : StorageService {
                 .build()
 
         return s3Client.completeMultipartUpload(request)
-                .let { StorageService.StorageFile() }
+                .let { StorageService.StorageObject() }
     }
 
 }
