@@ -30,11 +30,7 @@ class UserAccountService(
 
     fun findUserAccountOauthByReference(reference: String) = userAccountOauthRepository.findByReference(reference)
             .toNullable()
-
-    fun createUserAccountPassword(email: String, name: String?, password: String): UserAccountPassword? = UserAccountPasswordForm(email, name, password)
-            .let(this::createUserAccountPassword)
-
-
+    
     fun createUserAccountPassword(form: UserAccountPasswordForm): UserAccountPassword? = userService.findByEmail(form.email)
             .let {
                 if (it == null) {
@@ -46,10 +42,7 @@ class UserAccountService(
             ?.let { form.internalize(it) }
             ?.let(userAccountRepository::save)
 
-    fun createUserAccountOauth(email: String, name: String?, reference: String, provider: UserAccountOauthProvider): UserAccountOauth? = UserAccountOauthForm(email, name, reference, provider)
-            .let(this::createUserAccountOauth)
-
-    fun createUserAccountOauth(form: UserAccountOauthForm): UserAccountOauth? = userService.findByEmail(form.email)
+    fun createUserAccountOauth(form: UserAccountOauthForm): UserAccountOauth = userService.findByEmail(form.email)
             .let { createUser(form) }
             ?.let { form.internalize(it) }
             ?.let(userAccountRepository::save)

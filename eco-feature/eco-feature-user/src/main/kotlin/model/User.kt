@@ -2,12 +2,7 @@ package community.flock.eco.feature.user.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import community.flock.eco.core.events.EventEntityListeners
-import org.springframework.security.config.core.GrantedAuthorityDefaults
-import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.core.userdetails.UserDetails
 import java.io.Serializable
-import java.security.Principal
 import java.time.LocalDateTime
 import java.util.*
 import javax.persistence.*
@@ -33,15 +28,10 @@ data class User(
         @ElementCollection(fetch = FetchType.EAGER)
         val authorities: Set<String> = setOf(),
 
-        @OneToMany
+        @JsonIgnore
+        @OneToMany(mappedBy = "user", targetEntity = UserAccount::class)
         val accounts: Set<UserAccount> = setOf(),
 
         val created: LocalDateTime = LocalDateTime.now()
 
-) : Serializable{
-    fun getPrincipal(): Principal = Principal { code }
-}
-
-
-
-
+) : Serializable

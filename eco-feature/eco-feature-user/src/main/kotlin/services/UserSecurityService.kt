@@ -1,9 +1,10 @@
 package community.flock.eco.feature.user.services
 
+import community.flock.eco.feature.user.forms.UserAccountOauthForm
 import community.flock.eco.feature.user.model.User
+import community.flock.eco.feature.user.model.UserAccountOauth
+import community.flock.eco.feature.user.model.UserAccountOauthProvider
 import community.flock.eco.feature.user.model.UserAccountPassword
-import community.flock.eco.feature.user.repositories.UserAccountOauthRepository
-import community.flock.eco.feature.user.repositories.UserAccountPasswordRepository
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer
 import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer
@@ -13,14 +14,31 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService
+import org.springframework.security.oauth2.core.oidc.OidcIdToken
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser
 
+
 class UserSecurityService(
-        private val userService: UserService,
         private val userAuthorityService: UserAuthorityService,
         private val userAccountService: UserAccountService,
         private val passwordEncoder: PasswordEncoder
 ) {
+
+    class UserSecurityOauth2(val account: UserAccountOauth, token: OidcIdToken) : DefaultOidcUser(account.user.getGrantedAuthority(), token) {
+        override fun getName(): String {
+            return account.user.code
+        }
+    }
+
+    class UserSecurityPassword(val account: UserAccountPassword): UserDetails {
+        override fun getAuthorities() = account.user.getGrantedAuthority()
+        override fun isEnabled() = account.user.enabled
+        override fun getUsername() = account.user.email
+        override fun getPassword() = account.password
+        override fun isCredentialsNonExpired() = account.resetCode != null
+        override fun isAccountNonExpired() = true
+        override fun isAccountNonLocked() = true
+    }
 
     fun testLogin(http: HttpSecurity): FormLoginConfigurer<HttpSecurity>? {
         return http
@@ -28,7 +46,7 @@ class UserSecurityService(
                     val user = User(email = "$ref@$ref.nl")
                     val password = passwordEncoder.encode(ref)
                     val account = UserAccountPassword(user = user, password = password)
-                    account.getUserDetails()
+                    UserSecurityPassword(account)
                 }
                 .formLogin()
     }
@@ -38,7 +56,7 @@ class UserSecurityService(
         return http
                 .userDetailsService { ref ->
                     userAccountService.findUserAccountPasswordByEmail(ref)
-                            ?.let { it.getUserDetails() }
+                            ?.let { UserSecurityPassword(it) }
                             ?: throw UsernameNotFoundException("User '$ref' not found")
                 }
                 .formLogin()
@@ -55,27 +73,31 @@ class UserSecurityService(
                     val delegate = OidcUserService()
                     val oidcUser = delegate.loadUser(it)
 
+                    val reference = oidcUser.attributes["sub"].toString()
                     val name = oidcUser.attributes["name"].toString()
                     val email = oidcUser.attributes["email"].toString()
 
-                    DefaultOidcUser(allAuthorities(), oidcUser.idToken, oidcUser.userInfo, "email")
+                    val form = UserAccountOauthForm(
+                            email = email,
+                            name = name,
+                            reference = reference,
+                            provider = UserAccountOauthProvider.GOOGLE)
 
+                    if(userAccountService.findUserAccountOauthByReference(reference) == null){
+                        userAccountService.createUserAccountOauth(form)
+                    }
+
+                    userAccountService.findUserAccountOauthByReference(reference)
+                            ?.let { account ->
+                                UserSecurityOauth2(account, oidcUser.idToken) }
                 }
     }
+}
 
-
-    private fun User.getGrantedAuthority(): List<GrantedAuthority> {
-        return this.authorities
-                .map { SimpleGrantedAuthority(it) }
-                .toList()
-    }
-
-    private fun allAuthorities() = userAuthorityService
-            .allAuthorities()
-            .map { it.toName() }
+private fun User.getGrantedAuthority(): List<GrantedAuthority> {
+    return this.authorities
             .map { SimpleGrantedAuthority(it) }
-            .toSet()
-
+            .toList()
 }
 
 

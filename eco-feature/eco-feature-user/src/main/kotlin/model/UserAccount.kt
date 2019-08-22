@@ -1,25 +1,21 @@
 package community.flock.eco.feature.user.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import community.flock.eco.core.events.EventEntityListeners
-import org.springframework.security.config.core.GrantedAuthorityDefaults
-import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.core.userdetails.UserDetails
 import java.io.Serializable
-import java.security.Principal
 import java.time.LocalDateTime
-import java.util.*
 import javax.persistence.*
 
 @Entity
-@EntityListeners(EventEntityListeners::class)
+@Inheritance(
+        strategy = InheritanceType.JOINED
+)
 abstract class UserAccount(
 
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
         val id: Long = 0,
 
+        @JsonIgnore
         @ManyToOne
         open val user: User,
 

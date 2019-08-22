@@ -6,6 +6,7 @@ import community.flock.eco.feature.user.forms.UserForm
 import community.flock.eco.feature.user.model.User
 import community.flock.eco.feature.user.repositories.UserRepository
 import community.flock.eco.feature.user.services.UserService
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -33,12 +34,13 @@ class UserController(
             @RequestParam(defaultValue = "", required = false) search: String,
             page: Pageable): ResponseEntity<List<User>> = userRepository
             .findAllByNameLikeOrEmailLike("%$search%", "%$search%", page)
-            .toResponse(page)
+            .toResponse()
 
     @GetMapping("/{code}")
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
     fun findById(@PathVariable code: String): ResponseEntity<User> = userService
-            .read(code).toResponse()
+            .read(code)
+            .toResponse()
 
     @PostMapping()
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
@@ -49,12 +51,14 @@ class UserController(
     @PutMapping("/{code}")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
     fun update(@PathVariable code: String, @RequestBody form: UserForm): ResponseEntity<User> = userService
-            .update(code, form).toResponse()
+            .update(code, form)
+            .toResponse()
 
     @DeleteMapping("/{code}")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
     fun update(@PathVariable code: String) = userService
             .delete(code)
+            .toResponse()
 
 }
 

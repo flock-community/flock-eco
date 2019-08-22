@@ -46,9 +46,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                 .antMatchers("/_ah/**").permitAll()
         http
                 .cors()
-//        when(environment.activeProfiles) {
-//            environment.activeProfiles.contains("local") -> userSecurityService.testLogin(http)
-//        }
+
         userSecurityService.testLogin(http)
         //userSecurityService.googleLogin(http)
 

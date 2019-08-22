@@ -1,9 +1,6 @@
 package community.flock.eco.feature.user
 
-import community.flock.eco.feature.user.controllers.UserAuthorityController
-import community.flock.eco.feature.user.controllers.UserController
-import community.flock.eco.feature.user.controllers.UserGroupController
-import community.flock.eco.feature.user.controllers.UserStatusController
+import community.flock.eco.feature.user.controllers.*
 import community.flock.eco.feature.user.services.UserAccountService
 import community.flock.eco.feature.user.services.UserAuthorityService
 import community.flock.eco.feature.user.services.UserSecurityService
@@ -24,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 @Import(UserController::class,
         UserGroupController::class,
         UserAuthorityController::class,
+        UserAccountController::class,
         UserStatusController::class,
         UserService::class,
         UserAccountService::class,
