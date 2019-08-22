@@ -1,6 +1,6 @@
 {
   "name": "@flock-eco/core",
-  "version": "1.4.0",
+  "version": "1.4.1-next.2ed0e3a",
   "main": "src/main/react/index.js",
   "module": "src/main/react/index.js"
 }
