@@ -1,9 +1,12 @@
 package community.flock.eco.feature.user.model
 
-import com.fasterxml.jackson.annotation.JsonIgnore
-import java.io.Serializable
+import com.fasterxml.jackson.annotation.JsonManagedReference
+import community.flock.eco.core.model.AbstractIdEntity
 import java.time.LocalDateTime
-import javax.persistence.*
+import javax.persistence.Entity
+import javax.persistence.Inheritance
+import javax.persistence.InheritanceType
+import javax.persistence.ManyToOne
 
 @Entity
 @Inheritance(
@@ -11,14 +14,10 @@ import javax.persistence.*
 )
 abstract class UserAccount(
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Long = 0,
-
-        @JsonIgnore
+        @JsonManagedReference
         @ManyToOne
         open val user: User,
 
         val created: LocalDateTime = LocalDateTime.now()
 
-) : Serializable
+) : AbstractIdEntity<Long>()

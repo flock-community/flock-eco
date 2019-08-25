@@ -48,11 +48,13 @@ class UserService(
 
     private fun UserForm.toUser() = User(
             name = this.name,
-            email = this.email
+            email = this.email,
+            authorities = this.authorities
     )
 
     private fun User.merge(form: UserForm) = this.copy(
             name = form.name,
-            email = form.email
+            email = form.email,
+            authorities = form.authorities
     )
 }

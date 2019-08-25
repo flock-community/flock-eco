@@ -19,7 +19,6 @@ import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser
 
 
 class UserSecurityService(
-        private val userAuthorityService: UserAuthorityService,
         private val userAccountService: UserAccountService,
         private val passwordEncoder: PasswordEncoder
 ) {
@@ -33,9 +32,9 @@ class UserSecurityService(
     class UserSecurityPassword(val account: UserAccountPassword): UserDetails {
         override fun getAuthorities() = account.user.getGrantedAuthority()
         override fun isEnabled() = account.user.enabled
-        override fun getUsername() = account.user.email
+        override fun getUsername() = account.user.code
         override fun getPassword() = account.password
-        override fun isCredentialsNonExpired() = account.resetCode != null
+        override fun isCredentialsNonExpired() = true
         override fun isAccountNonExpired() = true
         override fun isAccountNonLocked() = true
     }

@@ -8,7 +8,6 @@ import community.flock.eco.feature.user.forms.UserAccountPasswordForm
 import community.flock.eco.feature.user.forms.UserForm
 import community.flock.eco.feature.user.model.User
 import community.flock.eco.feature.user.model.UserAccountOauth
-import community.flock.eco.feature.user.model.UserAccountOauthProvider
 import community.flock.eco.feature.user.model.UserAccountPassword
 import community.flock.eco.feature.user.repositories.UserAccountOauthRepository
 import community.flock.eco.feature.user.repositories.UserAccountPasswordRepository
@@ -30,7 +29,7 @@ class UserAccountService(
 
     fun findUserAccountOauthByReference(reference: String) = userAccountOauthRepository.findByReference(reference)
             .toNullable()
-    
+
     fun createUserAccountPassword(form: UserAccountPasswordForm): UserAccountPassword? = userService.findByEmail(form.email)
             .let {
                 if (it == null) {
@@ -49,7 +48,8 @@ class UserAccountService(
 
     private fun createUser(form: UserAccountForm) = UserForm(
             email = form.email,
-            name = form.name)
+            name = form.name,
+            authorities = form.authorities)
             .let(userService::create)
 
     private fun UserAccountPasswordForm.internalize(user: User) = this
