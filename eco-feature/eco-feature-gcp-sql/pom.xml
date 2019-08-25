@@ -3,7 +3,7 @@
     <parent>
         <groupId>com.github.flock-community.flock-eco</groupId>
         <artifactId>flock-eco-feature-parent</artifactId>
-        <version>1.4.1-2ed0e3a</version>
+        <version>1.4.1-fa25efc</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
