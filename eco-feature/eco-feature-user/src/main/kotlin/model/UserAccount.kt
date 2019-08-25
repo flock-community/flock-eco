@@ -14,10 +14,12 @@ import javax.persistence.ManyToOne
 )
 abstract class UserAccount(
 
+        override val id: Long = 0,
+
         @JsonManagedReference
         @ManyToOne
         open val user: User,
 
         val created: LocalDateTime = LocalDateTime.now()
 
-) : AbstractIdEntity<Long>()
+) : AbstractIdEntity(id)

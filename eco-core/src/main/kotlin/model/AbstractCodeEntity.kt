@@ -6,9 +6,13 @@ import javax.persistence.MappedSuperclass
 
 @MappedSuperclass
 abstract class AbstractCodeEntity(
+
+        override val id:Long = 0,
+
         @Column(unique = true)
-        val code: String = UUID.randomUUID().toString()
-): AbstractIdEntity() {
+        open val code: String = UUID.randomUUID().toString()
+
+): AbstractIdEntity(id) {
 
     override fun hashCode(): Int {
         return Objects.hashCode(code)

@@ -13,6 +13,8 @@ import javax.persistence.ManyToMany
 @EntityListeners(EventEntityListeners::class)
 data class UserGroup(
 
+        override val id: Long = 0,
+
         @Column(unique = true)
         val code: String = UUID.randomUUID().toString(),
 
@@ -23,7 +25,7 @@ data class UserGroup(
 
         val created: LocalDateTime = LocalDateTime.now()
 
-) : AbstractIdEntity<Long>(){
+) : AbstractIdEntity(id){
         override fun equals(other: Any?) = super.equals(other)
         override fun hashCode() = super.hashCode()
         override fun toString() = super.toString()

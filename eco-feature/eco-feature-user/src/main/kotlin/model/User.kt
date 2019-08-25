@@ -30,7 +30,7 @@ data class User(
 
         val created: LocalDateTime = LocalDateTime.now()
 
-) : AbstractIdEntity<Long>(){
+) : AbstractIdEntity(){
         override fun equals(other: Any?) = super.equals(other)
         override fun hashCode() = super.hashCode()
         override fun toString() = super.toString()

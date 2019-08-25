@@ -9,7 +9,7 @@ import javax.persistence.MappedSuperclass
 abstract class AbstractIdEntity(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Long = 0
+        open val id: Long = 0
 ) {
 
     override fun hashCode(): Int {
