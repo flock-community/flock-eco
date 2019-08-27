@@ -67,8 +67,6 @@ function UserRegisterForm({initialValues, onSubmit}) {
                 color="primary">Submit</Button>
             </Grid>
           </Grid>
-
-
         </Form>
       </Formik>
     </>)
