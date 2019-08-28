@@ -17,14 +17,11 @@ abstract class AbstractIdEntity(
     }
 
     override fun equals(obj: Any?): Boolean {
-        if (this === obj)
-            return true
-        if (obj == null)
-            return false
-        if (javaClass != obj.javaClass)
-            return false
+        if (this === obj) return true
+        if (obj == null) return false
+        if (javaClass != obj.javaClass) return false
         val other = obj as AbstractIdEntity
-        return id != null && id.equals(other.id)
+        return id != 0L && id == other.id
     }
 
     override fun toString() = "Entity of type ${this.javaClass.name} with id: $id"
