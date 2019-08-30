@@ -24,7 +24,7 @@ class UserAccountService(
         private val userAccountPasswordRepository: UserAccountPasswordRepository
 ) {
 
-    fun findUserAccountPasswordByEmail(email: String) = userAccountPasswordRepository.findByUserEmail(email)
+    fun findUserAccountPasswordByEmail(email: String) = userAccountPasswordRepository.findByUserEmailContainingIgnoreCase(email)
             .toNullable()
 
     fun findUserAccountOauthByReference(reference: String) = userAccountOauthRepository.findByReference(reference)

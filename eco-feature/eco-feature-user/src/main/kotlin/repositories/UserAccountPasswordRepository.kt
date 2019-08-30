@@ -13,5 +13,5 @@ import java.util.*
 @Service
 interface UserAccountPasswordRepository : PagingAndSortingRepository<UserAccountPassword, Long>{
 
-    fun findByUserEmail(email: String): Optional<UserAccountPassword>
+    fun findByUserEmailContainingIgnoreCase(email: String): Optional<UserAccountPassword>
 }
