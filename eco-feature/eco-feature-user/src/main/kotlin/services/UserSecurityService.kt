@@ -29,7 +29,7 @@ class UserSecurityService(
         }
     }
 
-    class UserSecurityPassword(val account: UserAccountPassword): UserDetails {
+    class UserSecurityPassword(val account: UserAccountPassword) : UserDetails {
         override fun getAuthorities() = account.user.getGrantedAuthority()
         override fun isEnabled() = account.user.enabled
         override fun getUsername() = account.user.code
@@ -42,7 +42,7 @@ class UserSecurityService(
     fun testLogin(http: HttpSecurity): FormLoginConfigurer<HttpSecurity>? {
         return http
                 .userDetailsService { ref ->
-                    val user = User(email = "$ref@$ref.nl")
+                    val user = User(email = ref)
                     val password = passwordEncoder.encode(ref)
                     val account = UserAccountPassword(user = user, password = password)
                     UserSecurityPassword(account)
@@ -82,13 +82,13 @@ class UserSecurityService(
                             reference = reference,
                             provider = UserAccountOauthProvider.GOOGLE)
 
-                    if(userAccountService.findUserAccountOauthByReference(reference) == null){
+                    if (userAccountService.findUserAccountOauthByReference(reference) == null) {
                         userAccountService.createUserAccountOauth(form)
                     }
 
                     userAccountService.findUserAccountOauthByReference(reference)
-                            ?.let { account ->
-                                UserSecurityOauth2(account, oidcUser.idToken) }
+                            ?.let {  if(it.user.authorities.isNotEmpty()) it else null }
+                            ?.let { UserSecurityOauth2(it, oidcUser.idToken) }
                 }
     }
 }

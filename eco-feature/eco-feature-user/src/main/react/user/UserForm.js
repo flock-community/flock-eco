@@ -59,8 +59,6 @@ export function UserForm({value, onSummit, ...props}) {
       .required('Name is required'),
     email: Yup.string('Enter email')
       .email('Enter a valid email'),
-    reference: Yup.string('Enter reference')
-      .required('Reference is required'),
   })
 
   return authorities && (
