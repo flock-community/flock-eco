@@ -1,5 +1,6 @@
 {
   "packages": [
+    "eco-application",
     "eco-application/*",
     "eco-core",
     "eco-feature/*",

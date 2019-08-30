@@ -1,14 +1,6 @@
 {
   "name": "@flock-eco/application",
   "version": "1.4.7",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "webpack-dev-server --mode development --open",
-    "build": "webpack --mode production ./src/main/react"
-  },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@material-ui/core": "^4.1.1",
     "@material-ui/icons": "^4.2.0",
