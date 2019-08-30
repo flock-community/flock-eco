@@ -177,7 +177,6 @@ class UserAutocomplete extends React.Component {
   }
 
   handleChange = value => {
-    console.log("handleChange", value)
     const {onChange} = this.props;
     this.setState({ value }, () => onChange && onChange(value));
   };

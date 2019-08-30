@@ -21,8 +21,7 @@ export function UserForm({value, onSummit, ...props}) {
   const init = {
     name: '',
     email: '',
-    reference: '',
-    authorities: [true, true, true, true],
+    authorities: [],
   }
 
   const [state, setState] = useState(init)
@@ -39,8 +38,6 @@ export function UserForm({value, onSummit, ...props}) {
 
   useEffect(() => {
     if(value &&  authorities){
-      console.log(JSON.stringify(value))
-      console.log(JSON.stringify(authorities))
       setState({
         ...init,
         ...value,
@@ -81,15 +78,6 @@ export function UserForm({value, onSummit, ...props}) {
 
           <Grid item xs={12}>
             <Field fullWidth name="email" label="Email" component={TextField}/>
-          </Grid>
-
-          <Grid item xs={12}>
-            <Field
-              fullWidth
-              name="reference"
-              label="Reference"
-              component={TextField}
-            />
           </Grid>
 
           <Grid item xs={12}>

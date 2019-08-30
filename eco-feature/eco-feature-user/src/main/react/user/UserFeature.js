@@ -52,7 +52,6 @@ export function UserFeature() {
   }
 
   const handleComplete = value => {
-    console.log(listRef)
     setDialogState({
       open: false,
       code: null
