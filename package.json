@@ -16,8 +16,6 @@
     "@material-ui/styles": "^4.1.1",
     "@storybook/react": "^5.1.4",
     "babel-polyfill": "^6.26.0",
-    "classnames": "^2.2.6",
-    "downshift": "^3.2.10",
     "formik": "^1.5.7",
     "formik-material-ui": "0.0.20",
     "react": "^16.8.6",

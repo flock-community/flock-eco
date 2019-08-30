@@ -1,0 +1,10 @@
+type User {
+    name:String
+    email:String
+    account:[Account]
+}
+
+type Account {
+    id:Int
+    user:User
+}
