@@ -8,11 +8,13 @@ import javax.persistence.EntityListeners
 @EntityListeners(EventEntityListeners::class)
 data class UserAccountKey(
 
+        override val id: Long = 0,
+
         override val user: User,
 
         val key: String
 
-) : UserAccount(user = user){
+) : UserAccount(id, user){
         override fun equals(other: Any?) = super.equals(other)
         override fun hashCode() = super.hashCode()
         override fun toString() = super.toString()

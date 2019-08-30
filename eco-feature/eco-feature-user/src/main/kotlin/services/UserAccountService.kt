@@ -41,12 +41,13 @@ class UserAccountService(
             ?.let { form.internalize(it) }
             ?.let(userAccountRepository::save)
 
-    fun createUserAccountOauth(form: UserAccountOauthForm): UserAccountOauth = userService.findByEmail(form.email)
-            .let { createUser(form) }
-            ?.let { form.internalize(it) }
-            ?.let(userAccountRepository::save)
+    fun createUserAccountOauth(form: UserAccountOauthForm): UserAccountOauth {
+        return (userService.findByEmail(form.email) ?: createUser(form))
+                .let { form.internalize(it) }
+                .let(userAccountRepository::save)
+    }
 
-    private fun createUser(form: UserAccountForm) = UserForm(
+    private fun createUser(form: UserAccountForm): User = UserForm(
             email = form.email,
             name = form.name,
             authorities = form.authorities)

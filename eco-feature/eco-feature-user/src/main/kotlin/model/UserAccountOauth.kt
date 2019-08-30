@@ -8,12 +8,14 @@ import javax.persistence.EntityListeners
 @EntityListeners(EventEntityListeners::class)
 data class UserAccountOauth(
 
+        override val id: Long = 0,
+
         override val user: User,
 
         val provider: UserAccountOauthProvider,
         val reference: String
 
-) : UserAccount(user = user){
+) : UserAccount(id, user){
         override fun equals(other: Any?) = super.equals(other)
         override fun hashCode() = super.hashCode()
         override fun toString() = super.toString()

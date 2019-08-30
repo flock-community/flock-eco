@@ -11,6 +11,8 @@ import javax.persistence.*
 @EntityListeners(EventEntityListeners::class)
 data class User(
 
+        override val id: Long = 0,
+
         @Column(unique = true)
         val code: String = UUID.randomUUID().toString(),
 
@@ -30,7 +32,7 @@ data class User(
 
         val created: LocalDateTime = LocalDateTime.now()
 
-) : AbstractIdEntity(){
+) : AbstractIdEntity(id){
         override fun equals(other: Any?) = super.equals(other)
         override fun hashCode() = super.hashCode()
         override fun toString() = super.toString()
