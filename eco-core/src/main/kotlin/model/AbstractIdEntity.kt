@@ -1,5 +1,6 @@
 package community.flock.eco.core.model
 
+import java.io.Serializable
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
@@ -10,7 +11,7 @@ abstract class AbstractIdEntity(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
         open val id: Long = 0
-) {
+):Serializable {
 
     override fun hashCode(): Int {
         return 13
