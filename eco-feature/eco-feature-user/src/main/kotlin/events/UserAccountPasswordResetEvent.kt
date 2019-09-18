@@ -1,5 +1,5 @@
 package community.flock.eco.feature.user.events
 
-import community.flock.eco.feature.user.model.UserAccount
+import community.flock.eco.feature.user.model.UserAccountPassword
 
-class UserAccountPasswordResetEvent(userAccount: UserAccount) : UserAccountEvent(userAccount)
+class UserAccountPasswordResetEvent(userAccountPassword: UserAccountPassword) : UserAccountEvent(userAccountPassword)

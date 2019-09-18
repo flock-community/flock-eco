@@ -2,7 +2,6 @@ package community.flock.eco.feature.user.services
 
 import community.flock.eco.core.utils.toNullable
 import community.flock.eco.feature.user.events.UserAccountPasswordResetEvent
-import community.flock.eco.feature.user.events.UserAccountPasswordResetRequestEvent
 import community.flock.eco.feature.user.events.UserAccountResetCodeGeneratedEvent
 import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForResetCodeException
 import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUser
@@ -51,16 +50,12 @@ class UserAccountService(
             .let(userAccountRepository::save)
 
     fun generateResetCodeForUserCode(code: String): String = findUserAccountByUserCode(code)
-            ?.copy(resetCode = UUID.randomUUID().toString())
-            ?.let(userAccountRepository::save)
-            ?.also { applicationEventPublisher.publishEvent(UserAccountResetCodeGeneratedEvent(it)) }
+            ?.generateResetCodeAndSave()
             ?.run { resetCode!! }
             ?: throw UserAccountNotFoundForUser(code)
 
     fun requestPasswordReset(email: String) = findUserAccountPasswordByEmail(email)
-            ?.copy(resetCode = UUID.randomUUID().toString())
-            ?.let(userAccountRepository::save)
-            ?.also { applicationEventPublisher.publishEvent(UserAccountPasswordResetRequestEvent(it)) }
+            ?.generateResetCodeAndSave()
             .let { Unit }
 
     fun resetPasswordWithResetCode(resetCode: String, password: String): UserAccountPassword = findUserAccountByResetCode(resetCode)
@@ -68,6 +63,10 @@ class UserAccountService(
             ?.let(userAccountRepository::save)
             ?.also { applicationEventPublisher.publishEvent(UserAccountPasswordResetEvent(it)) }
             ?: throw UserAccountNotFoundForResetCodeException(resetCode)
+
+    private fun UserAccountPassword.generateResetCodeAndSave() = copy(resetCode = UUID.randomUUID().toString())
+            .let(userAccountRepository::save)
+            .also { applicationEventPublisher.publishEvent(UserAccountResetCodeGeneratedEvent(it)) }
 
     private fun String.encode() = passwordEncoder.encode(this)
 
