@@ -1,17 +1,13 @@
 package community.flock.eco.feature.user.services
 
-import community.flock.eco.core.services.MailService
 import community.flock.eco.core.utils.toNullable
-import community.flock.eco.feature.user.UserProperties
 import community.flock.eco.feature.user.events.CreateUserEvent
 import community.flock.eco.feature.user.events.DeleteUserEvent
 import community.flock.eco.feature.user.events.UpdateUserEvent
 import community.flock.eco.feature.user.forms.UserForm
 import community.flock.eco.feature.user.model.User
 import community.flock.eco.feature.user.repositories.UserRepository
-import org.h2.command.ddl.CreateUser
 import org.springframework.context.ApplicationEventPublisher
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 
 

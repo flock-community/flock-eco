@@ -1,6 +1,8 @@
 package community.flock.eco.feature.user.services
 
 import community.flock.eco.core.utils.toNullable
+import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForResetCodeException
+import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUser
 import community.flock.eco.feature.user.exceptions.UserAccountWithEmailExistsException
 import community.flock.eco.feature.user.forms.UserAccountForm
 import community.flock.eco.feature.user.forms.UserAccountOauthForm
@@ -14,6 +16,7 @@ import community.flock.eco.feature.user.repositories.UserAccountPasswordReposito
 import community.flock.eco.feature.user.repositories.UserAccountRepository
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
+import java.util.*
 
 @Component
 class UserAccountService(
@@ -27,46 +30,53 @@ class UserAccountService(
     fun findUserAccountPasswordByEmail(email: String) = userAccountPasswordRepository.findByUserEmailContainingIgnoreCase(email)
             .toNullable()
 
+    fun findUserAccountByUserCode(code: String) = userAccountPasswordRepository.findByUserCode(code)
+
+    fun findUserAccountByResetCode(resetCode: String) = userAccountPasswordRepository.findByResetCode(resetCode)
+
     fun findUserAccountOauthByReference(reference: String) = userAccountOauthRepository.findByReference(reference)
             .toNullable()
 
-    fun createUserAccountPassword(form: UserAccountPasswordForm): UserAccountPassword? = userService.findByEmail(form.email)
+    fun createUserAccountPassword(form: UserAccountPasswordForm): UserAccountPassword = userService.findByEmail(form.email)
             .let {
-                if (it == null) {
-                    createUser(form)
-                } else {
-                    throw UserAccountWithEmailExistsException(it)
-                }
+                if (it == null) form.internalize()
+                else throw UserAccountWithEmailExistsException(it)
             }
-            ?.let { form.internalize(it) }
-            ?.let(userAccountRepository::save)
+            .let(userAccountRepository::save)
 
-    fun createUserAccountOauth(form: UserAccountOauthForm): UserAccountOauth {
-        return (userService.findByEmail(form.email) ?: createUser(form))
-                .let { form.internalize(it) }
-                .let(userAccountRepository::save)
-    }
-
-    private fun createUser(form: UserAccountForm): User = UserForm(
-            email = form.email,
-            name = form.name,
-            authorities = form.authorities)
-            .let(userService::create)
-
-    private fun UserAccountPasswordForm.internalize(user: User) = this
+    fun createUserAccountOauth(form: UserAccountOauthForm): UserAccountOauth = userService.findByEmail(form.email)
             .let {
-                UserAccountPassword(
-                        user = user,
-                        password = passwordEncoder.encode(password)
-                )
+                if (it == null) form.internalize()
+                else throw UserAccountWithEmailExistsException(it)
             }
+            .let(userAccountRepository::save)
 
-    private fun UserAccountOauthForm.internalize(user: User) = this
-            .let {
-                UserAccountOauth(
-                        user = user,
-                        provider = it.provider,
-                        reference = it.reference
-                )
-            }
+    fun generateResetCodeForUserCode(code: String): String = findUserAccountByUserCode(code)
+            .map { it.copy(resetCode = UUID.randomUUID().toString()) }
+            .map { userAccountRepository.save(it) }
+            .map { it.resetCode!! }
+            .orElseThrow { UserAccountNotFoundForUser(code) }
+
+    fun resetPasswordWithResetCode(resetCode: String, password: String): UserAccountPassword = findUserAccountByResetCode(resetCode)
+            .map { it.copy(password = password, resetCode = null) }
+            .map { userAccountRepository.save(it) }
+            .orElseThrow { UserAccountNotFoundForResetCodeException(resetCode) }
+
+    private fun UserAccountPasswordForm.internalize() = UserAccountPassword(
+            user = createUser(),
+            password = passwordEncoder.encode(password)
+    )
+
+    private fun UserAccountOauthForm.internalize() = UserAccountOauth(
+            user = createUser(),
+            provider = provider,
+            reference = reference
+    )
+
+    private fun UserAccountForm.createUser(): User = userService.create(UserForm(
+            email = email,
+            name = name,
+            authorities = authorities
+    ))
+
 }

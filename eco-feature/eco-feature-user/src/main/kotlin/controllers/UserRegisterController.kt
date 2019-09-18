@@ -2,9 +2,7 @@ package community.flock.eco.feature.user.controllers
 
 import community.flock.eco.core.utils.toResponse
 import community.flock.eco.feature.user.forms.UserAccountPasswordForm
-import community.flock.eco.feature.user.model.User
 import community.flock.eco.feature.user.model.UserAccount
-import community.flock.eco.feature.user.model.UserAccountPassword
 import community.flock.eco.feature.user.repositories.UserRepository
 import community.flock.eco.feature.user.services.UserAccountService
 import community.flock.eco.feature.user.services.UserService
