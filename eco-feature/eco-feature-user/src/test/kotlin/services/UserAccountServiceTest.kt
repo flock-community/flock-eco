@@ -24,10 +24,10 @@ import kotlin.test.assertTrue
 class UserAccountServiceTest {
 
     @Autowired
-    lateinit var userAccountService: UserAccountService
+    private lateinit var userAccountService: UserAccountService
 
     @Autowired
-    lateinit var passwordEncoder: PasswordEncoder
+    private lateinit var passwordEncoder: PasswordEncoder
 
     @Test
     fun `register user with password`() {
@@ -90,8 +90,8 @@ class UserAccountServiceTest {
                 email = "willem.veelenturf@gmail.com",
                 password = "123456"
         )
-        val userCode = userAccountService.createUserAccountPassword(form.copy()).user.code
-        val resetCode = userAccountService.generateResetCodeForUserCode(userCode)
+        val user = userAccountService.createUserAccountPassword(form.copy()).user
+        val resetCode = userAccountService.generateResetCodeForUserCode(user.code)
         val account = userAccountService.resetPasswordWithResetCode(resetCode, "password")
         assertNull(account.resetCode)
         assertEquals("password", account.password)

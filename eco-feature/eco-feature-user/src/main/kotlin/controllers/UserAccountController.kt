@@ -5,6 +5,7 @@ import community.flock.eco.feature.user.model.UserAccount
 import community.flock.eco.feature.user.repositories.UserAccountRepository
 import community.flock.eco.feature.user.services.UserAccountService
 import org.springframework.data.domain.Pageable
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
@@ -27,7 +28,8 @@ class UserAccountController(
 
     @PutMapping("/reset")
     fun resetPasswordWithResetCode(@RequestBody info: ResetInfo) = userAccountService
-            .resetPasswordWithResetCode(info.resetCode, info.password).toResponse()
+            .resetPasswordWithResetCode(info.resetCode, info.password)
+            .let { ResponseEntity<Unit>(HttpStatus.NO_CONTENT) }
 
     data class ResetInfo(
             val resetCode: String,
