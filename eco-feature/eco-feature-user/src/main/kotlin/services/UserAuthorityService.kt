@@ -2,9 +2,9 @@ package community.flock.eco.feature.user.services;
 
 import community.flock.eco.core.authorities.Authority
 import org.reflections.Reflections
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service
 
-@Component
+@Service
 class UserAuthorityService {
 
     private final val reflections = Reflections("community.flock.eco")

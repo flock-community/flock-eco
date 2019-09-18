@@ -5,22 +5,21 @@ import community.flock.eco.core.utils.toResponse
 import community.flock.eco.feature.user.forms.UserForm
 import community.flock.eco.feature.user.model.User
 import community.flock.eco.feature.user.repositories.UserRepository
+import community.flock.eco.feature.user.services.UserAccountService
 import community.flock.eco.feature.user.services.UserService
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
-import org.springframework.security.core.userdetails.User as UserDetail
 
 @RestController
 @RequestMapping("/api/users")
 class UserController(
         private val userRepository: UserRepository,
-        private val userService: UserService) {
+        private val userService: UserService,
+        private val userAccountService: UserAccountService
+) {
 
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
@@ -28,7 +27,7 @@ class UserController(
             ?.let { userRepository.findByCode(it.name).toNullable() }
             .toResponse()
 
-    @GetMapping()
+    @GetMapping
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
     fun findAll(
             @RequestParam(defaultValue = "", required = false) search: String,
@@ -36,16 +35,16 @@ class UserController(
             .findAllByNameLikeOrEmailLike("%$search%", "%$search%", page)
             .toResponse()
 
+    @PostMapping
+    @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
+    fun create(@RequestBody form: UserForm): ResponseEntity<User> = userService
+            .create(form)
+            .toResponse()
+
     @GetMapping("/{code}")
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
     fun findById(@PathVariable code: String): ResponseEntity<User> = userService
             .read(code)
-            .toResponse()
-
-    @PostMapping()
-    @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
-    fun create(@RequestBody form: UserForm): ResponseEntity<User> = userService
-            .create(form)
             .toResponse()
 
     @PutMapping("/{code}")
@@ -59,6 +58,10 @@ class UserController(
     fun update(@PathVariable code: String) = userService
             .delete(code)
             .toResponse()
+
+    @PutMapping("/{code}/reset")
+    @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
+    fun generateResetCodeForUserCode(@PathVariable code: String) = userAccountService.generateResetCodeForUserCode(code).toResponse()
 
 }
 

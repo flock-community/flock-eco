@@ -1,17 +1,17 @@
 package community.flock.eco.feature.user.repositories
 
-import community.flock.eco.feature.user.model.User
-import community.flock.eco.feature.user.model.UserAccount
 import community.flock.eco.feature.user.model.UserAccountPassword
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.PagingAndSortingRepository
-import org.springframework.stereotype.Service
-
+import org.springframework.stereotype.Repository
 import java.util.*
 
-@Service
-interface UserAccountPasswordRepository : PagingAndSortingRepository<UserAccountPassword, Long>{
+@Repository
+interface UserAccountPasswordRepository : PagingAndSortingRepository<UserAccountPassword, Long> {
 
     fun findByUserEmailContainingIgnoreCase(email: String): Optional<UserAccountPassword>
+
+    fun findByUserCode(code: String): Optional<UserAccountPassword>
+
+    fun findByResetCode(code: String): Optional<UserAccountPassword>
+
 }
