@@ -1,6 +1,5 @@
 package community.flock.eco.feature.user.services
 
-import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForResetCodeException
 import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUser
 import community.flock.eco.feature.user.exceptions.UserAccountWithEmailExistsException
 import community.flock.eco.feature.user.forms.UserAccountOauthForm
@@ -74,18 +73,20 @@ class UserAccountServiceTest {
         userAccountService.generateResetCodeForUserCode("doesn't exist")
     }
 
-    @Test(expected = UserAccountNotFoundForResetCodeException::class)
+    @Test
     fun `reset password with wrong reset code`() {
-        userAccountService.resetPasswordWithResetCode("wrong!", "password")
+        assertNull(userAccountService.resetPasswordWithResetCode("wrong!", "password"))
     }
 
     @Test
     fun `generate and reset password with reset code`() {
         val userAccount = userAccountService.createUserAccountPassword(passwordForm.copy())
         assertNull(userAccount.resetCode)
-        val resetCode = userAccountService.generateResetCodeForUserCode(userAccount.user.code)
-        assertNotNull(userAccountService.findUserAccountByResetCode(resetCode)?.resetCode)
-        val account = userAccountService.resetPasswordWithResetCode(resetCode, "password")
+        userAccountService.generateResetCodeForUserCode(userAccount.user.code)
+        val resetCode = userAccountService.findUserAccountPasswordByEmail(passwordForm.email)?.resetCode
+        assertNotNull(resetCode)
+        userAccountService.resetPasswordWithResetCode(resetCode!!, "password")
+        val account = userAccountService.findUserAccountPasswordByEmail(passwordForm.email)!!
         assertNull(account.resetCode)
         assertTrue(passwordEncoder.matches("password", account.password))
     }
