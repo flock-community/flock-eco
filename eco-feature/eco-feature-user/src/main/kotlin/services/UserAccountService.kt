@@ -2,6 +2,7 @@ package community.flock.eco.feature.user.services
 
 import community.flock.eco.core.utils.toNullable
 import community.flock.eco.feature.user.events.UserAccountPasswordResetEvent
+import community.flock.eco.feature.user.events.UserAccountPasswordResetRequestEvent
 import community.flock.eco.feature.user.events.UserAccountResetCodeGeneratedEvent
 import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForResetCodeException
 import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUser
@@ -56,15 +57,21 @@ class UserAccountService(
             ?.run { resetCode!! }
             ?: throw UserAccountNotFoundForUser(code)
 
+    fun requestPasswordReset(email: String) = findUserAccountPasswordByEmail(email)
+            ?.also { applicationEventPublisher.publishEvent(UserAccountPasswordResetRequestEvent(it)) }
+            .let { Unit }
+
     fun resetPasswordWithResetCode(resetCode: String, password: String): UserAccountPassword = findUserAccountByResetCode(resetCode)
-            ?.copy(password = password, resetCode = null)
+            ?.copy(password = password.encode(), resetCode = null)
             ?.let(userAccountRepository::save)
             ?.also { applicationEventPublisher.publishEvent(UserAccountPasswordResetEvent(it)) }
             ?: throw UserAccountNotFoundForResetCodeException(resetCode)
 
+    private fun String.encode() = passwordEncoder.encode(this)
+
     private fun UserAccountPasswordForm.createUserAndInternalize() = UserAccountPassword(
             user = createUser(),
-            password = passwordEncoder.encode(password)
+            password = password.encode()
     )
 
     private fun UserAccountOauthForm.createUserAndInternalize() = UserAccountOauth(

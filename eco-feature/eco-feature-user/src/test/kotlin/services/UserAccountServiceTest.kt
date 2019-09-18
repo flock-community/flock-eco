@@ -94,7 +94,7 @@ class UserAccountServiceTest {
         val resetCode = userAccountService.generateResetCodeForUserCode(user.code)
         val account = userAccountService.resetPasswordWithResetCode(resetCode, "password")
         assertNull(account.resetCode)
-        assertEquals("password", account.password)
+        assertTrue(passwordEncoder.matches("password", account.password))
     }
 
 }

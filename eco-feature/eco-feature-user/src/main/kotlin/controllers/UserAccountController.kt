@@ -25,11 +25,17 @@ class UserAccountController(
             .findAll()
             .toResponse()
 
+    @PostMapping("/request-reset")
+    fun requestPasswordReset(@RequestBody requestReset: RequestReset) = userAccountService.requestPasswordReset(requestReset.email).toResponse()
 
     @PutMapping("/reset")
     fun resetPasswordWithResetCode(@RequestBody info: ResetInfo) = userAccountService
             .resetPasswordWithResetCode(info.resetCode, info.password)
             .let { ResponseEntity<Unit>(HttpStatus.NO_CONTENT) }
+
+    data class RequestReset(
+            val email: String
+    )
 
     data class ResetInfo(
             val resetCode: String,
