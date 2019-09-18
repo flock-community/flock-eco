@@ -8,10 +8,10 @@ import community.flock.eco.feature.user.forms.UserForm
 import community.flock.eco.feature.user.model.User
 import community.flock.eco.feature.user.repositories.UserRepository
 import org.springframework.context.ApplicationEventPublisher
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 
 
-@Component
+@Service
 class UserService(
         val userRepository: UserRepository,
         val applicationEventPublisher: ApplicationEventPublisher

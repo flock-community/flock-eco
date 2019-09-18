@@ -15,10 +15,10 @@ import community.flock.eco.feature.user.repositories.UserAccountOauthRepository
 import community.flock.eco.feature.user.repositories.UserAccountPasswordRepository
 import community.flock.eco.feature.user.repositories.UserAccountRepository
 import org.springframework.security.crypto.password.PasswordEncoder
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 import java.util.*
 
-@Component
+@Service
 class UserAccountService(
         private val userService: UserService,
         private val passwordEncoder: PasswordEncoder,
