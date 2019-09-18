@@ -58,6 +58,8 @@ class UserAccountService(
             ?: throw UserAccountNotFoundForUser(code)
 
     fun requestPasswordReset(email: String) = findUserAccountPasswordByEmail(email)
+            ?.copy(resetCode = UUID.randomUUID().toString())
+            ?.let(userAccountRepository::save)
             ?.also { applicationEventPublisher.publishEvent(UserAccountPasswordResetRequestEvent(it)) }
             .let { Unit }
 
