@@ -39,7 +39,7 @@ export function updateUser(code, item) {
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
     },
-    body: JSON.stringify(code),
+    body: JSON.stringify(item),
   }
   return fetch(`/api/users/${code}`, opts).then(res => res.json())
 }

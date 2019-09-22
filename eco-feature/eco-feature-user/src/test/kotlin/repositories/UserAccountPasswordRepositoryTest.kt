@@ -32,7 +32,7 @@ class UserAccountPasswordRepositoryTest {
 
         val account = UserAccountPassword(
                 user= user,
-                        password = "123456"
+                        secret = "123456"
         )
         userAccountPasswordRepository.save(account)
 

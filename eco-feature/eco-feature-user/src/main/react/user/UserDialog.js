@@ -8,21 +8,44 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import {USER_FORM_ID, UserForm} from './UserForm'
 import UserClient from './UserClient'
-import * as Yup from 'yup'
+import IconButton from '@material-ui/core/IconButton'
+import CloseIcon from '@material-ui/icons/Close'
+import Typography from '@material-ui/core/Typography'
+import makeStyles from '@material-ui/core/styles/makeStyles'
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+}))
 
 export function UserDialog({open, code, onComplete}) {
+
   const [state, setState] = useState(null)
+  const [authorities, setAuthorities] = useState(null)
+
+  const classes = useStyles()
 
   useEffect(() => {
-    if(code !== null){
-      UserClient.findUserByCode(code).then(res =>
-        setState(res),
-      )
-    }else{
+    if (code !== null) {
+      UserClient.findUserByCode(code).then(res => setState(res))
+    } else {
       setState(null)
     }
-
   }, [code])
+
+  useEffect(() => {
+      UserClient.findAllAuthorities()
+        .then(setAuthorities)
+
+  }, [])
 
   const handleDelete = ev => {
     UserClient.deleteUser(state.code)
@@ -37,26 +60,43 @@ export function UserDialog({open, code, onComplete}) {
   }
 
   const handleSubmit = value => {
-    if (value.code) {
-      UserClient.updateUser(value.code, value)
-    } else {
-      UserClient.createUser(value)
+
+    const user = {
+      ...value,
+      authorities: value.authorities
+        .map((it, index) => authorities[index])
+        .filter(it => it !== null)
     }
-    onComplete && onComplete(state)
+    if (user.code) {
+      UserClient.updateUser(user.code, user)
+        .then(() => onComplete && onComplete(state))
+    } else {
+      UserClient.createUser(user)
+        .then(() => onComplete && onComplete(state))
+    }
+
   }
 
   return (
     <Dialog fullWidth maxWidth={'md'} open={open} onClose={handleClose}>
-      <DialogTitle>User</DialogTitle>
+      <DialogTitle disableTypography>
+        <Typography variant="h6">User</Typography>
+        <IconButton
+          aria-label="close"
+          className={classes.closeButton}
+          onClick={handleClose}
+        >
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
       <DialogContent>
-        <UserForm value={state} onSummit={handleSubmit} />
+        <UserForm value={state} authorities={authorities} onSummit={handleSubmit} />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleReset}>Reset secret</Button>
-        <Button onClick={handleClose}>Cancel</Button>
         {state && state.code && (
-          <Button onClick={handleDelete}>Delete</Button>
+          <Button onClick={handleReset}>Reset password</Button>
         )}
+        {state && state.code && <Button onClick={handleDelete}>Delete</Button>}
         <Button
           variant="contained"
           color="primary"

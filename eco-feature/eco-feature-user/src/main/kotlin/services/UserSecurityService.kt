@@ -33,7 +33,7 @@ class UserSecurityService(
         override fun getAuthorities() = account.user.getGrantedAuthority()
         override fun isEnabled() = account.user.enabled
         override fun getUsername() = account.user.code
-        override fun getPassword() = account.password
+        override fun getPassword() = account.secret
         override fun isCredentialsNonExpired() = true
         override fun isAccountNonExpired() = true
         override fun isAccountNonLocked() = true
@@ -44,7 +44,7 @@ class UserSecurityService(
                 .userDetailsService { ref ->
                     val user = User(email = ref)
                     val password = passwordEncoder.encode(ref)
-                    val account = UserAccountPassword(user = user, password = password)
+                    val account = UserAccountPassword(user = user, secret = password)
                     UserSecurityPassword(account)
                 }
                 .formLogin()

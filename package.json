@@ -16,7 +16,7 @@
     "@material-ui/styles": "^4.1.1",
     "babel-polyfill": "^6.26.0",
     "formik": "^1.5.7",
-    "formik-material-ui": "0.0.20",
+    "formik-material-ui": "0.0.22",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-material-ui-form-validator": "^2.0.8",

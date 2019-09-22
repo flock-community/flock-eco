@@ -57,14 +57,14 @@ class UserAccountService(
             ?: throw UserAccountNotFoundForUser(code)
 
     fun resetPasswordWithResetCode(resetCode: String, password: String): UserAccountPassword = findUserAccountByResetCode(resetCode)
-            ?.copy(password = password, resetCode = null)
+            ?.copy(secret = password, resetCode = null)
             ?.let(userAccountRepository::save)
             ?.also { applicationEventPublisher.publishEvent(UserAccountPasswordResetEvent(it)) }
             ?: throw UserAccountNotFoundForResetCodeException(resetCode)
 
     private fun UserAccountPasswordForm.createUserAndInternalize() = UserAccountPassword(
             user = createUser(),
-            password = passwordEncoder.encode(password)
+            secret = passwordEncoder.encode(password)
     )
 
     private fun UserAccountOauthForm.createUserAndInternalize() = UserAccountOauth(

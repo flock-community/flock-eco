@@ -23,8 +23,9 @@ class UserGroupController(
 
     @GetMapping()
     @PreAuthorize("hasAuthority('UserGroupAuthority.READ')")
-    fun findAll(page: Pageable): ResponseEntity<List<UserGroup>> = userGroupRepository
-            .findAll(page)
+    fun findAll(@RequestParam(defaultValue = "", required = false) search: String,
+                page: Pageable): ResponseEntity<List<UserGroup>> = userGroupRepository
+            .findAllByNameLike(search, page)
             .toResponse()
 
     @GetMapping("/{code}")

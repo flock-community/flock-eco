@@ -52,10 +52,12 @@ export function UserFeature() {
   }
 
   const handleComplete = value => {
+    console.log(value)
     setDialogState({
       open: false,
       code: null
     })
+    setReload(!reload)
   }
 
   return (
@@ -63,11 +65,15 @@ export function UserFeature() {
       <div className={classes.content}>
 
         <UserTable
+          reload={reload}
           onRowClick={handleRowClick}
         />
       </div>
 
-      <UserDialog open={dialogState.open} code={dialogState.code} onComplete={handleComplete}/>
+      <UserDialog
+        open={dialogState.open}
+        code={dialogState.code}
+        onComplete={handleComplete}/>
 
       <Fab
         color="primary"

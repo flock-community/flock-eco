@@ -15,14 +15,14 @@ const value_a = {
   name: 'a',
   email: 'a@a.aa',
   reference: 'a',
-  authorities: [false, true],
+  authorities: ['Auth.A'],
 }
 
 const value_b = {
   name: 'b',
   email: 'b@b.bb',
   reference: 'b',
-  authorities: [true, false],
+  authorities: ['Auth.B'],
 }
 
 storiesOf('User/UserForm', module)

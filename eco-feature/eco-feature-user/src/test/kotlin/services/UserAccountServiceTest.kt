@@ -42,7 +42,7 @@ class UserAccountServiceTest {
         assertNotNull(res.user.id)
         assertNotNull(res.user.code)
 
-        assertTrue(passwordEncoder.matches("123456", res.password))
+        assertTrue(passwordEncoder.matches("123456", res.secret))
     }
 
     @Test(expected = UserAccountWithEmailExistsException::class)
@@ -94,7 +94,7 @@ class UserAccountServiceTest {
         val resetCode = userAccountService.generateResetCodeForUserCode(user.code)
         val account = userAccountService.resetPasswordWithResetCode(resetCode, "password")
         assertNull(account.resetCode)
-        assertEquals("password", account.password)
+        assertEquals("password", account.secret)
     }
 
 }

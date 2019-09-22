@@ -32,7 +32,7 @@ class UserService(
             ?.also { applicationEventPublisher.publishEvent(UpdateUserEvent(it)) }
 
 
-    fun delete(idCode: String): Unit = read(idCode)
+    fun delete(code: String): Unit = read(code)
             ?.let {
                 userRepository.delete(it)
                 applicationEventPublisher.publishEvent(DeleteUserEvent(it))
