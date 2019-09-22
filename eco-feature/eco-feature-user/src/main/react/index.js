@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import UserFeature from './user/UserFeature'
-import ProfileFeature from './profile/ProfileFeature'
+import ProfileFeature from './user_profile/ProfileFeature'
 import UserGroupFeature from "./user_group/UserGroupFeature";
 
 class App extends React.Component {

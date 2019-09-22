@@ -2,6 +2,17 @@ export function findAllAuthorities() {
   return fetch('/api/authorities').then(res => res.json())
 }
 
+
+export function findUsersMe(page, size) {
+  return fetch(`/api/users/me`).then(res => {
+    if (res.ok) {
+      return res.json()
+    } else {
+      return res.json()
+    }
+  })
+}
+
 export function findAllUsers(page, size) {
   return fetch(`/api/users?page=${page}&size=${size}`).then(res => {
     if (res.ok) {
@@ -10,7 +21,7 @@ export function findAllUsers(page, size) {
         count: parseInt(res.headers.get("x-total"))
       }))
     } else {
-      return res.json
+      return res.json()
     }
   })
 }
@@ -62,6 +73,7 @@ export function resetUserPassword(code) {
 }
 
 export default {
+  findUsersMe,
   findAllAuthorities,
   findAllUsers,
   findUserByCode,
