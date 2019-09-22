@@ -6,14 +6,7 @@ import List from '@material-ui/core/List'
 import ListItemText from '@material-ui/core/ListItemText'
 import Grid from '@material-ui/core/Grid'
 
-const useStyles = makeStyles(theme => ({
-  tablePaper: {
-    marginBottom: 50,
-    width: '100%',
-    marginTop: theme.spacing(3),
-    overflowX: 'auto',
-  },
-}))
+const useStyles = makeStyles(theme => ({}))
 
 /**
  * @return {null}

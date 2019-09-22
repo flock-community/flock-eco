@@ -27,7 +27,6 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export function UserDialog({open, code, onComplete}) {
-
   const [state, setState] = useState(null)
   const [authorities, setAuthorities] = useState(null)
 
@@ -42,9 +41,7 @@ export function UserDialog({open, code, onComplete}) {
   }, [code])
 
   useEffect(() => {
-      UserClient.findAllAuthorities()
-        .then(setAuthorities)
-
+    UserClient.findAllAuthorities().then(setAuthorities)
   }, [])
 
   const handleDelete = ev => {
@@ -60,21 +57,19 @@ export function UserDialog({open, code, onComplete}) {
   }
 
   const handleSubmit = value => {
-
     const user = {
       ...value,
       authorities: value.authorities
         .map((it, index) => authorities[index])
-        .filter(it => it !== null)
+        .filter(it => it !== null),
     }
     if (user.code) {
-      UserClient.updateUser(user.code, user)
-        .then(() => onComplete && onComplete(state))
+      UserClient.updateUser(user.code, user).then(
+        () => onComplete && onComplete(state),
+      )
     } else {
-      UserClient.createUser(user)
-        .then(() => onComplete && onComplete(state))
+      UserClient.createUser(user).then(() => onComplete && onComplete(state))
     }
-
   }
 
   return (
@@ -90,7 +85,11 @@ export function UserDialog({open, code, onComplete}) {
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <UserForm value={state} authorities={authorities} onSummit={handleSubmit} />
+        <UserForm
+          value={state}
+          authorities={authorities}
+          onSummit={handleSubmit}
+        />
       </DialogContent>
       <DialogActions>
         {state && state.code && (

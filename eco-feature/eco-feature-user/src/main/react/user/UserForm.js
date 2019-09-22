@@ -13,16 +13,16 @@ import * as Yup from 'yup'
 
 export const USER_FORM_ID = 'user-form-id'
 
+const init = {
+  name: '',
+  email: '',
+  authorities: null,
+}
+
 /**
  * @return {null}
  */
 export function UserForm({value, onSummit, ...props}) {
-  const init = {
-    name: '',
-    email: '',
-    authorities: null,
-  }
-
   const [state, setState] = useState(init)
   const [formRef, setFormRef] = useState(null)
   const [authorities, setAuthorities] = useState(null)
@@ -40,89 +40,82 @@ export function UserForm({value, onSummit, ...props}) {
       setState({
         ...init,
         ...value,
-        authorities: authorities
-          .map(it => value.authorities.indexOf(it) >= 0),
+        authorities: authorities.map(it => value.authorities.indexOf(it) >= 0),
       })
     } else {
       setState({
         ...init,
-        authorities: !authorities ? [] : authorities
-          .map(() => false),
+        authorities: !authorities ? [] : authorities.map(() => false),
       })
     }
   }, [value, authorities])
 
   const handleSubmit = value => {
     console.log(value)
-    onSummit && onSummit({
-      ...value,
-      authorities: authorities
-        .map((it, index) => value.authorities[index] ? it : null)
-        .filter(it => it !== null)
-    })
+    onSummit &&
+      onSummit({
+        ...value,
+        authorities: authorities
+          .map((it, index) => (value.authorities[index] ? it : null))
+          .filter(it => it !== null),
+      })
   }
 
   const validation = Yup.object({
-    name: Yup.string('Enter name').required('Name is required'),
+    name: Yup.string().required('Name is required'),
     email: Yup.string()
       .required('Email is required')
       .email('Enter a valid email'),
     authorities: Yup.array(),
   })
 
-  if(!authorities || authorities.length !== state.authorities.length)
+  if (!authorities || authorities.length !== state.authorities.length)
     return null
 
   return (
-      <Formik
-        ref={setFormRef}
-        onSubmit={handleSubmit}
-        enableReinitialize
-        initialValues={state}
-        validationSchema={validation}
-      >
-        <Form id={USER_FORM_ID}>
-          <Grid container spacing={1}>
-            <Grid item xs={12}>
-              <Field fullWidth name="name" label="Name" component={TextField} />
-            </Grid>
-
-            <Grid item xs={12}>
-              <Field
-                fullWidth
-                name="email"
-                label="Email"
-                component={TextField}
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <FieldArray
-                name="authorities"
-                render={arrayHelpers => (
-                  <FormControl component="fieldset">
-                    <FormLabel component="legend">Authorities</FormLabel>
-                    <FormGroup>
-                      {authorities.map((value, i) => (
-                        <FormControlLabel
-                          key={`user-form-authorities-${i}`}
-                          control={
-                            <Field
-                              name={`authorities[${i}]`}
-                              component={Checkbox}
-                            />
-                          }
-                          label={value}
-                        />
-                      ))}
-                    </FormGroup>
-                  </FormControl>
-                )}
-              />
-            </Grid>
-
+    <Formik
+      ref={setFormRef}
+      onSubmit={handleSubmit}
+      enableReinitialize
+      initialValues={state}
+      validationSchema={validation}
+    >
+      <Form id={USER_FORM_ID}>
+        <Grid container spacing={1}>
+          <Grid item xs={12}>
+            <Field fullWidth name="name" label="Name" component={TextField} />
           </Grid>
-        </Form>
-      </Formik>
+
+          <Grid item xs={12}>
+            <Field fullWidth name="email" label="Email" component={TextField} />
+          </Grid>
+
+          <Grid item xs={12}>
+            <FieldArray
+              name="authorities"
+              render={arrayHelpers => (
+                <FormControl component="fieldset">
+                  <FormLabel component="legend">Authorities</FormLabel>
+                  <FormGroup>
+                    {authorities.map((value, i) => (
+                      <FormControlLabel
+                        key={`user-form-authorities-${i}`}
+                        control={
+                          <Field
+                            name={`authorities[${i}]`}
+                            component={Checkbox}
+                          />
+                        }
+                        label={value}
+                      />
+                    ))}
+                  </FormGroup>
+                </FormControl>
+              )}
+            />
+          </Grid>
+        </Grid>
+      </Form>
+    </Formik>
   )
 }

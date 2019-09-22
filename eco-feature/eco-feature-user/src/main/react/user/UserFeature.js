@@ -1,38 +1,36 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import AddIcon from '@material-ui/icons/Add'
 import {UserTable} from './UserTable'
 import {UserDialog} from './UserDialog'
-import Paper from '@material-ui/core/es/Paper/Paper'
 import Fab from '@material-ui/core/Fab'
-import {makeStyles} from '@material-ui/styles'
-import UserClient from './UserClient'
+import Grid from '@material-ui/core/Grid'
+import {TextField} from '@material-ui/core'
+import makeStyles from '@material-ui/core/styles/makeStyles'
 
 const useStyles = makeStyles(theme => ({
-  root:{
+  root: {
+    height: '100%',
     position: 'relative',
   },
-  content:{
+  content: {
     height: '100%',
-    overflow:'scroll'
-  },
-  tablePaper: {
-    marginBottom: 50,
-    height: '100%',
+    overflow: 'auto'
   },
   button: {
     position: 'absolute',
-    right: 20,
-    bottom: 20,
+    right: theme.spacing(1),
+    bottom: theme.spacing(1),
   },
 }))
 
 export function UserFeature() {
-
   const classes = useStyles()
+
+  const [searchState, setSearchState] = useState('')
 
   const [dialogState, setDialogState] = useState({
     open: false,
-    code: null
+    code: null,
   })
 
   const [reload, setReload] = useState(false)
@@ -40,40 +38,55 @@ export function UserFeature() {
   const handleRowClick = (ev, item) => {
     setDialogState({
       open: true,
-      code: item.code
+      code: item.code,
     })
+  }
+
+  const handleSearchChange = (ev) => {
+    setSearchState(ev.target.value)
   }
 
   const handleNewClick = () => {
     setDialogState({
       open: true,
-      code: null
+      code: null,
     })
   }
 
   const handleComplete = value => {
-    console.log(value)
     setDialogState({
       open: false,
-      code: null
+      code: null,
     })
     setReload(!reload)
   }
 
   return (
     <div className={classes.root}>
-      <div className={classes.content}>
 
-        <UserTable
-          reload={reload}
-          onRowClick={handleRowClick}
-        />
+      <div className={classes.content}>
+        <Grid container spacing={1}>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              label="Search"
+              value={searchState}
+              onChange={handleSearchChange}/>
+          </Grid>
+          <Grid item xs={12}>
+            <UserTable
+              reload={reload}
+              search={searchState}
+              onRowClick={handleRowClick}/>
+          </Grid>
+        </Grid>
       </div>
 
       <UserDialog
         open={dialogState.open}
         code={dialogState.code}
-        onComplete={handleComplete}/>
+        onComplete={handleComplete}
+      />
 
       <Fab
         color="primary"
@@ -81,7 +94,7 @@ export function UserFeature() {
         className={classes.button}
         onClick={handleNewClick}
       >
-        <AddIcon />
+        <AddIcon/>
       </Fab>
     </div>
   )

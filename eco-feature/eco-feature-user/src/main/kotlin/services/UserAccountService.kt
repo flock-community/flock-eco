@@ -31,7 +31,7 @@ class UserAccountService(
         private val applicationEventPublisher: ApplicationEventPublisher
 ) {
 
-    fun findUserAccountPasswordByEmail(email: String) = userAccountPasswordRepository.findByUserEmailContainingIgnoreCase(email).toNullable()
+    fun findUserAccountPasswordByEmail(email: String) = userAccountPasswordRepository.findByUserEmailIgnoreCaseContaining(email).toNullable()
 
     fun findUserAccountByUserCode(code: String) = userAccountPasswordRepository.findByUserCode(code).toNullable()
 

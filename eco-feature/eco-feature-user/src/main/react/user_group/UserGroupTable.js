@@ -1,93 +1,73 @@
-import React from "react";
+import React, {useEffect, useState} from 'react'
 
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableFooter from "@material-ui/core/TableFooter";
-import TableRow from "@material-ui/core/TableRow";
-import { PageableClient } from "@flock-eco/core";
-import TablePagination from "@material-ui/core/TablePagination";
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableHead from '@material-ui/core/TableHead'
+import TableFooter from '@material-ui/core/TableFooter'
+import TableRow from '@material-ui/core/TableRow'
+import {PageableClient} from '@flock-eco/core'
+import TablePagination from '@material-ui/core/TablePagination'
 
-class UserGroupTable extends React.Component {
+const size = 25
 
-  client = new PageableClient("/api/user_groups", { size: 25 });
+export function UserGroupTable({reload, onRowClick}) {
+  const client = new PageableClient('/api/user-groups', {size})
 
-  state = {
-    list: [],
-    count: 0,
-    page: 0
-  };
+  const [count, setCount] = useState(0)
+  const [page, setPage] = useState(0)
+  const [list, setList] = useState(null)
 
-  handleChangePage = (event, page) => {
-    this.setState({ page }, () => {
-      this.loadList();
-      this.props.onChangePage && this.props.onChangePage(event, page);
-    });
-  };
+  useEffect(() => {
+    loadList()
+  }, [page, reload])
 
-  handleRowClick = (ev) => (item) => {
-    this.props.onRowClick && this.props.onRowClick(event, item);
-  };
-
-  componentDidMount() {
-    this.loadList();
+  const handleChangePage = (event, page) => {
+    setPage(page)
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.reload !== this.props.reload)
-      this.loadList();
+  const handleRowClick = item => ev => {
+    onRowClick && onRowClick(ev, item)
   }
 
-  loadList = () => {
-    const { page } = this.state;
-    return this.client.findAll(page)
-      .then(data => this.setState({
-        list: data.list,
-        count: data.total
-      }));
-  };
+  const loadList = () => {
+    return client.findAll(page).then(data => {
+      setList(data.list)
+      setCount(data.total)
+    })
+  }
 
-  render() {
-    const { size } = this.client;
-    const { list, count, page } = this.state;
+  if (!list) return null
 
-    return (
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>Users</TableCell>
+  return (
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell>Name</TableCell>
+          <TableCell>Users</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {list.map(it => (
+          <TableRow key={it.name} hover onClick={handleRowClick(it)}>
+            <TableCell component="th" scope="row">
+              {it.name}
+            </TableCell>
+            <TableCell>{it.users.length}</TableCell>
           </TableRow>
-        </TableHead>
-        <TableBody>
-          {list.map(it => (
-            <TableRow
-              key={it.name}
-              hover
-              onClick={ev => this.handleRowClick(ev)(it)}
-            >
-              <TableCell component="th" scope="row">
-                {it.name}
-              </TableCell>
-              <TableCell>{it.users.length}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              count={count}
-              rowsPerPage={size}
-              page={page}
-              rowsPerPageOptions={[]}
-              onChangePage={this.handleChangePage}
-            />
-          </TableRow>
-        </TableFooter>
-      </Table>
-    );
-  }
+        ))}
+      </TableBody>
+      <TableFooter>
+        <TableRow>
+          <TablePagination
+            count={count}
+            rowsPerPage={size}
+            page={page}
+            rowsPerPageOptions={[]}
+            onChangePage={handleChangePage}
+          />
+        </TableRow>
+      </TableFooter>
+    </Table>
+  )
 }
-
-export default UserGroupTable;

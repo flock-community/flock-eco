@@ -9,5 +9,5 @@ const user = {
 }
 
 storiesOf('User profile/UserProfileFeature', module).add('default', () => (
-  <UserProfileFeature value={user} style={{height: 300}} />
+  <UserProfileFeature value={user} style={{height: 300}}/>
 ))

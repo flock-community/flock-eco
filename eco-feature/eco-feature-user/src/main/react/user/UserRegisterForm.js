@@ -7,12 +7,11 @@ import {Button} from '@material-ui/core'
 import Grid from '@material-ui/core/Grid'
 
 function UserRegisterForm({initialValues, onSubmit}) {
-
   initialValues = {
-    email:'',
+    email: '',
     password: '',
     confirmPassword: '',
-    ...initialValues
+    ...initialValues,
   }
 
   const validation = Yup.object({
@@ -27,7 +26,7 @@ function UserRegisterForm({initialValues, onSubmit}) {
       .oneOf([Yup.ref('password')], 'Password does not match'),
   })
 
-  const handleSubmit = (value) => {
+  const handleSubmit = value => {
     onSubmit && onSubmit(value)
   }
 
@@ -36,7 +35,8 @@ function UserRegisterForm({initialValues, onSubmit}) {
       <Formik
         initialValues={initialValues}
         validationSchema={validation}
-        onSubmit={handleSubmit}>
+        onSubmit={handleSubmit}
+      >
         <Form>
           <Grid container spacing={1}>
             <Grid item xs={12}>
@@ -44,33 +44,35 @@ function UserRegisterForm({initialValues, onSubmit}) {
                 name="email"
                 label="Email"
                 fullWidth
-                component={TextField}/>
+                component={TextField}
+              />
             </Grid>
             <Grid item xs={12}>
               <Field
                 name="password"
                 label="Password"
                 fullWidth
-                component={TextField}/>
+                component={TextField}
+              />
             </Grid>
             <Grid item xs={12}>
               <Field
                 name="confirmPassword"
                 label="Re-password"
                 fullWidth
-                component={TextField}/>
+                component={TextField}
+              />
             </Grid>
             <Grid item xs={12}>
-              <Button
-                fullWidth
-                type="submit"
-                color="primary">Submit</Button>
+              <Button fullWidth type="submit" color="primary">
+                Submit
+              </Button>
             </Grid>
           </Grid>
         </Form>
       </Formik>
-    </>)
-
+    </>
+  )
 }
 
 export default UserRegisterForm

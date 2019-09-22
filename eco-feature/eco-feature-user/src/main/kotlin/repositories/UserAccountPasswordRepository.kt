@@ -8,7 +8,7 @@ import java.util.*
 @Repository
 interface UserAccountPasswordRepository : PagingAndSortingRepository<UserAccountPassword, Long> {
 
-    fun findByUserEmailContainingIgnoreCase(email: String): Optional<UserAccountPassword>
+    fun findByUserEmailIgnoreCaseContaining(email: String): Optional<UserAccountPassword>
 
     fun findByUserCode(code: String): Optional<UserAccountPassword>
 

@@ -9,26 +9,25 @@ import TableRow from '@material-ui/core/TableRow'
 import TablePagination from '@material-ui/core/TablePagination'
 import UserClient from './UserClient'
 
-export function UserTable({size = 20, reload, onRowClick, onChangePage}) {
-
+export function UserTable({search, size=10, reload, onRowClick, onChangePage}) {
   const [state, setState] = useState({
     page: 0,
     count: 0,
-    list: []
+    list: [],
   })
 
   useEffect(() => {
-    UserClient.findAllUsers(state.page, size).then(res => {
+    UserClient.findAllUsers(search, state.page, size).then(res => {
       setState({...state, ...res})
     })
-  }, [reload, state.page])
+  }, [reload, search, size, state.page])
 
   const handleChangePage = (event, page) => {
     setState({...state, page})
     onChangePage && onChangePage(event, page)
   }
 
-  const handleRowClick = (user) => (ev) => {
+  const handleRowClick = user => ev => {
     onRowClick && onRowClick(ev, user)
   }
 
@@ -43,11 +42,7 @@ export function UserTable({size = 20, reload, onRowClick, onChangePage}) {
       </TableHead>
       <TableBody>
         {state.list.map(it => (
-          <TableRow
-            key={it.name}
-            hover
-            onClick={handleRowClick(it)}
-          >
+          <TableRow key={it.name} hover onClick={handleRowClick(it)}>
             <TableCell component="th" scope="row">
               {it.name}
             </TableCell>

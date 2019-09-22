@@ -2,7 +2,6 @@ export function findAllAuthorities() {
   return fetch('/api/authorities').then(res => res.json())
 }
 
-
 export function findUsersMe(page, size) {
   return fetch(`/api/users/me`).then(res => {
     if (res.ok) {
@@ -13,12 +12,12 @@ export function findUsersMe(page, size) {
   })
 }
 
-export function findAllUsers(page, size) {
-  return fetch(`/api/users?page=${page}&size=${size}`).then(res => {
+export function findAllUsers(search, page, size) {
+  return fetch(`/api/users?search=${search}&page=${page}&size=${size}`).then(res => {
     if (res.ok) {
       return res.json().then(json => ({
         list: json,
-        count: parseInt(res.headers.get("x-total"))
+        count: parseInt(res.headers.get('x-total')),
       }))
     } else {
       return res.json()

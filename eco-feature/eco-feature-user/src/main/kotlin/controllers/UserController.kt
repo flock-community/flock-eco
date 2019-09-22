@@ -32,7 +32,7 @@ class UserController(
     fun findAll(
             @RequestParam(defaultValue = "", required = false) search: String,
             page: Pageable): ResponseEntity<List<User>> = userRepository
-            .findAllByNameLikeOrEmailLike("%$search%", "%$search%", page)
+            .findAllByNameIgnoreCaseContainingOrEmailIgnoreCaseContaining(search, search, page)
             .toResponse()
 
     @PostMapping

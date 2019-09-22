@@ -10,7 +10,7 @@ import java.util.*
 @Repository
 interface UserRepository : PagingAndSortingRepository<User, Long> {
 
-    fun findAllByNameLikeOrEmailLike(name: String, email: String, pageable: Pageable): Page<User>
+    fun findAllByNameIgnoreCaseContainingOrEmailIgnoreCaseContaining(name: String, email: String, pageable: Pageable): Page<User>
 
     fun findByCode(code: String): Optional<User>
 

@@ -11,7 +11,7 @@ import java.util.*
 @Repository
 interface UserGroupRepository : PagingAndSortingRepository<UserGroup, Long> {
 
-    fun findAllByNameLike(name: String, pageable: Pageable): Page<UserGroup>
+    fun findAllByNameIgnoreCaseContaining(name: String, pageable: Pageable): Page<UserGroup>
 
     fun findByCode(code: String): Optional<UserGroup>
 

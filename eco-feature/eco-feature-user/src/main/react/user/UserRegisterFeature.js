@@ -1,21 +1,18 @@
 import React from 'react'
 
 function UserRegisterForm({initialValues, onSubmit}) {
-
   initialValues = {
-    email:'',
+    email: '',
     password: '',
     confirmPassword: '',
-    ...initialValues
+    ...initialValues,
   }
 
-  const handleSubmit = (value) => {
+  const handleSubmit = value => {
     onSubmit && onSubmit(value)
   }
 
-  return (
-    <UserRegisterForm onSubmit={handleSubmit}/>)
-
+  return <UserRegisterForm onSubmit={handleSubmit} />
 }
 
 export default UserRegisterForm

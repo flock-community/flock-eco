@@ -25,7 +25,7 @@ class UserGroupController(
     @PreAuthorize("hasAuthority('UserGroupAuthority.READ')")
     fun findAll(@RequestParam(defaultValue = "", required = false) search: String,
                 page: Pageable): ResponseEntity<List<UserGroup>> = userGroupRepository
-            .findAllByNameLike(search, page)
+            .findAllByNameIgnoreCaseContaining(search, page)
             .toResponse()
 
     @GetMapping("/{code}")
@@ -44,12 +44,11 @@ class UserGroupController(
     @PreAuthorize("hasAuthority('UserGroupAuthority.WRITE')")
     fun update(@RequestBody form: UserGroupForm, @PathVariable code: String): ResponseEntity<UserGroup> = userGroupRepository
             .findByCode(code)
-            .map { userGroup ->
+            .toNullable()
+            ?.let { userGroup ->
                 form.internalize()
-                        .let {
-                            it
-                        }
                         .copy(
+                                id = userGroup.id,
                                 code = userGroup.code
                         )
                         .let { userGroupRepository.save(it) }

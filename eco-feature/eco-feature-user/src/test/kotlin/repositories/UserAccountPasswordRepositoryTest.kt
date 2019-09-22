@@ -36,10 +36,10 @@ class UserAccountPasswordRepositoryTest {
         )
         userAccountPasswordRepository.save(account)
 
-        val res1 = userAccountPasswordRepository.findByUserEmailContainingIgnoreCase("user@gmail.com").toNullable()
+        val res1 = userAccountPasswordRepository.findByUserEmailIgnoreCaseContaining("USER@gmail.com").toNullable()
         assertEquals("User Name", res1?.user?.name)
 
-        val res2 = userAccountPasswordRepository.findByUserEmailContainingIgnoreCase("user@Gmail.com").toNullable()
+        val res2 = userAccountPasswordRepository.findByUserEmailIgnoreCaseContaining("user@Gmail.com").toNullable()
         assertEquals("User Name", res2?.user?.name)
 
     }
