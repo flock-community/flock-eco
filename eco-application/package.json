@@ -1,6 +1,6 @@
 {
   "name": "@flock-eco/application",
-  "version": "1.4.16-next.b7efe5e",
+  "version": "1.4.16-next.ea02c4a",
   "dependencies": {
     "@material-ui/core": "^4.1.1",
     "@material-ui/icons": "^4.2.0",

@@ -1,6 +1,6 @@
 {
   "name": "@flock-eco/application-example",
-  "version": "1.4.16-next.b7efe5e",
+  "version": "1.4.16-next.ea02c4a",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -10,6 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@flock-eco/feature-user": "^1.4.16-next.b7efe5e"
+    "@flock-eco/feature-user": "^1.4.16-next.ea02c4a"
   }
 }
