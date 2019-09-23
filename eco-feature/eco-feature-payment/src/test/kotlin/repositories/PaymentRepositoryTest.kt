@@ -55,7 +55,7 @@ class PaymentRepositoryTest {
         val endDate =now.withDayOfMonth(now.lengthOfMonth())
         val transactions = paymentTransactionRepository.findBetweenDate(startDate, endDate)
                 .map { it.mandate }
-        assertEquals(101, transactions.size)
+        assertEquals(34, transactions.size)
     }
 
 }

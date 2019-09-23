@@ -12,7 +12,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 @EnableJpaRepositories
 @EntityScan
 @ComponentScan(basePackages = [
-    "community.flock.eco.application.example.services",
     "community.flock.eco.application.example.controllers"
 ])
 @Import(

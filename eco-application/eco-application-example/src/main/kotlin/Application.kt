@@ -16,8 +16,7 @@ import org.springframework.context.annotation.Import
         RepositoryRestMvcAutoConfiguration::class,
         SecurityAutoConfiguration::class
 ))
-@Import(ApplicationConfiguration::class,
-        WebMvcConfig::class,
+@Import(WebMvcConfig::class,
         WebSecurityConfig::class)
 class Application : SpringBootServletInitializer()
 

@@ -1,7 +1,6 @@
 package community.flock.eco.application.example.configuration
 
 import community.flock.eco.application.example.authorities.ExampleAuthority
-import community.flock.eco.feature.user.data.UserLoadData
 import community.flock.eco.feature.user.services.UserAuthorityService
 import community.flock.eco.feature.user.services.UserSecurityService
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,7 +10,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.core.userdetails.User as UserDetail
 
 
 @Configuration
@@ -25,18 +23,12 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     @Autowired
     lateinit var userAuthorityService: UserAuthorityService
 
-
     @Autowired
     lateinit var userSecurityService: UserSecurityService
-
-    @Autowired
-    lateinit var userLoadData: UserLoadData
 
     override fun configure(http: HttpSecurity) {
 
         userAuthorityService.addAuthority(ExampleAuthority::class.java)
-
-        userLoadData.load(10)
 
         http
                 .csrf().disable()
