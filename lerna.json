@@ -6,5 +6,5 @@
     "eco-feature/*",
     "eco-webpack"
   ],
-  "version": "1.4.16"
+  "version": "1.4.16-next.b7efe5e"
 }
