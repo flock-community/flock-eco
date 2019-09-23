@@ -20,6 +20,6 @@ abstract class UserAccount(
         @ManyToOne
         open val user: User,
 
-        val created: LocalDateTime = LocalDateTime.now()
+        open val created: LocalDateTime = LocalDateTime.now()
 
 ) : AbstractIdEntity(id)

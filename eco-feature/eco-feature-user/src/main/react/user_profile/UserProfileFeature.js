@@ -26,7 +26,7 @@ export function UserProfileFeature({value}) {
     UserClient.findUsersMe().then(json => {
       setUser(json)
     })
-  })
+  },[])
 
   if (!user) return null
 

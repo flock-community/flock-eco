@@ -9,6 +9,7 @@ import community.flock.eco.feature.user.model.User
 import community.flock.eco.feature.user.repositories.UserRepository
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
+import java.util.*
 
 
 @Service
@@ -16,6 +17,10 @@ class UserService(
         val userRepository: UserRepository,
         val applicationEventPublisher: ApplicationEventPublisher
 ) {
+
+    fun findByCode(code: String) = userRepository
+            .findByCode(code)
+            .toNullable()
 
     fun create(form: UserForm): User = form
             .toUser()

@@ -1,5 +1,6 @@
 package community.flock.eco.core.services
 
+import com.sun.org.apache.xpath.internal.operations.Bool
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
 import java.io.InputStream
@@ -13,6 +14,8 @@ interface StorageService {
     )
 
     class StorageChuck
+
+    fun hasObject(bucket: String, key: String): Boolean
 
     fun getObject(bucket: String, key: String): ByteArray?
 

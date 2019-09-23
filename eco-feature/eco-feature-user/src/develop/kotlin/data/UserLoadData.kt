@@ -2,22 +2,26 @@ package community.flock.eco.feature.user.data
 
 import community.flock.eco.core.data.LoadData
 import community.flock.eco.feature.user.model.User
+import community.flock.eco.feature.user.model.UserAccountPassword
+import community.flock.eco.feature.user.repositories.UserAccountRepository
 import community.flock.eco.feature.user.repositories.UserRepository
 import community.flock.eco.feature.user.services.UserAuthorityService
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 
 @Component
 class UserLoadData(
         val userRepository: UserRepository,
+        val userAccountRepository: UserAccountRepository,
         val userAuthorityService: UserAuthorityService,
-        val passwordEncoder:PasswordEncoder
+        val passwordEncoder: PasswordEncoder
 ) : LoadData<User> {
 
-    override fun load(n: Int): Iterable<User> = (1..n)
-            .map { user(it) }
-            .also { userRepository.saveAll(it) }
+    override fun load(n: Int): Iterable<User> {
+        val users = (1..n).map { user(it) }.let { userRepository.saveAll(it) }
+        val accounts = users.map { account(it) }.let { userAccountRepository.saveAll(it) }
+        return users
+    }
 
     private fun user(int: Int) = User(
             name = "name-$int",
@@ -25,6 +29,11 @@ class UserLoadData(
             authorities = userAuthorityService.allAuthorities()
                     .map { it.toName() }
                     .toSet()
+    )
+
+    private fun account(user: User) = UserAccountPassword(
+            user = user,
+            secret = passwordEncoder.encode(user.name)
     )
 
 }

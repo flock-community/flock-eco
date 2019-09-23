@@ -35,6 +35,10 @@ class StubStoreService(
                 logger.info("Get file from bucket: $bucket and key: $key")
             }
 
+    override fun hasObject(bucket: String, key: String): Boolean {
+        return store[bucket]?.contains(key) ?: false
+    }
+
     override fun getObject(bucket: String, key: String): ByteArray? {
         return store[bucket]?.get(key)
     }

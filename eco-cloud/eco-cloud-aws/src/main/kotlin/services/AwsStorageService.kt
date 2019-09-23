@@ -31,6 +31,20 @@ class AwsStorageService : StorageService {
         }
     }
 
+    override fun hasObject(bucket: String, key: String): Boolean {
+        val request = HeadObjectRequest.builder()
+                .bucket(bucket)
+                .key(key)
+                .build()
+        return try {
+            s3Client.headObject(request)
+            true
+        } catch (ex: NoSuchKeyException) {
+            false
+        }
+
+    }
+
     override fun getObject(bucket: String, key: String): ByteArray? {
         val request = GetObjectRequest.builder()
                 .bucket(bucket)
