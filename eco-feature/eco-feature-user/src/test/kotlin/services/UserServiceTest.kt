@@ -61,10 +61,10 @@ class UserServiceTest {
         Assert.assertNotNull(user.id)
         val group = userGroupService.create("Test", setOf(user))
         Assert.assertNotNull(group.id)
-        userService.delete(user.code)
 
+        userService.delete(user.code)
         Assert.assertNull(userService.findByCode(user.code))
-        Assert.assertNull(userGroupService.findByCode(user.code))
+        Assert.assertNotNull(userGroupService.findByCode(group.code))
     }
 
 }
