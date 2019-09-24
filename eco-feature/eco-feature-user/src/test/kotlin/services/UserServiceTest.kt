@@ -50,7 +50,6 @@ class UserServiceTest {
         Assert.assertNotNull(group)
     }
 
-
     @Test
     fun `remove user which is in group`() {
         val form = UserForm(
@@ -59,6 +58,7 @@ class UserServiceTest {
         )
         val user = userService.create(form)
         Assert.assertNotNull(user.id)
+
         val group = userGroupService.create("Test", setOf(user))
         Assert.assertNotNull(group.id)
 
