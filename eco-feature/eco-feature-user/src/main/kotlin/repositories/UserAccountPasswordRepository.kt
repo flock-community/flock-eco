@@ -12,6 +12,8 @@ interface UserAccountPasswordRepository : PagingAndSortingRepository<UserAccount
 
     fun findByUserCode(code: String): Optional<UserAccountPassword>
 
+    fun findByUserEmail(code: String): Optional<UserAccountPassword>
+
     fun findByResetCode(code: String): Optional<UserAccountPassword>
 
 }

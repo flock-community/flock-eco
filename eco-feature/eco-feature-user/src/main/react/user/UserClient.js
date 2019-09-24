@@ -67,12 +67,8 @@ export function deleteUser(code) {
 export function resetUserPassword(code) {
   const opts = {
     method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8',
-    },
-    body: JSON.stringify({}),
   }
-  return fetch(`/api/users/${code}/reset`, opts).then(res => res.json())
+  return fetch(`/api/users/${code}/reset-password`, opts).then(res => res.json())
 }
 
 export default {

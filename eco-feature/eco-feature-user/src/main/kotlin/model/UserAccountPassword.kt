@@ -14,7 +14,7 @@ data class UserAccountPassword(
         override val user: User,
 
         @JsonIgnore
-        val secret: String,
+        val secret: String? = null,
 
         @JsonIgnore
         val resetCode: String? = null

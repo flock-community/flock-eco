@@ -59,12 +59,22 @@ class UserController(
             .delete(code)
             .toResponse()
 
-    @PutMapping("/{code}/reset")
+    @PutMapping("/{code}/reset-password")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
     fun generateResetCodeForUserCode(@PathVariable code: String) = userAccountService
             .generateResetCodeForUserCode(code)
+            .let { Unit }
             .toResponse()
 
+    @PutMapping("/reset-password")
+    fun generateResetCodeForUserCode(@RequestBody form: RequestPasswordReset) = userAccountService
+            .generateResetCodeForUserEmail(form.email)
+            .let { Unit }
+            .toResponse()
+
+    data class RequestPasswordReset(
+            val email: String
+    )
 }
 
 

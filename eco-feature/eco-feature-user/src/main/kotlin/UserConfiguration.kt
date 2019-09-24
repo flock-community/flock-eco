@@ -18,7 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder
 @EnableJpaRepositories
 @EntityScan
 @EnableConfigurationProperties(UserProperties::class)
-@Import(UserController::class,
+@Import(UserControllerAdvice::class,
+        UserController::class,
         UserGroupController::class,
         UserAuthorityController::class,
         UserAccountController::class,

@@ -4,7 +4,8 @@ import community.flock.eco.core.utils.toNullable
 import community.flock.eco.feature.user.events.UserAccountPasswordResetEvent
 import community.flock.eco.feature.user.events.UserAccountResetCodeGeneratedEvent
 import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForResetCodeException
-import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUser
+import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUserCode
+import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUserEmail
 import community.flock.eco.feature.user.exceptions.UserAccountWithEmailExistsException
 import community.flock.eco.feature.user.forms.UserAccountForm
 import community.flock.eco.feature.user.forms.UserAccountOauthForm
@@ -35,9 +36,19 @@ class UserAccountService(
 
     fun findUserAccountByUserCode(code: String) = userAccountPasswordRepository.findByUserCode(code).toNullable()
 
+    fun findUserAccountByUserEmail(email: String) = userAccountPasswordRepository.findByUserEmail(email).toNullable()
+
     fun findUserAccountByResetCode(resetCode: String) = userAccountPasswordRepository.findByResetCode(resetCode).toNullable()
 
     fun findUserAccountOauthByReference(reference: String) = userAccountOauthRepository.findByReference(reference).toNullable()
+
+    fun createUserAccountPasswordWithoutPassword(userCode:String): UserAccountPassword = userService.findByCode(userCode)
+            ?.let {
+                UserAccountPassword(
+                        user = it
+                )
+            }
+            .let(userAccountRepository::save)
 
     fun createUserAccountPassword(form: UserAccountPasswordForm): UserAccountPassword = userService.findByEmail(form.email)
             ?.let { throw UserAccountWithEmailExistsException(it) }
@@ -49,15 +60,25 @@ class UserAccountService(
             .let { form.createUserAndInternalize() }
             .let(userAccountRepository::save)
 
+    fun generateResetCodeForUserEmail(email: String): String = findUserAccountByUserEmail(email)
+            ?.copy(resetCode = UUID.randomUUID().toString())
+            ?.let(userAccountRepository::save)
+            ?.also { applicationEventPublisher.publishEvent(UserAccountResetCodeGeneratedEvent(it)) }
+            ?.run { resetCode!! }
+            ?: throw UserAccountNotFoundForUserEmail(email)
+
     fun generateResetCodeForUserCode(code: String): String = findUserAccountByUserCode(code)
             ?.copy(resetCode = UUID.randomUUID().toString())
             ?.let(userAccountRepository::save)
             ?.also { applicationEventPublisher.publishEvent(UserAccountResetCodeGeneratedEvent(it)) }
             ?.run { resetCode!! }
-            ?: throw UserAccountNotFoundForUser(code)
+            ?: throw UserAccountNotFoundForUserCode(code)
 
     fun resetPasswordWithResetCode(resetCode: String, password: String): UserAccountPassword = findUserAccountByResetCode(resetCode)
-            ?.copy(secret = password, resetCode = null)
+            ?.copy(
+                    secret = passwordEncoder.encode(password),
+                    resetCode = null
+            )
             ?.let(userAccountRepository::save)
             ?.also { applicationEventPublisher.publishEvent(UserAccountPasswordResetEvent(it)) }
             ?: throw UserAccountNotFoundForResetCodeException(resetCode)

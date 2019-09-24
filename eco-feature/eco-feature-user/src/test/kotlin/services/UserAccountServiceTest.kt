@@ -2,7 +2,7 @@ package community.flock.eco.feature.user.services
 
 import community.flock.eco.feature.user.UserConfiguration
 import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForResetCodeException
-import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUser
+import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUserCode
 import community.flock.eco.feature.user.exceptions.UserAccountWithEmailExistsException
 import community.flock.eco.feature.user.forms.UserAccountOauthForm
 import community.flock.eco.feature.user.forms.UserAccountPasswordForm
@@ -12,10 +12,8 @@ import org.junit.Assert.assertNotNull
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.SpringBootConfiguration
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringRunner
@@ -78,7 +76,7 @@ class UserAccountServiceTest {
         assertEquals("123123123", res.reference)
     }
 
-    @Test(expected = UserAccountNotFoundForUser::class)
+    @Test(expected = UserAccountNotFoundForUserCode::class)
     fun `generate reset code for user that doesn't exist`() {
         userAccountService.generateResetCodeForUserCode("doesn't exist")
     }
@@ -89,7 +87,7 @@ class UserAccountServiceTest {
     }
 
     @Test
-    fun `generate and reset password with reset code`() {
+    fun `generate and reset password with reset code by user code`() {
         val form = UserAccountPasswordForm(
                 name = "Willem Veelenturf",
                 email = "willem.veelenturf@gmail.com",
@@ -99,7 +97,21 @@ class UserAccountServiceTest {
         val resetCode = userAccountService.generateResetCodeForUserCode(user.code)
         val account = userAccountService.resetPasswordWithResetCode(resetCode, "password")
         assertNull(account.resetCode)
-        assertEquals("password", account.secret)
+        assertTrue(passwordEncoder.matches("password", account.secret))
+    }
+
+    @Test
+    fun `generate and reset password with reset code by user email`() {
+        val form = UserAccountPasswordForm(
+                name = "Willem Veelenturf",
+                email = "willem.veelenturf@gmail.com",
+                password = "123456"
+        )
+        val user = userAccountService.createUserAccountPassword(form.copy()).user
+        val resetCode = userAccountService.generateResetCodeForUserEmail("willem.veelenturf@gmail.com")
+        val account = userAccountService.resetPasswordWithResetCode(resetCode, "password")
+        assertNull(account.resetCode)
+        assertTrue(passwordEncoder.matches("password", account.secret))
     }
 
 }
