@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service
 @Service
 class UserService(
         val userRepository: UserRepository,
+        val userAccountService: UserAccountService,
         val applicationEventPublisher: ApplicationEventPublisher
 ) {
 
@@ -39,6 +40,7 @@ class UserService(
 
     fun delete(code: String): Unit = read(code)
             ?.let {
+                userAccountService.deleteByUserCode(it.code)
                 userRepository.delete(it)
                 applicationEventPublisher.publishEvent(UserDeleteEvent(it))
             }

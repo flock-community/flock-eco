@@ -70,7 +70,6 @@ export function UserFeature() {
 
   return (
     <div className={classes.root}>
-
       <div className={classes.content}>
         <Grid container spacing={1}>
           <Grid item xs={12}>

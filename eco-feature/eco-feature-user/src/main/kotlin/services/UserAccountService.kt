@@ -77,6 +77,8 @@ class UserAccountService(
             ?.let(userAccountRepository::save)
             ?.let { applicationEventPublisher.publishEvent(UserAccountPasswordResetEvent(it)) }
 
+    fun deleteByUserCode(code: String) = userAccountRepository.deleteByUserCode(code)
+
     private fun UserAccountPassword.generateResetCodeAndSave() = copy(resetCode = UUID.randomUUID().toString())
             .let(userAccountRepository::save)
             .let { applicationEventPublisher.publishEvent(UserAccountResetCodeGeneratedEvent(it)) }
@@ -97,5 +99,4 @@ class UserAccountService(
             name = name,
             authorities = authorities
     ))
-
 }
