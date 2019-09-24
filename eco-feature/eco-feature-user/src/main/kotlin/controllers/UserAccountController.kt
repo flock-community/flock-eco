@@ -24,19 +24,10 @@ class UserAccountController(
             .findAll()
             .toResponse()
 
-    @PostMapping("/request-reset")
-    fun requestPasswordReset(@RequestBody requestReset: RequestReset) = userAccountService
-            .generateResetCodeForUserCode(requestReset.email)
-            .toResponse()
-
     @PutMapping("/reset")
     fun resetPasswordWithResetCode(@RequestBody info: ResetInfo) = userAccountService
             .resetPasswordWithResetCode(info.resetCode, info.password)
             .toResponse()
-
-    data class RequestReset(
-            val email: String
-    )
 
     data class ResetInfo(
             val resetCode: String,

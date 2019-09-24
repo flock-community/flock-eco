@@ -62,6 +62,7 @@ class UserController(
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
     fun generateResetCodeForUserCode(@PathVariable code: String) = userAccountService
             .generateResetCodeForUserCode(code)
+            .let { Unit }
             .toResponse()
 
     @PutMapping("/reset-password")
