@@ -1,10 +1,7 @@
 package community.flock.eco.feature.user
 
 import community.flock.eco.feature.user.controllers.*
-import community.flock.eco.feature.user.services.UserAccountService
-import community.flock.eco.feature.user.services.UserAuthorityService
-import community.flock.eco.feature.user.services.UserSecurityService
-import community.flock.eco.feature.user.services.UserService
+import community.flock.eco.feature.user.services.*
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
@@ -21,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 @Import(UserControllerAdvice::class,
         UserController::class,
         UserGroupController::class,
+        UserGroupService::class,
         UserAuthorityController::class,
         UserAccountController::class,
         UserStatusController::class,
