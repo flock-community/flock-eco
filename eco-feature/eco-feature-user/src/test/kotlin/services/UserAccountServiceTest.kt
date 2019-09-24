@@ -2,9 +2,10 @@ package community.flock.eco.feature.user.services
 
 import community.flock.eco.feature.user.UserConfiguration
 import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUserCode
-import community.flock.eco.feature.user.exceptions.UserAccountWithEmailExistsException
+import community.flock.eco.feature.user.exceptions.UserAccountPasswordWithEmailExistsException
 import community.flock.eco.feature.user.forms.UserAccountOauthForm
 import community.flock.eco.feature.user.forms.UserAccountPasswordForm
+import community.flock.eco.feature.user.forms.UserForm
 import community.flock.eco.feature.user.model.UserAccountOauthProvider
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -24,6 +25,9 @@ import kotlin.test.assertTrue
 @DataJpaTest
 @AutoConfigureTestDatabase
 class UserAccountServiceTest {
+
+    @Autowired
+    private lateinit var usetService: UserService
 
     @Autowired
     private lateinit var userAccountService: UserAccountService
@@ -48,7 +52,7 @@ class UserAccountServiceTest {
         assertTrue(passwordEncoder.matches(passwordForm.password, password))
     }
 
-    @Test(expected = UserAccountWithEmailExistsException::class)
+    @Test(expected = UserAccountPasswordWithEmailExistsException::class)
     fun `register user with password twice`() {
         userAccountService.createUserAccountPassword(passwordForm.copy())
         userAccountService.createUserAccountPassword(passwordForm.copy())
@@ -86,10 +90,10 @@ class UserAccountServiceTest {
         val userAccount = userAccountService.createUserAccountPassword(passwordForm.copy())
         assertNull(userAccount.resetCode)
         userAccountService.generateResetCodeForUserCode(userAccount.user.code)
-        val resetCode = userAccountService.findUserAccountPasswordByEmail(passwordForm.email)?.resetCode
+        val resetCode = userAccountService.findUserAccountPasswordByUserEmail(passwordForm.email)?.resetCode
         assertNotNull(resetCode)
         userAccountService.resetPasswordWithResetCode(resetCode!!, "password")
-        val account = userAccountService.findUserAccountPasswordByEmail(passwordForm.email)!!
+        val account = userAccountService.findUserAccountPasswordByUserEmail(passwordForm.email)!!
         assertNull(account.resetCode)
         assertTrue(passwordEncoder.matches("password", account.secret))
     }
@@ -98,7 +102,32 @@ class UserAccountServiceTest {
     fun `request reset via email`() {
         assertNull(userAccountService.createUserAccountPassword(passwordForm.copy()).resetCode)
         userAccountService.generateResetCodeForUserEmail(passwordForm.email)
-        assertNotNull(userAccountService.findUserAccountPasswordByEmail(passwordForm.email)?.resetCode)
+        assertNotNull(userAccountService.findUserAccountPasswordByUserEmail(passwordForm.email)?.resetCode)
+    }
+
+    @Test
+    fun `create user account password without password`() {
+        val user = usetService.create(UserForm(
+                name="Pino",
+                email = "pino@sesamstreet.xx"
+        ))
+        userAccountService.createUserAccountPasswordWithoutPassword(user.code)
+
+        val account = userAccountService.findUserAccountPasswordByUserEmail(user.email)
+
+        assertNotNull(account)
+
+    }
+
+    @Test(expected = UserAccountPasswordWithEmailExistsException::class)
+    fun `create user account password without password create twice`() {
+        val user = usetService.create(UserForm(
+                name="Pino",
+                email = "pino@sesamstreet.xx"
+        ))
+        userAccountService.createUserAccountPasswordWithoutPassword(user.code)
+        userAccountService.createUserAccountPasswordWithoutPassword(user.code)
+
     }
 
 }

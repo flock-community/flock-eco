@@ -54,7 +54,7 @@ class UserSecurityService(
 
         return http
                 .userDetailsService { ref ->
-                    userAccountService.findUserAccountPasswordByEmail(ref)
+                    userAccountService.findUserAccountPasswordByUserEmail(ref)
                             ?.let { UserSecurityPassword(it) }
                             ?: throw UsernameNotFoundException("User '$ref' not found")
                 }

@@ -2,6 +2,7 @@ package community.flock.eco.feature.user.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import community.flock.eco.core.events.EventEntityListeners
+import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.EntityListeners
 
