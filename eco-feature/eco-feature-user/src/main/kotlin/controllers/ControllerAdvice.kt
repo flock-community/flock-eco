@@ -1,7 +1,6 @@
 package community.flock.eco.feature.user.controllers
 
 import community.flock.eco.core.exceptions.FlockEcoException
-import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForResetCodeException
 import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUser
 import community.flock.eco.feature.user.exceptions.UserAccountWithEmailExistsException
 import org.springframework.http.HttpStatus
@@ -19,9 +18,6 @@ class ControllerAdvice {
 
     @ExceptionHandler(UserAccountNotFoundForUser::class)
     fun handleUserAccountNotFoundForUser(e: UserAccountNotFoundForUser) = respond(e, NOT_FOUND)
-
-    @ExceptionHandler(UserAccountNotFoundForResetCodeException::class)
-    fun handleUserAccountNotFoundForResetCodeException(e: UserAccountNotFoundForResetCodeException) = respond(e, NOT_FOUND)
 
     private fun respond(e: FlockEcoException, status: HttpStatus) = ResponseEntity<String>(e.message, status)
 

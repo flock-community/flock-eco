@@ -12,12 +12,12 @@ data class UserAccountOauth(
 
         override val user: User,
 
-        val provider: UserAccountOauthProvider,
-        val reference: String
+        val reference: String,
+        val provider: UserAccountOauthProvider
 
-) : UserAccount(id, user){
-        override fun equals(other: Any?) = super.equals(other)
-        override fun hashCode() = super.hashCode()
-        override fun toString() = super.toString()
+) : UserAccount(id, user) {
+    override fun equals(other: Any?) = super.equals(other)
+    override fun hashCode() = super.hashCode()
+    override fun toString() = super.toString()
 }
 

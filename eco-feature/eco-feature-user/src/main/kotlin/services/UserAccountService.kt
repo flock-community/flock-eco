@@ -3,7 +3,6 @@ package community.flock.eco.feature.user.services
 import community.flock.eco.core.utils.toNullable
 import community.flock.eco.feature.user.events.UserAccountPasswordResetEvent
 import community.flock.eco.feature.user.events.UserAccountResetCodeGeneratedEvent
-import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForResetCodeException
 import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUser
 import community.flock.eco.feature.user.exceptions.UserAccountWithEmailExistsException
 import community.flock.eco.feature.user.forms.UserAccountForm
@@ -49,22 +48,28 @@ class UserAccountService(
             .let { form.createUserAndInternalize() }
             .let(userAccountRepository::save)
 
-    fun generateResetCodeForUserCode(code: String): String = findUserAccountByUserCode(code)
-            ?.copy(resetCode = UUID.randomUUID().toString())
-            ?.let(userAccountRepository::save)
-            ?.also { applicationEventPublisher.publishEvent(UserAccountResetCodeGeneratedEvent(it)) }
-            ?.run { resetCode!! }
+    fun generateResetCodeForUserCode(code: String) = findUserAccountByUserCode(code)
+            ?.generateResetCodeAndSave()
             ?: throw UserAccountNotFoundForUser(code)
 
-    fun resetPasswordWithResetCode(resetCode: String, password: String): UserAccountPassword = findUserAccountByResetCode(resetCode)
-            ?.copy(password = password, resetCode = null)
+    fun requestPasswordReset(email: String) = findUserAccountPasswordByEmail(email)
+            ?.generateResetCodeAndSave()
+            ?: Unit
+
+    fun resetPasswordWithResetCode(resetCode: String, password: String) = findUserAccountByResetCode(resetCode)
+            ?.copy(password = password.encode(), resetCode = null)
             ?.let(userAccountRepository::save)
-            ?.also { applicationEventPublisher.publishEvent(UserAccountPasswordResetEvent(it)) }
-            ?: throw UserAccountNotFoundForResetCodeException(resetCode)
+            ?.let { applicationEventPublisher.publishEvent(UserAccountPasswordResetEvent(it)) }
+
+    private fun UserAccountPassword.generateResetCodeAndSave() = copy(resetCode = UUID.randomUUID().toString())
+            .let(userAccountRepository::save)
+            .let { applicationEventPublisher.publishEvent(UserAccountResetCodeGeneratedEvent(it)) }
+
+    private fun String.encode() = passwordEncoder.encode(this)
 
     private fun UserAccountPasswordForm.createUserAndInternalize() = UserAccountPassword(
             user = createUser(),
-            password = passwordEncoder.encode(password)
+            password = password.encode()
     )
 
     private fun UserAccountOauthForm.createUserAndInternalize() = UserAccountOauth(
