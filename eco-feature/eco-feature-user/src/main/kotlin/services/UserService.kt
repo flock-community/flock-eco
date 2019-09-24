@@ -6,6 +6,7 @@ import community.flock.eco.feature.user.events.UserDeleteEvent
 import community.flock.eco.feature.user.events.UserUpdateEvent
 import community.flock.eco.feature.user.forms.UserForm
 import community.flock.eco.feature.user.model.User
+import community.flock.eco.feature.user.repositories.UserAccountRepository
 import community.flock.eco.feature.user.repositories.UserRepository
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.domain.Pageable
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service
 @Service
 class UserService(
         val userRepository: UserRepository,
-        val userAccountService: UserAccountService,
+        val userAccountRepository: UserAccountRepository,
         val applicationEventPublisher: ApplicationEventPublisher
 ) {
 
@@ -40,7 +41,7 @@ class UserService(
 
     fun delete(code: String): Unit = read(code)
             ?.let {
-                userAccountService.deleteByUserCode(it.code)
+                userAccountRepository.deleteByUserCode(it.code)
                 userRepository.delete(it)
                 applicationEventPublisher.publishEvent(UserDeleteEvent(it))
             }
