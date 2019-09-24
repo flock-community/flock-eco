@@ -64,7 +64,7 @@ class UserServiceTest {
         userService.delete(user.code)
 
         Assert.assertNull(userService.findByCode(user.code))
-        Assert.assertNull(userGroupService.(user.code))
+        Assert.assertNull(userGroupService.findByCode(user.code))
     }
 
 }
