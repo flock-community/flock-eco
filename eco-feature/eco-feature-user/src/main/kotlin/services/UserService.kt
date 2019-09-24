@@ -8,6 +8,7 @@ import community.flock.eco.feature.user.forms.UserForm
 import community.flock.eco.feature.user.model.User
 import community.flock.eco.feature.user.repositories.UserRepository
 import org.springframework.context.ApplicationEventPublisher
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
 
@@ -42,6 +43,9 @@ class UserService(
                 applicationEventPublisher.publishEvent(UserDeleteEvent(it))
             }
             ?: Unit
+
+    fun searchByNameOrEmail(name: String, email: String, pageable: Pageable) = userRepository
+            .findAllByNameIgnoreCaseContainingOrEmailIgnoreCaseContaining(name, email, pageable)
 
     fun findByEmail(email: String) = userRepository.findByEmail(email)
             .toNullable()

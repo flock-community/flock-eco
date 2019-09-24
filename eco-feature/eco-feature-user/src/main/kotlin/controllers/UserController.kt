@@ -1,6 +1,5 @@
 package community.flock.eco.feature.user.controllers
 
-import community.flock.eco.core.utils.toNullable
 import community.flock.eco.core.utils.toResponse
 import community.flock.eco.feature.user.forms.UserForm
 import community.flock.eco.feature.user.model.User
@@ -23,8 +22,8 @@ class UserController(
 
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
-    fun findMe(principal: Principal?): ResponseEntity<User> = principal
-            ?.let { userRepository.findByCode(it.name).toNullable() }
+    fun findMe(principal: Principal?) = principal
+            ?.let { userService.read(it.name) }
             .toResponse()
 
     @GetMapping
@@ -63,7 +62,6 @@ class UserController(
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
     fun generateResetCodeForUserCode(@PathVariable code: String) = userAccountService
             .generateResetCodeForUserCode(code)
-            .let { Unit }
             .toResponse()
 
     @PutMapping("/reset-password")
@@ -76,5 +74,3 @@ class UserController(
             val email: String
     )
 }
-
-

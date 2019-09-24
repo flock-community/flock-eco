@@ -3,7 +3,6 @@ package community.flock.eco.feature.user.services
 import community.flock.eco.core.utils.toNullable
 import community.flock.eco.feature.user.events.UserAccountPasswordResetEvent
 import community.flock.eco.feature.user.events.UserAccountResetCodeGeneratedEvent
-import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForResetCodeException
 import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUserCode
 import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUserEmail
 import community.flock.eco.feature.user.exceptions.UserAccountWithEmailExistsException
@@ -74,14 +73,19 @@ class UserAccountService(
             ?.run { resetCode!! }
             ?: throw UserAccountNotFoundForUserCode(code)
 
-    fun resetPasswordWithResetCode(resetCode: String, password: String): UserAccountPassword = findUserAccountByResetCode(resetCode)
+    fun resetPasswordWithResetCode(resetCode: String, password: String) = findUserAccountByResetCode(resetCode)
             ?.copy(
                     secret = passwordEncoder.encode(password),
                     resetCode = null
             )
             ?.let(userAccountRepository::save)
-            ?.also { applicationEventPublisher.publishEvent(UserAccountPasswordResetEvent(it)) }
-            ?: throw UserAccountNotFoundForResetCodeException(resetCode)
+            ?.let { applicationEventPublisher.publishEvent(UserAccountPasswordResetEvent(it)) }
+
+    private fun UserAccountPassword.generateResetCodeAndSave() = copy(resetCode = UUID.randomUUID().toString())
+            .let(userAccountRepository::save)
+            .let { applicationEventPublisher.publishEvent(UserAccountResetCodeGeneratedEvent(it)) }
+
+    private fun String.encode() = passwordEncoder.encode(this)
 
     private fun UserAccountPasswordForm.createUserAndInternalize() = UserAccountPassword(
             user = createUser(),
