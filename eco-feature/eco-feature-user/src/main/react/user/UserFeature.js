@@ -6,6 +6,7 @@ import Fab from '@material-ui/core/Fab'
 import Grid from '@material-ui/core/Grid'
 import {TextField} from '@material-ui/core'
 import makeStyles from '@material-ui/core/styles/makeStyles'
+import Paper from '@material-ui/core/Paper'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -14,7 +15,13 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     height: '100%',
-    overflow: 'auto'
+    overflow: 'auto',
+  },
+  spacer:{
+    height: theme.spacing(8),
+  },
+  padding:{
+    padding: theme.spacing(2),
   },
   button: {
     position: 'absolute',
@@ -67,20 +74,26 @@ export function UserFeature() {
       <div className={classes.content}>
         <Grid container spacing={1}>
           <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Search"
-              value={searchState}
-              onChange={handleSearchChange}/>
+            <Paper className={classes.padding}>
+              <TextField
+                fullWidth
+                label="Search"
+                value={searchState}
+                onChange={handleSearchChange}/>
+            </Paper>
           </Grid>
           <Grid item xs={12}>
-            <UserTable
-              reload={reload}
-              search={searchState}
-              onRowClick={handleRowClick}/>
+            <Paper>
+              <UserTable
+                reload={reload}
+                search={searchState}
+                onRowClick={handleRowClick}/>
+            </Paper>
           </Grid>
         </Grid>
+        <div className={classes.spacer}/>
       </div>
+
 
       <UserDialog
         open={dialogState.open}

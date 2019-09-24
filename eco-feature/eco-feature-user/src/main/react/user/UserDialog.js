@@ -57,18 +57,13 @@ export function UserDialog({open, code, onComplete}) {
   }
 
   const handleSubmit = value => {
-    const user = {
-      ...value,
-      authorities: value.authorities
-        .map((it, index) => authorities[index])
-        .filter(it => it !== null),
-    }
-    if (user.code) {
-      UserClient.updateUser(user.code, user).then(
-        () => onComplete && onComplete(state),
+    if (value.code) {
+      UserClient.updateUser(value.code, value)
+        .then(() => onComplete && onComplete(state),
       )
     } else {
-      UserClient.createUser(user).then(() => onComplete && onComplete(state))
+      UserClient.createUser(value)
+        .then(() => onComplete && onComplete(state))
     }
   }
 

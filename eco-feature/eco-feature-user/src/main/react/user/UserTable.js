@@ -9,7 +9,7 @@ import TableRow from '@material-ui/core/TableRow'
 import TablePagination from '@material-ui/core/TablePagination'
 import UserClient from './UserClient'
 
-export function UserTable({search, size=10, reload, onRowClick, onChangePage}) {
+export function UserTable({search, size, reload, onRowClick, onChangePage}) {
   const [state, setState] = useState({
     page: 0,
     count: 0,
@@ -17,7 +17,7 @@ export function UserTable({search, size=10, reload, onRowClick, onChangePage}) {
   })
 
   useEffect(() => {
-    UserClient.findAllUsers(search, state.page, size).then(res => {
+    UserClient.findAllUsers(search, state.page, size || 10).then(res => {
       setState({...state, ...res})
     })
   }, [reload, search, size, state.page])
@@ -55,7 +55,7 @@ export function UserTable({search, size=10, reload, onRowClick, onChangePage}) {
         <TableRow>
           <TablePagination
             count={state.count}
-            rowsPerPage={size}
+            rowsPerPage={size || 10}
             page={state.page}
             rowsPerPageOptions={[]}
             onChangePage={handleChangePage}
