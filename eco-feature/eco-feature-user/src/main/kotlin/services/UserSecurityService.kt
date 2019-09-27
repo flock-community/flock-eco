@@ -93,13 +93,15 @@ class UserSecurityService(
                             ?.let { UserSecurityOauth2(it, oidcUser.idToken) }
                 }
     }
+
+    private fun User.getGrantedAuthority(): List<GrantedAuthority> {
+        return this.authorities
+                .map { SimpleGrantedAuthority(it) }
+                .toList()
+    }
 }
 
-private fun User.getGrantedAuthority(): List<GrantedAuthority> {
-    return this.authorities
-            .map { SimpleGrantedAuthority(it) }
-            .toList()
-}
+
 
 
 
