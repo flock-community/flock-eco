@@ -1,6 +1,7 @@
 package community.flock.eco.cloud.aws.services
 
 import community.flock.eco.core.services.StorageService
+import exceptions.CannotConnectToObjectStore
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Component
@@ -27,71 +28,88 @@ class AwsStorageService : StorageService {
         try {
             s3Client = S3Client.create()
         } catch (ex: Exception) {
-            logger.error("Cannot connect to S3 bucket", ex)
+            throw CannotConnectToObjectStore(ex)
         }
     }
 
-    override fun hasObject(bucket: String, key: String): Boolean {
+    override fun hasObject(bucket: String, key: String): Boolean = try {
         val request = HeadObjectRequest.builder()
                 .bucket(bucket)
                 .key(key)
                 .build()
-        return try {
-            s3Client.headObject(request)
-            true
-        } catch (ex: NoSuchKeyException) {
-            false
-        }
-
+        s3Client.headObject(request)
+        true
+    } catch (ex: NoSuchKeyException) {
+        false
+    } catch (ex: Exception) {
+        throw CannotConnectToObjectStore(ex)
     }
 
-    override fun getObject(bucket: String, key: String): ByteArray? {
+
+    override fun getObject(bucket: String, key: String): ByteArray? = try {
         val request = GetObjectRequest.builder()
                 .bucket(bucket)
                 .key(key)
                 .build()
-        return s3Client.getObject(request, ResponseTransformer.toBytes())
+        s3Client.getObject(request, ResponseTransformer.toBytes())
                 .asByteArray()
+    } catch (ex: NoSuchKeyException) {
+        null
+    } catch (ex: Exception) {
+        throw CannotConnectToObjectStore(ex)
     }
 
-    override fun putObject(bucket: String, key: String, file: File): StorageService.StorageObject {
+
+    override fun putObject(bucket: String, key: String, file: File): StorageService.StorageObject = try {
         val request: PutObjectRequest = PutObjectRequest.builder()
                 .bucket(bucket)
                 .key(key)
                 .build()
         val body = RequestBody.fromFile(file)
-        return s3Client.putObject(request, body)
+        s3Client.putObject(request, body)
                 .let { StorageService.StorageObject() }
+    } catch (ex: Exception) {
+        throw CannotConnectToObjectStore(ex)
     }
 
-    override fun putObject(bucket: String, key: String, file: MultipartFile): StorageService.StorageObject {
-        return putObject(bucket, key, file.inputStream, file.size)
+
+    override fun putObject(bucket: String, key: String, file: MultipartFile): StorageService.StorageObject = try {
+        putObject(bucket, key, file.inputStream, file.size)
+    } catch (ex: Exception) {
+        throw CannotConnectToObjectStore(ex)
     }
 
-    override fun putObject(bucket: String, key: String, input: InputStream, length: Long): StorageService.StorageObject {
+
+    override fun putObject(bucket: String, key: String, input: InputStream, length: Long): StorageService.StorageObject = try {
         val request: PutObjectRequest = PutObjectRequest.builder()
                 .bucket(bucket)
                 .key(key)
                 .build()
         val body = RequestBody.fromInputStream(input, length)
-        return s3Client.putObject(request, body)
+        s3Client.putObject(request, body)
                 .let { StorageService.StorageObject() }
+    } catch (ex: Exception) {
+        throw CannotConnectToObjectStore(ex)
     }
 
-    override fun initChunk(bucket: String, key: String, metadata: Map<String, String>?): StorageService.StorageMultipartObject {
+
+    override fun initChunk(bucket: String, key: String, metadata: Map<String, String>?): StorageService.StorageMultipartObject = try {
         val request = CreateMultipartUploadRequest.builder()
                 .bucket(bucket)
                 .key(key)
                 .metadata(metadata)
                 .build()
-        return s3Client.createMultipartUpload(request)
+        s3Client.createMultipartUpload(request)
                 .let {
                     StorageService.StorageMultipartObject(
                             uploadId = it.uploadId())
                 }
+    } catch (ex: Exception) {
+        throw CannotConnectToObjectStore(ex)
     }
 
-    override fun putChunk(bucket: String, key: String, uploadId: String, index: Int, file: MultipartFile): StorageService.StorageChuck {
+
+    override fun putChunk(bucket: String, key: String, uploadId: String, index: Int, file: MultipartFile): StorageService.StorageChuck = try {
 
         val uploadRequest = UploadPartRequest.builder()
                 .bucket(bucket)
@@ -100,12 +118,13 @@ class AwsStorageService : StorageService {
                 .partNumber(index + 1)
                 .build()
         val body = RequestBody.fromInputStream(file.inputStream, file.size)
-        return s3Client.uploadPart(uploadRequest, body)
+        s3Client.uploadPart(uploadRequest, body)
                 .let { StorageService.StorageChuck() }
-
+    } catch (ex: Exception) {
+        throw CannotConnectToObjectStore(ex)
     }
 
-    override fun putChunk(bucket: String, key: String, uploadId: String, index: Int, file: File): StorageService.StorageChuck {
+    override fun putChunk(bucket: String, key: String, uploadId: String, index: Int, file: File): StorageService.StorageChuck = try {
 
         val uploadRequest = UploadPartRequest.builder()
                 .bucket(bucket)
@@ -114,12 +133,13 @@ class AwsStorageService : StorageService {
                 .partNumber(index + 1)
                 .build()
         val body = RequestBody.fromFile(file)
-        return s3Client.uploadPart(uploadRequest, body)
+        s3Client.uploadPart(uploadRequest, body)
                 .let { StorageService.StorageChuck() }
-
+    } catch (ex: Exception) {
+        throw CannotConnectToObjectStore(ex)
     }
 
-    override fun putChunk(bucket: String, key: String, uploadId: String, index: Int, length: Long, input: InputStream): StorageService.StorageChuck {
+    override fun putChunk(bucket: String, key: String, uploadId: String, index: Int, length: Long, input: InputStream): StorageService.StorageChuck = try {
 
         val uploadRequest = UploadPartRequest.builder()
                 .bucket(bucket)
@@ -128,12 +148,14 @@ class AwsStorageService : StorageService {
                 .partNumber(index + 1)
                 .build()
         val body = RequestBody.fromInputStream(input, length)
-        return s3Client.uploadPart(uploadRequest, body)
+        s3Client.uploadPart(uploadRequest, body)
                 .let { StorageService.StorageChuck() }
 
+    } catch (ex: Exception) {
+        throw CannotConnectToObjectStore(ex)
     }
 
-    override fun completeChunk(bucket: String, key: String, uploadId: String): StorageService.StorageObject {
+    override fun completeChunk(bucket: String, key: String, uploadId: String): StorageService.StorageObject = try {
         val requestParts = ListPartsRequest.builder()
                 .bucket(bucket)
                 .key(key)
@@ -161,8 +183,10 @@ class AwsStorageService : StorageService {
                 .multipartUpload(completedMultipartUpload)
                 .build()
 
-        return s3Client.completeMultipartUpload(request)
+        s3Client.completeMultipartUpload(request)
                 .let { StorageService.StorageObject() }
+    } catch (ex: Exception) {
+        throw CannotConnectToObjectStore(ex)
     }
 
 }
