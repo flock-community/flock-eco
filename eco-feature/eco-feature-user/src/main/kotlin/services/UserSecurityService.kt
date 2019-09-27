@@ -1,6 +1,7 @@
 package community.flock.eco.feature.user.services
 
 import community.flock.eco.feature.user.forms.UserAccountOauthForm
+import community.flock.eco.feature.user.forms.UserAccountPasswordForm
 import community.flock.eco.feature.user.model.User
 import community.flock.eco.feature.user.model.UserAccountOauth
 import community.flock.eco.feature.user.model.UserAccountOauthProvider
@@ -42,10 +43,11 @@ class UserSecurityService(
     fun testLogin(http: HttpSecurity): FormLoginConfigurer<HttpSecurity>? {
         return http
                 .userDetailsService { ref ->
-                    val user = User(email = ref)
-                    val password = passwordEncoder.encode(ref)
-                    val account = UserAccountPassword(user = user, secret = password)
-                    UserSecurityPassword(account)
+                    userAccountService.findUserAccountPasswordByUserEmail(ref)
+                            ?.let { UserSecurityPassword(it) }
+                            ?: userAccountService.createUserAccountPassword(UserAccountPasswordForm(email = ref, password = ref))
+                                    .let { UserSecurityPassword(it) }
+
                 }
                 .formLogin()
     }
@@ -87,7 +89,7 @@ class UserSecurityService(
                     }
 
                     userAccountService.findUserAccountOauthByReference(reference)
-                            ?.let {  if(it.user.authorities.isNotEmpty()) it else null }
+                            ?.let { if (it.user.authorities.isNotEmpty()) it else null }
                             ?.let { UserSecurityOauth2(it, oidcUser.idToken) }
                 }
     }
