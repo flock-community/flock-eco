@@ -15,16 +15,13 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 import UserGroupClient from './UserGroupClient'
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(2),
-  },
   closeButton: {
     position: 'absolute',
     right: theme.spacing(1),
     top: theme.spacing(1),
     color: theme.palette.grey[500],
   },
+  autoCompleteFix: { overflow: 'visible' }
 }))
 
 export function UserGroupDialog({open, code, onComplete}) {
@@ -42,11 +39,6 @@ export function UserGroupDialog({open, code, onComplete}) {
       setState(null)
     }
   }, [code])
-
-  // const handleUsersChange = value => {
-  //   const users = value.map(it => it.user)
-  //   this.setState({users})
-  // }
 
   const handleClose = () => {
     onComplete && onComplete()
@@ -69,11 +61,11 @@ export function UserGroupDialog({open, code, onComplete}) {
 
   return (
     <Dialog
+      classes={{ paperScrollPaper: classes.autoCompleteFix }}
       fullWidth
       maxWidth={'sm'}
       open={open}
       onClose={handleClose}
-      classes={classes}
     >
       <DialogTitle disableTypography>
         <Typography variant="h6">User</Typography>
@@ -85,7 +77,7 @@ export function UserGroupDialog({open, code, onComplete}) {
           <CloseIcon/>
         </IconButton>
       </DialogTitle>
-      <DialogContent>
+      <DialogContent className={classes.autoCompleteFix}>
         <UserGroupForm
           value={state}
           onSummit={handleSubmit}/>

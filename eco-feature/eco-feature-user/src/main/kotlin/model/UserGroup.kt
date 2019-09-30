@@ -1,5 +1,8 @@
 package community.flock.eco.feature.user.model
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo
+import com.fasterxml.jackson.annotation.JsonIdentityReference
+import com.fasterxml.jackson.annotation.ObjectIdGenerators
 import community.flock.eco.core.events.EventEntityListeners
 import community.flock.eco.core.model.AbstractIdEntity
 import java.time.LocalDateTime
@@ -11,6 +14,7 @@ import javax.persistence.ManyToMany
 
 @Entity
 @EntityListeners(EventEntityListeners::class)
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator::class, property = "code")
 data class UserGroup(
 
         override val id: Long = 0,
@@ -21,6 +25,7 @@ data class UserGroup(
         val name: String,
 
         @ManyToMany
+        @JsonIdentityReference(alwaysAsId = true)
         val users: Set<User> = setOf(),
 
         val created: LocalDateTime = LocalDateTime.now()

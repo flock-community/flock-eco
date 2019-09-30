@@ -9,10 +9,10 @@ import TableRow from '@material-ui/core/TableRow'
 import {PageableClient} from '@flock-eco/core'
 import TablePagination from '@material-ui/core/TablePagination'
 
-const size = 25
+const DEFAULT_SIZE = 10
 
-export function UserGroupTable({reload, onRowClick}) {
-  const client = new PageableClient('/api/user-groups', {size})
+export function UserGroupTable({reload, onRowClick, size}) {
+  const client = new PageableClient('/api/user-groups', {size: size || DEFAULT_SIZE})
 
   const [count, setCount] = useState(0)
   const [page, setPage] = useState(0)
@@ -61,7 +61,7 @@ export function UserGroupTable({reload, onRowClick}) {
         <TableRow>
           <TablePagination
             count={count}
-            rowsPerPage={size}
+            rowsPerPage={size || DEFAULT_SIZE}
             page={page}
             rowsPerPageOptions={[]}
             onChangePage={handleChangePage}

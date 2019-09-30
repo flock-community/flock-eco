@@ -5,22 +5,24 @@ import {Field, Form, Formik} from 'formik'
 import {TextField} from 'formik-material-ui'
 import * as Yup from 'yup'
 import {MultipleSelect} from 'react-select-material-ui'
+import {UserAutocomplete} from '../user/UserAutocomplete'
 
 export const USER_GROUP_FORM_ID = 'user-form-id'
 
-const options = ["Africa", "America", "Asia", "Europe", "London", "Vienna"];
-
 const init = {
   name: '',
+  users:[]
 }
 
 /**
  * @return {null}
  */
 export function UserGroupForm({value, onSummit, ...props}) {
+
   const [state, setState] = useState(init)
 
   useEffect(() => {
+    console.log(value)
     if (value) {
       setState({
         ...init,
@@ -37,12 +39,15 @@ export function UserGroupForm({value, onSummit, ...props}) {
     name: Yup.string().required('Name is required'),
   })
 
-  const handleSubmit = value => {
-    onSummit &&
-      onSummit({
-        ...value,
-        users:[]
-      })
+  const handleSubmit = () => {
+    onSummit && onSummit(state)
+  }
+
+  const handleUserChange = ev => {
+    setState({
+      ...state,
+      users: ev
+    })
   }
 
   return (
@@ -58,18 +63,7 @@ export function UserGroupForm({value, onSummit, ...props}) {
             <Field fullWidth name="name" label="Name" component={TextField} />
           </Grid>
           <Grid item xs={12}>
-            <MultipleSelect
-              label="Choose some cities"
-              values={["London", "Vienna"]}
-              options={options}
-              helperText="You can add a new city by writing its name and pressing enter"
-              onChange={console.log}
-              SelectProps={{
-                isCreatable: true,
-                msgNoOptionsAvailable: "All cities are selected",
-                msgNoOptionsMatchFilter: "No city name matches the filter"
-              }}
-            />
+            <UserAutocomplete value={state && state.users} onChange={handleUserChange}/>
           </Grid>
         </Grid>
       </Form>

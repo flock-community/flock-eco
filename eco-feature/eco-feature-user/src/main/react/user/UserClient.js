@@ -25,6 +25,16 @@ export function findAllUsers(search, page, size) {
   })
 }
 
+export function findAllUserByCodes(codes) {
+  const opts = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+    },
+    body: JSON.stringify(codes),
+  }
+  return fetch(`/api/users/search`, opts).then(res => res.json())
+}
 export function findUserByCode(code) {
   const opts = {
     method: 'GET',
@@ -76,6 +86,7 @@ export default {
   findAllAuthorities,
   findAllUsers,
   findUserByCode,
+  findAllUserByCodes,
   createUser,
   updateUser,
   deleteUser,

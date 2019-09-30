@@ -1,23 +1,26 @@
-import React from 'react'
-import classNames from 'classnames'
-import AsyncSelect from 'react-select/lib/Async'
-import {withStyles} from '@material-ui/core/styles'
+import React, {useEffect} from 'react'
+import {emphasize} from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import Paper from '@material-ui/core/Paper'
 import Chip from '@material-ui/core/Chip'
 import MenuItem from '@material-ui/core/MenuItem'
 import CancelIcon from '@material-ui/icons/Cancel'
-import {PageableClient} from '@flock-eco/core'
+import makeStyles from '@material-ui/core/styles/makeStyles'
+import useTheme from '@material-ui/core/styles/useTheme'
+import NoSsr from '@material-ui/core/NoSsr'
+import AsyncSelect from 'react-select/async'
+import clsx from 'clsx'
+import UserClient from './UserClient'
 
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    height: 250,
   },
   input: {
     display: 'flex',
     padding: 0,
+    height: 'auto',
   },
   valueContainer: {
     display: 'flex',
@@ -27,23 +30,27 @@ const styles = theme => ({
     overflow: 'hidden',
   },
   chip: {
-    margin: `${theme.spacing(2)}px ${theme.spacing(4)}px`,
+    margin: theme.spacing(0.5, 0.25),
   },
-
+  chipFocused: {
+    backgroundColor: emphasize(
+      theme.palette.type === 'light' ? theme.palette.grey[300] : theme.palette.grey[700],
+      0.08,
+    ),
+  },
   noOptionsMessage: {
-    padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
-  },
-  singleValue: {
-    fontSize: 16,
+    padding: theme.spacing(1, 2),
   },
   placeholder: {
     position: 'absolute',
     left: 2,
+    bottom: 6,
     fontSize: 16,
   },
   paper: {
     position: 'absolute',
     zIndex: 1,
+    overflow: 'visible',
     marginTop: theme.spacing(1),
     left: 0,
     right: 0,
@@ -51,7 +58,7 @@ const styles = theme => ({
   divider: {
     height: theme.spacing(2),
   },
-})
+}))
 
 function NoOptionsMessage(props) {
   return (
@@ -65,24 +72,32 @@ function NoOptionsMessage(props) {
   )
 }
 
+
 function inputComponent({inputRef, ...props}) {
   return <div ref={inputRef} {...props} />
 }
 
 function Control(props) {
+  const {
+    children,
+    innerProps,
+    innerRef,
+    selectProps: {classes, TextFieldProps},
+  } = props
+
   return (
     <TextField
       fullWidth
       InputProps={{
         inputComponent,
         inputProps: {
-          className: props.selectProps.classes.input,
-          inputRef: props.innerRef,
-          children: props.children,
-          ...props.innerProps,
+          className: classes.input,
+          ref: innerRef,
+          children,
+          ...innerProps,
         },
       }}
-      {...props.selectProps.textFieldProps}
+      {...TextFieldProps}
     />
   )
 }
@@ -90,7 +105,7 @@ function Control(props) {
 function Option(props) {
   return (
     <MenuItem
-      buttonRef={props.innerRef}
+      ref={props.innerRef}
       selected={props.isFocused}
       component="div"
       style={{
@@ -104,34 +119,17 @@ function Option(props) {
 }
 
 function Placeholder(props) {
+  const {selectProps, innerProps = {}, children} = props
   return (
-    <Typography
-      color="textSecondary"
-      className={props.selectProps.classes.placeholder}
-      {...props.innerProps}
-    >
-      {props.children}
+    <Typography color="textSecondary" className={selectProps.classes.placeholder} {...innerProps}>
+      {children}
     </Typography>
   )
 }
 
-function SingleValue(props) {
-  return (
-    <Typography
-      className={props.selectProps.classes.singleValue}
-      {...props.innerProps}
-    >
-      {props.children}
-    </Typography>
-  )
-}
 
 function ValueContainer(props) {
-  return (
-    <div className={props.selectProps.classes.valueContainer}>
-      {props.children}
-    </div>
-  )
+  return <div className={props.selectProps.classes.valueContainer}>{props.children}</div>
 }
 
 function MultiValue(props) {
@@ -139,7 +137,7 @@ function MultiValue(props) {
     <Chip
       tabIndex={-1}
       label={props.children}
-      className={classNames(props.selectProps.classes.chip, {
+      className={clsx(props.selectProps.classes.chip, {
         [props.selectProps.classes.chipFocused]: props.isFocused,
       })}
       onDelete={props.removeProps.onClick}
@@ -167,75 +165,77 @@ const components = {
   NoOptionsMessage,
   Option,
   Placeholder,
-  SingleValue,
   ValueContainer,
 }
 
-class UserAutocomplete extends React.Component {
-  state = {
-    value: null,
-  }
+export function UserAutocomplete({value, onChange}) {
+  const classes = useStyles()
+  const theme = useTheme()
 
-  client = new PageableClient('/api/users', {size: 7})
+  const [state, setState] = React.useState(null)
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    const {value} = this.props
-    if (prevProps.value !== value) {
-      this.setState({value: value.map(this.mapUser)})
-    }
-  }
-
-  handleChange = value => {
-    const {onChange} = this.props
-    this.setState({value}, () => onChange && onChange(value))
-  }
-
-  promiseOptions = input =>
-    this.client.findAll(0, {search: input}).then(data => {
-      return data.list.map(this.mapUser)
-    })
-
-  mapUser = user => {
-    return {
-      value: user.code,
-      label: `${user.name} <${user.reference}>`,
-      user: user,
-    }
-  }
-
-  render() {
-    const {classes, theme} = this.props
-
-    const selectStyles = {
-      input: base => ({
-        ...base,
-        '& input': {
-          font: 'inherit',
-        },
-      }),
+  useEffect(() => {
+    const acc = value && JSON.stringify([...value].sort())
+    const cur = state && JSON.stringify([...state].map(it => it.value).sort())
+    if (acc !== cur) {
+      UserClient.findAllUserByCodes(value)
+        .then(res => {
+          setState(res.map(it => ({label: it.name, value: it.code})))
+        })
     }
 
-    return (
-      <AsyncSelect
-        classes={classes}
-        styles={selectStyles}
-        textFieldProps={{
-          label: 'Label',
-          InputLabelProps: {
-            shrink: true,
-          },
-        }}
-        cacheOptions
-        defaultOptions
-        loadOptions={this.promiseOptions}
-        components={components}
-        value={this.state.value}
-        onChange={this.handleChange}
-        placeholder="Select users"
-        isMulti
-      />
-    )
+  }, [value])
+
+  const handleChange = ev => {
+    setState(ev)
+    onChange && onChange(ev.map(it => it.value))
   }
+
+  const selectStyles = {
+    input: base => ({
+      ...base,
+      color: theme.palette.text.primary,
+      '& input': {
+        font: 'inherit',
+      },
+    }),
+  }
+
+  const loadOptions = (inputValue) => {
+    return UserClient.findAllUsers(inputValue, 0, 25)
+      .then(res => {
+        return res.list
+          .map(it => ({label: it.name, value: it.code}))
+          .slice(0, 10)
+      })
+  }
+
+  return (
+    <div className={classes.root}>
+      <NoSsr>
+
+        <AsyncSelect
+          classes={classes}
+          styles={selectStyles}
+          inputId="autocomplete-users"
+          TextFieldProps={{
+            label: 'Users',
+            InputLabelProps: {
+              htmlFor: 'autocomplete-users',
+              shrink: true,
+            },
+          }}
+          placeholder="Select multiple users"
+          components={components}
+          value={state}
+          onChange={handleChange}
+          isMulti
+          cacheOptions
+          defaultOptions
+          loadOptions={loadOptions}
+        />
+      </NoSsr>
+    </div>
+
+  )
 }
-
-export default withStyles(styles)(UserAutocomplete)

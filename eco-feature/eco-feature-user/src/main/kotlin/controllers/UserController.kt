@@ -30,9 +30,21 @@ class UserController(
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
     fun findAll(
             @RequestParam(defaultValue = "", required = false) search: String,
-            page: Pageable): ResponseEntity<List<User>> = userRepository
-            .findAllByNameIgnoreCaseContainingOrEmailIgnoreCaseContaining(search, search, page)
-            .toResponse()
+            page: Pageable): ResponseEntity<List<User>> {
+        return userRepository
+                .findAllByNameIgnoreCaseContainingOrEmailIgnoreCaseContaining(search, search, page)
+                .toResponse()
+    }
+
+    @PostMapping("search")
+    @PreAuthorize("hasAuthority('UserAuthority.READ')")
+    fun findAllByCodes(
+            @RequestBody(required = false) codes: Set<String>): ResponseEntity<List<User>> {
+        return userRepository.findAllByCodeIn(codes)
+                .toList()
+                .toResponse()
+
+    }
 
     @PostMapping
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")

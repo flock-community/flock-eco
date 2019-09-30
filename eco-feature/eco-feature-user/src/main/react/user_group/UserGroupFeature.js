@@ -19,6 +19,9 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     overflow: 'auto'
   },
+  spacer:{
+    height: theme.spacing(8),
+  },
   button: {
     position: 'absolute',
     right: theme.spacing(1),
@@ -88,7 +91,7 @@ export function UserGroupFeature() {
               reload={reload}/>
           </Grid>
         </Grid>
-
+        <div className={classes.spacer}/>
       </div>
 
       <UserGroupDialog
