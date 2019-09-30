@@ -1,8 +1,8 @@
 package community.flock.eco.feature.user.services
 
 import community.flock.eco.feature.user.UserConfiguration
+import community.flock.eco.feature.user.exceptions.UserAccountExistsException
 import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUserCode
-import community.flock.eco.feature.user.exceptions.UserAccountPasswordWithEmailExistsException
 import community.flock.eco.feature.user.forms.UserAccountOauthForm
 import community.flock.eco.feature.user.forms.UserAccountPasswordForm
 import community.flock.eco.feature.user.forms.UserForm
@@ -52,7 +52,7 @@ class UserAccountServiceTest {
         assertTrue(passwordEncoder.matches(passwordForm.password, password))
     }
 
-    @Test(expected = UserAccountPasswordWithEmailExistsException::class)
+    @Test(expected = UserAccountExistsException::class)
     fun `register user with password twice`() {
         userAccountService.createUserAccountPassword(passwordForm.copy())
         userAccountService.createUserAccountPassword(passwordForm.copy())
@@ -119,7 +119,7 @@ class UserAccountServiceTest {
 
     }
 
-    @Test(expected = UserAccountPasswordWithEmailExistsException::class)
+    @Test(expected = UserAccountExistsException::class)
     fun `create user account password without password create twice`() {
         val user = usetService.create(UserForm(
                 name="Pino",

@@ -1,11 +1,12 @@
 package community.flock.eco.feature.user.controllers
 
 import community.flock.eco.core.exceptions.FlockEcoException
+import community.flock.eco.feature.user.exceptions.UserAccountExistsException
 import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUserCode
 import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUserEmail
-import community.flock.eco.feature.user.exceptions.UserAccountPasswordWithEmailExistsException
 import org.springframework.http.HttpStatus
-import org.springframework.http.HttpStatus.*
+import org.springframework.http.HttpStatus.CONFLICT
+import org.springframework.http.HttpStatus.NO_CONTENT
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -13,8 +14,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 @ControllerAdvice
 class UserControllerAdvice {
 
-    @ExceptionHandler(UserAccountPasswordWithEmailExistsException::class)
-    fun handleUserAccountWithEmailExistsException(e: UserAccountPasswordWithEmailExistsException) = respond(e, CONFLICT)
+    @ExceptionHandler(UserAccountExistsException::class)
+    fun handleUserAccountWithEmailExistsException(e: UserAccountExistsException) = respond(e, CONFLICT)
 
     @ExceptionHandler(UserAccountNotFoundForUserCode::class)
     fun handleUserAccountNotFoundForUser(e: UserAccountNotFoundForUserCode) = respond(NO_CONTENT)

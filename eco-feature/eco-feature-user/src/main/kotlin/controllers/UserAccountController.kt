@@ -17,7 +17,7 @@ class UserAccountController(
 ) {
 
     @GetMapping
-    @PreAuthorize("hasAuthority('UserAccountAuthority.READ')")
+    @PreAuthorize("hasAuthority('UserAuthority.READ')")
     fun findAll(
             @RequestParam(defaultValue = "", required = false) search: String,
             page: Pageable): ResponseEntity<Iterable<UserAccount>> = userAccountRepository
