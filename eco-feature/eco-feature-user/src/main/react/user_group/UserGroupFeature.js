@@ -9,6 +9,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 import {MultipleSelect} from 'react-select-material-ui'
 import Grid from '@material-ui/core/Grid'
 import {TextField} from '@material-ui/core'
+import Paper from '@material-ui/core/Paper'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -17,10 +18,14 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     height: '100%',
-    overflow: 'auto'
+    overflowX: 'hidden',
+    padding: theme.spacing(1),
   },
   spacer:{
     height: theme.spacing(8),
+  },
+  paper:{
+    padding: theme.spacing(2),
   },
   button: {
     position: 'absolute',
@@ -75,20 +80,23 @@ export function UserGroupFeature() {
 
   return (
     <div className={classes.root}>
-
       <div className={classes.content}>
-        <Grid container>
+        <Grid container spacing={1}>
           <Grid item xs={12}>
+            <Paper className={classes.paper}>
             <TextField
               fullWidth
               label="Search"
               value={searchState}
               onChange={handleSearchChange}/>
+            </Paper>
           </Grid>
           <Grid item xs={12}>
+            <Paper>
             <UserGroupTable
               onRowClick={handleRowClick}
               reload={reload}/>
+            </Paper>
           </Grid>
         </Grid>
         <div className={classes.spacer}/>

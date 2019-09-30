@@ -51,7 +51,6 @@ export function UserForm({value, onSummit, ...props}) {
   }, [value, authorities])
 
   const handleSubmit = value => {
-    console.log(value)
     onSummit &&
       onSummit({
         ...value,

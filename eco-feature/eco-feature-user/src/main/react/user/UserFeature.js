@@ -15,12 +15,13 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     height: '100%',
-    overflow: 'auto',
+    overflowX: 'hidden',
+    padding: theme.spacing(1),
   },
   spacer:{
     height: theme.spacing(8),
   },
-  padding:{
+  paper:{
     padding: theme.spacing(2),
   },
   button: {
@@ -73,7 +74,7 @@ export function UserFeature() {
       <div className={classes.content}>
         <Grid container spacing={1}>
           <Grid item xs={12}>
-            <Paper className={classes.padding}>
+            <Paper className={classes.paper}>
               <TextField
                 fullWidth
                 label="Search"
