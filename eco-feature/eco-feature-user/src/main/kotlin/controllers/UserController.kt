@@ -66,7 +66,7 @@ class UserController(
 
     @DeleteMapping("/{code}")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
-    fun update(@PathVariable code: String) = userService
+    fun delete(@PathVariable code: String) = userService
             .delete(code)
             .toResponse()
 

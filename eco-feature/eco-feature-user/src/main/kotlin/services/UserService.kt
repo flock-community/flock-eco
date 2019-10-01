@@ -11,6 +11,7 @@ import community.flock.eco.feature.user.repositories.UserRepository
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import javax.transaction.Transactional
 
 
 @Service
@@ -20,7 +21,9 @@ class UserService(
         val applicationEventPublisher: ApplicationEventPublisher
 ) {
 
-    fun findByCode(code: String) = userRepository
+    fun findAll(): Iterable<User> = userRepository.findAll()
+
+    fun findByCode(code: String): User? = userRepository
             .findByCode(code)
             .toNullable()
 
@@ -39,6 +42,7 @@ class UserService(
             ?.also { applicationEventPublisher.publishEvent(UserUpdateEvent(it)) }
 
 
+    @Transactional
     fun delete(code: String): Unit = read(code)
             ?.let {
                 userAccountRepository.deleteByUserCode(it.code)
@@ -64,4 +68,5 @@ class UserService(
             email = form.email,
             authorities = form.authorities
     )
+
 }

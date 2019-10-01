@@ -7,6 +7,8 @@ import community.flock.eco.feature.user.forms.UserAccountOauthForm
 import community.flock.eco.feature.user.forms.UserAccountPasswordForm
 import community.flock.eco.feature.user.forms.UserForm
 import community.flock.eco.feature.user.model.UserAccountOauthProvider
+import community.flock.eco.feature.user.repositories.UserAccountPasswordRepository
+import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
@@ -27,10 +29,13 @@ import kotlin.test.assertTrue
 class UserAccountServiceTest {
 
     @Autowired
-    private lateinit var usetService: UserService
+    private lateinit var userService: UserService
 
     @Autowired
     private lateinit var userAccountService: UserAccountService
+
+    @Autowired
+    private lateinit var userAccountPasswordRepository: UserAccountPasswordRepository
 
     @Autowired
     private lateinit var passwordEncoder: PasswordEncoder
@@ -50,6 +55,8 @@ class UserAccountServiceTest {
         assertNotNull(user.code)
 
         assertTrue(passwordEncoder.matches(passwordForm.password, password))
+
+        assertEquals(1, userService.findAll().count())
     }
 
     @Test(expected = UserAccountExistsException::class)
@@ -57,6 +64,7 @@ class UserAccountServiceTest {
         userAccountService.createUserAccountPassword(passwordForm.copy())
         userAccountService.createUserAccountPassword(passwordForm.copy())
     }
+
 
     @Test
     fun `test register oauth user`() {
@@ -107,7 +115,7 @@ class UserAccountServiceTest {
 
     @Test
     fun `create user account password without password`() {
-        val user = usetService.create(UserForm(
+        val user = userService.create(UserForm(
                 name="Pino",
                 email = "pino@sesamstreet.xx"
         ))
@@ -121,13 +129,23 @@ class UserAccountServiceTest {
 
     @Test(expected = UserAccountExistsException::class)
     fun `create user account password without password create twice`() {
-        val user = usetService.create(UserForm(
+        val user = userService.create(UserForm(
                 name="Pino",
                 email = "pino@sesamstreet.xx"
         ))
         userAccountService.createUserAccountPasswordWithoutPassword(user.code)
         userAccountService.createUserAccountPasswordWithoutPassword(user.code)
 
+    }
+
+    @Test
+    fun `delete user with account password`() {
+        val account = userAccountService.createUserAccountPassword(passwordForm.copy())
+
+        userService.delete(account.user.code)
+
+        Assert.assertNull(userService.findByCode(account.user.code))
+        Assert.assertEquals(0, userAccountPasswordRepository.findAll().count())
     }
 
 }

@@ -49,13 +49,13 @@ export function UserGroupDialog({open, code, onComplete}) {
       client.create(value)
         .then(it => onComplete && onComplete(it))
     } else {
-      client.update(value.code, value)
+      client.update(state.code, value)
         .then(it => onComplete && onComplete(it))
     }
   }
 
   const handleDelete = () => {
-    client.delete(value.code)
+    client.delete(state.code)
       .then(it => onComplete && onComplete(it))
   }
 
