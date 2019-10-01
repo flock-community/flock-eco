@@ -2,6 +2,7 @@ package community.flock.eco.cloud.stub.services
 
 import community.flock.eco.core.services.StorageService
 import events.PutObjectStorageEvent
+import exceptions.CannotConnectToObjectStore
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.ApplicationEventPublisher
@@ -34,6 +35,12 @@ class StubStoreService(
             .also {
                 logger.info("Get file from bucket: $bucket and key: $key")
             }
+
+    override fun listObjects(bucket: String, prefix: String?): List<String> = store[bucket]
+                ?.map{it.key}
+                ?.filter { it.startsWith(prefix?:"") }
+                ?.take(100)
+                ?: listOf()
 
     override fun hasObject(bucket: String, key: String): Boolean {
         return store[bucket]?.contains(key) ?: false

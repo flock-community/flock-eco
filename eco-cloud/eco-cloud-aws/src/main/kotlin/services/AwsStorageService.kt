@@ -14,7 +14,6 @@ import java.io.File
 import java.io.InputStream
 import javax.annotation.PostConstruct
 
-
 @Component
 @ConditionalOnProperty("flock.eco.cloud.aws.enabled")
 class AwsStorageService : StorageService {
@@ -45,6 +44,18 @@ class AwsStorageService : StorageService {
         throw CannotConnectToObjectStore(ex)
     }
 
+    override fun listObjects(bucket: String, prefix: String?): List<String> = try {
+        val request = ListObjectsV2Request.builder()
+                .bucket(bucket)
+                .prefix(prefix)
+                .maxKeys(100)
+                .build()
+        s3Client.listObjectsV2(request)
+                .contents()
+                .map { it.key() }
+    } catch (ex: Exception) {
+        throw CannotConnectToObjectStore(ex)
+    }
 
     override fun getObject(bucket: String, key: String): ByteArray? = try {
         val request = GetObjectRequest.builder()
