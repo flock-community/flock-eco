@@ -1,12 +1,10 @@
 package community.flock.eco.feature.user.model
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference
 import com.fasterxml.jackson.annotation.JsonManagedReference
 import community.flock.eco.core.model.AbstractIdEntity
 import java.time.LocalDateTime
-import javax.persistence.Entity
-import javax.persistence.Inheritance
-import javax.persistence.InheritanceType
-import javax.persistence.ManyToOne
+import javax.persistence.*
 
 @Entity
 @Inheritance(
@@ -16,8 +14,9 @@ abstract class UserAccount(
 
         override val id: Long = 0,
 
-        @JsonManagedReference
         @ManyToOne
+        @JoinColumn(name = "user_id")
+        @JsonIdentityReference(alwaysAsId = true)
         open val user: User,
 
         open val created: LocalDateTime = LocalDateTime.now()

@@ -12,6 +12,7 @@ import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Typography from '@material-ui/core/Typography'
 import makeStyles from '@material-ui/core/styles/makeStyles'
+import {UserDeleteDialog} from './UserDeleteDialog'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -27,10 +28,12 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export function UserDialog({open, code, onComplete}) {
-  const [state, setState] = useState(null)
-  const [authorities, setAuthorities] = useState(null)
 
   const classes = useStyles()
+
+  const [confirmOpen, setOpenConfirm] = useState(false)
+  const [state, setState] = useState(null)
+  const [authorities, setAuthorities] = useState(null)
 
   useEffect(() => {
     if (code !== null) {
@@ -44,12 +47,27 @@ export function UserDialog({open, code, onComplete}) {
     UserClient.findAllAuthorities().then(setAuthorities)
   }, [])
 
+  const handleConfirmDelete = ev => {
+    setOpenConfirm(true)
+  }
+
   const handleDelete = ev => {
     UserClient.deleteUser(state.code)
+      .then(res => {
+        onComplete && onComplete()
+        setOpenConfirm(false)
+      })
+  }
+
+  const handleCloseDelete = ev => {
+    setOpenConfirm(false)
   }
 
   const handleReset = ev => {
     UserClient.resetUserPassword(state.code)
+      .then(res => {
+        onComplete && onComplete()
+      })
   }
 
   const handleClose = ev => {
@@ -60,46 +78,52 @@ export function UserDialog({open, code, onComplete}) {
     if (value.code) {
       UserClient.updateUser(value.code, value)
         .then(() => onComplete && onComplete(state),
-      )
+        )
     } else {
       UserClient.createUser(value)
         .then(() => onComplete && onComplete(state))
     }
   }
 
-  return (
-    <Dialog fullWidth maxWidth={'md'} open={open} onClose={handleClose}>
-      <DialogTitle disableTypography>
-        <Typography variant="h6">User</Typography>
-        <IconButton
-          aria-label="close"
-          className={classes.closeButton}
-          onClick={handleClose}
-        >
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
-      <DialogContent>
-        <UserForm
-          value={state}
-          authorities={authorities}
-          onSummit={handleSubmit}
-        />
-      </DialogContent>
-      <DialogActions>
-        {state && state.code && (
-          <Button onClick={handleReset}>Reset password</Button>
-        )}
-        {state && state.code && <Button onClick={handleDelete}>Delete</Button>}
-        <Button
-          variant="contained"
-          color="primary"
-          form={USER_FORM_ID}
-          type="submit"
-        >
-          Save
-        </Button>
-      </DialogActions>
-    </Dialog>
+  return (<>
+      <Dialog fullWidth maxWidth={'md'} open={open} onClose={handleClose}>
+        <DialogTitle disableTypography>
+          <Typography variant="h6">User</Typography>
+          <IconButton
+            aria-label="close"
+            className={classes.closeButton}
+            onClick={handleClose}
+          >
+            <CloseIcon/>
+          </IconButton>
+        </DialogTitle>
+        <DialogContent>
+          <UserForm
+            value={state}
+            authorities={authorities}
+            onSummit={handleSubmit}
+          />
+        </DialogContent>
+        <DialogActions>
+          {state && state.code && (
+            <Button onClick={handleReset}>Reset password</Button>
+          )}
+          {state && state.code && <Button onClick={handleConfirmDelete}>Delete</Button>}
+          <Button
+            variant="contained"
+            color="primary"
+            form={USER_FORM_ID}
+            type="submit"
+          >
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <UserDeleteDialog
+        open={confirmOpen}
+        value={state}
+        onClose={handleCloseDelete}
+        onDelete={handleDelete}/>
+    </>
   )
 }

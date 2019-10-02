@@ -1,10 +1,11 @@
 package community.flock.eco.feature.user.controllers
 
-import community.flock.eco.core.utils.toNullable
 import community.flock.eco.core.utils.toResponse
+import community.flock.eco.feature.user.forms.UserGroupForm
 import community.flock.eco.feature.user.model.UserGroup
 import community.flock.eco.feature.user.repositories.UserGroupRepository
 import community.flock.eco.feature.user.repositories.UserRepository
+import community.flock.eco.feature.user.services.UserGroupService
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -13,13 +14,9 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/user-groups")
 class UserGroupController(
+        private val userGroupService: UserGroupService,
         private val userRepository: UserRepository,
         private val userGroupRepository: UserGroupRepository) {
-
-    data class UserGroupForm(
-            val name: String,
-            val users: Set<String>
-    )
 
     @GetMapping()
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
@@ -36,45 +33,24 @@ class UserGroupController(
 
     @PostMapping()
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
-    fun create(@RequestBody form: UserGroupForm): UserGroup = form
-            .internalize()
-            .let { userGroupRepository.save(it) }
+    fun create(@RequestBody form: UserGroupForm) = userGroupService
+            .create(form)
+            .toResponse()
 
     @PutMapping("/{code}")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
-    fun update(@RequestBody form: UserGroupForm, @PathVariable code: String): ResponseEntity<UserGroup> = userGroupRepository
-            .findByCode(code)
-            .toNullable()
-            ?.let { userGroup ->
-                form.internalize()
-                        .copy(
-                                id = userGroup.id,
-                                code = userGroup.code
-                        )
-                        .let { userGroupRepository.save(it) }
-            }
+    fun update(@RequestBody form: UserGroupForm, @PathVariable code: String) = userGroupService
+            .update(code,form)
             .toResponse()
 
     @DeleteMapping("/{code}")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
-    fun delete(@PathVariable code: String) = userGroupRepository
-            .findByCode(code)
-            .toNullable()
-            ?.let {
-                userGroupRepository.delete(it)
-            }
+    fun delete(@PathVariable code: String) = userGroupService
+            .delete(code)
             .toResponse()
 
 
-    private fun UserGroupForm.internalize(): UserGroup {
-        return UserGroup(
-                name = this.name,
-                users = this.users
-                        .mapNotNull { userRepository.findByCode(it).toNullable() }
-                        .toSet()
 
-        )
-    }
 
 }
 

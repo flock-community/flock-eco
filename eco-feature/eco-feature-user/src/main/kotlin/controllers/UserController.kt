@@ -1,6 +1,7 @@
 package community.flock.eco.feature.user.controllers
 
 import community.flock.eco.core.utils.toResponse
+import community.flock.eco.feature.user.exceptions.UserCannotRemoveOwnAccount
 import community.flock.eco.feature.user.forms.UserForm
 import community.flock.eco.feature.user.model.User
 import community.flock.eco.feature.user.repositories.UserRepository
@@ -66,9 +67,13 @@ class UserController(
 
     @DeleteMapping("/{code}")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
-    fun delete(@PathVariable code: String) = userService
-            .delete(code)
-            .toResponse()
+    fun delete(@PathVariable code: String, principal: Principal): ResponseEntity<Unit> {
+        if(principal.name == code)
+            throw UserCannotRemoveOwnAccount()
+        return userService
+                .delete(code)
+                .toResponse()
+    }
 
     @PutMapping("/{code}/reset-password")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")

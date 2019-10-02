@@ -2,6 +2,7 @@ package community.flock.eco.feature.user.model
 
 import com.fasterxml.jackson.annotation.JsonBackReference
 import com.fasterxml.jackson.annotation.JsonIdentityInfo
+import com.fasterxml.jackson.annotation.JsonIdentityReference
 import com.fasterxml.jackson.annotation.ObjectIdGenerators
 import community.flock.eco.core.events.EventEntityListeners
 import community.flock.eco.core.model.AbstractIdEntity

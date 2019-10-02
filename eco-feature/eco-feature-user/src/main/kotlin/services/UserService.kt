@@ -7,6 +7,7 @@ import community.flock.eco.feature.user.events.UserUpdateEvent
 import community.flock.eco.feature.user.forms.UserForm
 import community.flock.eco.feature.user.model.User
 import community.flock.eco.feature.user.repositories.UserAccountRepository
+import community.flock.eco.feature.user.repositories.UserGroupRepository
 import community.flock.eco.feature.user.repositories.UserRepository
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.domain.Pageable
@@ -17,6 +18,7 @@ import javax.transaction.Transactional
 @Service
 class UserService(
         val userRepository: UserRepository,
+        val userGroupRepository: UserGroupRepository,
         val userAccountRepository: UserAccountRepository,
         val applicationEventPublisher: ApplicationEventPublisher
 ) {
@@ -43,13 +45,16 @@ class UserService(
 
 
     @Transactional
-    fun delete(code: String): Unit = read(code)
-            ?.let {
-                userAccountRepository.deleteByUserCode(it.code)
-                userRepository.delete(it)
-                applicationEventPublisher.publishEvent(UserDeleteEvent(it))
-            }
-            ?: Unit
+    fun delete(code: String) =read(code)?.run{
+        userGroupRepository.findAllByUsersContains(this)
+                .map { group -> group.copy(
+                        users = group.users
+                                .filter { it.code != code}
+                                .toMutableSet()) }
+                .let { userGroupRepository.saveAll(it) }
+        userAccountRepository.deleteByUserCode(code)
+        userRepository.deleteByCode(code)
+    }
 
     fun searchByNameOrEmail(name: String, email: String, pageable: Pageable) = userRepository
             .findAllByNameIgnoreCaseContainingOrEmailIgnoreCaseContaining(name, email, pageable)

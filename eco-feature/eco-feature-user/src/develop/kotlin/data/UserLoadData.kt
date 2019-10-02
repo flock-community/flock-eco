@@ -28,7 +28,7 @@ class UserLoadData(
             email = "email-$int@email-$int.xx",
             authorities = userAuthorityService.allAuthorities()
                     .map { it.toName() }
-                    .toSet()
+                    .toMutableSet()
     )
 
     private fun account(user: User) = UserAccountPassword(

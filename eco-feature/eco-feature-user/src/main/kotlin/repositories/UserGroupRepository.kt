@@ -12,7 +12,10 @@ import java.util.*
 interface UserGroupRepository : PagingAndSortingRepository<UserGroup, Long> {
 
     fun findAllByNameIgnoreCaseContaining(name: String, pageable: Pageable): Page<UserGroup>
+    fun findAllByUsersContains(user:User): Iterable<UserGroup>
 
     fun findByCode(code: String): Optional<UserGroup>
+
+    fun deleteByCode(code: String)
 
 }

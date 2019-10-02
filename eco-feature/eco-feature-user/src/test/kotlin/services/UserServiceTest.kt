@@ -2,6 +2,8 @@ package community.flock.eco.feature.user.services
 
 import community.flock.eco.feature.user.UserConfiguration
 import community.flock.eco.feature.user.forms.UserForm
+import community.flock.eco.feature.user.forms.UserGroupForm
+import community.flock.eco.feature.user.repositories.UserGroupRepository
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -24,6 +26,9 @@ class UserServiceTest {
 
     @Autowired
     private lateinit var userGroupService: UserGroupService
+
+    @Autowired
+    private lateinit var userGroupRepository: UserGroupRepository
 
     @Test
     fun `create new user`() {
@@ -48,6 +53,24 @@ class UserServiceTest {
         userService.delete(user.code)
 
         Assert.assertEquals(0, userService.findAll().count())
+    }
+
+    @Test
+    fun `remove user in group`() {
+        val form = UserForm(
+                name = "User 3",
+                email = "user-3@gmail.com"
+        )
+        val user = userService.create(form)
+        Assert.assertNotNull(user.id)
+
+        val group = userGroupService.create(UserGroupForm("Test", setOf(user.code)))
+        Assert.assertNotNull(group.id)
+
+        userService.delete(user.code)
+
+        Assert.assertEquals(0, userService.findAll().count())
+        Assert.assertEquals(1, userGroupRepository.findAll().count())
     }
 
 }

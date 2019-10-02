@@ -7,10 +7,7 @@ import community.flock.eco.core.events.EventEntityListeners
 import community.flock.eco.core.model.AbstractIdEntity
 import java.time.LocalDateTime
 import java.util.*
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.EntityListeners
-import javax.persistence.ManyToMany
+import javax.persistence.*
 
 @Entity
 @EntityListeners(EventEntityListeners::class)
@@ -25,8 +22,12 @@ data class UserGroup(
         val name: String,
 
         @ManyToMany
+        @JoinTable(name = "group_users",
+                joinColumns = [JoinColumn(name = "group_id")],
+                inverseJoinColumns = [JoinColumn(name = "user_id")]
+        )
         @JsonIdentityReference(alwaysAsId = true)
-        val users: Set<User> = setOf(),
+        val users: MutableSet<User> = mutableSetOf(),
 
         val created: LocalDateTime = LocalDateTime.now()
 

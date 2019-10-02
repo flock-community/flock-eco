@@ -1,7 +1,9 @@
 package community.flock.eco.feature.user.services
 
+import community.flock.eco.core.utils.toNullable
 import community.flock.eco.feature.user.UserConfiguration
 import community.flock.eco.feature.user.forms.UserForm
+import community.flock.eco.feature.user.forms.UserGroupForm
 import community.flock.eco.feature.user.repositories.UserGroupRepository
 import org.junit.Assert
 import org.junit.Test
@@ -31,7 +33,7 @@ class UserGroupServiceTest {
 
     @Test
     fun `create new group`() {
-        val group = userGroupService.create("Test")
+        val group = userGroupService.create(UserGroupForm("Test"))
         Assert.assertNotNull(group)
     }
 
@@ -42,12 +44,12 @@ class UserGroupServiceTest {
                 email = "user-2@gmail.com"
         )
         val user = userService.create(form)
-        val group = userGroupService.create("Test", setOf(user))
+        val group = userGroupService.create(UserGroupForm("Test", mutableSetOf(user.code)))
         Assert.assertNotNull(group)
     }
 
     @Test
-    fun `remove user which is in group`() {
+    fun `remove user from group`() {
         val form = UserForm(
                 name = "User 3",
                 email = "user-3@gmail.com"
@@ -55,14 +57,15 @@ class UserGroupServiceTest {
         val user = userService.create(form)
         Assert.assertNotNull(user.id)
 
-        val group = userGroupService.create("Test", setOf(user))
+        val group = userGroupService.create(UserGroupForm("Test", mutableSetOf(user.code)))
         Assert.assertNotNull(group.id)
 
-        userService.delete(user.code)
-        Assert.assertNull(userService.findByCode(user.code))
-        Assert.assertNotNull(userGroupService.findByCode(group.code))
+        userGroupService.update(group.code, UserGroupForm(
+                users = setOf()
+        ))
 
-        Assert.assertEquals(0, userService.findAll().count())
+        Assert.assertEquals(1, userService.findAll().count())
         Assert.assertEquals(1, userGroupRepository.findAll().count())
+        Assert.assertEquals(0, userGroupRepository.findByCode(group.code).toNullable()?.users?.count())
     }
 }

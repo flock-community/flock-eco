@@ -17,4 +17,6 @@ interface UserRepository : PagingAndSortingRepository<User, Long> {
 
     fun findByEmail(code: String): Optional<User>
 
+    fun deleteByCode(code: String)
+
 }
