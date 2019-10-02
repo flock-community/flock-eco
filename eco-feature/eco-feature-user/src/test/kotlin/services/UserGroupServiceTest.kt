@@ -62,6 +62,7 @@ class UserGroupServiceTest {
         Assert.assertNull(userService.findByCode(user.code))
         Assert.assertNotNull(userGroupService.findByCode(group.code))
 
-        Assert.assertEquals(0, userGroupRepository.findAll().count())
+        Assert.assertEquals(0, userService.findAll().count())
+        Assert.assertEquals(1, userGroupRepository.findAll().count())
     }
 }
