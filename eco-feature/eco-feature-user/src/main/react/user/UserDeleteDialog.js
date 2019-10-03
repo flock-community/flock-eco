@@ -39,7 +39,7 @@ export function UserDeleteDialog({open, value, onClose, onDelete}) {
   }
 
   return (
-    <Dialog fullWidth maxWidth={'xs'} open={open} onClose={handleClose}>
+    <Dialog fullWidth maxWidth={'sm'} open={open} onClose={handleClose}>
       <DialogTitle disableTypography>
         <Typography variant="h6">User</Typography>
         <IconButton
