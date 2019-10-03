@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export function UserFeature() {
+export function UserFeature({enablePassword}) {
   const classes = useStyles()
 
   const [searchState, setSearchState] = useState('')
@@ -99,6 +99,7 @@ export function UserFeature() {
         open={dialogState.open}
         code={dialogState.code}
         onComplete={handleComplete}
+        enablePassword={enablePassword}
       />
 
       <Fab

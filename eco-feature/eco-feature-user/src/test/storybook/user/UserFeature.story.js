@@ -5,8 +5,11 @@ import {UserFeature} from '../../../main/react/user/UserFeature'
 storiesOf('User/UserFeature', module)
 
   .add('default', () => (
-    <div style={{height:'400px'}}>
+    <div style={{height: '400px'}}>
       <UserFeature/>
-    </div>
+    </div>))
 
-    ))
+  .add('password', () => (
+    <div style={{height: '400px'}}>
+      <UserFeature enablePassword={true}/>
+    </div>))

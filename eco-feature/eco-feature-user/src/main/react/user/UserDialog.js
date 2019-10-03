@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export function UserDialog({open, code, onComplete}) {
+export function UserDialog({open, code, onComplete, enablePassword}) {
 
   const classes = useStyles()
 
@@ -116,7 +116,7 @@ export function UserDialog({open, code, onComplete}) {
           />
         </DialogContent>
         <DialogActions>
-          {state && state.code && (
+          {enablePassword && state && state.code && (
             <Button onClick={handleReset}>Reset password</Button>
           )}
           {state && state.code && <Button onClick={handleOpenDelete}>Delete</Button>}
