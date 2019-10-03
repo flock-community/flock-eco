@@ -6,10 +6,8 @@ export class ResourceClient {
   }
 
   findAll = () => fetch(`${this.url}`)
-    .then(res => res.json())
 
   findById = id => fetch(`${this.url}/${id}`)
-    .then(res => res.json())
 
   create = item => {
     const opts = {
@@ -19,7 +17,7 @@ export class ResourceClient {
       },
       body: JSON.stringify(item),
     }
-    return fetch(`${this.url}`, opts).then(res => res.json())
+    return fetch(`${this.url}`, opts)
   }
 
   update = (id, item) => {
@@ -31,13 +29,13 @@ export class ResourceClient {
       },
       body: JSON.stringify(item),
     }
-    return fetch(`${this.url}/${id}`, opts).then(res => res.json())
+    return fetch(`${this.url}/${id}`, opts)
   }
 
   delete = id => {
     const opts = {
       method: 'DELETE',
     }
-    return fetch(`${this.url}/${id}`, opts).then(res => res.json())
+    return fetch(`${this.url}/${id}`, opts)
   }
 }

@@ -67,9 +67,8 @@ class UserController(
 
     @DeleteMapping("/{code}")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
-    fun delete(@PathVariable code: String, principal: Principal): ResponseEntity<Unit> {
-        if(principal.name == code)
-            throw UserCannotRemoveOwnAccount()
+    fun delete(@PathVariable code: String, principal: Principal?): ResponseEntity<Unit> {
+        if(principal?.name == code) throw UserCannotRemoveOwnAccount()
         return userService
                 .delete(code)
                 .toResponse()

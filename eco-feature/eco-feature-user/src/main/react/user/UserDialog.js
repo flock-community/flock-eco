@@ -12,7 +12,8 @@ import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Typography from '@material-ui/core/Typography'
 import makeStyles from '@material-ui/core/styles/makeStyles'
-import {UserDeleteDialog} from './UserDeleteDialog'
+import {ConfirmDialog} from '@flock-eco/core/src/main/react/components/ConfirmDialog'
+import {Snackbar} from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,43 +32,52 @@ export function UserDialog({open, code, onComplete}) {
 
   const classes = useStyles()
 
-  const [confirmOpen, setOpenConfirm] = useState(false)
   const [state, setState] = useState(null)
+  const [message, setMessage] = useState(null)
+  const [openDelete, setOpenDelete] = useState(false)
   const [authorities, setAuthorities] = useState(null)
 
   useEffect(() => {
     if (code !== null) {
-      UserClient.findUserByCode(code).then(res => setState(res))
+      UserClient.findUserByCode(code)
+        .then(res => setState(res))
+        .catch(err => {setMessage(err.message)})
     } else {
       setState(null)
     }
   }, [code])
 
   useEffect(() => {
-    UserClient.findAllAuthorities().then(setAuthorities)
+    UserClient.findAllAuthorities()
+      .then(setAuthorities)
+      .catch(err => {setMessage(err.message)})
   }, [])
-
-  const handleConfirmDelete = ev => {
-    setOpenConfirm(true)
-  }
 
   const handleDelete = ev => {
     UserClient.deleteUser(state.code)
       .then(res => {
         onComplete && onComplete()
-        setOpenConfirm(false)
+        setOpenDelete(false)
       })
+      .catch(err => {setMessage(err.message)})
   }
 
-  const handleCloseDelete = ev => {
-    setOpenConfirm(false)
+  const handleOpenDelete = () => {
+    setOpenDelete(true)
+  }
+
+  const handleCloseDelete = () => {
+    setOpenDelete(false)
+  }
+
+  const handleMessageClose = () => {
+    setMessage(null)
   }
 
   const handleReset = ev => {
     UserClient.resetUserPassword(state.code)
-      .then(res => {
-        onComplete && onComplete()
-      })
+      .then(res => onComplete && onComplete())
+      .catch(err => {setMessage(err.message)})
   }
 
   const handleClose = ev => {
@@ -77,11 +87,12 @@ export function UserDialog({open, code, onComplete}) {
   const handleSubmit = value => {
     if (value.code) {
       UserClient.updateUser(value.code, value)
-        .then(() => onComplete && onComplete(state),
-        )
+        .then(() => onComplete && onComplete(state))
+        .catch(err => {setMessage(err.message)})
     } else {
       UserClient.createUser(value)
         .then(() => onComplete && onComplete(state))
+        .catch(err => {setMessage(err.message)})
     }
   }
 
@@ -108,7 +119,7 @@ export function UserDialog({open, code, onComplete}) {
           {state && state.code && (
             <Button onClick={handleReset}>Reset password</Button>
           )}
-          {state && state.code && <Button onClick={handleConfirmDelete}>Delete</Button>}
+          {state && state.code && <Button onClick={handleOpenDelete}>Delete</Button>}
           <Button
             variant="contained"
             color="primary"
@@ -119,11 +130,17 @@ export function UserDialog({open, code, onComplete}) {
           </Button>
         </DialogActions>
       </Dialog>
-      <UserDeleteDialog
-        open={confirmOpen}
-        value={state}
+      <ConfirmDialog
+        open={openDelete}
         onClose={handleCloseDelete}
-        onDelete={handleDelete}/>
+        onConfirm={handleDelete}>
+        <Typography>Would you Are you sure you want to delete user: {state && state.name}</Typography>
+      </ConfirmDialog>
+      <Snackbar
+        open={message!=null}
+        message={message}
+        autoHideDuration={6000}
+        onClose={handleMessageClose}/>
     </>
   )
 }

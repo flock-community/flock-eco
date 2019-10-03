@@ -6,6 +6,7 @@ import community.flock.eco.feature.user.model.UserGroup
 import community.flock.eco.feature.user.repositories.UserGroupRepository
 import community.flock.eco.feature.user.repositories.UserRepository
 import org.springframework.stereotype.Service
+import javax.transaction.Transactional
 
 
 @Service
@@ -41,6 +42,7 @@ class UserGroupService(
                 userGroupRepository.save(it)
             }
 
+    @Transactional
     fun delete(code: String) = userGroupRepository
             .deleteByCode(code)
 

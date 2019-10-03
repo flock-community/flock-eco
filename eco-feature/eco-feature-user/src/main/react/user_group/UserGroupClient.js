@@ -1,44 +1,40 @@
 import React from 'react'
+import {ResourceClient} from '@flock-eco/core'
 
+const client = new ResourceClient('/api/user-groups')
+
+const internalize = (res) => {
+  if (res.ok) {
+    return res.json()
+  } else {
+    return res.text()
+      .then(text => {
+        throw new Error(text)
+      })
+  }
+}
 
 export function findByCode(code) {
   const opts = {
     method: 'GET',
   }
   return fetch(`/api/user-groups/${code}`, opts)
-    .then(res => res.json())
+    .then(internalize)
 }
 
 export function createUserGroup(item) {
-  const opts = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8',
-    },
-    body: JSON.stringify(item),
-  }
-  return fetch('/api/user-groups', opts)
+  return client.create(item)
+    .then(internalize)
 }
 
 export function updateUserGroup(code, item) {
-  const opts = {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8',
-    },
-    body: JSON.stringify(item),
-  }
-  return fetch(`/api/user-groups/${code}`, opts)
+  return client.update(code, item)
+    .then(internalize)
 }
 
 export function deleteUserGroup(code) {
-  const opts = {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8',
-    },
-  }
-  return fetch(`/api/user-groups/${code}`, opts)
+  return client.delete(code)
+    .then(internalize)
 }
 
 export default {
