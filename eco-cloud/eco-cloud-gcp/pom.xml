@@ -6,7 +6,7 @@
     <parent>
         <artifactId>flock-eco-cloud-parent</artifactId>
         <groupId>com.github.flock-community.flock-eco</groupId>
-        <version>1.5.5</version>
+        <version>1.5.6</version>
     </parent>
 
     <artifactId>flock-eco-cloud-gcp</artifactId>
