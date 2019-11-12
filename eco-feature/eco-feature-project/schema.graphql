@@ -1,0 +1,23 @@
+type Project {
+    name:String
+    description:String
+    users:[ProjectUser]
+    groups:[ProjectGroup]
+}
+
+type ProjectUser {
+    role:ProjectRole
+    userRef:String
+}
+
+type ProjectGroup {
+    role:ProjectRole
+    groupRef:String
+}
+
+type ProjectRole {
+    code:String
+    name:String
+}
+
+
