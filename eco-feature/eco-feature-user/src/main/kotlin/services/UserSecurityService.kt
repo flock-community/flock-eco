@@ -89,7 +89,6 @@ class UserSecurityService(
                     }
 
                     userAccountService.findUserAccountOauthByReference(reference)
-                            ?.let { if (it.user.authorities.isNotEmpty()) it else null }
                             ?.let { UserSecurityOauth2(it, oidcUser.idToken) }
                 }
     }
