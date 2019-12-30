@@ -31,10 +31,10 @@ data class Member(
         val gender: MemberGender? = null,
         val birthDate: LocalDate? = null,
 
-        @ManyToMany()
+        @ManyToMany(fetch = FetchType.EAGER)
         val groups: Set<MemberGroup> = setOf(),
 
-        @ElementCollection
+        @ElementCollection(fetch = FetchType.EAGER)
         val fields: Map<String, String> = mapOf(),
 
         @Enumerated(EnumType.STRING)

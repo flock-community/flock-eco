@@ -70,7 +70,12 @@ class MailchimpController(
                         .let { LocalDateTime.parse(it, formatter) },
                 id = formData.getFirst("data[id]"),
                 listId = formData.getFirst("data[list_id]"),
-                email = formData.getFirst("data[email]")
+                email = formData.getFirst("data[email]"),
+                interests = formData.getFirst("data[merges][INTERESTS]")
+                        ?.split(",")
+                        ?.map { it.trim() }
+                        ?.toSet()
+                        ?: setOf()
         )
         publisher.publishEvent(event)
     }

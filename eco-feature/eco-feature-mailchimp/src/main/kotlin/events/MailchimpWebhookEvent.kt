@@ -8,7 +8,8 @@ data class MailchimpWebhookEvent(
         val firedAt: LocalDateTime,
         val id: String,
         val listId: String?,
-        val email: String
+        val email: String,
+        val interests: Set<String>
 ): Event
 
 enum class MailchimpWebhookEventType {

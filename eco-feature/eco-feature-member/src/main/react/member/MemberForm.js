@@ -260,6 +260,7 @@ class MemberForm extends React.Component {
       <TextField
         label={field.label}
         className={classes.input}
+        disabled={field.disabled}
         value={value(field) || ''}
         onChange={this.handleChangeField(field.name)}
       />
@@ -299,7 +300,7 @@ class MemberForm extends React.Component {
     )
 
     const multiSelectField = field => (
-      <FormControl className={classes.input}>
+      <FormControl className={classes.input} disabled={field.disabled}>
         <InputLabel htmlFor={field.name}>{field.label}</InputLabel>
         <Select
           multiple
