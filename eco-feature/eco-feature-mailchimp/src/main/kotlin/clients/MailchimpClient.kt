@@ -31,9 +31,6 @@ class MailchimpClient(
     @Value("\${flock.eco.feature.mailchimp.requestUrl:}")
     private lateinit var requestUrl: String
 
-    @Value("\${flock.eco.feature.mailchimp.listId:}")
-    private lateinit var listId: String
-
     val mapper = ObjectMapper()
 
     private val headers: HttpHeaders
@@ -77,7 +74,7 @@ class MailchimpClient(
         }
     }
 
-    fun getInterestsCategories(): List<MailchimpInterestCategory> {
+    fun getInterestsCategories(listId: String): List<MailchimpInterestCategory> {
         try {
             val entity = HttpEntity<String>(headers)
             val res = restTemplate.exchange("/lists/$listId/interest-categories", HttpMethod.GET, entity, ObjectNode::class.java)
@@ -96,7 +93,7 @@ class MailchimpClient(
         }
     }
 
-    fun getInterests(interestCategoryId:String): List<MailchimpInterest> {
+    fun getInterests(listId: String, interestCategoryId: String): List<MailchimpInterest> {
         try {
             val entity = HttpEntity<String>(headers)
             val res = restTemplate.exchange("/lists/$listId/interest-categories/$interestCategoryId/interests", HttpMethod.GET, entity, ObjectNode::class.java)
@@ -130,15 +127,26 @@ class MailchimpClient(
         }
     }
 
-    fun getMembers(page: Pageable): Page<MailchimpMember> {
+    fun getLists(page: Pageable): Page<MailchimpList> {
+        val offset = page.offset
+        try {
+            val entity = HttpEntity<String>(headers)
+            val res = restTemplate.exchange("/lists?offset=$offset&count=10", HttpMethod.GET, entity, ObjectNode::class.java)
+            val total = res.body.get("total_items").asLong()
+            return res.body.get("lists").asIterable()
+                    .map(this::convertObjectNodetoMailchimpList)
+                    .let { PageImpl(it, page, total) }
+
+        } catch (ex: HttpClientErrorException) {
+            throw MailchimpFetchException(ex.responseBodyAsString)
+        }
+    }
+
+    fun getMembers(listId: String, page: Pageable): Page<MailchimpMember> {
         val offset = page.offset
         try {
             val entity = HttpEntity<String>(headers)
             val res = restTemplate.exchange("/lists/$listId/members?offset=$offset&count=10", HttpMethod.GET, entity, ObjectNode::class.java)
-            fun printName(mergeFields: JsonNode): String {
-                return mergeFields.get("FNAME").asText() + " " + mergeFields.get("LNAME").asText()
-            }
-
             val total = res.body.get("total_items").asLong()
             return res.body.get("members").asIterable()
                     .map(this::convertObjectNodetoMailchimpMember)
@@ -149,7 +157,7 @@ class MailchimpClient(
         }
     }
 
-    fun getMember(email: String): MailchimpMember? {
+    fun getMember(listId: String, email: String): MailchimpMember? {
         val md5 = calculateMd5(email)
         val entity = HttpEntity<Unit>(headers)
         try {
@@ -163,7 +171,7 @@ class MailchimpClient(
         }
     }
 
-    fun postMember(member: MailchimpMember): MailchimpMember? {
+    fun postMember(listId: String, member: MailchimpMember): MailchimpMember? {
         val obj = convertMailchimpMembertoObjectNode(member)
         val entity = HttpEntity(obj, headers)
         try {
@@ -174,7 +182,7 @@ class MailchimpClient(
         }
     }
 
-    fun putMember(member: MailchimpMember): MailchimpMember? {
+    fun putMember(listId: String, member: MailchimpMember): MailchimpMember? {
         val md5 = calculateMd5(member.email)
         val obj = convertMailchimpMembertoObjectNode(member)
         val entity = HttpEntity(obj, headers)
@@ -186,7 +194,7 @@ class MailchimpClient(
         }
     }
 
-    fun postMembers(members: List<MailchimpMember>) {
+    fun postMembers(listId: String, members: List<MailchimpMember>) {
         try {
             val body = mapper.createObjectNode()
             body.put("update_existing", true)
@@ -200,7 +208,7 @@ class MailchimpClient(
         }
     }
 
-    fun postSegment(tag: String): String {
+    fun postSegment(listId: String, tag: String): String {
         try {
             val body = mapper.createObjectNode()
             body.put("name", tag)
@@ -220,6 +228,7 @@ class MailchimpClient(
     }
 
     fun putTags(
+            listId: String,
             email: String,
             active: Set<String>,
             inactive: Set<String>) {
@@ -278,16 +287,34 @@ class MailchimpClient(
                         .asText()
                         .let { if (it.isBlank()) null else it },
                 email = obj.get("email_address").asText(),
-                status = obj.get("status").asText()
-                        .let { MailchimpMemberStatus.valueOf(it.toUpperCase()) },
-                tags = obj.get("tags").asIterable()
-                        .map { it.get("name").asText() }
-                        .toSet(),
+                status = obj.get("status")
+                        ?.asText()
+                        ?.let { MailchimpMemberStatus.valueOf(it.toUpperCase()) }
+                        ?: MailchimpMemberStatus.UNSUBSCRIBED,
+                tags = obj.get("tags")
+                        ?.asIterable()
+                        ?.map { it.get("name").asText() }
+                        ?.toSet()
+                        ?: setOf(),
                 interests = obj.get("interests")
-                        .fields()
-                        .asSequence()
-                        .map { it.key to it.value.asBoolean() }
-                        .toMap()
+                        ?.fields()
+                        ?.asSequence()
+                        ?.map { it.key to it.value.asBoolean() }
+                        ?.toMap()
+                        ?: mapOf()
+
+        )
+    }
+
+    private fun convertObjectNodetoMailchimpList(obj: JsonNode): MailchimpList {
+        return MailchimpList(
+                id = obj.get("id")
+                        .asText(),
+                webId = obj.get("web_id")
+                        .asText(),
+                name = obj.get("name")
+                        .asText()
+
 
         )
     }

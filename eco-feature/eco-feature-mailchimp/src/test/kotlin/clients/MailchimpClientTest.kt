@@ -20,10 +20,12 @@ class MailchimpClientTest {
     @Autowired
     private lateinit var mailchimpClient: MailchimpClient
 
+    private val listId ="1d3504aedc"
+
     @Test
     fun `get member`() {
         val email = "test@test.nl"
-        val member = mailchimpClient.getMember(email)
+        val member = mailchimpClient.getMember(listId, email)
         assertNull(member)
     }
 
@@ -31,7 +33,7 @@ class MailchimpClientTest {
     fun `post member`() {
         val uuid = UUID.randomUUID().toString()
         val email = "$uuid@test.nl"
-        val memberPost = mailchimpClient.postMember(MailchimpMember(
+        val memberPost = mailchimpClient.postMember(listId, MailchimpMember(
                 email = email,
                 firstName = "Test",
                 lastName = "Test"
@@ -41,7 +43,7 @@ class MailchimpClientTest {
         assertEquals("Test", memberPost?.firstName)
         assertEquals("Test", memberPost?.lastName)
 
-        val memberGet = mailchimpClient.getMember(email)
+        val memberGet = mailchimpClient.getMember(listId, email)
         assertNotNull(memberGet)
         assertEquals(email, memberGet?.email)
         assertEquals("Test", memberGet?.firstName)
@@ -52,7 +54,7 @@ class MailchimpClientTest {
     fun `post member no name`() {
         val uuid = UUID.randomUUID().toString()
         val email = "$uuid@test.nl"
-        val memberPost = mailchimpClient.postMember(MailchimpMember(
+        val memberPost = mailchimpClient.postMember(listId, MailchimpMember(
                 email = email
                 ))
         assertNotNull(memberPost)
@@ -60,7 +62,7 @@ class MailchimpClientTest {
         assertNull(memberPost?.firstName)
         assertNull(memberPost?.lastName)
 
-        val memberGet = mailchimpClient.getMember(email)
+        val memberGet = mailchimpClient.getMember(listId, email)
         assertNotNull(memberGet)
         assertEquals(email, memberGet?.email)
         assertNull(memberGet?.firstName)
@@ -74,7 +76,7 @@ class MailchimpClientTest {
         val uuid = UUID.randomUUID().toString()
         val email = "$uuid@test.nl"
 
-        val memberPost = mailchimpClient.postMember(MailchimpMember(
+        val memberPost = mailchimpClient.postMember(listId, MailchimpMember(
                 email = email,
                 firstName = "Test",
                 lastName = "Test"
@@ -84,7 +86,7 @@ class MailchimpClientTest {
         assertEquals("Test", memberPost?.firstName)
         assertEquals("Test", memberPost?.lastName)
 
-        val memberPut = mailchimpClient.putMember(MailchimpMember(
+        val memberPut = mailchimpClient.putMember(listId, MailchimpMember(
                 email = email,
                 firstName = "Test 2",
                 lastName = "Tes 2"
@@ -98,11 +100,11 @@ class MailchimpClientTest {
     @Test
     fun `post segment`() {
         val tag = UUID.randomUUID().toString()
-        val memberPost1 = mailchimpClient.postSegment(tag)
+        val memberPost1 = mailchimpClient.postSegment(listId, tag)
         assertNotNull(memberPost1)
         assertEquals(tag, memberPost1)
 
-        val memberPost2 = mailchimpClient.postSegment(tag)
+        val memberPost2 = mailchimpClient.postSegment(listId, tag)
         assertNotNull(memberPost2)
         assertEquals(tag, memberPost2)
     }
@@ -112,7 +114,7 @@ class MailchimpClientTest {
 
         val tags = (0 .. 3).map {
             val tag = UUID.randomUUID().toString()
-            val tagPost = mailchimpClient.postSegment(tag)
+            val tagPost = mailchimpClient.postSegment(listId, tag)
             assertNotNull(tagPost)
             assertEquals(tag, tagPost)
              tag
@@ -121,7 +123,7 @@ class MailchimpClientTest {
         val uuid = UUID.randomUUID().toString()
         val email = "$uuid@test.nl"
 
-        val memberPost = mailchimpClient.postMember(MailchimpMember(
+        val memberPost = mailchimpClient.postMember(listId, MailchimpMember(
                 email = email,
                 firstName = "Test",
                 lastName = "Test",
@@ -132,14 +134,14 @@ class MailchimpClientTest {
         assertEquals(2, memberPost?.tags?.size)
         assertEquals(setOf(tags[0], tags[1]), memberPost?.tags)
 
-        val memberPut = mailchimpClient.putMember(memberPost!!.copy(
+        val memberPut = mailchimpClient.putMember(listId, memberPost!!.copy(
                 firstName = "Test1",
                 lastName = "Test1"
         ))
 
-        mailchimpClient.putTags(email, setOf(tags[2], tags[3]), setOf(tags[0], tags[1]))
+        mailchimpClient.putTags(listId, email, setOf(tags[2], tags[3]), setOf(tags[0], tags[1]))
 
-        val memberGet = mailchimpClient.getMember(email)
+        val memberGet = mailchimpClient.getMember(listId, email)
 
         assertNotNull(memberPut)
         assertEquals(2, memberGet?.tags?.size)

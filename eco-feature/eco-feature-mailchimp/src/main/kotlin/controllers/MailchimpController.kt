@@ -23,9 +23,19 @@ class MailchimpController(
         private val publisher: ApplicationEventPublisher
 ) {
 
-    @GetMapping("/members")
+    @GetMapping("/lists")
     @PreAuthorize("hasAuthority('MailchimpMemberAuthority.READ')")
-    fun getMembers(page: Pageable): ResponseEntity<List<MailchimpMember>> = mailchimpClient.getMembers(page)
+    fun getMembers(page: Pageable): ResponseEntity<List<MailchimpList>> = mailchimpClient.getLists(page)
+            .let {
+                val headers = HttpHeaders()
+                headers.set("x-page", page.pageNumber.toString())
+                headers.set("x-total", it.totalElements.toString())
+                return ResponseEntity(it.content.toList(), headers, HttpStatus.OK)
+            }
+
+    @GetMapping("/lists/{listId}/members")
+    @PreAuthorize("hasAuthority('MailchimpMemberAuthority.READ')")
+    fun getMembers(@PathVariable listId: String, page: Pageable): ResponseEntity<List<MailchimpMember>> = mailchimpClient.getMembers(listId, page)
             .let {
                 val headers = HttpHeaders()
                 headers.set("x-page", page.pageNumber.toString())
@@ -38,16 +48,16 @@ class MailchimpController(
     fun getTemplates(): List<MailchimpTemplate> = mailchimpClient.getTemplates()
             .filter { it.type == MailchimpTemplateType.USER }
 
-    @GetMapping("/interest-categories")
+    @GetMapping("/lists/{listId}/interest-categories")
     @PreAuthorize("hasAuthority('MailchimpTemplateAuthority.READ')")
-    fun getInterestCategories(): List<MailchimpInterestCategory> = mailchimpClient.getInterestsCategories()
+    fun getInterestCategories(@PathVariable listId: String): List<MailchimpInterestCategory> = mailchimpClient.getInterestsCategories(listId)
 
     @GetMapping("/campaigns")
     @PreAuthorize("hasAuthority('MailchimpCampaignAuthority.READ')")
     fun getCampaigns(): List<MailchimpCampaign> = mailchimpClient.getCampaigns()
 
     @GetMapping("/webhook")
-    fun getWebhook():ResponseEntity<*> = ResponseEntity<Any>(HttpStatus.OK)
+    fun getWebhook(): ResponseEntity<*> = ResponseEntity<Any>(HttpStatus.OK)
 
     @PostMapping("/webhook", consumes = [MediaType.APPLICATION_FORM_URLENCODED_VALUE])
     fun postWebhook(@RequestBody formData: MultiValueMap<String, String>) {
