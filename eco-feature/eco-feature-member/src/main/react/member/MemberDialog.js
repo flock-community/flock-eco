@@ -13,6 +13,8 @@ import Snackbar from '@material-ui/core/Snackbar'
 import {ValidatorForm} from 'react-material-ui-form-validator'
 
 import MemberForm from './MemberForm'
+import {ConfirmDialog} from '@flock-eco/core/src/main/react/components/ConfirmDialog'
+import {Typography} from '@material-ui/core'
 
 const styles = theme => ({})
 
@@ -21,6 +23,7 @@ class MemberDialog extends React.Component {
     item: null,
     message: null,
     action: null,
+    deleteOpen: false,
   }
 
   componentDidUpdate(prevProps) {
@@ -85,8 +88,17 @@ class MemberDialog extends React.Component {
           this.setState({message: e.message || 'Cannot delete member'})
         })
       }
+      this.setState({deleteOpen: false})
       this.props.onComplete()
     })
+  }
+
+  handleDeleteOpen = () => {
+    this.setState({deleteOpen: true})
+  }
+
+  handleDeleteClose = () => {
+    this.setState({deleteOpen: false})
   }
 
   handleSave = () => {
@@ -165,7 +177,7 @@ class MemberDialog extends React.Component {
           </DialogContent>
           <DialogActions>
             {this.state.item && this.state.item.id && (
-              <Button onClick={this.handleDelete} color="secondary">
+              <Button onClick={this.handleDeleteOpen} color="secondary">
                 Delete
               </Button>
             )}
@@ -188,6 +200,14 @@ class MemberDialog extends React.Component {
           }}
           message={this.state.message}
         />
+
+        <ConfirmDialog
+          open={this.state.deleteOpen}
+          onClose={this.handleDeleteClose}
+          onConfirm={this.handleDelete}>
+          <Typography>Delete member: {this.state.item && this.state.item.firstName} {this.state.item && this.state.item.surName}</Typography>
+        </ConfirmDialog>
+
       </React.Fragment>
     )
   }

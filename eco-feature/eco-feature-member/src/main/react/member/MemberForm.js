@@ -221,7 +221,7 @@ class MemberForm extends React.Component {
             className={classes.input || []}
             multiple
             value={this.state.groups.map(it => it.id) || []}
-            input={<Input id="select-multiple" />}
+            input={<Input />}
             onChange={this.handleChangeGroup('groups')}
             renderValue={selected =>
               selected
@@ -287,7 +287,7 @@ class MemberForm extends React.Component {
         <Select
           className={classes.input || []}
           value={value(field) || ''}
-          input={<Input id="select-multiple" />}
+          input={<Input />}
           onChange={this.handleChangeField(field.name)}
         >
           {field.options.map(it => (
@@ -306,7 +306,7 @@ class MemberForm extends React.Component {
           multiple
           className={classes.input || []}
           value={value(field) ? value(field).split(',') : []}
-          input={<Input id="select-multiple" />}
+          input={<Input />}
           onChange={this.handleChangeField(field.name)}
           renderValue={selected => selected.join(', ')}
         >
