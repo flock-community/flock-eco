@@ -9,3 +9,5 @@ require('./user_group/UserGroupTable.story.js')
 require('./user_group/UserGroupForm.story.js')
 
 require('./user_profile/UserProfileFeature.story.js')
+
+require('./user_utils/UserAuthorityUtil.story.js')
