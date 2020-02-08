@@ -21,6 +21,9 @@ class MemberService(
         private val memberGroupRepository: MemberGroupRepository
 ) {
 
+    fun findAll() = memberRepository
+            .findAll()
+
     fun findById(id:Long) = memberRepository
             .findById(id)
             .toNullable()
