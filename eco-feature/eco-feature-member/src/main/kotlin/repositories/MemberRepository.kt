@@ -18,7 +18,7 @@ interface MemberRepository : PagingAndSortingRepository<Member, Long>, JpaSpecif
             "WHERE m.id IN ?1")
     fun findByIds(ids: List<Long>): Iterable<Member>
 
-    fun findByEmail(email: String): Iterable<Member>
+    fun findByEmail(email: String): Optional<Member>
 
     fun findByStatus(status: MemberStatus): Iterable<Member>
 }

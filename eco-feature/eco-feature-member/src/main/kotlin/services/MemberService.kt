@@ -1,5 +1,6 @@
 package community.flock.eco.feature.member.services
 
+import community.flock.eco.core.utils.toNullable
 import community.flock.eco.feature.member.controllers.CreateMemberEvent
 import community.flock.eco.feature.member.controllers.DeleteMemberEvent
 import community.flock.eco.feature.member.controllers.MergeMemberEvent
@@ -17,9 +18,19 @@ import org.springframework.stereotype.Component
 class MemberService(
         private val publisher: ApplicationEventPublisher,
         private val memberRepository: MemberRepository,
-        private val memberGroupRepository: MemberGroupRepository,
-        private val memberFieldRepository: MemberFieldRepository
+        private val memberGroupRepository: MemberGroupRepository
 ) {
+
+    fun findById(id:Long) = memberRepository
+            .findById(id)
+            .toNullable()
+
+    fun findByEmail(email:String) = memberRepository
+            .findByEmail(email)
+            .toNullable()
+
+    fun findByStatus(status: MemberStatus) = memberRepository
+            .findByStatus(status)
 
     fun create(member: Member): Member = member
             .let { memberRepository.save(it) }
