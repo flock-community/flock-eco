@@ -69,6 +69,8 @@ class MailchimpController(
                 firedAt = formData.getFirst("fired_at")
                         .let { LocalDateTime.parse(it, formatter) },
                 id = formData.getFirst("data[id]"),
+                firstName = formData.getFirst("data[merges][FNAME]"),
+                lastName = formData.getFirst("data[merges][LNAME]"),
                 listId = formData.getFirst("data[list_id]"),
                 email = formData.getFirst("data[email]"),
                 interests = formData.getFirst("data[merges][INTERESTS]")

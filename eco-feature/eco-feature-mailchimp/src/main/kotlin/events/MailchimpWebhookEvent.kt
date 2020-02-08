@@ -7,6 +7,8 @@ data class MailchimpWebhookEvent(
         val type: MailchimpWebhookEventType,
         val firedAt: LocalDateTime,
         val id: String,
+        val firstName:String,
+        val lastName:String,
         val listId: String?,
         val email: String,
         val interests: Set<String>
