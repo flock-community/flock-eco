@@ -28,9 +28,8 @@ class MemberService(
             .findById(id)
             .toNullable()
 
-    fun findByEmail(email:String) = memberRepository
-            .findByEmail(email)
-            .toNullable()
+    fun findAllByEmail(email:String) = memberRepository
+            .findAllByEmail(email)
 
     fun findByStatus(status: MemberStatus) = memberRepository
             .findByStatus(status)
