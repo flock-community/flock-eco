@@ -29,8 +29,9 @@ fun <T> Page<T>?.toResponse(page: Pageable): ResponseEntity<List<T>> = this
         }
         ?: ResponseEntity.notFound().build()
 
+fun Unit.toResponse():ResponseEntity<Void> = ResponseEntity.noContent().build()
 
-fun <T> Optional<T>.toNullable(): T? = orElse(null)
+fun <T> Optional<T>.toResponse(): ResponseEntity<T> = toNullable().toResponse()
 
 fun <T> T?.toResponse(): ResponseEntity<T> = when (this) {
     is Unit -> ResponseEntity.noContent().build<T>()
@@ -38,4 +39,4 @@ fun <T> T?.toResponse(): ResponseEntity<T> = when (this) {
     else -> ResponseEntity.ok<T>(this)
 }
 
-fun <T> Optional<T>.toResponse(): ResponseEntity<T> = toNullable().toResponse()
+fun <T> Optional<T>.toNullable(): T? = orElse(null)
