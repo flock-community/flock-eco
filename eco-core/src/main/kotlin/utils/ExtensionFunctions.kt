@@ -29,7 +29,7 @@ fun <T> Page<T>?.toResponse(page: Pageable): ResponseEntity<List<T>> = this
         }
         ?: ResponseEntity.notFound().build()
 
-fun Unit.toResponse():ResponseEntity<Void> = ResponseEntity.noContent().build()
+fun Unit.toResponse():ResponseEntity<Unit> = ResponseEntity.noContent().build()
 
 fun <T> Optional<T>.toResponse(): ResponseEntity<T> = toNullable().toResponse()
 
