@@ -111,27 +111,30 @@ class PaymentBuckarooService(
         }
 
         try {
-            val res = restTemplate.postForObject("https://$requestUri", HttpEntity(postContent, headers), ObjectNode::class.java)!!
+            val res = restTemplate.postForEntity("https://$requestUri", HttpEntity(postContent, headers), ObjectNode::class.java)
+            if (res.statusCode.is2xxSuccessful && res.body != null) {
+                val mandate = PaymentMandate(
+                        code = UUID.randomUUID().toString(),
+                        amount = paymentMethod.amount,
+                        frequency = PaymentFrequency.ONCE,
+                        type = paymentMethod.getType()
+                ).also { paymentMandateRepository.save(it) }
 
-            val mandate = PaymentMandate(
-                    code = UUID.randomUUID().toString(),
-                    amount = paymentMethod.amount,
-                    frequency = PaymentFrequency.ONCE,
-                    type = paymentMethod.getType()
-            ).also { paymentMandateRepository.save(it) }
+                val transaction = PaymentTransaction(
+                        amount = paymentMethod.amount,
+                        reference = res.body["Key"].asText(),
+                        status = PaymentTransactionStatus.PENDING,
+                        mandate = mandate
+                ).also { paymentTransactionRepository.save(it) }
 
-            val transaction = PaymentTransaction(
-                    amount = paymentMethod.amount,
-                    reference = res["Key"].asText(),
-                    status = PaymentTransactionStatus.PENDING,
-                    mandate = mandate
-            ).also { paymentTransactionRepository.save(it) }
-
-            return BuckarooResult(
-                    mandate = mandate,
-                    transaction = transaction,
-                    redirectUrl = res["RequiredAction"]["RedirectURL"].asText()
-            )
+                return BuckarooResult(
+                        mandate = mandate,
+                        transaction = transaction,
+                        redirectUrl = res.body["RequiredAction"]["RedirectURL"].asText()
+                )
+            } else {
+                throw PaymentNotCreatedException(res.toString())
+            }
         } catch (ex: HttpClientErrorException) {
             throw PaymentNotCreatedException(ex.responseBodyAsString)
         }

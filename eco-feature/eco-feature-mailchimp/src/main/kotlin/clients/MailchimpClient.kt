@@ -156,9 +156,10 @@ class MailchimpClient(
 
     fun getMembers(listId: String, page: Pageable): Page<MailchimpMember> {
         val offset = page.offset
+        val count = page.pageSize
         try {
             val entity = HttpEntity<String>(headers)
-            val res = restTemplate.exchange("/lists/$listId/members?offset=$offset&count=10", HttpMethod.GET, entity, ObjectNode::class.java)
+            val res = restTemplate.exchange("/lists/$listId/members?offset=$offset&count=$count", HttpMethod.GET, entity, ObjectNode::class.java)
             val total = res.body.get("total_items").asLong()
             return res.body.get("members").asIterable()
                     .map(this::convertObjectNodeToMailchimpMember)
