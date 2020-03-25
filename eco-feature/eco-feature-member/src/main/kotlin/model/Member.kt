@@ -26,6 +26,7 @@ data class Member(
         val postalCode: String? = null,
         val city: String? = null,
         val country: String? = null,
+        val language: String? = null,
 
         @Enumerated(EnumType.STRING)
         val gender: MemberGender? = null,

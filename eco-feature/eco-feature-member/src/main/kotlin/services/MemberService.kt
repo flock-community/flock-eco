@@ -21,7 +21,7 @@ class MemberService(
         private val memberGroupRepository: MemberGroupRepository
 ) {
 
-    fun findAll() = memberRepository
+    fun findAll(): Iterable<Member> = memberRepository
             .findAll()
 
     fun findById(id:Long) = memberRepository
@@ -47,13 +47,13 @@ class MemberService(
             .let { memberRepository.save(it) }
             .also { publisher.publishEvent(UpdateMemberEvent(it)) }
 
-    fun delete(id: Long) : Member? = memberRepository.findById(id)
+    fun delete(id: Long) = memberRepository.findById(id)
             .map { member -> member
                         .copy(status = MemberStatus.DELETED)
                         .let { memberRepository.save(it) }
-                        .also { publisher.publishEvent(DeleteMemberEvent(it)) }
             }
-            .orElse(null)
+            .toNullable()
+            ?.also { publisher.publishEvent(DeleteMemberEvent(it)) }
 
     fun merge(mergeMemberIds: List<Long>, newMember: Member): Member {
         val mergeMembers = memberRepository.findByIds(mergeMemberIds)
