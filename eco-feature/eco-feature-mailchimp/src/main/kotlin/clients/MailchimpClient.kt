@@ -317,6 +317,7 @@ class MailchimpClient(
                         .asText()
                         .let { if (it.isBlank()) null else it },
                 email = obj.get("email_address").asText(),
+                language = obj.get("language").asText(),
                 status = obj.get("status")
                         ?.asText()
                         ?.let { MailchimpMemberStatus.valueOf(it.toUpperCase()) }

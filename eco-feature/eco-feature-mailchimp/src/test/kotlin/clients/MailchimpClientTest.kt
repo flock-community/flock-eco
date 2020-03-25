@@ -38,7 +38,8 @@ class MailchimpClientTest {
                 webId = "1",
                 email = email,
                 firstName = "Test",
-                lastName = "Test"
+                lastName = "Test",
+                language = "nl"
         ))
         assertNotNull(memberPost)
         assertEquals(email, memberPost?.email)
@@ -59,8 +60,9 @@ class MailchimpClientTest {
         val memberPost = mailchimpClient.postMember(listId, MailchimpMember(
                 id="1",
                 webId = "1",
-                email = email
-                ))
+                email = email,
+                language = "nl"
+        ))
         assertNotNull(memberPost)
         assertEquals(email, memberPost?.email)
         assertNull(memberPost?.firstName)
@@ -85,7 +87,8 @@ class MailchimpClientTest {
                 webId = "1",
                 email = email,
                 firstName = "Test",
-                lastName = "Test"
+                lastName = "Test",
+                language = "nl"
         ))
         assertNotNull(memberPost)
         assertEquals(email, memberPost?.email)
@@ -97,7 +100,8 @@ class MailchimpClientTest {
                 webId = "1",
                 email = email,
                 firstName = "Test 2",
-                lastName = "Tes 2"
+                lastName = "Tes 2",
+                language = "nl"
         ))
         assertNotNull(memberPut)
         assertEquals(email, memberPut?.email)
@@ -137,7 +141,8 @@ class MailchimpClientTest {
                 email = email,
                 firstName = "Test",
                 lastName = "Test",
-                tags = setOf(tags[0], tags[1])
+                tags = setOf(tags[0], tags[1]),
+                language = "nl"
 
         ))
         assertNotNull(memberPost)
