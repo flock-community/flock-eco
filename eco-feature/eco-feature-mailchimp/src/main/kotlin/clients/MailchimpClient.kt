@@ -79,7 +79,7 @@ class MailchimpClient(
             val entity = HttpEntity<String>(headers)
             val res = restTemplate.exchange("/lists/$listId/interest-categories", HttpMethod.GET, entity, ObjectNode::class.java)
             return res.body.get("categories").asIterable()
-                    .map {convertObjectNodeToMailchimpInterestCategory(it) }
+                    .map { convertObjectNodeToMailchimpInterestCategory(it) }
         } catch (ex: HttpClientErrorException) {
             throw MailchimpFetchException(ex.responseBodyAsString)
         }
@@ -103,7 +103,7 @@ class MailchimpClient(
             val entity = HttpEntity<String>(headers)
             val res = restTemplate.exchange("/lists/$listId/interest-categories/$interestCategoryId/interests", HttpMethod.GET, entity, ObjectNode::class.java)
             return res.body.get("interests").asIterable()
-                    .map {convertObjectNodeToMailchimpInterest(it) }
+                    .map { convertObjectNodeToMailchimpInterest(it) }
         } catch (ex: HttpClientErrorException) {
             throw MailchimpFetchException(ex.responseBodyAsString)
         }
@@ -281,6 +281,7 @@ class MailchimpClient(
         val json = mapper.createObjectNode()
         json.put("email_address", member.email)
         json.put("status", member.status.toString().toLowerCase())
+        json.put("language", member.language ?: "")
         json.putPOJO("tags", member.tags)
         json.putPOJO("interests", mapper.valueToTree(member.interests))
         val merge = json.putObject("merge_fields")
@@ -317,7 +318,10 @@ class MailchimpClient(
                         .asText()
                         .let { if (it.isBlank()) null else it },
                 email = obj.get("email_address").asText(),
-                language = obj.get("language").asText(),
+                language = obj
+                        .get("language")
+                        .asText()
+                        .let { if (it.isBlank()) null else it },
                 status = obj.get("status")
                         ?.asText()
                         ?.let { MailchimpMemberStatus.valueOf(it.toUpperCase()) }
