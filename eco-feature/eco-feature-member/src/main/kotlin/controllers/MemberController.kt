@@ -1,22 +1,19 @@
 package community.flock.eco.feature.member.controllers
 
 import community.flock.eco.core.events.Event
+import community.flock.eco.core.utils.toResponse
 import community.flock.eco.feature.member.model.Member
 import community.flock.eco.feature.member.model.MemberGender
 import community.flock.eco.feature.member.model.MemberGroup
 import community.flock.eco.feature.member.model.MemberStatus
 import community.flock.eco.feature.member.repositories.MemberGroupRepository
-import community.flock.eco.feature.member.repositories.MemberRepository
 import community.flock.eco.feature.member.services.MemberService
 import community.flock.eco.feature.member.specifications.MemberSpecification
 import org.springframework.data.domain.Pageable
-import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import java.time.LocalDate
-import java.util.*
 
 
 sealed class MemberEvent(open val member: Member) : Event
@@ -28,11 +25,9 @@ data class MergeMemberEvent(override val member: Member, val mergeMembers: Set<M
 @RestController
 @RequestMapping("/api/members")
 class MemberController(
-        private val memberRepository: MemberRepository,
         private val memberGroupRepository: MemberGroupRepository,
         private val memberService: MemberService
 ) {
-
 
     data class MemberForm(
 
@@ -78,18 +73,15 @@ class MemberController(
                         MemberStatus.DISABLED),
                 groups = groups?.let { memberGroupRepository.findByCodes(it).toSet() } ?: setOf()
         )
-        val res = memberRepository.findAll(specification, page)
-        val headers = HttpHeaders()
-        headers.set("x-page", page.pageNumber.toString())
-        headers.set("x-total", res.totalElements.toString())
-        return ResponseEntity(res.content.toList(), headers, HttpStatus.OK)
+        return memberService.findAll(specification, page)
+                .toResponse()
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('MemberAuthority.READ')")
     fun findById(
-            @PathVariable("id") id: String): Optional<Member> = memberRepository
-            .findById(id.toLong())
+            @PathVariable("id") id: Long) = memberService
+            .findById(id)
 
     @PostMapping
     @PreAuthorize("hasAuthority('MemberAuthority.WRITE')")

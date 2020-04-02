@@ -11,4 +11,11 @@
 
     <artifactId>flock-eco-cloud-stub</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>

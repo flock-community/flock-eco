@@ -48,7 +48,7 @@ class MailchimpClient(
             }
 
             return restTemplateBuilder
-                    .basicAuthorization("any", apiKey)
+                    .basicAuthentication("any", apiKey)
                     .uriTemplateHandler(DefaultUriBuilderFactory(requestUrl))
                     .build()
         }

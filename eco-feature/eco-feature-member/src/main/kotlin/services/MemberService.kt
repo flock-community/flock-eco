@@ -7,10 +7,12 @@ import community.flock.eco.feature.member.controllers.MergeMemberEvent
 import community.flock.eco.feature.member.controllers.UpdateMemberEvent
 import community.flock.eco.feature.member.model.Member
 import community.flock.eco.feature.member.model.MemberStatus
-import community.flock.eco.feature.member.repositories.MemberFieldRepository
 import community.flock.eco.feature.member.repositories.MemberGroupRepository
 import community.flock.eco.feature.member.repositories.MemberRepository
 import org.springframework.context.ApplicationEventPublisher
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Component
 
 
@@ -21,14 +23,17 @@ class MemberService(
         private val memberGroupRepository: MemberGroupRepository
 ) {
 
-    fun findAll(): Iterable<Member> = memberRepository
-            .findAll()
+    fun findAll(specification: Specification<Member>, pageable: Pageable): Page<Member> = memberRepository
+            .findAll(specification, pageable)
 
-    fun findById(id:Long) = memberRepository
+    fun findAll(pageable: Pageable): Iterable<Member> = memberRepository
+            .findAll(pageable)
+
+    fun findById(id: Long) = memberRepository
             .findById(id)
             .toNullable()
 
-    fun findAllByEmail(email:String) = memberRepository
+    fun findAllByEmail(email: String) = memberRepository
             .findAllByEmail(email)
 
     fun findByStatus(status: MemberStatus) = memberRepository
@@ -48,7 +53,8 @@ class MemberService(
             .also { publisher.publishEvent(UpdateMemberEvent(it)) }
 
     fun delete(id: Long) = memberRepository.findById(id)
-            .map { member -> member
+            .map { member ->
+                member
                         .copy(status = MemberStatus.DELETED)
                         .let { memberRepository.save(it) }
             }
