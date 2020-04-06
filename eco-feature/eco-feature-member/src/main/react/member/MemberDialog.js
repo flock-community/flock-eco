@@ -10,9 +10,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 
 import Snackbar from '@material-ui/core/Snackbar'
 
-import {ValidatorForm} from 'react-material-ui-form-validator'
-
-import MemberForm from './MemberForm'
+import {MemberForm} from './MemberForm'
 import {ConfirmDialog} from '@flock-eco/core/src/main/react/components/ConfirmDialog'
 import {Typography} from '@material-ui/core'
 
@@ -162,18 +160,13 @@ class MemberDialog extends React.Component {
         >
           <DialogTitle id="simple-dialog-title">Member</DialogTitle>
           <DialogContent>
-            <ValidatorForm
-              id="member-form"
+            <MemberForm
+              value={this.state.item}
+              groups={this.state.groups}
+              fields={this.state.fields}
+              onChange={this.handleFormUpdate}
               onSubmit={this.handleSubmit}
-              onError={errors => console.log(errors)}
-            >
-              <MemberForm
-                value={this.state.item}
-                groups={this.state.groups}
-                fields={this.state.fields}
-                onChange={this.handleFormUpdate}
-              />
-            </ValidatorForm>
+            />
           </DialogContent>
           <DialogActions>
             {this.state.item && this.state.item.id && (
@@ -205,7 +198,8 @@ class MemberDialog extends React.Component {
           open={this.state.deleteOpen}
           onClose={this.handleDeleteClose}
           onConfirm={this.handleDelete}>
-          <Typography>Delete member: {this.state.item && this.state.item.firstName} {this.state.item && this.state.item.surName}</Typography>
+          <Typography>Delete
+            member: {this.state.item && this.state.item.firstName} {this.state.item && this.state.item.surName}</Typography>
         </ConfirmDialog>
 
       </React.Fragment>

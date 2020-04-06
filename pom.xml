@@ -64,6 +64,13 @@
                 <version>${kotlin.version}</version>
             </dependency>
 
+            <!-- Mail -->
+            <dependency>
+                <groupId>javax.mail</groupId>
+                <artifactId>mail</artifactId>
+                <version>1.4.7</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -302,6 +309,7 @@
                                 <configuration>
                                     <sources>
                                         <source>${basedir}/src/develop/kotlin</source>
+                                        <source>${build.directory}/generated-sources</source>
                                     </sources>
                                 </configuration>
                             </execution>

@@ -10,7 +10,7 @@ import Grid from '@material-ui/core/Grid'
 
 import AddIcon from '@material-ui/icons/Add'
 
-import MemberTable from './MemberTable'
+import {MemberTable} from './MemberTable'
 import MemberSpecification from './MemberSpecification'
 import MemberDialog from './MemberDialog'
 import MemberMerger from './MemberMerger'
@@ -89,7 +89,7 @@ class MemberFeature extends React.Component {
           <Grid item>
             <Card>
               <CardContent>
-                <MemberSpecification onChange={this.handleSpecification} />
+                <MemberSpecification onChange={this.handleSpecification}/>
               </CardContent>
             </Card>
           </Grid>
@@ -126,7 +126,7 @@ class MemberFeature extends React.Component {
           className={classes.button}
           onClick={this.handleNewClick}
         >
-          <AddIcon />
+          <AddIcon/>
         </Fab>
       </React.Fragment>
     )

@@ -71,7 +71,7 @@ class MemberController(
                         MemberStatus.NEW,
                         MemberStatus.ACTIVE,
                         MemberStatus.DISABLED),
-                groups = groups?.let { memberGroupRepository.findByCodes(it).toSet() } ?: setOf()
+                groups = groups ?: setOf()
         )
         return memberService.findAll(specification, page)
                 .toResponse()

@@ -29,6 +29,9 @@ class MemberService(
     fun findAll(pageable: Pageable): Iterable<Member> = memberRepository
             .findAll(pageable)
 
+    fun count(): Long = memberRepository
+            .count()
+
     fun findById(id: Long) = memberRepository
             .findById(id)
             .toNullable()

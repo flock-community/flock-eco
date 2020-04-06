@@ -1,6 +1,7 @@
 package community.flock.eco.feature.member.resolvers
 
 import community.flock.eco.feature.member.services.MemberService
+import community.flock.eco.feature.member.specifications.MemberSpecification
 import graphql.kickstart.tools.GraphQLQueryResolver
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Component
@@ -18,17 +19,33 @@ import community.flock.eco.feature.member.model.MemberStatus as MemberStatusMode
 class MemberQueryResolver(
         private val memberService: MemberService) : GraphQLQueryResolver {
 
-    fun getFindById(id: Long): MemberGraphql? = memberService
+    fun getFindMemberById(id: Long): MemberGraphql? = memberService
             .findById(id)
             ?.produce()
 
-    fun getFindAllMembers(page: Int, size: Int?) = PageRequest.of(page, size?:10)
+    fun getFindAllMembers(search: String? = "",
+                          statuses: Set<MemberStatusGraphql>?,
+                          groups: Set<String>?,
+                          page: Int?,
+                          size: Int?,
+                          order: String?) = PageRequest.of(page ?: 0, size ?: 10)
             .let { pageable ->
+                val specification = MemberSpecification(
+                        search = search ?: "",
+                        statuses = statuses?.map { it.consume() }?.toSet() ?: setOf(),
+                        groups = groups ?: setOf()
+                )
                 memberService
-                        .findAll(pageable)
-                        .map { it.produce() }
+                        .findAll(specification, pageable)
+                        .map {
+                            it.produce()
+
+                        }
+
+
             }
 
+    fun getCountMembers() = memberService.count()
 }
 
 fun MemberModel.produce() = MemberGraphql(
@@ -66,3 +83,5 @@ private fun Set<MemberGroupModel>.produce() = this.map {
             name = it.name
     )
 }
+
+private fun MemberStatusGraphql.consume() = MemberStatusModel.valueOf(this.name)

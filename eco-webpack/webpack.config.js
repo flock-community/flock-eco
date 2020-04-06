@@ -8,10 +8,13 @@ const htmlPlugin = new HtmlWebPackPlugin({
 })
 
 module.exports = {
+
   entry: path.join(process.cwd(),'src/main/react'),
 
   output: {
-    path: path.join(process.cwd(), 'target/generated-resources'),
+    publicPath: "/",
+    filename: "[name].[contenthash].js",
+    path: path.resolve(__dirname, "target/classes/static"),
   },
 
   devtool: 'eval-source-map',
@@ -19,18 +22,16 @@ module.exports = {
     rules: [
       {
         test: /\.js|jsx$/,
-        exclude: /node_modules/,
+        exclude: /node_modules[\\\/](?!(@flock-eco)[\\\/]).*/,
         use: {
           loader: "babel-loader",
           options: {
-            "plugins": [
-              "@babel/plugin-proposal-class-properties"
+            plugins: [
+              "@babel/plugin-proposal-class-properties",
+              "@babel/plugin-transform-runtime",
             ],
-            "presets": [
-              "@babel/preset-env",
-              "@babel/preset-react"
-            ]
-          }
+            presets: ["@babel/preset-env", "@babel/preset-react"],
+          },
         },
       },
     ],
@@ -43,6 +44,7 @@ module.exports = {
     host: 'localhost',
     proxy: {
       '/api/**': 'http://localhost:8080',
+      '/graphql': 'http://localhost:8080',
       '/login': 'http://localhost:8080',
     },
   },

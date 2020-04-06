@@ -35,7 +35,7 @@ class MemberSpecification extends React.Component {
     groups: [],
     statuses: ['NEW', 'ACTIVE', 'DISABLED', 'DELETED', 'MERGED'],
     specifications: {
-      search: [''],
+      search: '',
       groups: [],
       statuses: [],
     },
@@ -54,7 +54,7 @@ class MemberSpecification extends React.Component {
   handleSearchChange = event => {
     const specifications = {
       ...this.state.specifications,
-      ...{search: [event.target.value]},
+      ...{search: event.target.value},
     }
     this.setState({specifications}, this.handleOnChange)
   }
@@ -96,7 +96,7 @@ class MemberSpecification extends React.Component {
           <TextField
             fullWidth
             label="Search"
-            value={this.state.specifications.search[0]}
+            value={this.state.specifications.search}
             onChange={this.handleSearchChange}
           />
         </Grid>
