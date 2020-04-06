@@ -1,0 +1,28 @@
+type User {
+    id:ID
+    name:String
+    email:String
+    authorities:[String]
+#    account:[UserAccount],
+    created:DateTime
+}
+
+#interface UserAccount {
+#    id:Int
+#}
+#
+#type UserAccountPassword implements UserAccount {
+#    id:Int
+#}
+#
+#type UserAccountOauth implements UserAccount {
+#    id:Int,
+#    provider:String
+#}
+#
+#type UserAccountKey implements UserAccount {
+#    id:Int,
+#    key:String
+#}
+
+scalar Date

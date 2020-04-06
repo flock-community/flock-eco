@@ -36,6 +36,24 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring.boot.version}</version>
             </plugin>
+            <plugin>
+                <groupId>community.flock</groupId>
+                <artifactId>graphql-simple-bindings-maven-plugin</artifactId>
+                <version>0.2.0</version>
+                <configuration>
+                    <language>All</language>
+                    <packageName>community.flock.eco.feature.user.graphql</packageName>
+                    <sourceDirectory>${project.basedir}/src/main/graphql</sourceDirectory>
+                    <targetDirectory>${project.build.directory}/generated-sources/graphql</targetDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 

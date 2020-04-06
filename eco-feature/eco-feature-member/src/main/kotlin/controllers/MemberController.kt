@@ -7,14 +7,16 @@ import community.flock.eco.feature.member.model.MemberGender
 import community.flock.eco.feature.member.model.MemberGroup
 import community.flock.eco.feature.member.model.MemberStatus
 import community.flock.eco.feature.member.repositories.MemberGroupRepository
+import community.flock.eco.feature.member.resolvers.produce
 import community.flock.eco.feature.member.services.MemberService
 import community.flock.eco.feature.member.specifications.MemberSpecification
+import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import java.time.LocalDate
-
+import community.flock.eco.feature.member.graphql.Member as MemberGraphql
 
 sealed class MemberEvent(open val member: Member) : Event
 data class CreateMemberEvent(override val member: Member) : MemberEvent(member)
@@ -63,7 +65,7 @@ class MemberController(
             @RequestParam search: String?,
             @RequestParam statuses: Set<MemberStatus>?,
             @RequestParam groups: Set<String>?,
-            page: Pageable): ResponseEntity<List<Member>> {
+            page: Pageable): ResponseEntity<List<MemberGraphql>> {
 
         val specification = MemberSpecification(
                 search = search ?: "",
@@ -74,6 +76,13 @@ class MemberController(
                 groups = groups ?: setOf()
         )
         return memberService.findAll(specification, page)
+                .run {
+                    PageImpl(
+                            this.content.map { it.produce() },
+                            this.pageable,
+                            this.totalElements
+                    )
+                }
                 .toResponse()
     }
 
@@ -82,6 +91,8 @@ class MemberController(
     fun findById(
             @PathVariable("id") id: Long) = memberService
             .findById(id)
+            ?.produce()
+            .toResponse()
 
     @PostMapping
     @PreAuthorize("hasAuthority('MemberAuthority.WRITE')")
