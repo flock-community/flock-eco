@@ -51,7 +51,7 @@ class MemberLoadData(
                         disabled = true))
                 .let { memberFieldRepository.saveAll(it) }
 
-        val members = (0..n)
+        val members = (1..n)
                 .map {
                     Member(
                             firstName = "first-name-$it",

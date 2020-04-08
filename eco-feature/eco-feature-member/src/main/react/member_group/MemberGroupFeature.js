@@ -8,6 +8,7 @@ import AddIcon from '@material-ui/icons/Add'
 import MemberGroupTable from './MemberGroupTable'
 import MemberGroupForm from './MemberGroupForm'
 import MemberGroupDialog from './MemberGroupDialog'
+import Fab from '@material-ui/core/Fab'
 
 const styles = theme => ({
   button: {
@@ -18,7 +19,7 @@ const styles = theme => ({
   },
 })
 
-class MemberManager extends React.Component {
+class MemberGroupFeature extends React.Component {
   constructor(props) {
     super(props)
 
@@ -64,30 +65,25 @@ class MemberManager extends React.Component {
       <div>
         <MemberGroupTable
           list={this.state.list}
-          handleRowClick={this.rowClick}
-        />
+          handleRowClick={this.rowClick}/>
 
         <MemberGroupDialog
           open={this.state.item != null}
           onClose={this.handleFormClose}
           onSave={this.handleFormSave}
-          onDelete={this.handleFormDelete}
-        >
+          onDelete={this.handleFormDelete}>
           <MemberGroupForm
             item={this.state.item}
-            onChange={this.handleFormUpdate}
-          />
+            onChange={this.handleFormUpdate}/>
         </MemberGroupDialog>
 
-        <Button
-          variant="fab"
+        <Fab
           color="primary"
           aria-label="Add"
           className={classes.button}
-          onClick={this.newClick}
-        >
+          onClick={this.newClick}>
           <AddIcon />
-        </Button>
+        </Fab>
       </div>
     )
   }
@@ -142,4 +138,4 @@ class MemberManager extends React.Component {
   }
 }
 
-export default withStyles(styles)(MemberManager)
+export default withStyles(styles)(MemberGroupFeature)

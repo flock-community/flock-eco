@@ -1,8 +1,6 @@
-import React from 'react'
-import {withStyles} from '@material-ui/core/styles'
+import React, {useState} from 'react'
 
 import Fab from '@material-ui/core/Fab'
-import Paper from '@material-ui/core/Card'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 
@@ -11,126 +9,132 @@ import Grid from '@material-ui/core/Grid'
 import AddIcon from '@material-ui/icons/Add'
 
 import {MemberTable} from './MemberTable'
-import MemberSpecification from './MemberSpecification'
-import MemberDialog from './MemberDialog'
+import {MemberFilter} from './MemberFilter'
+import {MemberDialog} from './MemberDialog'
 import MemberMerger from './MemberMerger'
+import makeStyles from '@material-ui/core/styles/makeStyles'
 
-const styles = theme => ({
-  tablePaper: {
-    marginBottom: 50,
-    width: '100%',
-    marginTop: theme.spacing(3),
-    overflowX: 'auto',
-  },
+const useStyles = makeStyles(theme => ({
   button: {
     position: 'fixed',
     right: 20,
     bottom: 20,
     margin: theme.spacing(1),
   },
-})
+}))
 
-class MemberFeature extends React.Component {
-  state = {
+export function MemberFeature({search}) {
+
+  const classes = useStyles()
+
+  const [state, setState] = useState({
     size: 10,
-    search: this.props.search || '',
-    action: null,
+    search: search || '',
+    openDialog: false,
     item: null,
     filter: {},
     refresh: false,
     refreshSelection: false,
     mergeMemberIds: null,
+  })
+
+  const handleRowClick = item => {
+    setState({
+      ...state,
+      item,
+      openDialog: true,
+    })
   }
 
-  handleRowClick = item => {
-    this.setState({item, action: 'EDIT'})
+  const handleNewClick = () => {
+    setState(prev => ({
+      ...prev,
+      item: null,
+      openDialog: true,
+    }))
   }
 
-  handleNewClick = () => {
-    this.setState({item: null, action: 'NEW'})
-  }
-
-  handleSpecification = specification => {
-    this.setState({
+  const handleFilterChange = specification => {
+    setState(prev => ({
+      ...prev,
       page: 0,
       specification,
-    })
+    }))
   }
 
-  handleComplete = () => {
-    this.setState({
+  const handleComplete = () => {
+    setState(prev => ({
+      ...prev,
       item: null,
-      action: null,
-      refresh: !this.state.refresh,
+      openDialog: false,
+      refresh: !prev.refresh,
       mergeMemberIds: null,
-    })
+    }))
   }
 
-  handleMergeComplete = () =>
-    this.setState(state => ({
+  const handleMergeComplete = () =>
+    setState(prev => ({
+      ...prev,
       mergeMemberIds: null,
-      refresh: !this.state.refresh,
-      refreshSelection: !state.refreshSelection,
+      refresh: !prev.refresh,
+      refreshSelection: !prev.refreshSelection,
     }))
 
-  mergeMembers = mergeMemberIds => this.setState({mergeMemberIds})
+  const mergeMembers = mergeMemberIds =>
+    setState(prev => ({
+      ...prev,
+      mergeMemberIds,
+    }))
 
-  handleMergerCancel = () =>
-    this.setState({
+  const handleMergerCancel = () =>
+    setState(prev => ({
+      ...prev,
       mergeMemberIds: null,
-    })
+    }))
 
-  render() {
-    const {classes} = this.props
+  return (<>
+    <Grid container direction="column" spacing={1}>
+      <Grid item>
+        <Card>
+          <CardContent>
+            <MemberFilter onChange={handleFilterChange}/>
+          </CardContent>
+        </Card>
+      </Grid>
+      <Grid item>
+        <Card>
+          <MemberTable
+            specification={state.specification}
+            page={state.page}
+            size={state.size}
+            refresh={state.refresh}
+            onRowClick={handleRowClick}
+            refreshSelection={state.refreshSelection}
+            onMergeMembers={mergeMembers}
+          />
+        </Card>
+      </Grid>
+    </Grid>
 
-    return (
-      <React.Fragment>
-        <Grid container direction="column" spacing={1}>
-          <Grid item>
-            <Card>
-              <CardContent>
-                <MemberSpecification onChange={this.handleSpecification}/>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item>
-            <Paper className={classes.tablePaper}>
-              <MemberTable
-                specification={this.state.specification}
-                page={this.state.page}
-                size={this.state.size}
-                refresh={this.state.refresh}
-                onRowClick={this.handleRowClick}
-                refreshSelection={this.state.refreshSelection}
-                onMergeMembers={this.mergeMembers}
-              />
-            </Paper>
-          </Grid>
-        </Grid>
+    <MemberDialog
+      id={state.item && state.item.id}
+      open={state.openDialog}
+      onComplete={handleComplete}
+    />
 
-        <MemberDialog
-          id={this.state.item && this.state.item.id}
-          action={this.state.action}
-          onComplete={this.handleComplete}
-        />
+    <MemberMerger
+      mergeMemberIds={state.mergeMemberIds}
+      onComplete={handleMergeComplete}
+      onCancel={handleMergerCancel}
+    />
 
-        <MemberMerger
-          mergeMemberIds={this.state.mergeMemberIds}
-          onComplete={this.handleMergeComplete}
-          onCancel={this.handleMergerCancel}
-        />
-
-        <Fab
-          color="primary"
-          aria-label="Add"
-          className={classes.button}
-          onClick={this.handleNewClick}
-        >
-          <AddIcon/>
-        </Fab>
-      </React.Fragment>
-    )
-  }
+    <Fab
+      color="primary"
+      aria-label="Add"
+      className={classes.button}
+      onClick={handleNewClick}
+    >
+      <AddIcon/>
+    </Fab>
+  </>)
 }
-
-export default withStyles(styles)(MemberFeature)

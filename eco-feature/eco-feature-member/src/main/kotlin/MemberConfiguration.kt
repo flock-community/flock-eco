@@ -1,5 +1,6 @@
 package community.flock.eco.feature.member
 
+import MemberGraphqlMapper
 import community.flock.eco.feature.member.controllers.MemberController
 import community.flock.eco.feature.member.controllers.MemberFieldController
 import community.flock.eco.feature.member.controllers.MemberGroupController
@@ -21,8 +22,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
         MemberController::class,
         MemberGroupController::class,
         MemberFieldController::class,
+        MemberGraphqlMapper::class,
         MemberQueryResolver::class)
-class MemberConfiguration : WebMvcConfigurer{
+class MemberConfiguration{
     @Bean
     fun dateType(): GraphQLScalarType? {
         return ExtendedScalars.Date

@@ -1,14 +1,22 @@
-type Query {
+extend type Query {
     findMemberById(id: ID): Member
     findAllMembers(
-        search:String,
-        statuses:[MemberStatus!]
-        groups:[String!],
+        filter:MemberFilter,
         page: Int,
         size: Int,
         sort:String
     ): [Member!]!
-    countMembers:Int
+    countMembers(
+        filter:MemberFilter
+    ):Int
+}
+
+directive @rest(url:String) on QUERY
+
+input MemberFilter {
+    search:String,
+    statuses:[MemberStatus!]
+    groups:[String!],
 }
 
 type Member {
@@ -88,21 +96,16 @@ input MemberInput {
     gender: MemberGender,
     birthDate: Date,
 
-    groups: [MemberGroupInput]
+    groups: [String!]!
 
-    fields: [MemberFieldInput],
+    fields: [MemberFieldInput!]!,
 
     status: MemberStatus
 }
 
-input MemberGroupInput {
-    code: String,
-    name: String
-}
-
 input MemberFieldInput {
-    key: String,
-    value: String
+    key: String!,
+    value: String!
 }
 
 scalar Date

@@ -11,6 +11,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 const styles = theme => ({})
 
 class MemberDialog extends React.Component {
+
   constructor(props) {
     super(props)
 
@@ -28,7 +29,7 @@ class MemberDialog extends React.Component {
   }
 
   render() {
-    const {classes, open, config} = this.props
+    const {classes, open} = this.props
 
     return (
       <Dialog

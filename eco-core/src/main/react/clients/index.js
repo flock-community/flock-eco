@@ -6,10 +6,12 @@ export const responseValidation = res => {
     if (res.status === 204) {
       return null
     }
-    return res.json().then(body => ({
-      headers: res.headers,
-      body
-    }))
+    return res.json()
+      .then(body => ({
+        headers: res.headers
+          .entries(),
+        body,
+      }))
   }
   return res.text().then(text => {
     throw new Error(text)
@@ -18,5 +20,5 @@ export const responseValidation = res => {
 
 export {
   PageableClient,
-  ResourceClient
+  ResourceClient,
 }

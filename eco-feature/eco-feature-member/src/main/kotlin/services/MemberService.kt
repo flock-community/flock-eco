@@ -1,27 +1,25 @@
 package community.flock.eco.feature.member.services
 
+import MemberGraphqlMapper
 import community.flock.eco.core.utils.toNullable
-import community.flock.eco.feature.member.controllers.CreateMemberEvent
-import community.flock.eco.feature.member.controllers.DeleteMemberEvent
-import community.flock.eco.feature.member.controllers.MergeMemberEvent
-import community.flock.eco.feature.member.controllers.UpdateMemberEvent
+import community.flock.eco.feature.member.events.*
+import community.flock.eco.feature.member.graphql.MemberInput
 import community.flock.eco.feature.member.model.Member
 import community.flock.eco.feature.member.model.MemberStatus
-import community.flock.eco.feature.member.repositories.MemberGroupRepository
 import community.flock.eco.feature.member.repositories.MemberRepository
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Component
+import javax.transaction.Transactional
 
 
 @Component
 class MemberService(
         private val publisher: ApplicationEventPublisher,
         private val memberRepository: MemberRepository,
-        private val memberGroupRepository: MemberGroupRepository
-) {
+        private val memberGraphqlMapper: MemberGraphqlMapper) {
 
     fun findAll(specification: Specification<Member>, pageable: Pageable): Page<Member> = memberRepository
             .findAll(specification, pageable)
@@ -29,8 +27,8 @@ class MemberService(
     fun findAll(pageable: Pageable): Iterable<Member> = memberRepository
             .findAll(pageable)
 
-    fun count(): Long = memberRepository
-            .count()
+    fun count(specification: Specification<Member>): Long = memberRepository
+            .count(specification)
 
     fun findById(id: Long) = memberRepository
             .findById(id)
@@ -42,37 +40,44 @@ class MemberService(
     fun findByStatus(status: MemberStatus) = memberRepository
             .findByStatus(status)
 
-    fun create(member: Member): Member = member
-            .let { memberRepository.save(it) }
-            .also { publisher.publishEvent(CreateMemberEvent(it)) }
+    fun create(input: MemberInput): Member = input
+            .consume()
+            .save()
+            ?.publish { CreateMemberEvent(it) }
+            ?: error("Cannot create member")
 
-    fun update(id: Long, member: Member): Member = member
-            .copy(
-                    id = id,
-                    groups = memberGroupRepository
-                            .findAllById(member.groups.map { it.id })
-                            .toSet())
-            .let { memberRepository.save(it) }
-            .also { publisher.publishEvent(UpdateMemberEvent(it)) }
+    fun update(id: Long, input: MemberInput): Member = findById(id)
+            ?.run { input.consume(this) }
+            ?.save()
+            ?.publish { UpdateMemberEvent(it) }
+            ?: error("Cannot update member")
 
-    fun delete(id: Long) = memberRepository.findById(id)
-            .map { member ->
-                member
-                        .copy(status = MemberStatus.DELETED)
-                        .let { memberRepository.save(it) }
-            }
-            .toNullable()
-            ?.also { publisher.publishEvent(DeleteMemberEvent(it)) }
+    fun delete(id: Long) = findById(id)
+            ?.let { it.copy(status = MemberStatus.DELETED) }
+            ?.save()
+            ?.publish { DeleteMemberEvent(it) }
+            ?: error("Cannot delete member")
 
-    fun merge(mergeMemberIds: List<Long>, newMember: Member): Member {
+    @Transactional
+    fun merge(mergeMemberIds: List<Long>, newMember: MemberInput): Member {
         val mergeMembers = memberRepository.findByIds(mergeMemberIds)
                 .map { it.copy(status = MemberStatus.MERGED) }
-                .let { memberRepository.saveAll(it) }
+                .saveAll()
         return newMember
-                .let { memberRepository.save(it) }
-                .also {
-                    publisher.publishEvent(MergeMemberEvent(it, mergeMembers.toSet()))
-                }
+                .consume()
+                .save()
+                .publish { MergeMemberEvent(it, mergeMembers.toSet()) }
     }
 
+    private fun Member.save() = memberRepository.save(this)
+    private fun Iterable<Member>.saveAll() = memberRepository.saveAll(this)
+
+    private fun Member.publish(function: (member: Member) -> MemberEvent): Member = this
+            .also { publisher.publishEvent(it) }
+
+    private fun MemberInput.consume(member: Member? = null) = memberGraphqlMapper
+            .consume(this, member)
+
 }
+
+

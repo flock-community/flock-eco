@@ -1,6 +1,8 @@
 package community.flock.eco.application.example
 
 import community.flock.eco.application.example.configuration.WebSecurityConfig
+import community.flock.eco.feature.member.MemberConfiguration
+import community.flock.eco.feature.user.UserConfiguration
 import community.flock.eco.fundraising.config.WebMvcConfig
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -17,7 +19,8 @@ import org.springframework.context.annotation.Import
         SecurityAutoConfiguration::class
 ))
 @Import(WebMvcConfig::class,
-        WebSecurityConfig::class)
+        WebSecurityConfig::class,
+        ApplicationConfiguration::class)
 class Application : SpringBootServletInitializer()
 
 fun main(args: Array<String>) {

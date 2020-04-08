@@ -106,10 +106,8 @@
 
 
     <build>
-
         <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
         <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
-
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -243,6 +241,39 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/generated-sources</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-resource</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>add-resource</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/src/main/graphql</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -308,8 +339,8 @@
                                 </goals>
                                 <configuration>
                                     <sources>
-                                        <source>${basedir}/src/develop/kotlin</source>
-                                        <source>${build.directory}/generated-sources</source>
+                                        <source>${project.basedir}/src/develop/kotlin</source>
+                                        <source>${project.build.directory}/generated-sources</source>
                                     </sources>
                                 </configuration>
                             </execution>

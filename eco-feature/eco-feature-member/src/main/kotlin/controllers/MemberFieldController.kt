@@ -1,9 +1,9 @@
 package community.flock.eco.feature.member.controllers
 
+import community.flock.eco.core.utils.toResponse
 import community.flock.eco.feature.member.model.MemberField
 import community.flock.eco.feature.member.model.MemberFieldType
 import community.flock.eco.feature.member.repositories.MemberFieldRepository
-import community.flock.eco.feature.member.safeRespond
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
@@ -17,7 +17,7 @@ class MemberFieldController(
             val name: String,
             val label: String,
             val type: String,
-            val options: String
+            val options: Set<String>
     )
 
     @GetMapping
@@ -29,13 +29,13 @@ class MemberFieldController(
     @PreAuthorize("hasAuthority('MemberFieldAuthority.READ')")
     fun findById(@PathVariable("id") id: Long): ResponseEntity<MemberField> = memberFieldRepository
             .findById(id)
-            .safeRespond()
+            .toResponse()
 
     @GetMapping("/{name}")
     @PreAuthorize("hasAuthority('MemberFieldAuthority.READ')")
     fun findByName(@PathVariable("name") name: String): ResponseEntity<MemberField> = memberFieldRepository
             .findByName(name)
-            .safeRespond()
+            .toResponse()
 
 
     @PostMapping
@@ -46,7 +46,6 @@ class MemberFieldController(
                 label = memberFieldForm.label,
                 type = MemberFieldType.valueOf(memberFieldForm.type),
                 options = memberFieldForm.options
-                        .split(",")
                         .toSortedSet()
         ).let {
             memberFieldRepository.save(it)
@@ -68,7 +67,6 @@ class MemberFieldController(
                                 label = memberFieldForm.label,
                                 type = MemberFieldType.valueOf(memberFieldForm.type),
                                 options = memberFieldForm.options
-                                        .split(",")
                                         .toSortedSet()
                         )
                     }.map {

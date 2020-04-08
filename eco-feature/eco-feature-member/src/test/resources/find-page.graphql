@@ -1,0 +1,25 @@
+query findPage($search:String) @rest(url:"/api/test"){
+    list: findAllMembers(
+        filter: {search: $search},
+        size: 2,
+        page: 0
+    ){
+        ...MemberSimple,
+        ...MemberDate
+    }
+    count: countMembers(
+        filter: {search: $search}
+    )
+}
+
+fragment MemberSimple on Member {
+    id,
+    firstName,
+    surName
+}
+
+fragment MemberDate on Member {
+    birthDate
+}
+
+

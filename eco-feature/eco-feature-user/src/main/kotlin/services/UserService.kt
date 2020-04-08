@@ -23,7 +23,10 @@ class UserService(
         val applicationEventPublisher: ApplicationEventPublisher
 ) {
 
+    fun count() = userRepository.count()
+
     fun findAll(): Iterable<User> = userRepository.findAll()
+    fun findAll(name: String, email: String, pageable: Pageable): Iterable<User> = userRepository.findAllByNameIgnoreCaseContainingOrEmailIgnoreCaseContaining(name, email, pageable)
 
     fun findByCode(code: String): User? = userRepository
             .findByCode(code)

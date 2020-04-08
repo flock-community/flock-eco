@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react'
-import classNames from 'classnames'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableFooter from '@material-ui/core/TableFooter'
@@ -9,24 +8,19 @@ import TableRow from '@material-ui/core/TableRow'
 import TablePagination from '@material-ui/core/TablePagination'
 import TableSortLabel from '@material-ui/core/TableSortLabel'
 import Checkbox from '@material-ui/core/Checkbox'
-import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'
-import Tooltip from '@material-ui/core/Tooltip'
-import {withStyles} from '@material-ui/core/styles'
-import IconButton from '@material-ui/core/IconButton'
-import MergeIcon from '@material-ui/icons/CallMerge'
-import {lighten} from '@material-ui/core/es/styles/colorManipulator'
 import * as Member from '../model/Member'
-import {MemberClient} from './MemberClient'
 import {useQuery} from '@apollo/react-hooks'
 import gql from 'graphql-tag'
 import {MemberTableToolbar} from './MemberTableToolbar'
-import {Snackbar} from '@material-ui/core'
-
+import {CircularProgress, Snackbar} from '@material-ui/core'
 
 export const QUERY = gql`
-    query ($specification: MemberSpecification!, $page: Int!, $sort: String) {
-        list: findAllMembers(specification:$search, page:$page, size:10, sort:$sort,) {
+    query ($search: String!,
+        $statuses: [MemberStatus!],
+        $groups:[String!],
+        $page: Int!,
+        $sort: String) {
+        list: findAllMembers(filter:{search:$search, statuses:$statuses, groups:$groups}, page:$page, size:10, sort:$sort,) {
             id,
             firstName,
             infix,
@@ -35,36 +29,45 @@ export const QUERY = gql`
             created,
             status,
         }
-        count:countMembers
+        count:countMembers(filter:{search:$search, statuses:$statuses, groups:$groups})
     }`
 
-export function MemberTable(props) {
+export function MemberTable({specification, size, page, order, direction, onRowClick, onMergeMembers}) {
 
   const [state, setState] = useState({
     data: [],
     count: 0,
-    page: 0,
-    size: props.size || 10,
-    specification: props.specification || {},
-    order: 'surName',
-    direction: 'asc',
+    page: page || 0,
+    size: size || 10,
+    specification: specification || {},
+    order: order || 'surName',
+    direction: direction || 'asc',
     selectedIds: [],
   })
 
-  const {data, error, loading} = useQuery(QUERY, {variables: {
-    specification: state.specification ,
-    page: state.page,
-    sort: `${state.order},${state.direction}`,
-  }})
+  useEffect(() => {
+    setState({
+      ...state,
+      specification: specification || {},
+    })
+  }, [specification])
 
-  console.log(error)
+  const {data, error, loading} = useQuery(QUERY, {
+    variables: {
+      search: state.specification.search || "",
+      groups: state.specification.groups || [],
+      statuses: state.specification.statuses || [],
+      page: state.page,
+      sort: `${state.order},${state.direction}`,
+    },
+  })
 
   const handleChangePage = (event, page) => {
     setState({...state, page: page})
   }
 
   const handleRowClick = (event, user) => {
-    if (props.onRowClick) props.onRowClick(event, user)
+    if (onRowClick) onRowClick(event, user)
   }
 
   const handleChangeSort = id => event => {
@@ -96,7 +99,6 @@ export function MemberTable(props) {
     }
   }
 
-
   const rows = [
     {id: 'surName', label: 'Name'},
     {id: 'email', label: 'Email'},
@@ -104,13 +106,13 @@ export function MemberTable(props) {
     {id: 'status', label: 'Status'},
   ]
 
-  if(loading)
-    return null
+  if (loading)
+    return <CircularProgress/>
 
   return (
     <>
       <MemberTableToolbar
-        onMergeMembers={props.onMergeMembers}
+        onMergeMembers={onMergeMembers}
         selectedIds={state.selectedIds}
       />
       {data && (<Table>
@@ -180,7 +182,7 @@ export function MemberTable(props) {
         </TableFooter>
       </Table>)}
 
-      <Snackbar open={error} message={error}/>
+      <Snackbar open={error} message={error && error.message}/>
 
     </>
   )

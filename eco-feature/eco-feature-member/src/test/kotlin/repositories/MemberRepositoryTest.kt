@@ -15,7 +15,6 @@ import javax.annotation.PostConstruct
 @RunWith(SpringRunner::class)
 @DataJpaTest(showSql=false)
 @AutoConfigureTestDatabase
-@Ignore
 class MemberRepositoryTest {
 
     @Autowired
