@@ -2,7 +2,6 @@ import React from 'react'
 
 import Grid from '@material-ui/core/Grid'
 import FormControl from '@material-ui/core/FormControl'
-import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
 import Select from '@material-ui/core/Select'
 import TextField from '@material-ui/core/TextField'
@@ -27,6 +26,12 @@ class MemberForm extends React.Component {
     }
   }
 
+  handleOptionsChange(value) {
+    this.setState({options: value}, () => {
+      this.props.onChange(this.state)
+    })
+  }
+
   render() {
     const {classes} = this.props
 
@@ -36,15 +41,13 @@ class MemberForm extends React.Component {
         direction="column"
         justify="space-evenly"
         alignItems="stretch"
-        spacing={1}
-      >
+        spacing={1}>
         <Grid item sx={12}>
           <TextField
             className={classes.input}
             label="Name"
             value={this.state.name || ''}
-            onChange={this.handleChange('name')}
-          />
+            onChange={this.handleChange('name')}/>
         </Grid>
 
         <Grid item sx={12}>
@@ -52,8 +55,7 @@ class MemberForm extends React.Component {
             className={classes.input}
             label="Label"
             value={this.state.label || ''}
-            onChange={this.handleChange('label')}
-          />
+            onChange={this.handleChange('label')}/>
         </Grid>
 
         <Grid item sx={12}>
@@ -62,8 +64,7 @@ class MemberForm extends React.Component {
             <Select
               className={classes.input}
               value={this.state.type || 'CHECKBOX'}
-              onChange={this.handleChange('type')}
-            >
+              onChange={this.handleChange('type')}>
               <MenuItem value="CHECKBOX">Checkbox</MenuItem>
               <MenuItem value="TEXT">Text</MenuItem>
               <MenuItem value="SINGLE_SELECT">Single Select</MenuItem>
@@ -74,7 +75,7 @@ class MemberForm extends React.Component {
 
         {(this.state.type === 'SINGLE_SELECT' ||
           this.state.type === 'MULTI_SELECT') &&
-          this.renderOptions()}
+        this.renderOptions()}
       </Grid>
     )
   }
@@ -89,8 +90,7 @@ class MemberForm extends React.Component {
           label="Options"
           value={this.state.options || ''}
           onChange={ev => {
-            ev.target.value = ev.target.value.split(',')
-            this.handleChange('options')(ev)
+            this.handleOptionsChange(ev.target.value.split(','))
           }}
         />
       </Grid>

@@ -5,19 +5,23 @@
     "bootstrap": "lerna bootstrap --hoist",
     "lerna": "lerna",
     "prettier": "prettier --write \"{**/*.js,**/*.json,**/*.html}\"",
-    "start": "webpack-dev-server --mode development --config ./eco-webpack/webpack.config.js",
+    "start": "cd ./eco-application/eco-application-example && webpack-dev-server --mode development --config ../../eco-webpack/webpack.config.js",
     "build": "webpack --mode production",
     "storybook": "start-storybook"
   },
   "dependencies": {
+    "@apollo/react-hooks": "^3.1.3",
     "@material-ui/core": "^4.1.1",
     "@material-ui/icons": "^4.2.0",
     "@material-ui/lab": "^4.0.0-alpha.16",
     "@material-ui/styles": "^4.1.1",
+    "apollo-boost": "^0.4.7",
     "babel-polyfill": "^6.26.0",
     "clsx": "^1.0.4",
     "formik": "^1.5.7",
     "formik-material-ui": "0.0.22",
+    "graphql": "^15.0.0",
+    "graphql-tag": "^2.10.3",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-material-ui-form-validator": "^2.0.8",
@@ -28,18 +32,19 @@
     "yup": "^0.27.0"
   },
   "devDependencies": {
-    "lerna": "^3.13.1",
     "@babel/core": "^7.4.5",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-transform-runtime": "^7.9.0",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
     "@storybook/react": "^5.1.4",
     "babel-loader": "^8.0.6",
+    "html-webpack-plugin": "^3.2.0",
+    "lerna": "^3.13.1",
     "prettier": "^1.15.3",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0",
-    "webpack-dev-server": "^3.2.1",
-    "html-webpack-plugin": "^3.2.0"
+    "webpack-dev-server": "^3.2.1"
   },
   "prettier": {
     "singleQuote": true,

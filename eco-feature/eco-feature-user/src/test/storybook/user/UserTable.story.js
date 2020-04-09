@@ -4,7 +4,7 @@ import {UserTable} from '../../../main/react/user/UserTable'
 
 const handleRowClick = (row) => console.log
 
-storiesOf('User/UserTable', module)
+storiesOf('User|UserTable', module)
 
   .add('default', () => {
     return (<UserTable/>)

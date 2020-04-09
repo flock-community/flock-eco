@@ -1,0 +1,110 @@
+extend type Query {
+    findMemberById(id: ID): Member
+    findAllMembers(
+        filter:MemberFilter,
+        page: Int,
+        size: Int,
+        sort:String
+    ): [Member!]!
+    countMembers(
+        filter:MemberFilter
+    ):Int
+}
+
+input MemberFilter {
+    search:String,
+    statuses:[MemberStatus!]
+    groups:[String!],
+}
+
+type Member {
+
+    id:String!
+
+    firstName: String!,
+    infix: String,
+    surName: String!,
+
+    email: String,
+
+    phoneNumber: String,
+
+    street: String,
+    houseNumber: String,
+    houseNumberExtension: String,
+    postalCode: String,
+    city: String,
+    country: String,
+    language: String,
+
+    gender: MemberGender,
+    birthDate: Date,
+
+    groups: [MemberGroup]
+
+    fields: [MemberField],
+
+    status: MemberStatus
+
+    created: Date
+}
+
+enum MemberGender {
+    UNKNOWN,
+    MALE,
+    FEMALE,
+    OTHER,
+}
+
+enum MemberStatus {
+    NEW,
+    ACTIVE,
+    DISABLED,
+    DELETED,
+    MERGED,
+}
+
+type MemberGroup {
+    code: String,
+    name: String
+}
+
+type MemberField {
+    key: String,
+    value: String
+}
+
+input MemberInput {
+    firstName: String!,
+    infix: String,
+    surName: String!,
+
+    email: String,
+
+    phoneNumber: String,
+
+    street: String,
+    houseNumber: String,
+    houseNumberExtension: String,
+    postalCode: String,
+    city: String,
+    country: String,
+    language: String,
+
+    gender: MemberGender,
+    birthDate: Date,
+
+    groups: [String!]!
+
+    fields: [MemberFieldInput!]!,
+
+    status: MemberStatus
+}
+
+input MemberFieldInput {
+    key: String!,
+    value: String!
+}
+
+scalar Date
+

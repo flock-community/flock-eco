@@ -1,29 +1,43 @@
-import React from 'react'
-import {withStyles} from '@material-ui/core'
-import FeatureList from './FeatureList'
+import React, {createElement, useState} from 'react'
+import {Container} from '@material-ui/core'
+import ApolloClient from 'apollo-boost'
+import {ApolloProvider} from '@apollo/react-hooks'
+import {AppDrawer} from './AppDrawer'
+import {features, findComponentName} from './data'
+const client = new ApolloClient({
+  uri: '/graphql',
+})
 
-import {features} from './data'
+export function App() {
 
-const styles = theme => ({})
+  const hash = window.location.hash
+  const component = Object.keys(features)
+    .reduce((acc, cur) => (acc.concat(features[cur])), [])
+    .find(it => `#${findComponentName(it)}` === hash)
 
-class App extends React.Component {
+  const [state, setState] = useState({
+    drawer: !hash,
+    hash,
+    component
+  })
 
-  state = {
-    component: null,
+  const handleFeatureClick = component => {
+    const hash = `#${findComponentName(component)}`
+    setState({
+      component,
+      drawer: false,
+      hash
+    })
+    window.location.hash = hash
   }
 
-  handleFeatureChange = component => {
-    this.setState({component})
-  }
+  const elm = state.component && createElement(state.component, {})
 
+  return (<ApolloProvider client={client}>
+    <Container>
+      <AppDrawer open={state.drawer} onClick={handleFeatureClick}/>
+      {elm}
+    </Container>
+  </ApolloProvider>)
 
-
-  render() {
-    return <React.Fragment>
-      <FeatureList onChange={this.handleFeatureChange}/>
-      {this.state.component}
-      </React.Fragment>
-  }
 }
-
-export default withStyles(styles)(App)

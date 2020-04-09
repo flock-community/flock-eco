@@ -1,5 +1,7 @@
 package community.flock.eco.application.example
 
+import community.flock.eco.feature.member.MemberConfiguration
+import community.flock.eco.feature.member.data.MemberLoadData
 import community.flock.eco.feature.user.UserConfiguration
 import community.flock.eco.feature.user.data.UserLoadData
 import org.springframework.boot.autoconfigure.domain.EntityScan
@@ -14,7 +16,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 @ComponentScan(basePackages = [
     "community.flock.eco.application.example.controllers"
 ])
-@Import(
-        UserConfiguration::class,
-        UserLoadData::class)
+@Import(UserConfiguration::class,
+        UserLoadData::class,
+        MemberConfiguration::class,
+        MemberLoadData::class)
 class ApplicationConfiguration

@@ -9,4 +9,8 @@
 
     <artifactId>flock-eco-feature-payment</artifactId>
 
+    <properties>
+        <flock.eco.feature.name>payment</flock.eco.feature.name>
+    </properties>
+
 </project>

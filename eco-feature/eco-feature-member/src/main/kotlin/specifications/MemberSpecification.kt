@@ -10,7 +10,7 @@ import javax.persistence.criteria.*
 class MemberSpecification(
         private val search: String = "",
         private val statuses: Set<MemberStatus> = setOf(),
-        private val groups: Set<MemberGroup> = setOf()
+        private val groups: Set<String> = setOf()
 ) : Specification<Member> {
 
     override fun toPredicate(
@@ -38,17 +38,16 @@ class MemberSpecification(
         }
 
         val groupCriteria = if (groups.isNotEmpty()) {
-            val path: Expression<Set<MemberGroup>> = root.get("groups")
-            groups
-                    .map { cb.isMember(it,path) }
-                    .let { cb.or(*it.toTypedArray()) }
+            val join: Join<Member, MemberGroup> = root.join("groups")
+            val path: Expression<String> = join.get("code")
+            val predicate = cb.`in`(path)
+            groups.forEach { predicate.value(it) }
+            predicate
         } else {
             cb.conjunction()
         }
 
-        //cq.distinct(true)
-        //root.fetch<Member, MemberGroup>("groups")
-        //root.fetch<Member, MemberGroup>("fields")
+
         return cb.and(searchCriteria, statusCriteria, groupCriteria)
 
     }

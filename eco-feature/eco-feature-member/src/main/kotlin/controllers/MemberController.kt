@@ -1,66 +1,27 @@
 package community.flock.eco.feature.member.controllers
 
-import community.flock.eco.core.events.Event
+import MemberGraphqlMapper
+import community.flock.eco.core.utils.toResponse
+import community.flock.eco.feature.member.graphql.MemberInput
 import community.flock.eco.feature.member.model.Member
-import community.flock.eco.feature.member.model.MemberGender
-import community.flock.eco.feature.member.model.MemberGroup
 import community.flock.eco.feature.member.model.MemberStatus
 import community.flock.eco.feature.member.repositories.MemberGroupRepository
-import community.flock.eco.feature.member.repositories.MemberRepository
 import community.flock.eco.feature.member.services.MemberService
 import community.flock.eco.feature.member.specifications.MemberSpecification
 import org.springframework.data.domain.Pageable
-import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
-import java.time.LocalDate
-import java.util.*
-
-
-sealed class MemberEvent(open val member: Member) : Event
-data class CreateMemberEvent(override val member: Member) : MemberEvent(member)
-data class UpdateMemberEvent(override val member: Member) : MemberEvent(member)
-data class DeleteMemberEvent(override val member: Member) : MemberEvent(member)
-data class MergeMemberEvent(override val member: Member, val mergeMembers: Set<Member>) : MemberEvent(member)
+import community.flock.eco.feature.member.graphql.Member as MemberGraphql
 
 @RestController
 @RequestMapping("/api/members")
 class MemberController(
-        private val memberRepository: MemberRepository,
-        private val memberGroupRepository: MemberGroupRepository,
+        private val memberGraphqlMapper: MemberGraphqlMapper,
         private val memberService: MemberService
 ) {
 
-
-    data class MemberForm(
-
-            val firstName: String,
-            val infix: String? = null,
-            val surName: String,
-
-            val email: String? = null,
-
-            val phoneNumber: String? = null,
-
-            val street: String? = null,
-            val houseNumber: String? = null,
-            val houseNumberExtension: String? = null,
-            val postalCode: String? = null,
-            val city: String? = null,
-            val country: String? = null,
-
-            val gender: MemberGender? = null,
-            val birthDate: LocalDate? = null,
-
-            val groups: Set<MemberGroup> = setOf(),
-            val fields: Map<String, String> = mapOf(),
-
-            val status: MemberStatus = MemberStatus.NEW
-    )
-
-    data class MergeForm(val mergeMemberIds: List<Long>, val newMember: MemberForm)
+    data class MergeForm(val mergeMemberIds: List<Long>, val newMember: MemberInput)
 
     @GetMapping
     @PreAuthorize("hasAuthority('MemberAuthority.READ')")
@@ -68,7 +29,7 @@ class MemberController(
             @RequestParam search: String?,
             @RequestParam statuses: Set<MemberStatus>?,
             @RequestParam groups: Set<String>?,
-            page: Pageable): ResponseEntity<List<Member>> {
+            page: Pageable): ResponseEntity<List<MemberGraphql>> {
 
         val specification = MemberSpecification(
                 search = search ?: "",
@@ -76,58 +37,48 @@ class MemberController(
                         MemberStatus.NEW,
                         MemberStatus.ACTIVE,
                         MemberStatus.DISABLED),
-                groups = groups?.let { memberGroupRepository.findByCodes(it).toSet() } ?: setOf()
+                groups = groups ?: setOf()
         )
-        val res = memberRepository.findAll(specification, page)
-        val headers = HttpHeaders()
-        headers.set("x-page", page.pageNumber.toString())
-        headers.set("x-total", res.totalElements.toString())
-        return ResponseEntity(res.content.toList(), headers, HttpStatus.OK)
+        return memberService.findAll(specification, page)
+                .map { it.produce() }
+                .toResponse()
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('MemberAuthority.READ')")
     fun findById(
-            @PathVariable("id") id: String): Optional<Member> = memberRepository
-            .findById(id.toLong())
+            @PathVariable("id") id: Long) = memberService
+            .findById(id)
+            ?.produce()
+            .toResponse()
 
     @PostMapping
     @PreAuthorize("hasAuthority('MemberAuthority.WRITE')")
-    fun create(@RequestBody form: MemberForm): Member = memberService.create(form.toMember())
+    fun create(@RequestBody form: MemberInput) = memberService
+            .create(form)
+            .produce()
+            .toResponse()
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('MemberAuthority.WRITE')")
-    fun update(@PathVariable("id") id: String, @RequestBody member: Member): Member = memberService.update(id.toLong(), member)
+    fun update(@PathVariable("id") id: String, @RequestBody member: MemberInput) = memberService
+            .update(id.toLong(), member)
+            .produce()
+            .toResponse()
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('MemberAuthority.WRITE')")
-    fun delete(@PathVariable("id") id: String) = memberService.delete(id.toLong())
+    fun delete(@PathVariable("id") id: String) = memberService
+            .delete(id.toLong())
+            .produce()
+            .toResponse()
 
     @PostMapping("/merge")
     @PreAuthorize("hasAuthority('MemberAuthority.WRITE')")
-    fun merge(@RequestBody form: MergeForm): Member = memberService.merge(
-            form.mergeMemberIds,
-            form.newMember.toMember())
+    fun merge(@RequestBody form: MergeForm) = memberService
+            .merge(form.mergeMemberIds, form.newMember)
+            .produce()
+            .toResponse()
 
-    private fun MemberForm.toMember(): Member {
-        return Member(
-                firstName = this.firstName,
-                infix = this.infix,
-                surName = this.surName,
-                email = this.email,
-                phoneNumber = this.phoneNumber,
-                street = this.street,
-                houseNumber = this.houseNumber,
-                houseNumberExtension = this.houseNumberExtension,
-                postalCode = this.postalCode,
-                city = this.postalCode,
-                country = this.country,
-                gender = this.gender,
-                groups = this.groups,
-                fields = this.fields,
-                birthDate = this.birthDate,
-                status = this.status
-        )
-    }
-
+    fun Member.produce() = memberGraphqlMapper.produce(this)
 }

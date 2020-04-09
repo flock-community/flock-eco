@@ -19,12 +19,24 @@
     </properties>
 
     <dependencies>
-
+        <dependency>
+            <groupId>com.graphql-java-kickstart</groupId>
+            <artifactId>graphiql-spring-boot-starter</artifactId>
+            <version>7.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.flock-community.flock-eco</groupId>
+            <artifactId>flock-eco-feature-member</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.flock-community.flock-eco</groupId>
+            <artifactId>flock-eco-feature-member</artifactId>
+            <classifier>develop</classifier>
+        </dependency>
         <dependency>
             <groupId>com.github.flock-community.flock-eco</groupId>
             <artifactId>flock-eco-feature-user</artifactId>
         </dependency>
-
     </dependencies>
 
     <build>

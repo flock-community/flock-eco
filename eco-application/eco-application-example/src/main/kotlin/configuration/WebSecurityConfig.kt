@@ -36,11 +36,11 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                 .authorizeRequests()
                 .antMatchers("/login/**").permitAll()
                 .antMatchers("/_ah/**").permitAll()
+                .anyRequest().authenticated()
         http
                 .cors()
 
         userSecurityService.testLogin(http)
-        //userSecurityService.googleLogin(http)
 
     }
 

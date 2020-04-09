@@ -1,7 +1,5 @@
-import React from 'react'
-
-import {withStyles} from '@material-ui/core/styles'
-
+import React, {useEffect, useState} from 'react'
+import * as Yup from 'yup'
 import Grid from '@material-ui/core/Grid'
 import InputLabel from '@material-ui/core/InputLabel'
 import TextField from '@material-ui/core/TextField'
@@ -16,68 +14,214 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Checkbox from '@material-ui/core/Checkbox'
 import ListItemText from '@material-ui/core/ListItemText'
 
-import {TextValidator} from 'react-material-ui-form-validator'
+import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator'
 
-const styles = theme => ({
-  input: {
-    width: '100%',
-  },
+const schema = Yup.object().shape({
+  firstName: Yup.string()
+    .required()
+    .default(''),
+  infix: Yup.string()
+    .default(''),
+  surName: Yup.string()
+    .required()
+    .default(''),
+  email: Yup.string()
+    .default(''),
+  phoneNumber: Yup.string()
+    .default(''),
+  street: Yup.string()
+    .default(''),
+  houseNumber: Yup.string()
+    .default(''),
+  houseNumberExtension: Yup.string()
+    .default(''),
+  postalCode: Yup.string()
+    .default(''),
+  city: Yup.string()
+    .default(''),
+  country: Yup.string()
+    .default(''),
+  language: Yup.string()
+    .default(''),
+  gender: Yup.string()
+    .default('UNKNOWN'),
+  birthDate: Yup.string()
+    .default(''),
+  groups: Yup.array()
+    .default([]),
+  fields: Yup.array()
+    .default([]),
+  status: Yup.string()
+    .default('NEW'),
 })
 
-class MemberForm extends React.Component {
-  state = {}
+export function MemberForm({value, groups, fields, onChange, onSubmit}) {
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.value !== this.props.value) {
-      this.setState(this.props.value)
+  const [state, setState] = useState(value || schema.cast())
+
+  useEffect(() => {
+    setState(value || schema.cast())
+  }, [value])
+
+  const resolverGroup = code => groups.find(it => it.code === code) || {}
+  const resolveField = key => (state.fields.find(it => it.key === key)) || {}
+
+  const handleChange = (name) => (event) => {
+    const it = {
+      ...state,
+      [name]: event.target.value,
     }
+    setState(it)
+    onChange(it)
   }
 
-  handleChange(name) {
-    return event => {
-      this.setState({[name]: event.target.value}, () => {
-        this.props.onChange(this.state)
-      })
+  const handleChangeGroup = (name) => (event) => {
+    const value = event.target.value
+    const it = {
+      ...state,
+      [name]: value,
     }
+    setState(it)
+    onChange(it)
   }
 
-  handleChangeGroup(name) {
-    return event => {
-      const value = event.target.value.map(this.resolverGroup)
-      this.setState({[name]: value}, () => {
-        this.props.onChange(this.state)
-      })
+  const handleChangeField = (name) => (event) => {
+    const value = event.target.value
+    console.log(value)
+    const it = {
+      ...state,
+      fields: fields.map(field => ({
+        key: field.name,
+        value: field.name === name
+          ? Array.isArray(value) ? value.join(',') : value
+          : resolveField(field.name).value || '',
+      })),
     }
+    setState(it)
+    onChange(it)
   }
 
-  handleChangeField(name) {
-    return event => {
-      const value = event.target.value
+  const renderGroupsRow = groups && (
+    <Grid item xs={12}>
+      <FormControl fullWidth>
+        <InputLabel htmlFor="groups">Groups</InputLabel>
+        <Select
+          multiple
+          value={state.groups || []}
+          input={<Input/>}
+          onChange={handleChangeGroup('groups')}
+          renderValue={selected =>
+            selected
+              .map(resolverGroup)
+              .map(it => it.name)
+              .join(',')
+          }>
+          {groups.map(it => (
+            <MenuItem key={it.code} value={it.code}>
+              <Checkbox
+                checked={state.groups.indexOf(it.code) > -1}
+              />
+              <ListItemText primary={it.name}/>
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </Grid>
+  )
 
-      const fields = Object.assign(this.state.fields, {
-        [name]: Array.isArray(value) ? value.join(',') : value,
-      })
-      this.setState({fields}, () => {
-        this.props.onChange(this.state)
-      })
-    }
-  }
+  const textField = field => (
+    <TextField
+      label={field.label}
+      fullWidth
+      disabled={field.disabled}
+      value={resolveField(field.name).value || ''}
+      onChange={handleChangeField(field.name)}
+    />
+  )
 
-  resolverGroup = id => this.props.groups.find(it => it.id === id)
+  const checkboxField = field => (
+    <FormControlLabel
+      disabled={field.disabled}
+      control={
+        <Checkbox
+          onChange={handleChangeField(field.name)}
+          checked={resolveField(field.name).value === 'true'}
+          value={(resolveField(field.name).value !== 'true').toString()}
+        />
+      }
+      label={field.label}
+    />
+  )
 
-  render() {
-    const {classes} = this.props
+  const singleSelectField = field => (
+    <FormControl
+      fullWidth
+      disabled={field.disabled}>
+      <InputLabel htmlFor={field.name}>{field.label}</InputLabel>
+      <Select
+        value={resolveField(field.name).value || ''}
+        input={<Input/>}
+        onChange={handleChangeField(field.name)}
+      >
+        {field.options.map(it => (
+          <MenuItem key={it} value={it}>
+            <ListItemText primary={it}/>
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  )
 
-    return (
+  const multiSelectField = field => (
+    <FormControl
+      fullWidth
+      disabled={field.disabled}>
+      <InputLabel htmlFor={field.name}>{field.label}</InputLabel>
+      <Select
+        multiple
+        value={resolveField(field.name).value ? resolveField(field.name).value.split(',') : []}
+        input={<Input/>}
+        onChange={handleChangeField(field.name)}
+        renderValue={selected => selected.join(',')}
+      >
+        {field.options.map(it => (
+          <MenuItem key={it} value={it}>
+            <Checkbox
+              checked={
+                (resolveField(field.name).value || '').split(',').indexOf(it) > -1
+              }
+            />
+            <ListItemText primary={it}/>
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  )
+
+  const renderFieldsRow = fields && fields.map(it => (
+    <React.Fragment key={it.name}>
+      <Grid item xs={12}>
+        {it.type === 'CHECKBOX' && checkboxField(it)}
+        {it.type === 'TEXT' && textField(it)}
+        {it.type === 'SINGLE_SELECT' && singleSelectField(it)}
+        {it.type === 'MULTI_SELECT' && multiSelectField(it)}
+      </Grid>
+    </React.Fragment>
+  ))
+
+  return (
+    <ValidatorForm
+      id="member-form"
+      onSubmit={onSubmit}>
       <Grid container spacing={1}>
         <Grid item xs={5}>
           <TextValidator
             required
             name="firstName"
             label="First name"
-            className={classes.input}
-            value={this.state.firstName || ''}
-            onChange={this.handleChange('firstName')}
+            fullWidth
+            value={state.firstName || ''}
+            onChange={handleChange('firstName')}
             validators={['required']}
             errorMessages={['this field is required']}
           />
@@ -85,10 +229,10 @@ class MemberForm extends React.Component {
 
         <Grid item xs={2}>
           <TextField
-            className={classes.input}
+            fullWidth
             label="Infix"
-            value={this.state.infix || ''}
-            onChange={this.handleChange('infix')}
+            value={state.infix || ''}
+            onChange={handleChange('infix')}
           />
         </Grid>
 
@@ -97,9 +241,9 @@ class MemberForm extends React.Component {
             required
             name="surName"
             label="Surname"
-            className={classes.input}
-            value={this.state.surName || ''}
-            onChange={this.handleChange('surName')}
+            fullWidth
+            value={state.surName || ''}
+            onChange={handleChange('surName')}
             validators={['required']}
             errorMessages={['this field is required']}
           />
@@ -108,21 +252,22 @@ class MemberForm extends React.Component {
         <Grid item xs={7}>
           <TextField
             type="date"
-            className={classes.input}
+            fullWidth
             label="Birth date"
             InputLabelProps={{shrink: true}}
-            value={this.state.birthDate || ''}
-            onChange={this.handleChange('birthDate')}
+            value={state.birthDate || ''}
+            onChange={handleChange('birthDate')}
           />
         </Grid>
 
         <Grid item xs={5}>
-          <FormControl className={classes.input}>
+          <FormControl
+            fullWidth>
             <InputLabel htmlFor="gender">Gender</InputLabel>
             <Select
               required
-              value={this.state.gender || 'UNKNOWN'}
-              onChange={this.handleChange('gender')}
+              value={state.gender || 'UNKNOWN'}
+              onChange={handleChange('gender')}
               inputProps={{
                 name: 'gender',
                 id: 'gender',
@@ -137,204 +282,68 @@ class MemberForm extends React.Component {
 
         <Grid item xs={12}>
           <TextField
-            className={classes.input}
+            fullWidth
             label="Phone number"
-            value={this.state.phoneNumber || ''}
-            onChange={this.handleChange('phoneNumber')}
+            value={state.phoneNumber || ''}
+            onChange={handleChange('phoneNumber')}
           />
         </Grid>
 
         <Grid item xs={12}>
           <TextField
-            className={classes.input}
+            fullWidth
             label="Email"
-            value={this.state.email || ''}
-            onChange={this.handleChange('email')}
+            value={state.email || ''}
+            onChange={handleChange('email')}
           />
         </Grid>
 
         <Grid item xs={8}>
           <TextField
-            className={classes.input}
+            fullWidth
             label="Street"
-            value={this.state.street || ''}
-            onChange={this.handleChange('street')}
+            value={state.street || ''}
+            onChange={handleChange('street')}
           />
         </Grid>
 
         <Grid item xs={2}>
           <TextField
-            className={classes.input}
+            fullWidth
             label="Nr"
-            value={this.state.houseNumber || ''}
-            onChange={this.handleChange('houseNumber')}
+            value={state.houseNumber || ''}
+            onChange={handleChange('houseNumber')}
           />
         </Grid>
 
         <Grid item xs={2}>
           <TextField
-            className={classes.input}
+            fullWidth
             label="Ext"
-            value={this.state.houseNumberExtension || ''}
-            onChange={this.handleChange('houseNumberExtension')}
+            value={state.houseNumberExtension || ''}
+            onChange={handleChange('houseNumberExtension')}
           />
         </Grid>
 
         <Grid item xs={3}>
           <TextField
-            className={classes.input}
+            fullWidth
             label="Postal code"
-            value={this.state.postalCode || ''}
-            onChange={this.handleChange('postalCode')}
+            value={state.postalCode || ''}
+            onChange={handleChange('postalCode')}
           />
         </Grid>
 
         <Grid item xs={9}>
           <TextField
-            className={classes.input}
+            fullWidth
             label="City"
-            value={this.state.city || ''}
-            onChange={this.handleChange('city')}
+            value={state.city || ''}
+            onChange={handleChange('city')}
           />
         </Grid>
-
-        {this.props.groups && this.groupsRow()}
-
-        {this.props.fields && this.fieldsRow()}
+        {renderGroupsRow}
+        {renderFieldsRow}
       </Grid>
-    )
-  }
-
-  groupsRow() {
-    const {classes} = this.props
-
-    const groups = this.props.groups || []
-    this.state.groups = this.state.groups || []
-
-    if (groups.length === 0) return null
-
-    return (
-      <Grid item xs={12}>
-        <FormControl className={classes.input}>
-          <InputLabel htmlFor="groups">Groups</InputLabel>
-          <Select
-            className={classes.input || []}
-            multiple
-            value={this.state.groups.map(it => it.id) || []}
-            input={<Input />}
-            onChange={this.handleChangeGroup('groups')}
-            renderValue={selected =>
-              selected
-                .map(this.resolverGroup)
-                .map(it => it.name)
-                .join(', ')
-            }
-          >
-            {groups.map(it => (
-              <MenuItem key={it.id} value={it.id}>
-                <Checkbox
-                  checked={
-                    this.state.groups.map(it => it.id).indexOf(it.id) > -1
-                  }
-                />
-                <ListItemText primary={it.name} />
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Grid>
-    )
-  }
-
-  fieldsRow() {
-    const {classes} = this.props
-
-    const fields = this.props.fields || {}
-
-    if (fields.length === 0) return null
-
-    this.state.fields = this.state.fields || {}
-    const value = field => this.state.fields[field.name]
-
-    const textField = field => (
-      <TextField
-        label={field.label}
-        className={classes.input}
-        disabled={field.disabled}
-        value={value(field) || ''}
-        onChange={this.handleChangeField(field.name)}
-      />
-    )
-
-    const checkboxField = field => (
-      <FormControlLabel
-        className={classes.input}
-        disabled={field.disabled}
-        control={
-          <Checkbox
-            onChange={this.handleChangeField(field.name)}
-            checked={value(field) === 'true'}
-            value={(value(field) !== 'true').toString()}
-          />
-        }
-        label={field.label}
-      />
-    )
-
-    const singleSelectField = field => (
-      <FormControl className={classes.input} disabled={field.disabled}>
-        <InputLabel htmlFor={field.name}>{field.label}</InputLabel>
-        <Select
-          className={classes.input || []}
-          value={value(field) || ''}
-          input={<Input />}
-          onChange={this.handleChangeField(field.name)}
-        >
-          {field.options.map(it => (
-            <MenuItem key={it} value={it}>
-              <ListItemText primary={it} />
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    )
-
-    const multiSelectField = field => (
-      <FormControl className={classes.input} disabled={field.disabled}>
-        <InputLabel htmlFor={field.name}>{field.label}</InputLabel>
-        <Select
-          multiple
-          className={classes.input || []}
-          value={value(field) ? value(field).split(',') : []}
-          input={<Input />}
-          onChange={this.handleChangeField(field.name)}
-          renderValue={selected => selected.join(', ')}
-        >
-          {field.options.map(it => (
-            <MenuItem key={it} value={it}>
-              <Checkbox
-                checked={
-                  (value(field) ? value(field).split(',') : []).indexOf(it) > -1
-                }
-              />
-              <ListItemText primary={it} />
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    )
-
-    return fields.map(it => (
-      <React.Fragment key={it.name}>
-        <Grid item xs={12}>
-          {it.type === 'CHECKBOX' && checkboxField(it)}
-          {it.type === 'TEXT' && textField(it)}
-          {it.type === 'SINGLE_SELECT' && singleSelectField(it)}
-          {it.type === 'MULTI_SELECT' && multiSelectField(it)}
-        </Grid>
-      </React.Fragment>
-    ))
-  }
+    </ValidatorForm>)
 }
-
-export default withStyles(styles)(MemberForm)

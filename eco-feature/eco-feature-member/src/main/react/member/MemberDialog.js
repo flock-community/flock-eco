@@ -1,5 +1,4 @@
-import React from 'react'
-import {withStyles} from '@material-ui/core/styles'
+import React, {useEffect, useState} from 'react'
 
 import Button from '@material-ui/core/Button'
 
@@ -10,207 +9,195 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 
 import Snackbar from '@material-ui/core/Snackbar'
 
-import {ValidatorForm} from 'react-material-ui-form-validator'
-
-import MemberForm from './MemberForm'
+import {MemberForm} from './MemberForm'
 import {ConfirmDialog} from '@flock-eco/core/src/main/react/components/ConfirmDialog'
 import {Typography} from '@material-ui/core'
+import {MemberClient} from './MemberClient'
 
-const styles = theme => ({})
 
-class MemberDialog extends React.Component {
-  state = {
+export function MemberDialog({id, open, onComplete}) {
+
+  const [state, setState] = useState({
     item: null,
     message: null,
-    action: null,
     deleteOpen: false,
-  }
+  })
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.action !== this.props.action) {
-      const action = this.props.action && this.props.action.toUpperCase()
-      this.setState({
-        action: action,
-      })
+  useEffect(() => {
+    if(id) {
+      MemberClient.get(id)
+        .then(res => setState(prev => ({
+          ...prev,
+          item: {
+            ...res.body,
+            groups : res.body.groups.map(it => it.code)
+          },
+          message: null,
+        })))
+        .catch(() => {
+          setState(prev => ({
+            ...prev,
+            item: null,
+            message: 'Cannot load member',
+          }))
+        })
     }
+  }, [id])
 
-    if (prevProps.id !== this.props.id) {
-      if (this.props.id === null) this.setState({item: {}})
-      else
-        fetch(`/api/members/${this.props.id}`)
-          .then(res => {
-            return res.json()
-          })
-          .then(json => {
-            this.setState({item: json})
-          })
-          .catch(e => {
-            this.setState({message: 'Cannot load groups'})
-          })
-    }
-  }
-
-  componentDidMount() {
+  useEffect(() => {
     fetch(`/api/member_groups`)
       .then(res => {
         return res.json()
       })
       .then(json => {
-        this.setState({groups: json})
+        setState(prev => ({
+          ...prev,
+          groups: json,
+        }))
       })
-      .catch(e => {
-        this.setState({message: 'Cannot load groups'})
+      .catch(() => {
+        setState(prev => ({
+          ...prev,
+          message: 'Cannot load groups',
+        }))
       })
+  }, [])
 
+  useEffect(() => {
     fetch(`/api/member_fields`)
       .then(res => {
         return res.json()
       })
       .then(json => {
-        this.setState({fields: json})
+        setState(prev => ({
+          ...prev,
+          fields: json,
+        }))
       })
-      .catch(e => {
-        this.setState({message: 'Cannot load fields'})
+      .catch(() => {
+        setState(prev => ({
+          ...prev,
+          message: 'Cannot load fields',
+        }))
+      })
+  }, [])
+
+  const handleClose = () => {
+    setState(prev => ({
+      ...prev,
+      item: null,
+    }))
+    onComplete && onComplete()
+  }
+
+  const handleDelete = () => {
+    MemberClient.delete(id)
+      .then(() => {
+        onComplete && onComplete()
       })
   }
 
-  handleClose = () => {
-    this.props.onComplete()
-  }
-
-  handleDelete = () => {
-    const opts = {
-      method: 'DELETE',
-    }
-    fetch(`/api/members/${this.state.item.id}`, opts).then(res => {
-      if (!res.ok) {
-        res.json().then(e => {
-          this.setState({message: e.message || 'Cannot delete member'})
-        })
-      }
-      this.setState({deleteOpen: false})
-      this.props.onComplete()
+  const handleDeleteOpen = () => {
+    setState({
+      ...state,
+      deleteOpen: true,
     })
   }
 
-  handleDeleteOpen = () => {
-    this.setState({deleteOpen: true})
+  const handleDeleteClose = () => {
+    setState({
+      ...state,
+      deleteOpen: false,
+    })
   }
 
-  handleDeleteClose = () => {
-    this.setState({deleteOpen: false})
+  const handleFormUpdate = value => {
+    setState({
+      ...state,
+      item: value,
+    })
   }
 
-  handleSave = () => {
-    if (this.state.action === 'EDIT') {
-      const opts = {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-        },
-        body: JSON.stringify(this.state.item),
-      }
-      fetch(`/api/members/${this.state.item.id}`, opts).then(res => {
-        if (!res.ok) {
-          res.json().then(e => {
-            this.setState({message: e.message || 'Cannot update member'})
+  const handleSubmit = () => {
+    if (id) {
+      MemberClient.put(id, state.item)
+        .then(() => {
+          onComplete && onComplete()
+        })
+        .catch(e => {
+          setState({
+            ...state,
+            message: 'Cannot load fields',
           })
-        }
-        this.props.onComplete()
-      })
-    }
-    if (this.state.action === 'NEW') {
-      const opts = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-        },
-        body: JSON.stringify(this.state.item),
-      }
-      fetch('/api/members', opts).then(res => {
-        if (!res.ok) {
-          res.json().then(e => {
-            this.setState({message: e.message || 'Cannot create member'})
+        })
+    } else {
+      MemberClient.post(state.item)
+        .then(() => {
+          onComplete && onComplete()
+        })
+        .catch(e => {
+          setState({
+            ...state,
+            message: 'Cannot load fields',
           })
-        }
-        this.props.onComplete()
-      })
+        })
     }
   }
 
-  handleFormUpdate = value => {
-    this.setState({item: value})
+  const handleCloseSnackbar = () => {
+    setState({
+      ...state,
+      message: null,
+    })
   }
 
-  handleSubmit = () => {
-    this.handleSave()
-  }
-
-  handleCloseSnackbar = () => {
-    this.setState({message: null})
-  }
-
-  render() {
-    return (
-      <React.Fragment>
-        <Dialog
-          fullWidth
-          maxWidth={'md'}
-          open={this.state.action !== null}
-          onClose={this.handleClose}
-          aria-labelledby="simple-dialog-title"
-        >
-          <DialogTitle id="simple-dialog-title">Member</DialogTitle>
-          <DialogContent>
-            <ValidatorForm
-              id="member-form"
-              onSubmit={this.handleSubmit}
-              onError={errors => console.log(errors)}
-            >
-              <MemberForm
-                value={this.state.item}
-                groups={this.state.groups}
-                fields={this.state.fields}
-                onChange={this.handleFormUpdate}
-              />
-            </ValidatorForm>
-          </DialogContent>
-          <DialogActions>
-            {this.state.item && this.state.item.id && (
-              <Button onClick={this.handleDeleteOpen} color="secondary">
-                Delete
-              </Button>
-            )}
-            <Button onClick={this.handleClose} color="primary">
-              Cancel
+  return (
+    <>
+      <Dialog
+        fullWidth
+        maxWidth={'md'}
+        open={open}
+        onClose={handleClose}
+      >
+        <DialogTitle>Member</DialogTitle>
+        <DialogContent>
+          <MemberForm
+            value={state.item}
+            groups={state.groups}
+            fields={state.fields}
+            onChange={handleFormUpdate}
+            onSubmit={handleSubmit}
+          />
+        </DialogContent>
+        <DialogActions>
+          {state.item && state.item.id && (
+            <Button onClick={handleDeleteOpen} color="secondary">
+              Delete
             </Button>
-            <Button type="submit" form="member-form" color="primary" autoFocus>
-              Save
-            </Button>
-          </DialogActions>
-        </Dialog>
+          )}
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button type="submit" form="member-form" color="primary" autoFocus>
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
 
-        <Snackbar
-          open={this.state.message !== null}
-          autoHideDuration={5000}
-          onClose={this.handleCloseSnackbar}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
-          }}
-          message={this.state.message}
-        />
+      <Snackbar
+        open={state.message !== null}
+        autoHideDuration={5000}
+        onClose={handleCloseSnackbar}
+        message={state.message}
+      />
 
-        <ConfirmDialog
-          open={this.state.deleteOpen}
-          onClose={this.handleDeleteClose}
-          onConfirm={this.handleDelete}>
-          <Typography>Delete member: {this.state.item && this.state.item.firstName} {this.state.item && this.state.item.surName}</Typography>
-        </ConfirmDialog>
+      <ConfirmDialog
+        open={state.deleteOpen}
+        onClose={handleDeleteClose}
+        onConfirm={handleDelete}>
+        <Typography>Delete member: {state.item && (`${state.item.firstName} ${state.item.surName}`)}</Typography>
+      </ConfirmDialog>
 
-      </React.Fragment>
-    )
-  }
+    </>
+  )
 }
-
-export default withStyles(styles)(MemberDialog)

@@ -15,6 +15,7 @@ class MemberTable extends React.Component {
         <TableHead>
           <TableRow>
             <TableCell>Name</TableCell>
+            <TableCell>Label</TableCell>
             <TableCell>Type</TableCell>
           </TableRow>
         </TableHead>
@@ -26,6 +27,7 @@ class MemberTable extends React.Component {
               onClick={event => this.handleClick(it)}
             >
               <TableCell>{it.name}</TableCell>
+              <TableCell>{it.label}</TableCell>
               <TableCell>{it.type}</TableCell>
             </TableRow>
           ))}

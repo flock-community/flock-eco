@@ -1,0 +1,24 @@
+{
+  "name": "Untitled GraphQL Schema",
+  "schemaPath": "",
+  "projects": {
+    "member": {
+      "schemaPath": "./eco-feature/eco-feature-member/src/main/graphql/member.graphqls"
+    },
+    "user": {
+      "schemaPath":"./eco-feature/eco-feature-user/src/main/graphql/user.graphqls",
+      "include": ["./graphql/app/*.graphql"]
+    }
+  },
+  "extensions": {
+    "endpoints": {
+      "Default GraphQL Endpoint": {
+        "url": "http://localhost:8080/graphql",
+        "headers": {
+          "user-agent": "JS GraphQL"
+        },
+        "introspect": false
+      }
+    }
+  }
+}
