@@ -24,12 +24,12 @@ import kotlin.test.assertTrue
 
 
 @RunWith(SpringRunner::class)
-@ContextConfiguration
+@ContextConfiguration(classes=[MemberConfiguration::class])
 @GraphQLTest
 @AutoConfigureTestDatabase
 @AutoConfigureDataJpa
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@Import(MemberConfiguration::class, MemberLoadData::class)
+@Import(MemberLoadData::class)
 class MemberQueryResolverTest {
 
     @Autowired

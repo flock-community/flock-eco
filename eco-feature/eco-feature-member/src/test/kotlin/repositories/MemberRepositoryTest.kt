@@ -1,5 +1,7 @@
 package community.flock.eco.feature.member.repositories
 
+import community.flock.eco.feature.member.MemberConfiguration
+import community.flock.eco.feature.member.data.MemberLoadData
 import community.flock.eco.feature.member.model.*
 import org.junit.Assert.assertEquals
 import org.junit.Ignore
@@ -8,12 +10,15 @@ import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.context.annotation.Import
+import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 import javax.annotation.PostConstruct
 
 @RunWith(SpringRunner::class)
-@DataJpaTest(showSql=false)
+@DataJpaTest
+@ContextConfiguration(classes=[MemberConfiguration::class])
 @AutoConfigureTestDatabase
 class MemberRepositoryTest {
 
