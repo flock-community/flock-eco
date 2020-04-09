@@ -153,7 +153,7 @@
                 <plugin>
                     <groupId>com.github.eirslett</groupId>
                     <artifactId>frontend-maven-plugin</artifactId>
-                    <version>1.7.5</version>
+                    <version>1.9.0</version>
                     <configuration>
                         <nodeVersion>v10.16.0</nodeVersion>
                         <npmVersion>6.9.0</npmVersion>
@@ -267,9 +267,21 @@
                         <configuration>
                             <resources>
                                 <resource>
-                                    <directory>${basedir}/src/main/graphql</directory>
+                                    <directory>${project.basedir}/src/main/graphql</directory>
                                 </resource>
                             </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-test-source</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>add-test-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.basedir}/src/develop/kotlin</source>
+                            </sources>
                         </configuration>
                     </execution>
                 </executions>

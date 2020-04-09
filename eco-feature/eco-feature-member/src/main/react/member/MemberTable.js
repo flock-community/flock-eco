@@ -32,7 +32,7 @@ export const QUERY = gql`
         count:countMembers(filter:{search:$search, statuses:$statuses, groups:$groups})
     }`
 
-export function MemberTable({specification, size, page, order, direction, onRowClick, onMergeMembers}) {
+export function MemberTable({specification, refresh, size, page, order, direction, onRowClick, onMergeMembers}) {
 
   const [state, setState] = useState({
     data: [],
@@ -45,14 +45,7 @@ export function MemberTable({specification, size, page, order, direction, onRowC
     selectedIds: [],
   })
 
-  useEffect(() => {
-    setState({
-      ...state,
-      specification: specification || {},
-    })
-  }, [specification])
-
-  const {data, error, loading} = useQuery(QUERY, {
+  const {data, error, loading, refetch} = useQuery(QUERY, {
     variables: {
       search: state.specification.search || "",
       groups: state.specification.groups || [],
@@ -61,6 +54,28 @@ export function MemberTable({specification, size, page, order, direction, onRowC
       sort: `${state.order},${state.direction}`,
     },
   })
+
+  useEffect(() => {
+    refetch()
+  }, [refresh])
+
+  useEffect(() => {
+    console.log(page)
+    setState(prev =>({
+      ...prev,
+      page: page || 0,
+    }))
+  }, [page])
+
+  useEffect(() => {
+    setState(prev =>({
+      ...prev,
+      page: 0,
+      specification: specification || {},
+    }))
+  }, [specification])
+
+
 
   const handleChangePage = (event, page) => {
     setState({...state, page: page})

@@ -28,6 +28,7 @@ export function MemberFeature({search}) {
   const classes = useStyles()
 
   const [state, setState] = useState({
+    page: 0,
     size: 10,
     search: search || '',
     openDialog: false,

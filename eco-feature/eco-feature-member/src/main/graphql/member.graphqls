@@ -11,8 +11,6 @@ extend type Query {
     ):Int
 }
 
-directive @rest(url:String) on QUERY
-
 input MemberFilter {
     search:String,
     statuses:[MemberStatus!]

@@ -35,6 +35,13 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring.boot.version}</version>
             </plugin>
+            <plugin>
+                <groupId>community.flock</groupId>
+                <artifactId>graphql-simple-bindings-maven-plugin</artifactId>
+                <configuration>
+                    <packageName>community.flock.eco.feature.member.graphql</packageName>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
