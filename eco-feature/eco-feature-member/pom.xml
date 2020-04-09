@@ -9,8 +9,9 @@
 
     <artifactId>flock-eco-feature-member</artifactId>
 
-    <dependencies>
-    </dependencies>
+    <properties>
+        <flock.eco.feature.name>member</flock.eco.feature.name>
+    </properties>
 
     <build>
         <plugins>

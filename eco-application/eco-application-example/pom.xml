@@ -30,6 +30,11 @@
         </dependency>
         <dependency>
             <groupId>com.github.flock-community.flock-eco</groupId>
+            <artifactId>flock-eco-feature-member</artifactId>
+            <classifier>develop</classifier>
+        </dependency>
+        <dependency>
+            <groupId>com.github.flock-community.flock-eco</groupId>
             <artifactId>flock-eco-feature-user</artifactId>
         </dependency>
     </dependencies>

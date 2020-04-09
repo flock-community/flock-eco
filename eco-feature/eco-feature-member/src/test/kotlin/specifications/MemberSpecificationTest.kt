@@ -23,19 +23,19 @@ class MemberSpecificationTest {
     private lateinit var memberRepository: MemberRepository
 
     @Test
-    fun `find member by specification search first-name-0`() {
-        val specification = MemberSpecification("first-name-0")
+    fun `find member by specification search first-name-111`() {
+        val specification = MemberSpecification("first-name-111")
         val res = memberRepository.findAll(specification)
         Assert.assertEquals(1, res.size)
-        Assert.assertEquals("first-name-0", res[0].firstName)
+        Assert.assertEquals("first-name-111", res[0].firstName)
     }
 
     @Test
-    fun `find member by specification search SUR-name-0`() {
-        val specification = MemberSpecification("SUR-name-0")
+    fun `find member by specification search SUR-name-111`() {
+        val specification = MemberSpecification("SUR-name-111")
         val res = memberRepository.findAll(specification)
         Assert.assertEquals(1, res.size)
-        Assert.assertEquals("sur-name-0", res[0].surName)
+        Assert.assertEquals("sur-name-111", res[0].surName)
     }
 
     @Test

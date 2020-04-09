@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Import
 class MemberApplication(memberLoadData: MemberLoadData) {
 
     init {
-        memberLoadData.load(999)
+        memberLoadData.load(1000)
     }
 }
 

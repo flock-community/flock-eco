@@ -39,7 +39,7 @@
                 <groupId>community.flock</groupId>
                 <artifactId>graphql-simple-bindings-maven-plugin</artifactId>
                 <configuration>
-                    <packageName>community.flock.eco.feature.member.graphql</packageName>
+                    <packageName>community.flock.eco.feature.user.graphql</packageName>
                 </configuration>
             </plugin>
         </plugins>

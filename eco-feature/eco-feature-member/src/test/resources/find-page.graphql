@@ -1,4 +1,4 @@
-query findPage($search:String) @rest(url:"/api/test"){
+query findPage($search:String){
     list: findAllMembers(
         filter: {search: $search},
         size: 2,

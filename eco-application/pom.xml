@@ -15,7 +15,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>eco-application-example</module>
+<!--        <module>eco-application-example</module>-->
     </modules>
 
     <dependencies>

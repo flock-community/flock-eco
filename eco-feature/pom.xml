@@ -203,6 +203,13 @@
                         <sourceDirectory>${project.basedir}/src/main/graphql</sourceDirectory>
                         <targetDirectory>${project.build.directory}/generated-sources/graphql</targetDirectory>
                     </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>
