@@ -310,7 +310,7 @@
                     <execution>
                         <phase>package</phase>
                         <goals>
-                            <goal>jar</goal>
+                            <goal>test-jar</goal>
                         </goals>
                         <configuration>
                             <classifier>develop</classifier>
@@ -414,5 +414,4 @@
             </build>
         </profile>
     </profiles>
-
 </project>
