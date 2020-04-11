@@ -1,7 +1,7 @@
 package community.flock.eco.feature.member.repositories
 
 import community.flock.eco.feature.member.MemberConfiguration
-import community.flock.eco.feature.member.data.MemberLoadData
+import community.flock.eco.feature.member.develop.data.MemberLoadData
 import community.flock.eco.feature.member.model.*
 import org.junit.Assert.assertEquals
 import org.junit.Ignore

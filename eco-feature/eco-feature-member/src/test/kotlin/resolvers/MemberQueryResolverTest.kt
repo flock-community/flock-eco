@@ -7,7 +7,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.graphql.spring.boot.test.GraphQLTest
 import com.graphql.spring.boot.test.GraphQLTestTemplate
 import community.flock.eco.feature.member.MemberConfiguration
-import community.flock.eco.feature.member.data.MemberLoadData
+import community.flock.eco.feature.member.develop.data.MemberLoadData
 import community.flock.eco.feature.member.graphql.Member
 import org.junit.Test
 import org.junit.runner.RunWith
