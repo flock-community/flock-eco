@@ -38,7 +38,7 @@ class MemberGraphqlMapper(
             birthDate = it.birthDate,
             status = consume(it.status))
 
-    fun produce(it: Member) = community.flock.eco.feature.member.graphql.Member(
+    fun produce(it: Member) = MemberGraphql(
             id = it.id.toString(),
             firstName = it.firstName,
             infix = it.infix,
@@ -81,8 +81,8 @@ class MemberGraphqlMapper(
             ?.let { MemberStatus.valueOf(it) }
             ?: MemberStatus.NEW
 
-    fun MemberGender.produce() = community.flock.eco.feature.member.graphql.MemberGender.valueOf(this.name)
-    fun MemberStatus.produce() = community.flock.eco.feature.member.graphql.MemberStatus.valueOf(this.name)
+    fun MemberGender.produce() = MemberGenderGraphql.valueOf(this.name)
+    fun MemberStatus.produce() = MemberStatusGraphql.valueOf(this.name)
     fun Set<MemberGroup>.produce() = this.map {
         community.flock.eco.feature.member.graphql.MemberGroup(
                 code = it.code,

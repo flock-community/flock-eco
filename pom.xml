@@ -64,6 +64,23 @@
                 <version>${kotlin.version}</version>
             </dependency>
 
+            <!-- GraphQl -->
+            <dependency>
+                <groupId>com.graphql-java-kickstart</groupId>
+                <artifactId>graphql-spring-boot-starter</artifactId>
+                <version>7.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.graphql-java-kickstart</groupId>
+                <artifactId>graphql-spring-boot-starter-test</artifactId>
+                <version>7.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.graphql-java-kickstart</groupId>
+                <artifactId>graphiql-spring-boot-starter</artifactId>
+                <version>7.0.1</version>
+            </dependency>
+
             <!-- Mail -->
             <dependency>
                 <groupId>javax.mail</groupId>
@@ -160,6 +177,23 @@
                         <installDirectory>${project.build.directory}</installDirectory>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>community.flock</groupId>
+                    <artifactId>graphql-simple-bindings-maven-plugin</artifactId>
+                    <version>0.3.0</version>
+                    <configuration>
+                        <language>Kotlin</language>
+                        <sourceDirectory>${project.basedir}/src/main/graphql</sourceDirectory>
+                        <targetDirectory>${project.build.directory}/generated-sources/graphql</targetDirectory>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
@@ -203,9 +237,8 @@
                 <executions>
                     <execution>
                         <id>attach-sources</id>
-                        <phase>verify</phase>
                         <goals>
-                            <goal>jar-no-fork</goal>
+                            <goal>jar</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -286,6 +319,25 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>develop</classifier>
+                            <includes>
+                                <include>**/develop/data/*</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -336,6 +388,13 @@
     <profiles>
         <profile>
             <id>develop</id>
+            <dependencies>
+                <dependency>
+                    <groupId>com.h2database</groupId>
+                    <artifactId>h2</artifactId>
+                    <version>1.4.200</version>
+                </dependency>
+            </dependencies>
             <build>
                 <plugins>
                     <plugin>
@@ -379,5 +438,4 @@
             </build>
         </profile>
     </profiles>
-
 </project>

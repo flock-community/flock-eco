@@ -1,7 +1,7 @@
 package community.flock.eco.application.example
 
-import community.flock.eco.feature.member.data.MemberLoadData
-import community.flock.eco.feature.user.data.UserLoadData
+import community.flock.eco.feature.member.develop.data.MemberLoadData
+import community.flock.eco.feature.user.develop.data.UserLoadData
 import community.flock.eco.feature.user.forms.UserAccountPasswordForm
 import community.flock.eco.feature.user.services.UserAccountService
 import community.flock.eco.feature.user.services.UserAuthorityService

@@ -15,7 +15,7 @@
     <packaging>pom</packaging>
 
     <modules>
-<!--        <module>eco-application-example</module>-->
+        <module>eco-application-example</module>
     </modules>
 
     <dependencies>
@@ -136,6 +136,20 @@
                 <groupId>com.github.flock-community.flock-eco</groupId>
                 <artifactId>flock-eco-feature-user</artifactId>
                 <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.flock-community.flock-eco</groupId>
+                <artifactId>flock-eco-feature-user</artifactId>
+                <version>${project.parent.version}</version>
+                <classifier>develop</classifier>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.github.flock-community.flock-eco</groupId>
+                <artifactId>flock-eco-feature-member</artifactId>
+                <version>${project.parent.version}</version>
+                <classifier>develop</classifier>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>com.github.flock-community.flock-eco</groupId>
