@@ -40,7 +40,7 @@ class UserSecurityService(
         override fun isAccountNonLocked() = true
     }
 
-    fun testLogin(http: HttpSecurity): FormLoginConfigurer<HttpSecurity>? {
+    fun testLogin(http: HttpSecurity): FormLoginConfigurer<HttpSecurity> {
         return http
                 .userDetailsService { ref ->
                     userAccountService.findUserAccountPasswordByUserEmail(ref)
