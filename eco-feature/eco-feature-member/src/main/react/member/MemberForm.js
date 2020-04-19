@@ -87,7 +87,6 @@ export function MemberForm({value, groups, fields, onChange, onSubmit}) {
 
   const handleChangeField = (name) => (event) => {
     const value = event.target.value
-    console.log(value)
     const it = {
       ...state,
       fields: fields.map(field => ({

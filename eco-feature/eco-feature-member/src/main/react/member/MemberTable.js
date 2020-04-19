@@ -60,7 +60,6 @@ export function MemberTable({specification, refresh, size, page, order, directio
   }, [refresh])
 
   useEffect(() => {
-    console.log(page)
     setState(prev =>({
       ...prev,
       page: page || 0,
