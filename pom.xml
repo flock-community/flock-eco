@@ -21,6 +21,7 @@
         <module>eco-feature</module>
         <module>eco-cloud</module>
         <module>eco-application</module>
+        <module>eco-iso</module>
     </modules>
 
     <dependencyManagement>
