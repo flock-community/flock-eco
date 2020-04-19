@@ -105,9 +105,21 @@
 
     <dependencyManagement>
         <dependencies>
+
             <dependency>
                 <groupId>com.github.flock-community.flock-eco</groupId>
                 <artifactId>flock-eco-core</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.flock-community.flock-eco</groupId>
+                <artifactId>flock-eco-iso-countries</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.flock-community.flock-eco</groupId>
+                <artifactId>flock-eco-iso-languages</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
 
