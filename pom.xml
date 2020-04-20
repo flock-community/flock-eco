@@ -27,12 +27,6 @@
     <dependencyManagement>
         <dependencies>
 
-            <dependency>
-                <groupId>com.github.flock-community.flock-eco</groupId>
-                <artifactId>flock-eco-core</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
             <!-- Test -->
             <dependency>
                 <groupId>junit</groupId>
@@ -88,7 +82,6 @@
                 <artifactId>flock-eco-core</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>com.github.flock-community.flock-eco</groupId>
                 <artifactId>flock-eco-iso-country</artifactId>
@@ -99,7 +92,6 @@
                 <artifactId>flock-eco-iso-language</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>com.github.flock-community.flock-eco</groupId>
                 <artifactId>flock-eco-cloud-aws</artifactId>
