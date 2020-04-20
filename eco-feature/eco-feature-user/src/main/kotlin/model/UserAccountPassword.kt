@@ -1,6 +1,6 @@
 package community.flock.eco.feature.user.model
 
-import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.*
 import community.flock.eco.core.events.EventEntityListeners
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -8,10 +8,12 @@ import javax.persistence.EntityListeners
 
 @Entity
 @EntityListeners(EventEntityListeners::class)
-data class UserAccountPassword(
+class UserAccountPassword(
 
         override val id: Long = 0,
 
+        @JsonIdentityReference(alwaysAsId = true)
+        @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator::class, property = "code")
         override val user: User,
 
         @JsonIgnore
@@ -20,9 +22,5 @@ data class UserAccountPassword(
         @JsonIgnore
         val resetCode: String? = null
 
-) : UserAccount(id, user){
-        override fun equals(other: Any?) = super.equals(other)
-        override fun hashCode() = super.hashCode()
-        override fun toString() = super.toString()
-}
+) : UserAccount(id, user)
 

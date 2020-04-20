@@ -26,7 +26,9 @@ data class UserGroup(
                 joinColumns = [JoinColumn(name = "group_id")],
                 inverseJoinColumns = [JoinColumn(name = "user_id")]
         )
+
         @JsonIdentityReference(alwaysAsId = true)
+        @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator::class, property = "code")
         val users: MutableSet<User> = mutableSetOf(),
 
         val created: LocalDateTime = LocalDateTime.now()

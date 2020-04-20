@@ -10,6 +10,7 @@ import community.flock.eco.feature.user.services.UserService
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
 
@@ -23,8 +24,15 @@ class UserController(
 
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
-    fun findMe(principal: Principal?) = principal
-            ?.let { userService.read(it.name) }
+    fun findMe(authentication: Authentication) = userService
+            .read(authentication.name)
+            .toResponse()
+
+    @GetMapping("/me/accounts")
+    @PreAuthorize("isAuthenticated()")
+    fun findMeAccounts(authentication: Authentication) = userAccountService
+            .findUserAccountByUserCode(authentication.name)
+            .toList()
             .toResponse()
 
     @GetMapping
@@ -44,7 +52,6 @@ class UserController(
         return userRepository.findAllByCodeIn(codes)
                 .toList()
                 .toResponse()
-
     }
 
     @PostMapping
@@ -68,7 +75,7 @@ class UserController(
     @DeleteMapping("/{code}")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
     fun delete(@PathVariable code: String, principal: Principal?): ResponseEntity<Unit> {
-        if(principal?.name == code) throw UserCannotRemoveOwnAccount()
+        if (principal?.name == code) throw UserCannotRemoveOwnAccount()
         return userService
                 .delete(code)
                 .toResponse()

@@ -12,7 +12,6 @@ import javax.persistence.*
 
 @Entity
 @EntityListeners(EventEntityListeners::class)
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator::class, property = "code")
 data class User(
 
         override val id: Long = 0,

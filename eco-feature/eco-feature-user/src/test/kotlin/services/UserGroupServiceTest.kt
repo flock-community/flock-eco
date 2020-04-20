@@ -18,7 +18,6 @@ import org.springframework.test.context.junit4.SpringRunner
 @RunWith(SpringRunner::class)
 @ContextConfiguration(classes = [UserConfiguration::class])
 @DataJpaTest
-@AutoConfigureTestDatabase
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class UserGroupServiceTest {
 

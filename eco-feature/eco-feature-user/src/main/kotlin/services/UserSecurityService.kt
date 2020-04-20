@@ -2,10 +2,7 @@ package community.flock.eco.feature.user.services
 
 import community.flock.eco.feature.user.forms.UserAccountOauthForm
 import community.flock.eco.feature.user.forms.UserAccountPasswordForm
-import community.flock.eco.feature.user.model.User
-import community.flock.eco.feature.user.model.UserAccountOauth
-import community.flock.eco.feature.user.model.UserAccountOauthProvider
-import community.flock.eco.feature.user.model.UserAccountPassword
+import community.flock.eco.feature.user.model.*
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer
 import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer
@@ -35,6 +32,16 @@ class UserSecurityService(
         override fun isEnabled() = account.user.enabled
         override fun getUsername() = account.user.code
         override fun getPassword() = account.secret
+        override fun isCredentialsNonExpired() = true
+        override fun isAccountNonExpired() = true
+        override fun isAccountNonLocked() = true
+    }
+
+    class UserSecurityKey(val account: UserAccountKey) : UserDetails {
+        override fun getAuthorities() = account.user.getGrantedAuthority()
+        override fun isEnabled() = account.user.enabled
+        override fun getUsername() = account.user.code
+        override fun getPassword() = null
         override fun isCredentialsNonExpired() = true
         override fun isAccountNonExpired() = true
         override fun isAccountNonLocked() = true

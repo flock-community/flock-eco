@@ -15,7 +15,10 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
+import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.Import
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringRunner
@@ -25,7 +28,6 @@ import kotlin.test.assertTrue
 @RunWith(SpringRunner::class)
 @ContextConfiguration(classes = [UserConfiguration::class])
 @DataJpaTest
-@AutoConfigureTestDatabase
 class UserAccountServiceTest {
 
     @Autowired
@@ -48,13 +50,13 @@ class UserAccountServiceTest {
 
     @Test
     fun `register user with password`() {
-        val (id, user, password) = userAccountService.createUserAccountPassword(passwordForm)
+        val account = userAccountService.createUserAccountPassword(passwordForm)
 
-        assertNotNull(id)
-        assertNotNull(user.id)
-        assertNotNull(user.code)
+        assertNotNull(account.id)
+        assertNotNull(account.user.id)
+        assertNotNull(account.user.code)
 
-        assertTrue(passwordEncoder.matches(passwordForm.password, password))
+        assertTrue(passwordEncoder.matches(passwordForm.password, account.secret))
 
         assertEquals(1, userService.findAll().count())
     }
@@ -74,13 +76,13 @@ class UserAccountServiceTest {
                 provider = UserAccountOauthProvider.GOOGLE,
                 reference = "123123123"
         )
-        val (id, user, reference) = userAccountService.createUserAccountOauth(form)
+        val account = userAccountService.createUserAccountOauth(form)
 
-        assertNotNull(id)
-        assertNotNull(user.id)
-        assertNotNull(user.code)
+        assertNotNull(account.id)
+        assertNotNull(account.user.id)
+        assertNotNull(account.user.code)
 
-        assertEquals(form.reference, reference)
+        assertEquals(form.reference, account.reference)
     }
 
     @Test(expected = UserAccountNotFoundForUserCode::class)

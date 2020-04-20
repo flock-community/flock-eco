@@ -7,6 +7,7 @@ import community.flock.eco.feature.user.services.UserAccountService
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -24,14 +25,30 @@ class UserAccountController(
             .findAll()
             .toResponse()
 
-    @PutMapping("/reset")
-    fun resetPasswordWithResetCode(@RequestBody info: ResetInfo) = userAccountService
-            .resetPasswordWithResetCode(info.resetCode, info.password)
+    @PutMapping("/reset-password")
+    fun resetPasswordWithResetCode(@RequestBody form: PasswordResetForm) = userAccountService
+            .resetPasswordWithResetCode(form.resetCode, form.password)
             .toResponse()
 
-    data class ResetInfo(
+    @PostMapping("/generate-key")
+    @PreAuthorize("isAuthenticated()")
+    fun generateKey(authentication: Authentication) = userAccountService
+            .generateKeyForUserCode(authentication.name)
+            .toResponse()
+
+    @PostMapping("/revoke-key")
+    @PreAuthorize("isAuthenticated()")
+    fun generateKey(authentication: Authentication, @RequestBody form: KeyRevokeForm) = userAccountService
+            .revokeKeyForUserCode(authentication.name, form.key)
+            .toResponse()
+
+    data class PasswordResetForm(
             val resetCode: String,
             val password: String
+    )
+
+    data class KeyRevokeForm(
+            val key: String
     )
 
 }

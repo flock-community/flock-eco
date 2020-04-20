@@ -1,6 +1,7 @@
 package community.flock.eco.application.example.configuration
 
 import community.flock.eco.application.example.authorities.ExampleAuthority
+import community.flock.eco.feature.user.filters.UserKeyTokenFilter
 import community.flock.eco.feature.user.services.UserAuthorityService
 import community.flock.eco.feature.user.services.UserSecurityService
 import org.springframework.beans.factory.annotation.Autowired
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 
 
 @Configuration
@@ -26,6 +28,9 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     @Autowired
     lateinit var userSecurityService: UserSecurityService
 
+    @Autowired
+    lateinit var userKeyTokenFilter: UserKeyTokenFilter
+
     override fun configure(http: HttpSecurity) {
 
         userAuthorityService.addAuthority(ExampleAuthority::class.java)
@@ -39,6 +44,9 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                 .anyRequest().authenticated()
         http
                 .cors()
+
+        http
+                .addFilterAfter(userKeyTokenFilter, BasicAuthenticationFilter::class.java)
 
         userSecurityService.testLogin(http)
 
