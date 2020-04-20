@@ -55,7 +55,7 @@ const schema = Yup.object().shape({
     .default('NEW'),
 })
 
-export function MemberForm({value, groups, fields, onChange, onSubmit}) {
+export function MemberForm({value, groups, fields, languages, countries, onChange, onSubmit}) {
 
   const [state, setState] = useState(value || schema.cast())
 
@@ -341,6 +341,49 @@ export function MemberForm({value, groups, fields, onChange, onSubmit}) {
             onChange={handleChange('city')}
           />
         </Grid>
+
+        <Grid item xs={6}>
+          <FormControl
+            fullWidth>
+            <InputLabel htmlFor="country">Country</InputLabel>
+            <Select
+              required
+              value={state.country || ''}
+              onChange={handleChange('country')}
+              inputProps={{
+                name: 'country',
+                id: 'country',
+              }}
+            >
+              <MenuItem value="">Unknown</MenuItem>
+              {countries.map(country => (
+                <MenuItem value={country.alpha2}>{country.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+
+        <Grid item xs={6}>
+          <FormControl
+            fullWidth>
+            <InputLabel htmlFor="country">Language</InputLabel>
+            <Select
+              required
+              value={state.language || ''}
+              onChange={handleChange('language')}
+              inputProps={{
+                name: 'language',
+                id: 'language',
+              }}
+            >
+              <MenuItem value="">Unknown</MenuItem>
+              {languages.map(country => (
+                <MenuItem value={country.alpha2}>{country.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+
         {renderGroupsRow}
         {renderFieldsRow}
       </Grid>

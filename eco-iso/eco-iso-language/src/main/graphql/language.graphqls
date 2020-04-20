@@ -1,0 +1,9 @@
+extend type Query {
+    findLanguageAll: [Language!]!
+    findLanguageByCode(code:String): Language
+}
+
+type Language {
+    name:String!
+    alpha2:String!
+}

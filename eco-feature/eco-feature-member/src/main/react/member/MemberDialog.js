@@ -17,6 +17,8 @@ import {MemberClient} from './MemberClient'
 
 export function MemberDialog({id, open, onComplete}) {
 
+  const [countries, setCountries] = useState(null)
+  const [languages, setLanguages] = useState(null)
   const [state, setState] = useState({
     item: null,
     message: null,
@@ -24,13 +26,13 @@ export function MemberDialog({id, open, onComplete}) {
   })
 
   useEffect(() => {
-    if(id) {
+    if (id) {
       MemberClient.get(id)
         .then(res => setState(prev => ({
           ...prev,
           item: {
             ...res.body,
-            groups : res.body.groups.map(it => it.code)
+            groups: res.body.groups.map(it => it.code),
           },
           message: null,
         })))
@@ -43,6 +45,18 @@ export function MemberDialog({id, open, onComplete}) {
         })
     }
   }, [id])
+
+  useEffect(() => {
+    fetch('/api/countries')
+      .then(res => res.json())
+      .then(json => setCountries(json))
+  }, [])
+
+  useEffect(() => {
+    fetch('/api/languages')
+      .then(res => res.json())
+      .then(json => setLanguages(json))
+  }, [])
 
   useEffect(() => {
     fetch(`/api/member_groups`)
@@ -165,6 +179,8 @@ export function MemberDialog({id, open, onComplete}) {
             value={state.item}
             groups={state.groups}
             fields={state.fields}
+            languages={languages}
+            countries={countries}
             onChange={handleFormUpdate}
             onSubmit={handleSubmit}
           />

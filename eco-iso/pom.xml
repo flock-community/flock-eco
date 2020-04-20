@@ -8,11 +8,11 @@
     </parent>
 
     <artifactId>flock-eco-iso</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <modules>
-        <module>eco-iso-countries</module>
-        <module>eco-iso-languages</module>
+        <module>eco-iso-country</module>
+        <module>eco-iso-language</module>
     </modules>
 
     <build>

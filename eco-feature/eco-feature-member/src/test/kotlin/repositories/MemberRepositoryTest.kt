@@ -8,18 +8,26 @@ import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.SpringBootConfiguration
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
+import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 import javax.annotation.PostConstruct
+import javax.transaction.Transactional
 
 @RunWith(SpringRunner::class)
-@DataJpaTest
+@SpringBootTest
 @ContextConfiguration(classes=[MemberConfiguration::class])
 @AutoConfigureTestDatabase
+@AutoConfigureDataJpa
+@AutoConfigureWebClient
+@Import(MemberConfiguration::class)
 class MemberRepositoryTest {
 
     @Autowired
@@ -56,9 +64,9 @@ class MemberRepositoryTest {
     }
 
     @Test
-    @Ignore
     fun testsFindByIds() {
-        val res = memberRepository.findByIds(listOf(1, 2))
+        val members = memberRepository.findAll()
+        val res = memberRepository.findByIds(listOf(members.elementAt(0).id, members.elementAt(1).id))
         assertEquals("member1", res.toList()[0].firstName)
         assertEquals("member2", res.toList()[1].firstName)
     }
@@ -74,6 +82,7 @@ class MemberRepositoryTest {
     }
 
     @Test
+    @Transactional
     fun testsGroup() {
 
         val group = MemberGroup(

@@ -32,6 +32,7 @@ class MemberGraphqlMapper(
             postalCode = it.postalCode,
             city = it.postalCode,
             country = it.country,
+            language = it.language,
             gender = it.gender.consume(),
             groups = it.groups.consume(),
             fields = it.fields.consume(),

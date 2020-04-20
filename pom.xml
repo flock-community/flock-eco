@@ -82,6 +82,95 @@
                 <version>7.0.1</version>
             </dependency>
 
+            <!-- Flock eco-->
+            <dependency>
+                <groupId>com.github.flock-community.flock-eco</groupId>
+                <artifactId>flock-eco-core</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.flock-community.flock-eco</groupId>
+                <artifactId>flock-eco-iso-country</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.flock-community.flock-eco</groupId>
+                <artifactId>flock-eco-iso-language</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.flock-community.flock-eco</groupId>
+                <artifactId>flock-eco-cloud-aws</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.flock-community.flock-eco</groupId>
+                <artifactId>flock-eco-cloud-gcp</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.flock-community.flock-eco</groupId>
+                <artifactId>flock-eco-cloud-azure</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.flock-community.flock-eco</groupId>
+                <artifactId>flock-eco-cloud-stub</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.flock-community.flock-eco</groupId>
+                <artifactId>flock-eco-feature-user</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.flock-community.flock-eco</groupId>
+                <artifactId>flock-eco-feature-user</artifactId>
+                <version>${project.parent.version}</version>
+                <classifier>develop</classifier>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.github.flock-community.flock-eco</groupId>
+                <artifactId>flock-eco-feature-member</artifactId>
+                <version>${project.parent.version}</version>
+                <classifier>develop</classifier>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.github.flock-community.flock-eco</groupId>
+                <artifactId>flock-eco-feature-member</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.flock-community.flock-eco</groupId>
+                <artifactId>flock-eco-feature-payment</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.flock-community.flock-eco</groupId>
+                <artifactId>flock-eco-feature-mailchimp</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.flock-community.flock-eco</groupId>
+                <artifactId>flock-eco-feature-gcp-runtimeconfig</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.flock-community.flock-eco</groupId>
+                <artifactId>flock-eco-feature-gcp-sql</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.flock-community.flock-eco</groupId>
+                <artifactId>flock-eco-feature-gcp-mail</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+
             <!-- Mail -->
             <dependency>
                 <groupId>javax.mail</groupId>
