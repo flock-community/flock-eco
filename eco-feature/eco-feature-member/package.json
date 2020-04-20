@@ -1,11 +1,11 @@
 {
   "name": "@flock-eco/feature-member",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "dependencies": {
-    "@flock-eco/core": "^1.7.2"
+    "@flock-eco/core": "^1.7.3"
   },
   "devDependencies": {
-    "@flock-eco/webpack": "^1.7.2",
+    "@flock-eco/webpack": "^1.7.3",
     "webpack-dev-server": "^3.2.1"
   }
 }
