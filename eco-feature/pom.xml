@@ -8,7 +8,6 @@
         <module>eco-feature-member</module>
         <module>eco-feature-payment</module>
         <module>eco-feature-gcp-runtimeconfig</module>
-        <module>eco-feature-gcp-sql</module>
     </modules>
 
     <parent>
