@@ -8,6 +8,7 @@ import community.flock.eco.feature.user.services.*
 import graphql.kickstart.tools.SchemaParserDictionary
 import graphql.scalars.ExtendedScalars
 import graphql.schema.GraphQLScalarType
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
@@ -40,16 +41,6 @@ class UserConfiguration {
     @Bean
     fun passwordEncoder(): PasswordEncoder {
         return BCryptPasswordEncoder()
-    }
-
-    @Bean
-    fun schemaParserDictionary(): SchemaParserDictionary {
-        return SchemaParserDictionary()
-                .add(User::class.java)
-                .add(UserAccount::class.java)
-                .add(UserAccountPassword::class.java)
-                .add(UserAccountOauth::class.java)
-                .add(UserAccountKey::class.java)
     }
 
     @Bean

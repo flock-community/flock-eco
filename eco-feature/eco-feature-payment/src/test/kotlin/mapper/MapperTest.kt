@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.junit4.SpringRunner
-import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 
 
@@ -68,7 +67,6 @@ class MapperTest {
 
         val mapper = ObjectMapper()
         mapper.registerModule(KotlinModule())
-        mapper.registerModule(Hibernate5Module())
 
         val res = mapper.writeValueAsString(data)
         println(res)

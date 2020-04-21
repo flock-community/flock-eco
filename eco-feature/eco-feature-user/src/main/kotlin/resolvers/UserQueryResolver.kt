@@ -3,6 +3,7 @@ package community.flock.eco.feature.member.resolvers
 
 import community.flock.eco.feature.user.services.UserService
 import graphql.kickstart.tools.GraphQLQueryResolver
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Component
 import javax.transaction.Transactional
@@ -17,6 +18,7 @@ import community.flock.eco.feature.user.model.UserAccountOauth as UserAccountOau
 import community.flock.eco.feature.user.model.UserAccountPassword as UserAccountPasswordModel
 
 @Component
+@ConditionalOnClass(GraphQLQueryResolver::class)
 class UserQueryResolver(
         private val userService: UserService) : GraphQLQueryResolver {
 
