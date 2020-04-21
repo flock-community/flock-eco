@@ -27,6 +27,12 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
+const init = {
+  search: '',
+  groups: [],
+  statuses: ['NEW', 'ACTIVE', 'DISABLED'],
+}
+
 export function MemberFilter({onChange}) {
 
   const classes = useStyles()
@@ -36,12 +42,12 @@ export function MemberFilter({onChange}) {
     anchorEl: null,
     groups: [],
     statuses: ['NEW', 'ACTIVE', 'DISABLED', 'DELETED', 'MERGED'],
-    specifications: {
-      search: '',
-      groups: [],
-      statuses: ['NEW', 'ACTIVE', 'DISABLED'],
-    },
+    specifications: init
   })
+
+  useEffect(() => {
+    onChange && onChange(init)
+  },[])
 
   useEffect(() => {
     fetch(`/api/member_groups`)

@@ -13,6 +13,8 @@ import {useQuery} from '@apollo/react-hooks'
 import gql from 'graphql-tag'
 import {MemberTableToolbar} from './MemberTableToolbar'
 import {CircularProgress, Snackbar} from '@material-ui/core'
+import {AlignedLoader} from '@flock-eco/core/src/main/react/components/AlignedLoader'
+import Card from '@material-ui/core/Card'
 
 export const QUERY = gql`
     query ($search: String!,
@@ -121,7 +123,9 @@ export function MemberTable({specification, refresh, size, page, order, directio
   ]
 
   if (loading)
-    return <CircularProgress/>
+    return <Card>
+      <AlignedLoader height={250}/>
+    </Card>
 
   return (
     <>
