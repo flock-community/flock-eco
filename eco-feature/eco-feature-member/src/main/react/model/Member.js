@@ -3,14 +3,17 @@ import * as Model from './Model'
 /** Flatten fields into the member object */
 export function flattenFields(member) {
   const {fields, ...rest} = member
-  return {...rest, ...fields}
+  return {
+    ...rest,
+    ...fields.reduce((acc, cur) => ({...acc, [cur.key]: cur.value}), {}),
+  }
 }
 
 /** Get a string representation of all properties */
 export function getLabels(member) {
   return Model.map(member, ([key, value]) => {
     if (key === 'groups') {
-      return [key, value.map(it => it.code).join(', ')]
+      return [key, value.join(', ')]
     } else if (value == null) {
       return [key, '[EMPTY]']
     } else {

@@ -357,7 +357,7 @@ export function MemberForm({value, groups, fields, languages, countries, onChang
             >
               <MenuItem value="">Unknown</MenuItem>
               {countries.map(country => (
-                <MenuItem value={country.alpha2}>{country.name}</MenuItem>
+                <MenuItem key={`country-${country.alpha2}`} value={country.alpha2}>{country.name}</MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -377,8 +377,8 @@ export function MemberForm({value, groups, fields, languages, countries, onChang
               }}
             >
               <MenuItem value="">Unknown</MenuItem>
-              {languages.map(country => (
-                <MenuItem value={country.alpha2}>{country.name}</MenuItem>
+              {languages.map(language => (
+                <MenuItem key={`language-${language.alpha2}`} value={language.alpha2}>{language.name}</MenuItem>
               ))}
             </Select>
           </FormControl>

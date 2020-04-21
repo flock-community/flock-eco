@@ -11,7 +11,7 @@ import AddIcon from '@material-ui/icons/Add'
 import {MemberTable} from './MemberTable'
 import {MemberFilter} from './MemberFilter'
 import {MemberDialog} from './MemberDialog'
-import MemberMerger from './MemberMerger'
+import {MemberMerger} from './MemberMerger'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 
 const useStyles = makeStyles(theme => ({

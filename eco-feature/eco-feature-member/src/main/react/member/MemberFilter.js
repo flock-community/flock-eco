@@ -39,7 +39,7 @@ export function MemberFilter({onChange}) {
     specifications: {
       search: '',
       groups: [],
-      statuses: [],
+      statuses: ['NEW', 'ACTIVE', 'DISABLED'],
     },
   })
 
