@@ -44,6 +44,16 @@ class UserConfiguration {
     }
 
     @Bean
+    fun schemaParserDictionary(): SchemaParserDictionary {
+        return SchemaParserDictionary()
+                .add(User::class.java)
+                .add(UserAccount::class.java)
+                .add(UserAccountPassword::class.java)
+                .add(UserAccountOauth::class.java)
+                .add(UserAccountKey::class.java)
+    }
+
+    @Bean
     fun dateTimeType(): GraphQLScalarType {
         return ExtendedScalars.DateTime
     }
