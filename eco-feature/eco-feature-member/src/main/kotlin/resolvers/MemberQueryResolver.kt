@@ -52,5 +52,12 @@ class MemberQueryResolver(
     fun pageable(page: Int?, size: Int?, sort: String?, order: String?) = PageRequest.of(
             page ?: 0,
             size ?: 10,
-            Sort.by(Sort.Direction.fromOptionalString(order).orElse(Sort.DEFAULT_DIRECTION), sort))
+            sort
+                    ?.let {
+                        Sort.by(
+                                Sort.Direction.fromOptionalString(order)
+                                        .orElse(Sort.DEFAULT_DIRECTION),
+                                sort)
+                    }
+                    ?: Sort.unsorted())
 }
