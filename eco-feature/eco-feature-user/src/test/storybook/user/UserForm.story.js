@@ -3,8 +3,6 @@ import {storiesOf} from '@storybook/react'
 import {UserForm} from '../../../main/react/user/UserForm'
 import {Button} from '@material-ui/core'
 
-const handleRowClick = row => console.log
-
 const authorities = [
   'Auth.A',
   'Auth.B',

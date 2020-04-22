@@ -1,9 +1,7 @@
 const internalize = (res) => {
   if (res.ok) {
-    console.log('OK')
     return res.json()
   } else {
-    console.log('Err')
     return res.text()
       .then(text => {
         throw new Error(text)
