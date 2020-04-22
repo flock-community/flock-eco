@@ -41,5 +41,6 @@ data class Member(
         @Enumerated(EnumType.STRING)
         val status: MemberStatus = MemberStatus.NEW,
 
-        val created: LocalDate = LocalDate.now()
+        val created: LocalDate = LocalDate.now(),
+        val updated: LocalDate = LocalDate.now()
 )

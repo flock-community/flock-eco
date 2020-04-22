@@ -33,7 +33,7 @@ const init = {
   statuses: ['NEW', 'ACTIVE', 'DISABLED'],
 }
 
-export function MemberFilter({onChange}) {
+export function MemberFilter({onChange, specification}) {
 
   const classes = useStyles()
 
@@ -42,12 +42,19 @@ export function MemberFilter({onChange}) {
     anchorEl: null,
     groups: [],
     statuses: ['NEW', 'ACTIVE', 'DISABLED', 'DELETED', 'MERGED'],
-    specifications: init
+    specification: init
   })
 
   useEffect(() => {
     onChange && onChange(init)
   },[])
+
+  useEffect(() => {
+    setState(prev => ({
+      ...prev,
+      specification: specification || init,
+    }))
+  },[specification])
 
   useEffect(() => {
     fetch(`/api/member_groups`)
@@ -63,39 +70,39 @@ export function MemberFilter({onChange}) {
   }, [])
 
   const handleSearchChange = event => {
-    const specifications = {
-      ...state.specifications,
+    const specification = {
+      ...state.specification,
       ...{search: event.target.value},
     }
     setState(state => ({
       ...state,
-      specifications,
+      specification,
     }))
-    onChange && onChange(specifications)
+    onChange && onChange(specification)
   }
 
   const handleGroupsChange = name => event => {
-    const specifications = {
-      ...state.specifications,
+    const specification = {
+      ...state.specification,
       ...{groups: event.target.value},
     }
     setState(state => ({
       ...state,
-      specifications,
+      specification,
     }))
-    onChange && onChange(specifications)
+    onChange && onChange(specification)
   }
 
   const handleStatusesChange = name => event => {
-    const specifications = {
-      ...state.specifications,
+    const specification = {
+      ...state.specification,
       ...{statuses: event.target.value},
     }
     setState(state => ({
       ...state,
-      specifications,
+      specification,
     }))
-    onChange && onChange(specifications)
+    onChange && onChange(specification)
   }
 
 
@@ -118,7 +125,7 @@ export function MemberFilter({onChange}) {
       <InputLabel htmlFor="select-multiple-checkbox">Statuses</InputLabel>
       <Select
         multiple
-        value={state.specifications.statuses}
+        value={state.specification.statuses}
         onChange={handleStatusesChange()}
         input={<Input id="select-multiple-checkbox"/>}
         renderValue={selected => selected.join(', ')}
@@ -127,7 +134,7 @@ export function MemberFilter({onChange}) {
           <MenuItem key={status} value={status}>
             <Checkbox
               checked={
-                state.specifications.statuses.indexOf(status) > -1
+                state.specification.statuses.indexOf(status) > -1
               }
             />
             <ListItemText primary={status}/>
@@ -142,7 +149,7 @@ export function MemberFilter({onChange}) {
       <InputLabel htmlFor="select-multiple-checkbox">Groups</InputLabel>
       <Select
         multiple
-        value={state.specifications.groups}
+        value={state.specification.groups}
         onChange={handleGroupsChange()}
         input={<Input id="select-multiple-checkbox"/>}
         renderValue={selected =>
@@ -156,7 +163,7 @@ export function MemberFilter({onChange}) {
           <MenuItem key={group.code} value={group.code}>
             <Checkbox
               checked={
-                state.specifications.groups.indexOf(group.code) > -1
+                state.specification.groups.indexOf(group.code) > -1
               }
             />
             <ListItemText primary={group.name}/>
@@ -171,7 +178,7 @@ export function MemberFilter({onChange}) {
         <TextField
           fullWidth
           label="Search"
-          value={state.specifications.search}
+          value={state.specification.search}
           onChange={handleSearchChange}
         />
       </Grid>

@@ -6,6 +6,7 @@ import community.flock.eco.feature.member.services.MemberService
 import community.flock.eco.feature.member.specifications.MemberSpecification
 import graphql.kickstart.tools.GraphQLQueryResolver
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
 import community.flock.eco.feature.member.graphql.Member as MemberGraphql
@@ -23,10 +24,12 @@ class MemberQueryResolver(
             ?.produce()
 
     @PreAuthorize("hasAuthority('MemberAuthority.READ')")
-    fun findAllMembers(filter: MemberFilter?,
-                          page: Int?,
-                          size: Int?,
-                          order: String?) = PageRequest.of(page ?: 0, size ?: 10)
+    fun findAllMembers(
+            filter: MemberFilter?,
+            page: Int?,
+            size: Int?,
+            sort: String?,
+            order: String?) = pageable(page, size, sort, order)
             .let { pageable ->
                 val specification = filter.consume()
                 memberService
@@ -38,11 +41,16 @@ class MemberQueryResolver(
     fun countMembers(filter: MemberFilter?) = memberService.count(filter.consume())
 
     fun MemberFilter?.consume() = MemberSpecification(
-    search = this?.search ?: "",
-    statuses = this?.statuses?.map { it.consume() }?.toSet() ?: setOf(),
-    groups = this?.groups?.toSet() ?: setOf()
+            search = this?.search ?: "",
+            statuses = this?.statuses?.map { it.consume() }?.toSet() ?: setOf(),
+            groups = this?.groups?.toSet() ?: setOf()
     )
 
     fun MemberModel.produce() = memberGraphqlMapper.produce(this)
     fun MemberStatusGraphql.consume() = memberGraphqlMapper.consume(this)
+
+    fun pageable(page: Int?, size: Int?, sort: String?, order: String?) = PageRequest.of(
+            page ?: 0,
+            size ?: 10,
+            Sort.by(Sort.Direction.fromOptionalString(order).orElse(Sort.DEFAULT_DIRECTION), sort))
 }

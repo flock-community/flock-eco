@@ -15,14 +15,25 @@ import {MemberTableToolbar} from './MemberTableToolbar'
 import {CircularProgress, Snackbar} from '@material-ui/core'
 import {AlignedLoader} from '@flock-eco/core/src/main/react/components/AlignedLoader'
 import Card from '@material-ui/core/Card'
+import TableContainer from '@material-ui/core/TableContainer'
 
 export const QUERY = gql`
     query ($search: String!,
         $statuses: [MemberStatus!],
         $groups:[String!],
         $page: Int!,
-        $sort: String) {
-        list: findAllMembers(filter:{search:$search, statuses:$statuses, groups:$groups}, page:$page, size:10, sort:$sort,) {
+        $sort: String,
+        $order: String) {
+        list: findAllMembers(
+            filter:{
+                search:$search, 
+                statuses:$statuses, 
+                groups:$groups
+            }, 
+            page:$page, 
+            size:10, 
+            sort:$sort,
+            order:$order) {
             id,
             firstName,
             infix,
@@ -53,12 +64,17 @@ export function MemberTable({specification, refresh, size, page, order, directio
       groups: state.specification.groups || [],
       statuses: state.specification.statuses || [],
       page: state.page,
-      sort: `${state.order},${state.direction}`,
+      sort: state.order,
+      order: state.direction,
     },
   })
 
   useEffect(() => {
     refetch()
+    setState(prev =>({
+      ...prev,
+      selectedIds: [],
+    }))
   }, [refresh])
 
   useEffect(() => {
@@ -128,7 +144,7 @@ export function MemberTable({specification, refresh, size, page, order, directio
     </Card>
 
   return (
-    <>
+    <TableContainer>
       <MemberTableToolbar
         onMergeMembers={onMergeMembers}
         selectedIds={state.selectedIds}
@@ -186,22 +202,19 @@ export function MemberTable({specification, refresh, size, page, order, directio
             </TableRow>
           ))}
         </TableBody>
-
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              count={data.count}
-              rowsPerPage={state.size}
-              page={state.page}
-              rowsPerPageOptions={[]}
-              onChangePage={handleChangePage}
-            />
-          </TableRow>
-        </TableFooter>
       </Table>)}
+
+      <TablePagination
+        count={data.count}
+        rowsPerPage={state.size}
+        page={state.page}
+        rowsPerPageOptions={[]}
+        onChangePage={handleChangePage}
+        component="div"
+      />
 
       <Snackbar open={error} message={error && error.message}/>
 
-    </>
+    </TableContainer>
   )
 }

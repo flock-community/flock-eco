@@ -108,28 +108,32 @@ export function MemberDialog({id, open, onComplete}) {
     MemberClient.delete(id)
       .then(() => {
         onComplete && onComplete()
+        setState(prevState => ({
+          ...prevState,
+          deleteOpen: false,
+        }))
       })
   }
 
   const handleDeleteOpen = () => {
-    setState({
-      ...state,
+    setState(prevState => ({
+      ...prevState,
       deleteOpen: true,
-    })
+    }))
   }
 
   const handleDeleteClose = () => {
-    setState({
-      ...state,
+    setState(prevState => ({
+      ...prevState,
       deleteOpen: false,
-    })
+    }))
   }
 
   const handleFormUpdate = value => {
-    setState({
-      ...state,
+    setState(prevState => ({
+      ...prevState,
       item: value,
-    })
+    }))
   }
 
   const handleSubmit = () => {
@@ -139,10 +143,10 @@ export function MemberDialog({id, open, onComplete}) {
           onComplete && onComplete()
         })
         .catch(e => {
-          setState({
-            ...state,
+          setState(prevState => ({
+            ...prevState,
             message: 'Cannot load fields',
-          })
+          }))
         })
     } else {
       MemberClient.post(state.item)
@@ -150,20 +154,49 @@ export function MemberDialog({id, open, onComplete}) {
           onComplete && onComplete()
         })
         .catch(e => {
-          setState({
-            ...state,
+          setState(prevState => ({
+            ...prevState,
             message: 'Cannot load fields',
-          })
+          }))
         })
     }
   }
 
   const handleCloseSnackbar = () => {
-    setState({
-      ...state,
+    setState(prevState => ({
+      ...prevState,
       message: null,
-    })
+    }))
   }
+
+  const isUpdatable = state.item ? (!['DELETED', 'MERGED'].includes(state.item.status)) : !id
+
+  const dialogBody = (<>
+    <DialogContent>
+      <MemberForm
+        value={state.item}
+        groups={state.groups}
+        fields={state.fields}
+        languages={languages}
+        countries={countries}
+        onChange={handleFormUpdate}
+        onSubmit={handleSubmit}
+        disabled={!isUpdatable}
+      />
+    </DialogContent>
+    <DialogActions>
+      {(id && isUpdatable) && <Button onClick={handleDeleteOpen} color="secondary">
+          Delete
+        </Button>
+      }
+      <Button onClick={handleClose} color="primary">
+        Cancel
+      </Button>
+      {isUpdatable && <Button type="submit" form="member-form" color="primary" autoFocus>
+        Save
+      </Button>}
+    </DialogActions>
+  </>)
 
   return (
     <>
@@ -174,30 +207,7 @@ export function MemberDialog({id, open, onComplete}) {
         onClose={handleClose}
       >
         <DialogTitle>Member</DialogTitle>
-        <DialogContent>
-          <MemberForm
-            value={state.item}
-            groups={state.groups}
-            fields={state.fields}
-            languages={languages}
-            countries={countries}
-            onChange={handleFormUpdate}
-            onSubmit={handleSubmit}
-          />
-        </DialogContent>
-        <DialogActions>
-          {state.item && state.item.id && (
-            <Button onClick={handleDeleteOpen} color="secondary">
-              Delete
-            </Button>
-          )}
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button type="submit" form="member-form" color="primary" autoFocus>
-            Save
-          </Button>
-        </DialogActions>
+        {dialogBody}
       </Dialog>
 
       <Snackbar

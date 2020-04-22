@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Component
+import java.time.LocalDate
 import javax.transaction.Transactional
 
 
@@ -21,11 +22,11 @@ class MemberService(
         private val memberRepository: MemberRepository,
         private val memberGraphqlMapper: MemberGraphqlMapper) {
 
-    fun findAll(specification: Specification<Member>, pageable: Pageable): Page<Member> = memberRepository
-            .findAll(specification, pageable)
-
     fun findAll(pageable: Pageable): Iterable<Member> = memberRepository
             .findAll(pageable)
+
+    fun findAll(specification: Specification<Member>, pageable: Pageable): Page<Member> = memberRepository
+            .findAll(specification, pageable)
 
     fun count(specification: Specification<Member>): Long = memberRepository
             .count(specification)
@@ -43,17 +44,32 @@ class MemberService(
     fun create(input: MemberInput): Member = input
             .consume()
             .save()
-            ?.publish { CreateMemberEvent(it) }
-            ?: error("Cannot create member")
+            .publish { CreateMemberEvent(it) }
 
     fun update(id: Long, input: MemberInput): Member = findById(id)
+            ?.apply {
+                if (status == MemberStatus.DELETED)
+                    error("Cannot update DELETED member")
+                if (status == MemberStatus.MERGED)
+                    error("Cannot update MERGED member")
+            }
             ?.run { input.consume(this) }
+            ?.let {
+                it.copy(
+                        updated = LocalDate.now()
+                )
+            }
             ?.save()
             ?.publish { UpdateMemberEvent(it) }
             ?: error("Cannot update member")
 
     fun delete(id: Long) = findById(id)
-            ?.let { it.copy(status = MemberStatus.DELETED) }
+            ?.let {
+                it.copy(
+                        status = MemberStatus.DELETED,
+                        updated = LocalDate.now()
+                )
+            }
             ?.save()
             ?.publish { DeleteMemberEvent(it) }
             ?: error("Cannot delete member")
@@ -61,7 +77,12 @@ class MemberService(
     @Transactional
     fun merge(mergeMemberIds: List<Long>, newMember: MemberInput): Member {
         val mergeMembers = memberRepository.findByIds(mergeMemberIds)
-                .map { it.copy(status = MemberStatus.MERGED) }
+                .map {
+                    it.copy(
+                            status = MemberStatus.MERGED,
+                            updated = LocalDate.now()
+                    )
+                }
                 .saveAll()
         return newMember
                 .consume()

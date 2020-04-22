@@ -4,7 +4,8 @@ extend type Query {
         filter:MemberFilter,
         page: Int,
         size: Int,
-        sort:String
+        sort:String,
+        order:String
     ): [Member!]!
     countMembers(
         filter:MemberFilter

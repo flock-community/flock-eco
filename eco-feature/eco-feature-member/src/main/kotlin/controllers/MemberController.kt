@@ -80,5 +80,7 @@ class MemberController(
             .produce()
             .toResponse()
 
-    fun Member.produce() = memberGraphqlMapper.produce(this)
+    private fun Member.produce() = memberGraphqlMapper.produce(this)
+    private fun MemberInput.consume(member: Member? = null) = memberGraphqlMapper
+            .consume(this, member)
 }

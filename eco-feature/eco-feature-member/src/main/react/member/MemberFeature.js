@@ -15,10 +15,14 @@ import {MemberMerger} from './MemberMerger'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    paddingBottom: theme.spacing(10),
+  },
+
   button: {
     position: 'fixed',
-    right: 20,
-    bottom: 20,
+    right: theme.spacing(2),
+    bottom: theme.spacing(2),
     margin: theme.spacing(1),
   },
 }))
@@ -35,8 +39,8 @@ export function MemberFeature({search}) {
     item: null,
     filter: {},
     refresh: false,
-    refreshSelection: false,
     mergeMemberIds: null,
+    specification: null
   })
 
   const handleRowClick = item => {
@@ -78,7 +82,6 @@ export function MemberFeature({search}) {
       ...prev,
       mergeMemberIds: null,
       refresh: !prev.refresh,
-      refreshSelection: !prev.refreshSelection,
     }))
 
   const mergeMembers = mergeMemberIds =>
@@ -93,12 +96,14 @@ export function MemberFeature({search}) {
       mergeMemberIds: null,
     }))
 
-  return (<>
+  return (<div className={classes.root}>
     <Grid container direction="column" spacing={1}>
       <Grid item>
         <Card>
           <CardContent>
-            <MemberFilter onChange={handleFilterChange}/>
+            <MemberFilter
+              specification={state.specification}
+              onChange={handleFilterChange}/>
           </CardContent>
         </Card>
       </Grid>
@@ -110,7 +115,6 @@ export function MemberFeature({search}) {
             size={state.size}
             refresh={state.refresh}
             onRowClick={handleRowClick}
-            refreshSelection={state.refreshSelection}
             onMergeMembers={mergeMembers}
           />
         </Card>
@@ -137,5 +141,5 @@ export function MemberFeature({search}) {
     >
       <AddIcon/>
     </Fab>
-  </>)
+  </div>)
 }

@@ -1,18 +1,15 @@
-import community.flock.eco.feature.member.events.MemberEvent
 import community.flock.eco.feature.member.graphql.MemberFieldInput
 import community.flock.eco.feature.member.graphql.MemberInput
-import community.flock.eco.feature.member.graphql.Member as MemberGraphql
-import community.flock.eco.feature.member.graphql.MemberField as MemberFieldGraphql
-import community.flock.eco.feature.member.graphql.MemberGender as MemberGenderGraphql
-import community.flock.eco.feature.member.graphql.MemberStatus as MemberStatusGraphql
 import community.flock.eco.feature.member.model.Member
 import community.flock.eco.feature.member.model.MemberGender
 import community.flock.eco.feature.member.model.MemberGroup
 import community.flock.eco.feature.member.model.MemberStatus
 import community.flock.eco.feature.member.repositories.MemberGroupRepository
-import community.flock.eco.feature.member.repositories.MemberRepository
-import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Component
+import java.time.LocalDate
+import community.flock.eco.feature.member.graphql.Member as MemberGraphql
+import community.flock.eco.feature.member.graphql.MemberGender as MemberGenderGraphql
+import community.flock.eco.feature.member.graphql.MemberStatus as MemberStatusGraphql
 
 @Component
 class MemberGraphqlMapper(
@@ -37,7 +34,9 @@ class MemberGraphqlMapper(
             groups = it.groups.consume(),
             fields = it.fields.consume(),
             birthDate = it.birthDate,
-            status = consume(it.status))
+            status = consume(it.status),
+            created = member?.created ?: LocalDate.now(),
+            updated = member?.updated ?: LocalDate.now())
 
     fun produce(it: Member) = MemberGraphql(
             id = it.id.toString(),

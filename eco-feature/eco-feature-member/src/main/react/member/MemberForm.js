@@ -55,7 +55,7 @@ const schema = Yup.object().shape({
     .default('NEW'),
 })
 
-export function MemberForm({value, groups, fields, languages, countries, onChange, onSubmit}) {
+export function MemberForm({value, disabled, groups, fields, languages, countries, onChange, onSubmit}) {
 
   const [state, setState] = useState(value || schema.cast())
 
@@ -106,6 +106,7 @@ export function MemberForm({value, groups, fields, languages, countries, onChang
         <InputLabel htmlFor="groups">Groups</InputLabel>
         <Select
           multiple
+          disabled={disabled}
           value={state.groups || []}
           input={<Input/>}
           onChange={handleChangeGroup('groups')}
@@ -132,7 +133,7 @@ export function MemberForm({value, groups, fields, languages, countries, onChang
     <TextField
       label={field.label}
       fullWidth
-      disabled={field.disabled}
+      disabled={disabled || field.disabled}
       value={resolveField(field.name).value || ''}
       onChange={handleChangeField(field.name)}
     />
@@ -140,7 +141,7 @@ export function MemberForm({value, groups, fields, languages, countries, onChang
 
   const checkboxField = field => (
     <FormControlLabel
-      disabled={field.disabled}
+      disabled={disabled || field.disabled}
       control={
         <Checkbox
           onChange={handleChangeField(field.name)}
@@ -155,7 +156,7 @@ export function MemberForm({value, groups, fields, languages, countries, onChang
   const singleSelectField = field => (
     <FormControl
       fullWidth
-      disabled={field.disabled}>
+      disabled={disabled || field.disabled}>
       <InputLabel htmlFor={field.name}>{field.label}</InputLabel>
       <Select
         value={resolveField(field.name).value || ''}
@@ -174,7 +175,7 @@ export function MemberForm({value, groups, fields, languages, countries, onChang
   const multiSelectField = field => (
     <FormControl
       fullWidth
-      disabled={field.disabled}>
+      disabled={disabled || field.disabled}>
       <InputLabel htmlFor={field.name}>{field.label}</InputLabel>
       <Select
         multiple
@@ -216,6 +217,7 @@ export function MemberForm({value, groups, fields, languages, countries, onChang
         <Grid item xs={5}>
           <TextValidator
             required
+            disabled={disabled}
             name="firstName"
             label="First name"
             fullWidth
@@ -229,6 +231,7 @@ export function MemberForm({value, groups, fields, languages, countries, onChang
         <Grid item xs={2}>
           <TextField
             fullWidth
+            disabled={disabled}
             label="Infix"
             value={state.infix || ''}
             onChange={handleChange('infix')}
@@ -238,6 +241,7 @@ export function MemberForm({value, groups, fields, languages, countries, onChang
         <Grid item xs={5}>
           <TextValidator
             required
+            disabled={disabled}
             name="surName"
             label="Surname"
             fullWidth
@@ -252,6 +256,7 @@ export function MemberForm({value, groups, fields, languages, countries, onChang
           <TextField
             type="date"
             fullWidth
+            disabled={disabled}
             label="Birth date"
             InputLabelProps={{shrink: true}}
             value={state.birthDate || ''}
@@ -265,6 +270,7 @@ export function MemberForm({value, groups, fields, languages, countries, onChang
             <InputLabel htmlFor="gender">Gender</InputLabel>
             <Select
               required
+              disabled={disabled}
               value={state.gender || 'UNKNOWN'}
               onChange={handleChange('gender')}
               inputProps={{
@@ -282,6 +288,7 @@ export function MemberForm({value, groups, fields, languages, countries, onChang
         <Grid item xs={12}>
           <TextField
             fullWidth
+            disabled={disabled}
             label="Phone number"
             value={state.phoneNumber || ''}
             onChange={handleChange('phoneNumber')}
@@ -291,6 +298,7 @@ export function MemberForm({value, groups, fields, languages, countries, onChang
         <Grid item xs={12}>
           <TextField
             fullWidth
+            disabled={disabled}
             label="Email"
             value={state.email || ''}
             onChange={handleChange('email')}
@@ -300,6 +308,7 @@ export function MemberForm({value, groups, fields, languages, countries, onChang
         <Grid item xs={8}>
           <TextField
             fullWidth
+            disabled={disabled}
             label="Street"
             value={state.street || ''}
             onChange={handleChange('street')}
@@ -309,6 +318,7 @@ export function MemberForm({value, groups, fields, languages, countries, onChang
         <Grid item xs={2}>
           <TextField
             fullWidth
+            disabled={disabled}
             label="Nr"
             value={state.houseNumber || ''}
             onChange={handleChange('houseNumber')}
@@ -318,6 +328,7 @@ export function MemberForm({value, groups, fields, languages, countries, onChang
         <Grid item xs={2}>
           <TextField
             fullWidth
+            disabled={disabled}
             label="Ext"
             value={state.houseNumberExtension || ''}
             onChange={handleChange('houseNumberExtension')}
@@ -327,6 +338,7 @@ export function MemberForm({value, groups, fields, languages, countries, onChang
         <Grid item xs={3}>
           <TextField
             fullWidth
+            disabled={disabled}
             label="Postal code"
             value={state.postalCode || ''}
             onChange={handleChange('postalCode')}
@@ -336,6 +348,7 @@ export function MemberForm({value, groups, fields, languages, countries, onChang
         <Grid item xs={9}>
           <TextField
             fullWidth
+            disabled={disabled}
             label="City"
             value={state.city || ''}
             onChange={handleChange('city')}
@@ -344,6 +357,7 @@ export function MemberForm({value, groups, fields, languages, countries, onChang
 
         <Grid item xs={6}>
           <FormControl
+            disabled={disabled}
             fullWidth>
             <InputLabel htmlFor="country">Country</InputLabel>
             <Select
@@ -365,6 +379,7 @@ export function MemberForm({value, groups, fields, languages, countries, onChang
 
         <Grid item xs={6}>
           <FormControl
+            disabled={disabled}
             fullWidth>
             <InputLabel htmlFor="country">Language</InputLabel>
             <Select
