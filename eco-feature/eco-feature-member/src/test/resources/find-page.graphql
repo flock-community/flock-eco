@@ -1,4 +1,4 @@
-query findPage($search:String){
+query findTestMemberPage($search:String){
     list: findAllMembers(
         filter: {search: $search},
         size: 2,

@@ -1,0 +1,40 @@
+extend type Query {
+    findWorkspaceAll(pageable:Pageable):[Workspace!]!
+    findWorkspaceById(id:String):Workspace
+    countWorkspaceAll:Int!
+}
+
+type Workspace {
+    id: ID!,
+    name:String!
+    variables:[KeyValue!]!
+    users:[WorkspaceUser!]!
+    host:String
+}
+
+type WorkspaceUser {
+    id:ID!,
+    name:String!,
+    role: String!
+}
+
+input WorkspaceRole {
+    name:String!,
+}
+
+input WorkspaceInput {
+    name:String!
+    image:WorkspaceImageInput,
+    variables:[KeyValueInput!]!
+    host:String
+}
+
+input WorkspaceImageInput {
+    file:String!,
+    name: String!,
+}
+
+input WorkspaceUserInput {
+    refernece:String!,
+    role: String!,
+}

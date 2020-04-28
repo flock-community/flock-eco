@@ -70,6 +70,22 @@
                 <artifactId>graphiql-spring-boot-starter</artifactId>
                 <version>7.0.1</version>
             </dependency>
+            <dependency>
+                <groupId>com.graphql-java</groupId>
+                <artifactId>graphql-java</artifactId>
+                <version>14.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.graphql-java-kickstart</groupId>
+                <artifactId>graphql-java-tools</artifactId>
+                <version>6.0.2</version>
+            </dependency>
+            <dependency>
+                <groupId>com.graphql-java</groupId>
+                <artifactId>graphql-java-extended-scalars</artifactId>
+                <version>1.0</version>
+            </dependency>
+
 
             <!-- Flock eco-->
             <dependency>
@@ -115,6 +131,18 @@
             <dependency>
                 <groupId>com.github.flock-community.flock-eco</groupId>
                 <artifactId>flock-eco-feature-user</artifactId>
+                <version>${project.parent.version}</version>
+                <classifier>develop</classifier>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.github.flock-community.flock-eco</groupId>
+                <artifactId>flock-eco-feature-workspace</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.flock-community.flock-eco</groupId>
+                <artifactId>flock-eco-feature-workspace</artifactId>
                 <version>${project.parent.version}</version>
                 <classifier>develop</classifier>
                 <scope>provided</scope>
@@ -273,7 +301,7 @@
                 <plugin>
                     <groupId>community.flock</groupId>
                     <artifactId>graphql-simple-bindings-maven-plugin</artifactId>
-                    <version>0.3.0</version>
+                    <version>0.4.0</version>
                     <configuration>
                         <language>Kotlin</language>
                         <sourceDirectory>${project.basedir}/src/main/graphql</sourceDirectory>

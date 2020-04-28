@@ -1,0 +1,31 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.github.flock-community.flock-eco</groupId>
+        <artifactId>flock-eco-feature-parent</artifactId>
+        <version>1.7.16</version>
+    </parent>
+
+    <artifactId>flock-eco-feature-workspace</artifactId>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>community.flock</groupId>
+                <artifactId>graphql-simple-bindings-maven-plugin</artifactId>
+                <configuration>
+                    <packageName>community.flock.eco.feature.workspace.graphql</packageName>
+                    <scalars>
+                        <KeyValue>community.flock.eco.core.graphql.KeyValue</KeyValue>
+                    </scalars>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

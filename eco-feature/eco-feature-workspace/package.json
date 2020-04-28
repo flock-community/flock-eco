@@ -1,0 +1,14 @@
+{
+  "name": "@flock-eco/feature-workspace",
+  "version": "1.7.16",
+  "dependencies": {
+    "@flock-eco/core": "^1.7.16"
+  },
+  "devDependencies": {
+    "@flock-eco/webpack": "^1.7.16",
+    "webpack-dev-server": "^3.2.1"
+  },
+  "scripts": {
+    "codegen": "apollo client:codegen ./src/main/react/Apollo.ts --target=typescript --outputFlat"
+  }
+}

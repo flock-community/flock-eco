@@ -1,3 +1,25 @@
-type Query{
+type Query
 
+type KeyValue{
+    key: String!
+    value: String
 }
+
+input KeyValueInput{
+    key: String!
+    value: String
+}
+
+input Pageable {
+    page:Int
+    size:Int
+    sort:Sort
+}
+
+input Sort {
+    order:String
+    direction:Direction
+}
+
+enum Direction {ASC DESC}
+

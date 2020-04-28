@@ -3,6 +3,7 @@ package community.flock.eco.feature.member
 
 import LanguageIsoConfiguration
 import MemberGraphqlMapper
+import community.flock.eco.core.configurations.GraphqlConfiguration
 import community.flock.eco.feature.member.controllers.MemberController
 import community.flock.eco.feature.member.controllers.MemberFieldController
 import community.flock.eco.feature.member.controllers.MemberGroupController
@@ -20,7 +21,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 @Configuration
 @EnableJpaRepositories
 @EntityScan
-@Import(
+@Import(GraphqlConfiguration::class,
         CountryIsoConfiguration::class,
         LanguageIsoConfiguration::class,
         MemberService::class,
@@ -29,9 +30,4 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
         MemberFieldController::class,
         MemberGraphqlMapper::class,
         MemberQueryResolver::class)
-class MemberConfiguration {
-    @Bean
-    fun dateType(): GraphQLScalarType? {
-        return ExtendedScalars.Date
-    }
-}
+class MemberConfiguration
