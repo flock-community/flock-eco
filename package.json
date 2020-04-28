@@ -2,7 +2,6 @@
   "name": "flock-eco",
   "private": true,
   "scripts": {
-    "codegen": "apollo client:codegen appollo --target=typescript --config=./.graphqlconfig",
     "bootstrap": "lerna bootstrap --hoist",
     "lerna": "lerna",
     "prettier": "prettier --write \"{**/*.js,**/*.json,**/*.html}\"",
@@ -34,6 +33,7 @@
     "react-router-dom": "^5.0.1",
     "react-select": "^3.0.5",
     "react-select-material-ui": "^6.0.0",
+    "typescript": "^3.8.3",
     "whatwg-fetch": "^3.0.0",
     "yup": "^0.28.4"
   },
