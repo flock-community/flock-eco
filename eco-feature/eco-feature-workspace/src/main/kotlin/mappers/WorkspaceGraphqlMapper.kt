@@ -25,7 +25,8 @@ class WorkspaceGraphqlMapper(
                     .run { consume(this) },
             host = input.host,
             image = input.image
-                    ?.run { consume(this) }
+                    ?.run { consume(this) },
+            users = workspace?.users ?: setOf()
     )
 
     fun consume(it: List<KeyValueInput>): Map<String, String?> = it
@@ -43,15 +44,21 @@ class WorkspaceGraphqlMapper(
             variables = it.variables.map {
                 KeyValue(it.key, it.value)
             },
-            users = it.users
-                    .map { it.id }
-                    .let { workspaceUserProvider.findWorkspaceUser(it) }
-                    .map { WorkspaceUserGraphql(
-                            id = it.id,
-                            name = it.name,
-                            role = it.role
-                    ) },
-            host= it.host
+            users = it.users.let { users ->
+                users
+                        .map { it.id }
+                        .let { workspaceUserProvider.findWorkspaceUser(it) }
+                        .map { user ->
+                            WorkspaceUserGraphql(
+                                    id = user.id,
+                                    name = user.name,
+                                    role = users.find { it.id == user.id }
+                                            ?.role
+                                            ?: error("Cannot find user")
+                            )
+                        }
+            },
+            host = it.host
     )
 
 }

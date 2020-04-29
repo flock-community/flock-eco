@@ -1,28 +1,40 @@
-import React, {useEffect, useState} from 'react'
-import {Button, Dialog, DialogActions, DialogContent} from '@material-ui/core'
+import React, {ChangeEvent, useEffect, useState} from 'react'
+import {AppBar, Button, Dialog, DialogActions, DialogContent, Tab, Tabs, Typography} from '@material-ui/core'
 import {WORKSPACE_FORM_ID, WorkspaceForm} from './WorkspaceForm'
-import {WorkspaceClient, WorkspaceInput} from './WorkspaceClient'
+import {Workspace, WorkspaceClient, WorkspaceInput} from './WorkspaceClient'
+import {WorkspaceUserTable} from './WorkspaceUsersTable'
+import {WorkspaceUsersForm} from './WorkspaceUsersForm'
+// @ts-ignore
+import {ConfirmDialog} from '@flock-eco/core/src/main/react/components/ConfirmDialog'
+
 
 interface Props {
   id: string | null,
   open: boolean
+
   onComplete(): void
 }
 
 export function WorkspaceDialog({id, open, onComplete}: Props) {
 
-  const [state, setState] = useState<WorkspaceInput | null>(null)
+  const [tab, setTab] = useState<number>(0)
+  const [state, setState] = useState<Workspace | null>(null)
+  const [deleteOpen, setDeleteOpen] = useState<boolean>(false)
 
   useEffect(() => {
     if (id) {
-      WorkspaceClient.get(id)
-        .then(workspace => {
-          setState(workspace)
-        })
+      loadState(id)
     } else {
       setState(null)
     }
   }, [id])
+
+  const loadState = (id: string) => {
+    WorkspaceClient.get(id)
+      .then(workspace => {
+        setState(workspace)
+      })
+  }
 
   const handleSubmit = (input: WorkspaceInput) => {
     if (id) {
@@ -37,26 +49,67 @@ export function WorkspaceDialog({id, open, onComplete}: Props) {
   const handleDelete = () => {
     if (id) {
       WorkspaceClient.delete(id)
-        .then(() => onComplete())
+        .then(() => {
+          onComplete()
+          setDeleteOpen(false)
+        })
     }
+  }
+
+  const handleOpenDelete = () => {
+    setDeleteOpen(true)
+  }
+
+  const handleCloseDelete = () => {
+    setDeleteOpen(false)
+  }
+
+  const handleChangeTab = (event: ChangeEvent<{}>, newValue: number) => {
+    setTab(newValue)
   }
 
   const handleClose = () => {
     onComplete()
   }
 
-  return (<Dialog
-    open={open}
-    onClose={handleClose}>
-    <DialogContent>
-      <WorkspaceForm
-        value={state}
-        onSubmit={handleSubmit}
-      />
-    </DialogContent>
-    <DialogActions>
-      {id && <Button onClick={handleDelete}>Delete</Button>}
-      <Button type="submit" form={WORKSPACE_FORM_ID}>Save</Button>
-    </DialogActions>
-  </Dialog>)
+  const handleCompleteUserForm = () => {
+    if (id) {
+      loadState(id)
+    }
+  }
+
+  return (<>
+    <Dialog
+      fullWidth
+      open={open}
+      onClose={handleClose}>
+      <AppBar position="static">
+        <Tabs value={tab} onChange={handleChangeTab}>
+          <Tab label="Form"/>
+          {id && <Tab label="Users"/>}
+        </Tabs>
+      </AppBar>
+      <DialogContent hidden={tab !== 0}>
+        <WorkspaceForm
+          value={state}
+          onSubmit={handleSubmit}
+        />
+      </DialogContent>
+      <DialogContent hidden={tab !== 1}>
+        {id && <WorkspaceUsersForm id={id} onComplete={handleCompleteUserForm}/>}
+        {state && <WorkspaceUserTable value={state.users}/>}
+      </DialogContent>
+      <DialogActions>
+        {id && <Button onClick={handleOpenDelete}>Delete</Button>}
+        <Button type="submit" form={WORKSPACE_FORM_ID}>Save</Button>
+      </DialogActions>
+    </Dialog>
+
+    <ConfirmDialog
+      open={deleteOpen}
+      onClose={handleCloseDelete}
+      onConfirm={handleDelete}>
+      <Typography>Delete workspace: {state && state.id}</Typography>
+    </ConfirmDialog>
+  </>)
 }

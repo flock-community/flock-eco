@@ -9,6 +9,6 @@
     "webpack-dev-server": "^3.2.1"
   },
   "scripts": {
-    "codegen": "apollo client:codegen ./src/main/react/Apollo.ts --target=typescript --outputFlat"
+    "generate": "apollo client:codegen ./src/main/react/Apollo.ts --target=typescript --outputFlat"
   }
 }

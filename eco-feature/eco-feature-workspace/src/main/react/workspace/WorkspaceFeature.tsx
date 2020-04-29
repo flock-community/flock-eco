@@ -1,15 +1,18 @@
 import React, {useEffect, useState} from 'react'
 import AddIcon from '@material-ui/icons/Add'
 import Fab from '@material-ui/core/Fab'
-import {Card} from '@material-ui/core'
-import makeStyles from '@material-ui/core/styles/makeStyles'
+import {Card, Theme} from '@material-ui/core'
 import {WorkspaceTable} from './WorkspaceTable'
 import {WorkspaceDialog} from './WorkspaceDialog'
-import {Workspace} from './WorkspaceClient'
+import {createStyles, makeStyles} from '@material-ui/core/styles'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
-    paddingBottom: theme.spacing(8),
+    position: 'relative',
+    height: '100%',
+  },
+  content: {
+    maxHeight: '100%',
   },
   add: {
     position: 'absolute',
@@ -34,15 +37,15 @@ export function WorkspaceFeature() {
   })
 
   useEffect(() => {
-    if(dialog.open === false){
+    if (!dialog.open) {
       setReload(!reload)
     }
-  },[dialog.open])
+  }, [dialog.open])
 
-  const handleClickRow = (item:Workspace) => {
+  const handleClickRow = (workspaceId: string) => {
     setDialog({
       open: true,
-      id: item.id,
+      id: workspaceId,
     })
   }
 
@@ -60,29 +63,31 @@ export function WorkspaceFeature() {
     })
   }
 
-  return (
-    <div className={classes.root}>
-      <Card>
-        <WorkspaceTable
-          reload={reload}
-          onRowClick={handleClickRow}/>
-      </Card>
+  return (<>
+      <div className={classes.root}>
+        <div className={classes.content}>
+          <Card>
+            <WorkspaceTable
+              reload={reload}
+              onRowClick={handleClickRow}/>
+          </Card>
 
 
+        </div>
+        <Fab
+          color="primary"
+          aria-label="Add"
+          className={classes.add}
+          onClick={handleClickNew}
+        >
+          <AddIcon/>
+        </Fab>
+      </div>
       <WorkspaceDialog
         open={dialog.open}
         id={dialog.id}
         onComplete={handleComplete}
       />
-
-      <Fab
-        color="primary"
-        aria-label="Add"
-        className={classes.add}
-        onClick={handleClickNew}
-      >
-        <AddIcon/>
-      </Fab>
-    </div>
+    </>
   )
 }

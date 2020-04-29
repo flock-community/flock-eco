@@ -36,23 +36,23 @@ class WorkspaceService(
     fun update(id: UUID, input: Workspace): Workspace = findById(id)
             ?.run { input.copy(id = id) }
             ?.save()
-            ?: error("cannot update workspace")
+            ?: error("cannot update workspace: $id")
 
     fun delete(id: UUID) = workspaceRepository
             .deleteById(id)
 
-    fun addWorkspaceUserToWorkspace(workspaceId: UUID, ref: String) = findById(workspaceId)
+    fun addWorkspaceUser(workspaceId: UUID, ref: String, role:String) = findById(workspaceId)
             ?.let {
                 val user = workspaceUserProvider.findWorkspaceUserByReference(ref)
                         ?: workspaceUserProvider.createWorkspaceUserByReference(ref)
-                return it.copy(
+                it.copy(
                         users = it.users + WorkspaceUserRole(
                                 id = user.id,
-                                role = user.role
+                                role = role.toUpperCase()
                         ))
             }
             ?.save()
-            ?: error("cannot add user workspace")
+            ?: error("Cannot add user to workspace: $workspaceId")
 
 
     fun Workspace.save(): Workspace = try {

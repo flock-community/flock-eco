@@ -1,7 +1,8 @@
 extend type Query {
     findWorkspaceAll(pageable:Pageable):[Workspace!]!
     findWorkspaceById(id:String):Workspace
-    countWorkspaceAll:Int!
+    countWorkspaceAll:Int!,
+    findWorkspaceRolesAll:[String!]!
 }
 
 type Workspace {
@@ -35,9 +36,6 @@ input WorkspaceImageInput {
 }
 
 input WorkspaceUserInput {
-    refernece:String!,
+    reference:String!,
     role: String!,
 }
-
-scalar KeyValue
-scalar KeyValueInput

@@ -34,7 +34,7 @@ export function App() {
   const elm = state.component && createElement(state.component, {})
 
   return (<ApolloProvider client={client}>
-    <Container>
+    <Container style={{height:"100%"}}>
       <AppDrawer open={state.drawer} onClick={handleFeatureClick}/>
       {elm}
     </Container>

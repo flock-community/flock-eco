@@ -4,6 +4,7 @@ import community.flock.eco.core.graphql.Direction
 import community.flock.eco.core.graphql.Pageable
 import community.flock.eco.core.utils.toNullable
 import community.flock.eco.feature.workspace.mappers.WorkspaceGraphqlMapper
+import community.flock.eco.feature.workspace.providers.WorkspaceUserProvider
 import community.flock.eco.feature.workspace.services.WorkspaceService
 import extentions.consume
 import graphql.kickstart.tools.GraphQLQueryResolver
@@ -17,6 +18,7 @@ import javax.transaction.Transactional
 @Component
 @Transactional
 class WorkspaceQueryResolver(
+        private val workspaceUserProvider: WorkspaceUserProvider,
         private val workspaceGraphqlMapper: WorkspaceGraphqlMapper,
         private val workspaceService: WorkspaceService) : GraphQLQueryResolver {
 
@@ -35,5 +37,9 @@ class WorkspaceQueryResolver(
     @PreAuthorize("hasAuthority('WorkspaceAuthority.READ')")
     fun countWorkspaceAll() = workspaceService
             .count()
+
+    @PreAuthorize("hasAuthority('WorkspaceAuthority.READ')")
+    fun findWorkspaceRolesAll() = workspaceUserProvider
+            .findRoles()
 
 }

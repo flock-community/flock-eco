@@ -13,11 +13,13 @@ import {TableSortLabel} from '@material-ui/core'
 import {Direction, WorkspaceTableQuery, WorkspaceTableQuery_list, WorkspaceTableQueryVariables} from '../Apollo'
 // @ts-ignore
 import {AlignedLoader} from '@flock-eco/core/src/main/react/components/AlignedLoader'
+import {Workspace, WorkspaceInput} from './WorkspaceClient'
+
 
 interface Props {
   reload: boolean,
   size?: number,
-  onRowClick(id:string): void
+  onRowClick(workspaceId:String): void
 }
 
 interface State {
@@ -32,7 +34,7 @@ export const QUERY = gql`
         list: findWorkspaceAll(pageable:$pageable) {
             id,
             host,
-            name,
+            name
         }
         count:countWorkspaceAll
     }`
@@ -109,7 +111,7 @@ export function WorkspaceTable({reload, size, onRowClick}:Props) {
       <TableBody>
         {data.list.map(it => (
           <TableRow key={it.name} hover onClick={handleRowClick(it)}>
-            {fields.map(field => (<TableCell>{it[field.key]}</TableCell>))}
+            {fields.map(field => (<TableCell key={field.key}>{it[field.key]}</TableCell>))}
           </TableRow>
         ))}
       </TableBody>
