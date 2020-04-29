@@ -1,6 +1,7 @@
 package community.flock.eco.feature.workspace.mappers
 
-import community.flock.eco.feature.workspace.graphql.KeyValue
+import community.flock.eco.core.graphql.KeyValue
+import community.flock.eco.core.graphql.KeyValueInput
 import community.flock.eco.feature.workspace.graphql.WorkspaceImageInput
 import community.flock.eco.feature.workspace.graphql.WorkspaceInput
 import community.flock.eco.feature.workspace.model.Workspace
@@ -17,7 +18,6 @@ class WorkspaceGraphqlMapper(
         private val workspaceUserProvider: WorkspaceUserProvider
 ) {
 
-
     fun consume(input: WorkspaceInput, workspace: Workspace? = null): Workspace = Workspace(
             id = workspace?.id ?: UUID.randomUUID(),
             name = input.name,
@@ -28,7 +28,7 @@ class WorkspaceGraphqlMapper(
                     ?.run { consume(this) }
     )
 
-    fun consume(it: List<KeyValue>): Map<String, String?> = it
+    fun consume(it: List<KeyValueInput>): Map<String, String?> = it
             .map { it.key to it.value }
             .toMap()
 

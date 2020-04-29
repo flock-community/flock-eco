@@ -2,6 +2,8 @@
   "name": "flock-eco",
   "private": true,
   "scripts": {
+    "generate:h": "graphql-codegen",
+    "generate": "graphql-codegen generate --schema=eco-feature/eco-feature-member/src/main/graphql/member.graphqls --output=test.ts",
     "bootstrap": "lerna bootstrap --hoist",
     "lerna": "lerna",
     "prettier": "prettier --write \"{**/*.js,**/*.json,**/*.html}\"",
