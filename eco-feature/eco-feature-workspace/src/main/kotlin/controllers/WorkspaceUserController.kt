@@ -6,6 +6,7 @@ import community.flock.eco.feature.workspace.graphql.WorkspaceUserInput
 import community.flock.eco.feature.workspace.mappers.WorkspaceGraphqlMapper
 import community.flock.eco.feature.workspace.providers.WorkspaceUserProvider
 import community.flock.eco.feature.workspace.services.WorkspaceService
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -17,6 +18,7 @@ class WorkspaceUserController(
         private val workspaceService: WorkspaceService) {
 
     @GetMapping
+    @PreAuthorize("hasAuthority('WorkspaceAuthority.READ')")
     fun getAll(@PathVariable workspacesId: UUID) = workspaceService
             .findById(workspacesId)
             ?.let { workspaceGraphqlMapper.produce(it) }
@@ -24,6 +26,7 @@ class WorkspaceUserController(
             .toResponse()
 
     @PostMapping
+    @PreAuthorize("hasAuthority('WorkspaceAuthority.WRITE')")
     fun post(@PathVariable workspacesId: UUID,
              @RequestBody input: WorkspaceUserInput) = input
             .let { workspaceService.addWorkspaceUser(workspacesId, it.reference, it.role) }
@@ -31,6 +34,7 @@ class WorkspaceUserController(
             .toResponse()
 
     @DeleteMapping("/{userId}")
+    @PreAuthorize("hasAuthority('WorkspaceAuthority.WRITE')")
     fun delete(
             @PathVariable workspacesId: UUID,
             @PathVariable userId: UUID) = workspaceService
