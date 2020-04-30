@@ -1,6 +1,6 @@
 {
   "name": "@flock-eco/webpack",
-  "version": "1.7.17-next.4567a12",
+  "version": "1.7.17-next.b87969e",
   "dependencies": {
     "@babel/core": "^7.4.5",
     "@babel/plugin-proposal-class-properties": "^7.4.4",

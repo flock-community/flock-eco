@@ -1,6 +1,6 @@
 {
   "name": "@flock-eco/application-example",
-  "version": "1.7.17-next.4567a12",
+  "version": "1.7.17-next.b87969e",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -10,8 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@flock-eco/feature-member": "^1.7.17-next.4567a12",
-    "@flock-eco/feature-user": "^1.7.17-next.4567a12",
-    "@flock-eco/feature-workspace": "^1.7.17-next.4567a12"
+    "@flock-eco/feature-member": "^1.7.17-next.b87969e",
+    "@flock-eco/feature-user": "^1.7.17-next.b87969e",
+    "@flock-eco/feature-workspace": "^1.7.17-next.b87969e"
   }
 }

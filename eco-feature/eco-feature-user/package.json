@@ -1,14 +1,14 @@
 {
   "name": "@flock-eco/feature-user",
-  "version": "1.7.17-next.4567a12",
+  "version": "1.7.17-next.b87969e",
   "scripts": {
     "start": "webpack-dev-server"
   },
   "dependencies": {
-    "@flock-eco/core": "^1.7.17-next.4567a12"
+    "@flock-eco/core": "^1.7.17-next.b87969e"
   },
   "devDependencies": {
-    "@flock-eco/webpack": "^1.7.17-next.4567a12",
+    "@flock-eco/webpack": "^1.7.17-next.b87969e",
     "webpack-dev-server": "^3.2.1"
   }
 }

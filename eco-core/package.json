@@ -1,6 +1,6 @@
 {
   "name": "@flock-eco/core",
-  "version": "1.7.17-next.4567a12",
+  "version": "1.7.17-next.b87969e",
   "main": "src/main/react/index.js",
   "module": "src/main/react/index.js",
   "dependencies": {
