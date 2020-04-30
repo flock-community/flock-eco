@@ -28,36 +28,6 @@ export interface WorkspaceTableQueryVariables {
 // @generated
 // This file was automatically generated and should not be edited.
 
-// ====================================================
-// GraphQL query operation: WorkspaceUserTableQuery
-// ====================================================
-
-export interface WorkspaceUserTableQuery_item_users {
-  __typename: "WorkspaceUser";
-  id: string;
-  name: string;
-  role: string;
-}
-
-export interface WorkspaceUserTableQuery_item {
-  __typename: "Workspace";
-  users: WorkspaceUserTableQuery_item_users[];
-}
-
-export interface WorkspaceUserTableQuery {
-  item: WorkspaceUserTableQuery_item | null;
-  roles: string[];
-}
-
-export interface WorkspaceUserTableQueryVariables {
-  id?: string | null;
-}
-
-/* tslint:disable */
-/* eslint-disable */
-// @generated
-// This file was automatically generated and should not be edited.
-
 //==============================================================
 // START Enums and Input Objects
 //==============================================================

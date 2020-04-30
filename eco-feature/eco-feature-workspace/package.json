@@ -9,6 +9,8 @@
     "webpack-dev-server": "^3.2.1"
   },
   "scripts": {
-    "generate": "apollo client:codegen ./src/main/react/Apollo.ts --target=typescript --outputFlat"
+    "generate": "npm run generate:apollo && npm run generate:simple",
+    "generate:apollo": "apollo client:codegen ./src/main/react/Apollo.ts --target=typescript --outputFlat",
+    "generate:simple": "graphql-simple-bindings '{./src/main/graphql/*, ../../../../eco-core/src/main/graphql/*}' './src/main/react/Simple.ts'"
   }
 }
