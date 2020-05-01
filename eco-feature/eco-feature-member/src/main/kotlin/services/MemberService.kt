@@ -93,8 +93,9 @@ class MemberService(
     private fun Member.save() = memberRepository.save(this)
     private fun Iterable<Member>.saveAll() = memberRepository.saveAll(this)
 
-    private fun Member.publish(function: (member: Member) -> MemberEvent): Member = this
-            .also { publisher.publishEvent(it) }
+    private fun Member.publish(function: (member: Member) -> MemberEvent): Member = apply{
+        publisher.publishEvent(function(this))
+    }
 
     private fun MemberInput.consume(member: Member? = null) = memberGraphqlMapper
             .consume(this, member)
