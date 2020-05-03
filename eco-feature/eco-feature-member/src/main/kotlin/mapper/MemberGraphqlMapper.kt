@@ -16,8 +16,8 @@ class MemberGraphqlMapper(
         private val memberGroupRepository: MemberGroupRepository
 ) {
 
-    fun consume(it: MemberInput, member: Member? = null) = Member(
-            id = member?.id ?: 0,
+    fun consume(it: MemberInput) = Member(
+            id = 0,
             firstName = it.firstName,
             infix = it.infix,
             surName = it.surName,
@@ -34,9 +34,7 @@ class MemberGraphqlMapper(
             groups = it.groups.consume(),
             fields = it.fields.consume(),
             birthDate = it.birthDate,
-            status = consume(it.status),
-            created = member?.created ?: LocalDate.now(),
-            updated = member?.updated ?: LocalDate.now())
+            status = consume(it.status))
 
     fun produce(it: Member) = MemberGraphql(
             id = it.id.toString(),

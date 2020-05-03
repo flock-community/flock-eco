@@ -2,6 +2,7 @@ package community.flock.eco.feature.member.controllers
 
 import MemberGraphqlMapper
 import community.flock.eco.core.utils.toResponse
+import community.flock.eco.feature.member.events.MemberEvent
 import community.flock.eco.feature.member.graphql.MemberInput
 import community.flock.eco.feature.member.model.Member
 import community.flock.eco.feature.member.model.MemberStatus
@@ -55,14 +56,14 @@ class MemberController(
     @PostMapping
     @PreAuthorize("hasAuthority('MemberAuthority.WRITE')")
     fun create(@RequestBody form: MemberInput) = memberService
-            .create(form)
+            .create(form.consume())
             .produce()
             .toResponse()
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('MemberAuthority.WRITE')")
     fun update(@PathVariable("id") id: String, @RequestBody member: MemberInput) = memberService
-            .update(id.toLong(), member)
+            .update(id.toLong(), member.consume())
             .produce()
             .toResponse()
 
@@ -76,11 +77,12 @@ class MemberController(
     @PostMapping("/merge")
     @PreAuthorize("hasAuthority('MemberAuthority.WRITE')")
     fun merge(@RequestBody form: MergeForm) = memberService
-            .merge(form.mergeMemberIds, form.newMember)
+            .merge(form.mergeMemberIds, form.newMember.consume())
             .produce()
             .toResponse()
 
     private fun Member.produce() = memberGraphqlMapper.produce(this)
     private fun MemberInput.consume(member: Member? = null) = memberGraphqlMapper
-            .consume(this, member)
+            .consume(this)
+
 }
