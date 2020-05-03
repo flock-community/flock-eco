@@ -285,8 +285,7 @@ class MailchimpClient(
         json.putPOJO("tags", member.tags)
         json.putPOJO("interests", mapper.valueToTree(member.interests))
         val merge = json.putObject("merge_fields")
-        if (!member.firstName.isNullOrEmpty()) merge.put("FNAME", member.firstName)
-        if (!member.lastName.isNullOrEmpty()) merge.put("LNAME", member.lastName)
+        member.fields.forEach { merge.put(it.key, it.value) }
         return json
     }
 
@@ -309,14 +308,10 @@ class MailchimpClient(
                         .asText(),
                 webId = obj.get("web_id")
                         .asText(),
-                firstName = obj.get("merge_fields")
-                        .get("FNAME")
-                        .asText()
-                        .let { if (it.isBlank()) null else it },
-                lastName = obj.get("merge_fields")
-                        .get("LNAME")
-                        .asText()
-                        .let { if (it.isBlank()) null else it },
+                fields = obj.get("merge_fields").fields()
+                        .asSequence()
+                        .map { it.key to it.value.asText() }
+                        .toMap(),
                 email = obj.get("email_address").asText(),
                 language = obj
                         .get("language")
