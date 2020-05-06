@@ -19,7 +19,7 @@ class UserAccountController(
 
     @GetMapping
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
-    fun findAll(
+    fun findAllAccounts(
             @RequestParam(defaultValue = "", required = false) search: String,
             page: Pageable): ResponseEntity<Iterable<UserAccount>> = userAccountRepository
             .findAll()
@@ -38,7 +38,7 @@ class UserAccountController(
 
     @PostMapping("/revoke-key")
     @PreAuthorize("isAuthenticated()")
-    fun generateKey(authentication: Authentication, @RequestBody form: KeyRevokeForm) = userAccountService
+    fun revokeAccountKey(authentication: Authentication, @RequestBody form: KeyRevokeForm) = userAccountService
             .revokeKeyForUserCode(authentication.name, form.key)
             .toResponse()
 
