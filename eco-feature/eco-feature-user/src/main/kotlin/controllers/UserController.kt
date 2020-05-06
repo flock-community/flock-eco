@@ -24,20 +24,20 @@ class UserController(
 
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
-    fun findMe(authentication: Authentication) = userService
+    fun findMeUser(authentication: Authentication) = userService
             .read(authentication.name)
             .toResponse()
 
     @GetMapping("/me/accounts")
     @PreAuthorize("isAuthenticated()")
-    fun findMeAccounts(authentication: Authentication) = userAccountService
+    fun findMeUserAccounts(authentication: Authentication) = userAccountService
             .findUserAccountByUserCode(authentication.name)
             .toList()
             .toResponse()
 
     @GetMapping
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
-    fun findAll(
+    fun findAllUsers(
             @RequestParam(defaultValue = "", required = false) search: String,
             page: Pageable): ResponseEntity<List<User>> {
         return userRepository
@@ -47,7 +47,7 @@ class UserController(
 
     @PostMapping("search")
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
-    fun findAllByCodes(
+    fun findAllUsersByCodes(
             @RequestBody(required = false) codes: Set<String>): ResponseEntity<List<User>> {
         return userRepository.findAllByCodeIn(codes)
                 .toList()
@@ -56,25 +56,25 @@ class UserController(
 
     @PostMapping
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
-    fun create(@RequestBody form: UserForm): ResponseEntity<User> = userService
+    fun createUser(@RequestBody form: UserForm): ResponseEntity<User> = userService
             .create(form)
             .toResponse()
 
     @GetMapping("/{code}")
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
-    fun findById(@PathVariable code: String): ResponseEntity<User> = userService
+    fun findUserById(@PathVariable code: String): ResponseEntity<User> = userService
             .read(code)
             .toResponse()
 
     @PutMapping("/{code}")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
-    fun update(@PathVariable code: String, @RequestBody form: UserForm): ResponseEntity<User> = userService
+    fun updateUser(@PathVariable code: String, @RequestBody form: UserForm): ResponseEntity<User> = userService
             .update(code, form)
             .toResponse()
 
     @DeleteMapping("/{code}")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
-    fun delete(@PathVariable code: String, principal: Principal?): ResponseEntity<Unit> {
+    fun deleteUser(@PathVariable code: String, principal: Principal?): ResponseEntity<Unit> {
         if (principal?.name == code) throw UserCannotRemoveOwnAccount()
         return userService
                 .delete(code)
@@ -83,13 +83,13 @@ class UserController(
 
     @PutMapping("/{code}/reset-password")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
-    fun generateResetCodeForUserCode(@PathVariable code: String) = userAccountService
+    fun generateUserResetCodeForUserCode(@PathVariable code: String) = userAccountService
             .generateResetCodeForUserCode(code)
             .let { Unit }
             .toResponse()
 
     @PutMapping("/reset-password")
-    fun generateResetCodeForUserCode(@RequestBody form: RequestPasswordReset) = userAccountService
+    fun generateUserResetCode(@RequestBody form: RequestPasswordReset) = userAccountService
             .generateResetCodeForUserEmail(form.email)
             .let { Unit }
             .toResponse()
