@@ -18,6 +18,7 @@ class UserAccountKey(
         @JsonIdentityReference(alwaysAsId = true)
         override val user: User,
 
-        val key: String
+        val key: String,
+        val label: String?
 
 ) : UserAccount(id, user)

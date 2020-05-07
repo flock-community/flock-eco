@@ -1,6 +1,7 @@
 package community.flock.eco.feature.user.controllers
 
 import community.flock.eco.core.utils.toResponse
+import community.flock.eco.feature.user.forms.UserKeyForm
 import community.flock.eco.feature.user.model.UserAccount
 import community.flock.eco.feature.user.repositories.UserAccountRepository
 import community.flock.eco.feature.user.services.UserAccountService
@@ -32,8 +33,8 @@ class UserAccountController(
 
     @PostMapping("/generate-key")
     @PreAuthorize("isAuthenticated()")
-    fun generateKey(authentication: Authentication) = userAccountService
-            .generateKeyForUserCode(authentication.name)
+    fun generateKey(authentication: Authentication, @RequestBody form: UserKeyForm) = userAccountService
+            .generateKeyForUserCode(authentication.name, form.label)
             .toResponse()
 
     @PostMapping("/revoke-key")

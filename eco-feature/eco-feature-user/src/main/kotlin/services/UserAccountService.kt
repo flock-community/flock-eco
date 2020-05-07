@@ -6,10 +6,7 @@ import community.flock.eco.feature.user.events.UserAccountResetCodeGeneratedEven
 import community.flock.eco.feature.user.exceptions.UserAccountExistsException
 import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUserCode
 import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUserEmail
-import community.flock.eco.feature.user.forms.UserAccountForm
-import community.flock.eco.feature.user.forms.UserAccountOauthForm
-import community.flock.eco.feature.user.forms.UserAccountPasswordForm
-import community.flock.eco.feature.user.forms.UserForm
+import community.flock.eco.feature.user.forms.*
 import community.flock.eco.feature.user.model.*
 import community.flock.eco.feature.user.repositories.UserAccountKeyRepository
 import community.flock.eco.feature.user.repositories.UserAccountOauthRepository
@@ -78,16 +75,25 @@ class UserAccountService(
             ?.let(userAccountRepository::save)
             ?.let { applicationEventPublisher.publishEvent(UserAccountPasswordResetEvent(it)) }
 
-    fun generateKeyForUserCode(userCode: String) = userService.findByCode(userCode)
+    fun generateKeyForUserCode(userCode: String, label: String?) = userService.findByCode(userCode)
             ?.let { user ->
                 UserAccountKey(
                         user = user,
-                        key = UUID.randomUUID().toString()
+                        key = UUID.randomUUID().toString(),
+                        label = label
                 )
             }
             ?.run {
                 userAccountRepository.save(this)
             }
+
+
+
+    private fun UserAccountForm.createUser(): User = userService.create(UserForm(
+            email = email,
+            name = name,
+            authorities = authorities
+    ))
 
     fun revokeKeyForUserCode(userCode: String, key: String) =userAccountKeyRepository.findByUserCode(userCode)
             .find {
@@ -109,13 +115,6 @@ class UserAccountService(
             provider = provider,
             reference = reference
     )
-
-    private fun UserAccountForm.createUser(): User = userService.create(UserForm(
-            email = email,
-            name = name,
-            authorities = authorities
-    ))
-
     private fun UserAccountPassword.generateResetCode() = UserAccountPassword(
             id = id,
             user = user,
