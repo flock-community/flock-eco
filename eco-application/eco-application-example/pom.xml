@@ -6,7 +6,7 @@
     <parent>
         <artifactId>flock-eco-application-parent</artifactId>
         <groupId>com.github.flock-community.flock-eco</groupId>
-        <version>1.7.22</version>
+        <version>1.7.23</version>
     </parent>
 
     <artifactId>flock-eco-application-example</artifactId>
