@@ -36,6 +36,9 @@
                 <artifactId>graphql-simple-bindings-maven-plugin</artifactId>
                 <configuration>
                     <packageName>community.flock.eco.feature.member.graphql</packageName>
+                    <scalarsKotlin>
+                        <Date>java.time.LocalDate</Date>
+                    </scalarsKotlin>
                 </configuration>
             </plugin>
         </plugins>
