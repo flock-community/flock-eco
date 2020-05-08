@@ -150,13 +150,16 @@ class UserAccountServiceTest {
         assertEquals(0, userAccountPasswordRepository.findAll().count())
     }
 
-    fun `create account key for user`() {
+    @Test
+    fun `create account key for user with label`() {
         var label = "1 2 3 my key"
         val account = userAccountService.createUserAccountPassword(passwordForm.copy())
 
         val accountKey = userAccountService.generateKeyForUserCode(account.user.code,label)
 
-        assertEquals(label, userAccountService.findUserAccountKeyByKey(accountKey?.key.toString()))
+        val foundAccountKey = userAccountService.findUserAccountKeyByKey(accountKey?.key!!)
+
+        assertEquals(label, foundAccountKey?.label)
 
     }
 

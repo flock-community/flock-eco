@@ -38,7 +38,7 @@ class UserAccountService(
     fun findUserAccountOauthByReference(reference: String) = userAccountOauthRepository.findByReference(reference).toNullable()
 
     fun findUserAccountKeyByUserCode(code: String) = userAccountKeyRepository.findByUserCode(code)
-    fun findUserAccountKeyByKey(key: String) = userAccountKeyRepository.findByKey(key)
+    fun findUserAccountKeyByKey(key: String) = userAccountKeyRepository.findByKey(key).toNullable()
 
     fun createUserAccountPassword(form: UserAccountPasswordForm): UserAccountPassword = findUserAccountPasswordByUserEmail(form.email)
             ?.let { throw UserAccountExistsException(it) }
