@@ -273,7 +273,7 @@
                 <plugin>
                     <groupId>community.flock</groupId>
                     <artifactId>graphql-simple-bindings-maven-plugin</artifactId>
-                    <version>0.3.0</version>
+                    <version>0.6.1</version>
                     <configuration>
                         <language>Kotlin</language>
                         <sourceDirectory>${project.basedir}/src/main/graphql</sourceDirectory>
