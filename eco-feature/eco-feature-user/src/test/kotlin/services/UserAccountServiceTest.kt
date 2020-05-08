@@ -147,7 +147,20 @@ class UserAccountServiceTest {
         userService.delete(account.user.code)
 
         Assert.assertNull(userService.findByCode(account.user.code))
-        Assert.assertEquals(0, userAccountPasswordRepository.findAll().count())
+        assertEquals(0, userAccountPasswordRepository.findAll().count())
+    }
+
+    @Test
+    fun `create account key for user with label`() {
+        var label = "1 2 3 my key"
+        val account = userAccountService.createUserAccountPassword(passwordForm.copy())
+
+        val accountKey = userAccountService.generateKeyForUserCode(account.user.code,label)
+
+        val foundAccountKey = userAccountService.findUserAccountKeyByKey(accountKey?.key!!)
+
+        assertEquals(label, foundAccountKey?.label)
+
     }
 
 }
