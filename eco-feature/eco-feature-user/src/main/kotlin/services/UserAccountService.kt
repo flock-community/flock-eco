@@ -8,10 +8,7 @@ import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUserCod
 import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUserEmail
 import community.flock.eco.feature.user.forms.*
 import community.flock.eco.feature.user.model.*
-import community.flock.eco.feature.user.repositories.UserAccountKeyRepository
-import community.flock.eco.feature.user.repositories.UserAccountOauthRepository
-import community.flock.eco.feature.user.repositories.UserAccountPasswordRepository
-import community.flock.eco.feature.user.repositories.UserAccountRepository
+import community.flock.eco.feature.user.repositories.*
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -88,6 +85,11 @@ class UserAccountService(
             }
 
 
+    fun updateKey(key: String, label: String?)= this.findUserAccountKeyByKey(key)
+    ?.run {
+        this.label = label
+        userAccountRepository.save(this)
+    }
 
     private fun UserAccountForm.createUser(): User = userService.create(UserForm(
             email = email,

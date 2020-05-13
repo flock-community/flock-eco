@@ -19,6 +19,6 @@ class UserAccountKey(
         override val user: User,
 
         val key: String,
-        val label: String?
+        var label: String?
 
 ) : UserAccount(id, user)

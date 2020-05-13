@@ -163,4 +163,20 @@ class UserAccountServiceTest {
 
     }
 
+    @Test
+    fun `update account key for user with label`() {
+        var label = "1 2 3 my key"
+        var newLabel = "Alrighty then"
+        val account = userAccountService.createUserAccountPassword(passwordForm.copy())
+
+        val accountKey = userAccountService.generateKeyForUserCode(account.user.code,label)
+
+        userAccountService.updateKey(accountKey?.key.toString(),newLabel)
+
+        val foundAccountKey = userAccountService.findUserAccountKeyByKey(accountKey?.key!!)
+
+        assertEquals(newLabel, foundAccountKey?.label)
+
+    }
+
 }
