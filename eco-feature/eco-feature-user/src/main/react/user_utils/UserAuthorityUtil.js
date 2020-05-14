@@ -1,9 +1,5 @@
 import React from 'react';
 
-import {withStyles} from '@material-ui/core/styles';
-
-const styles = theme => ({});
-
 class UserAuthorityUtil extends React.Component {
 
   static authorities = null;
@@ -30,4 +26,4 @@ class UserAuthorityUtil extends React.Component {
 
 }
 
-export default withStyles(styles)(UserAuthorityUtil);
+export default UserAuthorityUtil;
