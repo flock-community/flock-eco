@@ -12,15 +12,19 @@ class UserAuthorityUtil extends React.Component {
     UserAuthorityUtil.authorities = authorities
   }
 
-  render() {
+  static hasAuthority(authority){
 
     if(!UserAuthorityUtil.authorities){
       return null
     }
 
-    const hasAuthority = this.props.has && this.props.has.split(',')
+    return authority.split(',')
       .map(it => UserAuthorityUtil.authorities.includes(it))
       .reduce((acc, cur) => acc ? acc : cur, false)
+  }
+
+  render() {
+    const hasAuthority = this.props.has && UserAuthorityUtil.hasAuthority(this.props.has)
     return hasAuthority ? this.props.children: null
   }
 
