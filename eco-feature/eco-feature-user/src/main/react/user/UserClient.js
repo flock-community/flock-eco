@@ -1,6 +1,10 @@
 const internalize = (res) => {
   if (res.ok) {
-    return res.json()
+    if(res.status === 204){
+      return null
+    }else {
+      return res.json()
+    }
   } else {
     return res.text()
       .then(text => {
