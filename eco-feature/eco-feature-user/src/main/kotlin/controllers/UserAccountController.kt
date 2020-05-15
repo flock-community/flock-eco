@@ -43,7 +43,7 @@ class UserAccountController(
     @PreAuthorize("isAuthenticated()")
     fun updateKey(authentication: Authentication, @RequestParam key: String, @RequestBody form: UserKeyForm) = userAccountService
             .applyAllowedToUpdate(authentication, key)
-            .updateKey(key, form.label)
+            .updateKey(key, form)
             .toResponse()
 
     @PostMapping("/revoke-key")
