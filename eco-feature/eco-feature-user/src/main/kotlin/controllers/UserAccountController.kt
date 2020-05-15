@@ -42,7 +42,12 @@ class UserAccountController(
     @PutMapping("/update-key")
     @PreAuthorize("isAuthenticated()")
     fun updateKey(authentication: Authentication, @RequestParam key: String, @RequestBody form: UserKeyForm) = userAccountService
-            .applyAllowedToUpdate(authentication, key)
+            .run {
+                if (!this.findUserAccountKeyByUserCode(authentication.name).contains(this.findUserAccountKeyByKey(key))) {
+                    throw ResponseStatusException(HttpStatus.FORBIDDEN, "User is not allowed to change this key")
+                }
+                this
+            }
             .updateKey(key, form)
             .toResponse()
 
@@ -60,11 +65,4 @@ class UserAccountController(
     data class KeyRevokeForm(
             val key: String
     )
-
-    private fun UserAccountService.applyAllowedToUpdate(authentication: Authentication, key: String): UserAccountService = apply {
-        if (!this.findUserAccountKeyByUserCode(authentication.name).contains(this.findUserAccountKeyByKey(key))) {
-            throw ResponseStatusException(HttpStatus.FORBIDDEN, "User is not allowed to change this key")
-        }
-    }
-
 }
