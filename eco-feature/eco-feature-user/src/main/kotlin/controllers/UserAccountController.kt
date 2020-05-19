@@ -6,10 +6,12 @@ import community.flock.eco.feature.user.model.UserAccount
 import community.flock.eco.feature.user.repositories.UserAccountRepository
 import community.flock.eco.feature.user.services.UserAccountService
 import org.springframework.data.domain.Pageable
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.server.ResponseStatusException
 
 @RestController
 @RequestMapping("/api/user-accounts")
@@ -37,6 +39,18 @@ class UserAccountController(
             .generateKeyForUserCode(authentication.name, form.label)
             .toResponse()
 
+    @PutMapping("/update-key")
+    @PreAuthorize("isAuthenticated()")
+    fun updateKey(authentication: Authentication, @RequestParam key: String, @RequestBody form: UserKeyForm) = userAccountService
+            .run {
+                if (!this.findUserAccountKeyByUserCode(authentication.name).contains(this.findUserAccountKeyByKey(key))) {
+                    throw ResponseStatusException(HttpStatus.FORBIDDEN, "User is not allowed to change this key")
+                }
+                this
+            }
+            .updateKey(key, form)
+            .toResponse()
+
     @PostMapping("/revoke-key")
     @PreAuthorize("isAuthenticated()")
     fun revokeAccountKey(authentication: Authentication, @RequestBody form: KeyRevokeForm) = userAccountService
@@ -51,5 +65,4 @@ class UserAccountController(
     data class KeyRevokeForm(
             val key: String
     )
-
 }

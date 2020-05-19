@@ -3,15 +3,13 @@ package community.flock.eco.feature.user.services
 import community.flock.eco.core.utils.toNullable
 import community.flock.eco.feature.user.events.UserAccountPasswordResetEvent
 import community.flock.eco.feature.user.events.UserAccountResetCodeGeneratedEvent
+import community.flock.eco.feature.user.events.UserUpdateEvent
 import community.flock.eco.feature.user.exceptions.UserAccountExistsException
 import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUserCode
 import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUserEmail
 import community.flock.eco.feature.user.forms.*
 import community.flock.eco.feature.user.model.*
-import community.flock.eco.feature.user.repositories.UserAccountKeyRepository
-import community.flock.eco.feature.user.repositories.UserAccountOauthRepository
-import community.flock.eco.feature.user.repositories.UserAccountPasswordRepository
-import community.flock.eco.feature.user.repositories.UserAccountRepository
+import community.flock.eco.feature.user.repositories.*
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -88,6 +86,9 @@ class UserAccountService(
             }
 
 
+    fun updateKey(key: String, form: UserKeyForm): UserAccountKey? = findUserAccountKeyByKey(key)
+            ?.let { it.merge(form) }
+            ?.let { userAccountKeyRepository.save(it) }
 
     private fun UserAccountForm.createUser(): User = userService.create(UserForm(
             email = email,
@@ -95,7 +96,7 @@ class UserAccountService(
             authorities = authorities
     ))
 
-    fun revokeKeyForUserCode(userCode: String, key: String) =userAccountKeyRepository.findByUserCode(userCode)
+    fun revokeKeyForUserCode(userCode: String, key: String) = userAccountKeyRepository.findByUserCode(userCode)
             .find {
                 it.key == key
             }
@@ -115,6 +116,7 @@ class UserAccountService(
             provider = provider,
             reference = reference
     )
+
     private fun UserAccountPassword.generateResetCode() = UserAccountPassword(
             id = id,
             user = user,
@@ -128,6 +130,13 @@ class UserAccountService(
             user = user,
             secret = passwordEncoder.encode(password),
             resetCode = null
+    )
+
+    private fun UserAccountKey.merge(form: UserKeyForm) = UserAccountKey(
+            id = id,
+            key = key,
+            label = form.label,
+            user = user
     )
 
 }

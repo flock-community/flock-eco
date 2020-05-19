@@ -6,6 +6,7 @@ import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUserCod
 import community.flock.eco.feature.user.forms.UserAccountOauthForm
 import community.flock.eco.feature.user.forms.UserAccountPasswordForm
 import community.flock.eco.feature.user.forms.UserForm
+import community.flock.eco.feature.user.forms.UserKeyForm
 import community.flock.eco.feature.user.model.UserAccountOauthProvider
 import community.flock.eco.feature.user.repositories.UserAccountPasswordRepository
 import org.junit.Assert
@@ -14,11 +15,7 @@ import org.junit.Assert.assertNotNull
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.context.annotation.Import
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringRunner
@@ -118,7 +115,7 @@ class UserAccountServiceTest {
     @Test
     fun `create user account password without password`() {
         val user = userService.create(UserForm(
-                name="Pino",
+                name = "Pino",
                 email = "pino@sesamstreet.xx"
         ))
         userAccountService.createUserAccountPasswordWithoutPassword(user.code)
@@ -132,7 +129,7 @@ class UserAccountServiceTest {
     @Test(expected = UserAccountExistsException::class)
     fun `create user account password without password create twice`() {
         val user = userService.create(UserForm(
-                name="Pino",
+                name = "Pino",
                 email = "pino@sesamstreet.xx"
         ))
         userAccountService.createUserAccountPasswordWithoutPassword(user.code)
@@ -155,11 +152,33 @@ class UserAccountServiceTest {
         var label = "1 2 3 my key"
         val account = userAccountService.createUserAccountPassword(passwordForm.copy())
 
-        val accountKey = userAccountService.generateKeyForUserCode(account.user.code,label)
+        val accountKey = userAccountService.generateKeyForUserCode(account.user.code, label)
 
         val foundAccountKey = userAccountService.findUserAccountKeyByKey(accountKey?.key!!)
 
         assertEquals(label, foundAccountKey?.label)
+
+    }
+
+    @Test
+    fun `update account key for user with label`() {
+
+        var label = "1 2 3 my key"
+        var newLabel = "Alrighty then"
+
+        val form = UserKeyForm(
+                label = newLabel
+        )
+
+        val account = userAccountService.createUserAccountPassword(passwordForm.copy())
+
+        val accountKey = userAccountService.generateKeyForUserCode(account.user.code, label)
+
+        userAccountService.updateKey(accountKey?.key!!, form)
+
+        val foundAccountKey = userAccountService.findUserAccountKeyByKey(accountKey?.key!!)
+
+        assertEquals(newLabel, foundAccountKey?.label)
 
     }
 
