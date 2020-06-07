@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      - file: db.changelog-feature-user-master.yaml
+  - include:
+      - file: db.changelog-feature-member-master.yaml

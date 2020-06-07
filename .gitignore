@@ -4,6 +4,8 @@
 target
 node_modules
 
+*/db/changelog/db.changelog-diff.yaml
+
 *.releaseBackup
 *.versionsBackup
 *.xml.next
