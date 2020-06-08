@@ -1,11 +1,11 @@
 {
   "name": "@flock-eco/feature-member",
-  "version": "1.8.0-next.b2828e0",
+  "version": "1.8.0-next.56cdbbc",
   "dependencies": {
-    "@flock-eco/core": "^1.8.0-next.b2828e0"
+    "@flock-eco/core": "^1.8.0-next.56cdbbc"
   },
   "devDependencies": {
-    "@flock-eco/webpack": "^1.8.0-next.b2828e0",
+    "@flock-eco/webpack": "^1.8.0-next.56cdbbc",
     "webpack-dev-server": "^3.2.1"
   }
 }
