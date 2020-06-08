@@ -40,7 +40,8 @@
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <configuration>
-                    <changeLogFile>${project.basedir}/src/main/database/db.changelog-feature-user-master.yaml</changeLogFile>
+                    <changeLogFile>${project.basedir}/src/main/database/flock-eco-feature-user-master.yaml</changeLogFile>
+                    <diffChangeLogFile>${project.basedir}/src/main/database/flock-eco-feature-user-diff.yaml</diffChangeLogFile>
                 </configuration>
             </plugin>
         </plugins>

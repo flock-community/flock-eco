@@ -1,9 +1,0 @@
-databaseChangeLog:
-- changeSet:
-    id: 1591552216640-1
-    author: willemveelenturf (generated)
-    changes:
-    - alterSequence:
-        incrementBy: 1
-        sequenceName: hibernate_sequence
-

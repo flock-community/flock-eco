@@ -1,4 +1,0 @@
-databaseChangeLog:
-  - include:
-      - file: db.changelog-feature-member-init.yaml
-        relativeToChangelogFile: true

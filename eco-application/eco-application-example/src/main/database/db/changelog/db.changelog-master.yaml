@@ -1,5 +1,5 @@
 databaseChangeLog:
   - include:
-      - file: db.changelog-feature-user-master.yaml
+      - file: flock-eco-feature-user-master.yaml
   - include:
-      - file: db.changelog-feature-member-master.yaml
+      - file: flock-eco-feature-member-master.yaml
