@@ -515,11 +515,12 @@
         </pluginRepository>
     </pluginRepositories>
 
+
     <distributionManagement>
         <repository>
-            <id>bintray-flock-community</id>
-            <name>flock-community-maven-flock-eco-snapshots</name>
-            <url>https://api.bintray.com/maven/flock-community/flock-maven/flock-eco/;publish=1</url>
+            <id>github</id>
+            <name>Flock. eco</name>
+            <url>https://maven.pkg.github.com/flock-community/flock-eco</url>
         </repository>
     </distributionManagement>
 
