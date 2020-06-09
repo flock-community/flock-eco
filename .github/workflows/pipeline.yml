@@ -63,7 +63,7 @@ jobs:
         with:
           name: maven-jars
       - name: Publish maven to github packages
-        run: mvn jar:jar deploy:deploy
+        run: mvn -B deploy -DskipTests=true --file ./pom.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
