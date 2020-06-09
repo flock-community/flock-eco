@@ -58,6 +58,6 @@ jobs:
         with:
           node-version: '12.x'
           registry-url: 'https://npm.pkg.github.com'
-      - run: npx lerna publish
+      - run: npx lerna publish from-package --yes --no-verify-access
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
