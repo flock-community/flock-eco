@@ -61,6 +61,8 @@ jobs:
           name: maven-jars
       - name: Publish maven to github packages
         run: mvn deploy:deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   publish-react:
     runs-on: ubuntu-latest
