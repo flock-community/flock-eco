@@ -1,18 +1,18 @@
 {
   "name": "@flock-community/flock-eco-feature-user",
-  "version": "1.8.0-next.56cdbbc",
+  "version": "1.8.0-next.4fba405",
   "scripts": {
     "start": "webpack-dev-server"
   },
   "dependencies": {
-    "@flock-community/flock-eco-core": "^1.8.0-next.56cdbbc"
+    "@flock-community/flock-eco-core": "^1.8.0-next.4fba405"
   },
   "devDependencies": {
-    "@flock-community/flock-eco-webpack": "^1.8.0-next.56cdbbc",
+    "@flock-community/flock-eco-webpack": "^1.8.0-next.4fba405",
     "webpack-dev-server": "^3.2.1"
   },
-  "repository" : {
-    "type" : "git",
+  "repository": {
+    "type": "git",
     "url": "ssh://git@github.com/flock-community/flock-eco.git",
     "directory": "eco-feature/eco-feature-user"
   }
