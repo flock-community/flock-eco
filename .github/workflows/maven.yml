@@ -19,11 +19,17 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+    - uses: actions/cache@v1
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
     - name: Build with Maven
       run: mvn -B package --file ./pom.xml
     - uses: actions/upload-artifact@v2
       with:
-        name: my-artifact
+        name: maven-jars
         path: ./**/target/*.jar
 
   build-react:
@@ -36,3 +42,15 @@ jobs:
       - run: npm install
       - run: npm run bootstrap
       - run: npm run build
+
+  publish-react:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+          registry-url: 'https://npm.pkg.github.com'
+      - run: lerna publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
