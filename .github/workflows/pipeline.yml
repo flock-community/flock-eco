@@ -23,8 +23,7 @@ jobs:
       with:
         path: ~/.m2/repository
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
+        restore-keys: ${{ runner.os }}-maven-
     - name: Build with Maven
       run: mvn -B package --file ./pom.xml
     - uses: actions/upload-artifact@v2
@@ -43,8 +42,7 @@ jobs:
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+          restore-keys: ${{ runner.os }}-node-
       - run: npm ci
       - run: npm run bootstrap
 
@@ -56,6 +54,11 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: 1.8
+      - uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven-
       - uses: actions/download-artifact@v2
         with:
           name: maven-jars
