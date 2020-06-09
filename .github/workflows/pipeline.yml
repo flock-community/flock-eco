@@ -58,6 +58,7 @@ jobs:
         with:
           node-version: '12.x'
       - run: |
+          npm install
           npm config set @flock-community:registry https://npm.pkg.github.com/flock-community/
           npm config set //npm.pkg.github.com/flock-community/:_authToken=$NODE_AUTH_TOKEN
           npm config list
