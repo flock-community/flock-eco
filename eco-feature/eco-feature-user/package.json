@@ -5,10 +5,10 @@
     "start": "webpack-dev-server"
   },
   "dependencies": {
-    "@flock-eco/core": "^1.8.0-next.56cdbbc"
+    "@flock-community/flock-eco-core": "^1.8.0-next.56cdbbc"
   },
   "devDependencies": {
-    "@flock-eco/webpack": "^1.8.0-next.56cdbbc",
+    "@flock-community/flock-eco-webpack": "^1.8.0-next.56cdbbc",
     "webpack-dev-server": "^3.2.1"
   },
   "repository" : {

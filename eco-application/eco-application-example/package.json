@@ -10,8 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@flock-eco/feature-member": "^1.8.0-next.56cdbbc",
-    "@flock-eco/feature-user": "^1.8.0-next.56cdbbc"
+    "@flock-community/flock-eco-feature-member": "^1.8.0-next.56cdbbc",
+    "@flock-community/flock-eco-feature-user": "^1.8.0-next.56cdbbc"
   },
   "repository" : {
     "type" : "git",
