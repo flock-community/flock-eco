@@ -60,7 +60,7 @@ jobs:
         with:
           name: maven-jars
       - name: Publish maven to github packages
-        run: mvn deploy:deploy
+        run: mvn jar:jar deploy:deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
