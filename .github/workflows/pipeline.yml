@@ -58,10 +58,10 @@ jobs:
         with:
           node-version: '12.x'
       - run: |
-          npm config set //registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN
-          npm config set scope @flock-community
+          npm config set @flock-community:registry https://npm.pkg.github.com/flock-community/
+          npm config set //npm.pkg.github.com/flock-community/:_authToken=$NODE_AUTH_TOKEN
           npm config list
-          npx lerna publish from-package --yes --no-verify-access
+          npm run publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
