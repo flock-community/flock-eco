@@ -311,7 +311,7 @@
                     <version>${liquibase.version}</version>
                     <configuration>
                         <changeLogFile>${project.basedir}/src/main/database/db/changelog/db.changelog-master.yaml</changeLogFile>
-                        <diffChangeLogFile>${project.basedir}/src/main/database/db/database/db.changelog-diff.yaml</diffChangeLogFile>
+                        <diffChangeLogFile>${project.basedir}/src/main/database/db/changelog/db.changelog-diff.yaml</diffChangeLogFile>
                         <url>jdbc:h2:file:./target/liquibase;DB_CLOSE_ON_EXIT=FALSE</url>
                         <username>sa</username>
                         <driver>org.h2.Driver</driver>
