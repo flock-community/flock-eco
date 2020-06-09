@@ -6,12 +6,5 @@
     "eco-feature/*",
     "eco-webpack"
   ],
-  "version": "1.8.0-next.56cdbbc",
-  "command": {
-    "publish": {
-      "npmClient": "npm",
-      "verifyAccess": false,
-      "ignoreChanges": []
-    }
-  }
+  "version": "1.8.0-next.56cdbbc"
 }

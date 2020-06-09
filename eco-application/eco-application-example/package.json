@@ -13,5 +13,9 @@
     "@flock-eco/feature-member": "^1.8.0-next.56cdbbc",
     "@flock-eco/feature-user": "^1.8.0-next.56cdbbc"
   },
-  "gitHead": "f635c43ccd15a5f3016acf0e25a932dda9423fb8"
+  "repository" : {
+    "type" : "git",
+    "url": "ssh://git@github.com/flock-community/flock-eco.git",
+    "directory": "eco-application/eco-application-example"
+  }
 }

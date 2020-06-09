@@ -17,5 +17,9 @@
     "whatwg-fetch": "^3.0.0",
     "yup": "^0.27.0"
   },
-  "gitHead": "f635c43ccd15a5f3016acf0e25a932dda9423fb8"
+  "repository" : {
+    "type" : "git",
+    "url": "ssh://git@github.com/flock-community/flock-eco.git",
+    "directory": "eco-application"
+  }
 }
