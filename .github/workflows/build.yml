@@ -57,8 +57,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
-          registry-url: 'https://npm.pkg.github.com'
+      - run: npx lerna publish from-package --yes --no-verify-access --registry https://npm.pkg.github.com
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: npx lerna publish from-package --yes --no-verify-access
 
