@@ -45,6 +45,7 @@ jobs:
 
   publish-react:
     runs-on: ubuntu-latest
+    needs: build-react
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
