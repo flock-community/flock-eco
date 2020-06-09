@@ -16,5 +16,6 @@
     "react-select": "^2.4.3",
     "whatwg-fetch": "^3.0.0",
     "yup": "^0.27.0"
-  }
+  },
+  "gitHead": "c873073a863115bdec6136f6589913a99aa744a2"
 }

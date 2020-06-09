@@ -1,4 +1,5 @@
 {
   "name": "@flock-eco/feature-payment",
-  "version": "1.8.0-next.56cdbbc"
+  "version": "1.8.0-next.56cdbbc",
+  "gitHead": "c873073a863115bdec6136f6589913a99aa744a2"
 }
