@@ -1,5 +1,5 @@
 {
-  "name": "@flock-eco/feature-member",
+  "name": "@flock-community/flock-eco-feature-member",
   "version": "1.8.0-next.56cdbbc",
   "dependencies": {
     "@flock-eco/core": "^1.8.0-next.56cdbbc"
@@ -8,5 +8,5 @@
     "@flock-eco/webpack": "^1.8.0-next.56cdbbc",
     "webpack-dev-server": "^3.2.1"
   },
-  "gitHead": "c873073a863115bdec6136f6589913a99aa744a2"
+  "gitHead": "f635c43ccd15a5f3016acf0e25a932dda9423fb8"
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@flock-eco/application-example",
+  "name": "@flock-community/flock-eco-application-example",
   "version": "1.8.0-next.56cdbbc",
   "description": "",
   "main": "index.js",
@@ -13,5 +13,5 @@
     "@flock-eco/feature-member": "^1.8.0-next.56cdbbc",
     "@flock-eco/feature-user": "^1.8.0-next.56cdbbc"
   },
-  "gitHead": "c873073a863115bdec6136f6589913a99aa744a2"
+  "gitHead": "f635c43ccd15a5f3016acf0e25a932dda9423fb8"
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@flock-eco/webpack",
+  "name": "@flock-community/flock-eco-webpack",
   "version": "1.8.0-next.56cdbbc",
   "dependencies": {
     "@babel/core": "^7.4.5",
@@ -15,5 +15,5 @@
     "webpack-cli": "^3.3.0",
     "webpack-dev-server": "^3.2.1"
   },
-  "gitHead": "c873073a863115bdec6136f6589913a99aa744a2"
+  "gitHead": "f635c43ccd15a5f3016acf0e25a932dda9423fb8"
 }
