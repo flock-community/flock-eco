@@ -34,5 +34,5 @@ jobs:
         with:
           node-version: '12'
       - run: npm install
-      - run: npm bootstrap
-      - run: npm test
+      - run: npm run bootstrap
+      - run: npm run build
