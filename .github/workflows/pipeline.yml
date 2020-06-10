@@ -26,10 +26,6 @@ jobs:
         restore-keys: ${{ runner.os }}-maven-
     - name: Build with Maven
       run: mvn -B package --file ./pom.xml
-    - uses: actions/upload-artifact@v2
-      with:
-        name: maven-jars
-        path: ./**/target/*.jar
 
   build-react:
     runs-on: ubuntu-latest
@@ -54,18 +50,19 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: 1.8
+          server-id: bintray-flock-community
+          server-username: BINTRAY_USERNAME
+          server-password: BINTRAY_TOKEN
       - uses: actions/cache@v1
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-maven-
-      - uses: actions/download-artifact@v2
-        with:
-          name: maven-jars
       - name: Publish maven to github packages
         run: mvn -B deploy -DskipTests=true --file ./pom.xml
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BINTRAY_USERNAME: ${{ secrets.BINTRAY_USERNAME }}
+          BINTRAY_TOKEN: ${{ secrets.BINTRAY_TOKEN }}
 
   publish-react:
     runs-on: ubuntu-latest
@@ -78,10 +75,10 @@ jobs:
       - name: Publish react to github packages
         run: |
           npm install
-          npm config set @flock-community:registry https://npm.pkg.github.com/flock-community/
-          npm config set //npm.pkg.github.com/flock-community/:_authToken=$NODE_AUTH_TOKEN
+          npm config set @flock-community:registry https://api.bintray.com/npm/flock-community/flock-npm/
+          npm config set //api.bintray.com/npm/flock-community/flock-npm/:_authToken=$NODE_AUTH_TOKEN
           npm config list
           npm run publish
         env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          NODE_AUTH_TOKEN: ${{secrets.BINTRAY_TOKEN}}
 
