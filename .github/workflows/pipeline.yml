@@ -52,7 +52,7 @@ jobs:
           java-version: 1.8
           server-id: bintray-flock-community
           server-username: BINTRAY_USERNAME
-          server-password: BINTRAY_TOKEN
+          server-password: BINTRAY_API_KEY
       - uses: actions/cache@v1
         with:
           path: ~/.m2/repository
@@ -62,7 +62,7 @@ jobs:
         run: mvn -B deploy -DskipTests=true --file ./pom.xml
         env:
           BINTRAY_USERNAME: ${{ secrets.BINTRAY_USERNAME }}
-          BINTRAY_TOKEN: ${{ secrets.BINTRAY_TOKEN }}
+          BINTRAY_API_KEY: ${{ secrets.BINTRAY_API_KEY }}
 
   publish-react:
     runs-on: ubuntu-latest
@@ -76,12 +76,14 @@ jobs:
         run: |
           npm install
           npm config set @flock-community:registry https://api.bintray.com/npm/flock-community/flock-npm/
-          npm config set //api.bintray.com/npm/flock-community/flock-npm/:_authToken=$NODE_AUTH_TOKEN
-          npm config set //api.bintray.com/npm/flock-community/flock-npm/:email=$NODE_EMAIL
-          npm config set //api.bintray.com/npm/flock-community/flock-npm/:always-auth=true
+          npm config set /api.bintray.com/npm/flock-community/flock-npm/:_authToken=$NODE_AUTH_TOKEN
+          npm config set /api.bintray.com/npm/flock-community/flock-npm/:username=$NODE_USERNAME
+          npm config set /api.bintray.com/npm/flock-community/flock-npm/:email=$NODE_EMAIL
+          npm config set /api.bintray.com/npm/flock-community/flock-npm/:always-auth=true
           npm config list
           npm run publish
         env:
+          NODE_USERNAME: ${{secrets.BINTRAY_EMAIL}}
           NODE_EMAIL: ${{secrets.BINTRAY_EMAIL}}
           NODE_AUTH_TOKEN: ${{secrets.BINTRAY_TOKEN}}
 
