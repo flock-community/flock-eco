@@ -76,10 +76,10 @@ jobs:
         run: |
           npm install
           npm config set @flock-community:registry https://api.bintray.com/npm/flock-community/flock-npm/
-          npm config set /api.bintray.com/npm/flock-community/flock-npm/:_authToken=$NODE_AUTH_TOKEN
-          npm config set /api.bintray.com/npm/flock-community/flock-npm/:username=$NODE_USERNAME
-          npm config set /api.bintray.com/npm/flock-community/flock-npm/:email=$NODE_EMAIL
-          npm config set /api.bintray.com/npm/flock-community/flock-npm/:always-auth=true
+          npm config set //api.bintray.com/npm/flock-community/flock-npm/:_authToken=$NODE_AUTH_TOKEN
+          npm config set //api.bintray.com/npm/flock-community/flock-npm/:username=$NODE_USERNAME
+          npm config set //api.bintray.com/npm/flock-community/flock-npm/:email=$NODE_EMAIL
+          npm config set //api.bintray.com/npm/flock-community/flock-npm/:always-auth=true
           npm config list
           npm run publish
         env:
