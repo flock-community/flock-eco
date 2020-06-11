@@ -1,14 +1,14 @@
 {
   "name": "@flock-community/flock-eco-feature-user",
-  "version": "1.8.0-next.ec9e1c2",
+  "version": "1.8.0-next.49b4f77",
   "scripts": {
     "start": "webpack-dev-server"
   },
   "dependencies": {
-    "@flock-community/flock-eco-core": "^1.8.0-next.ec9e1c2"
+    "@flock-community/flock-eco-core": "^1.8.0-next.49b4f77"
   },
   "devDependencies": {
-    "@flock-community/flock-eco-webpack": "^1.8.0-next.ec9e1c2",
+    "@flock-community/flock-eco-webpack": "^1.8.0-next.49b4f77",
     "webpack-dev-server": "^3.2.1"
   },
   "repository": {
