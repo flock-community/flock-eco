@@ -1,4 +1,4 @@
-import {ResourceClient, PageableClient} from '@flock-eco/core/src/main/react/clients'
+import {ResourceClient, PageableClient} from '@flock-community/flock-eco-core/src/main/react/clients'
 
 const path = "/api/members"
 

@@ -6,7 +6,7 @@
     <parent>
         <artifactId>flock-eco-application-parent</artifactId>
         <groupId>com.github.flock-community.flock-eco</groupId>
-        <version>1.7.26</version>
+        <version>1.8.0-877625c</version>
     </parent>
 
     <artifactId>flock-eco-application-example</artifactId>
@@ -27,6 +27,11 @@
         <dependency>
             <groupId>com.graphql-java-kickstart</groupId>
             <artifactId>graphiql-spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
         </dependency>
 
         <!-- Eco features-->
@@ -139,6 +144,11 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
             </plugin>
 
         </plugins>

@@ -1,0 +1,264 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1591543875168-1
+      author: Flock. eco
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          sequenceExists:
+            schemaName: public
+            sequenceName: hibernate_sequence
+      changes:
+        - createSequence:
+            incrementBy: 1
+            sequenceName: hibernate_sequence
+            startValue: 1
+  - changeSet:
+      id: 1591543875168-2
+      author: Flock. eco
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: memberPK
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: birth_date
+                  type: date
+              - column:
+                  name: city
+                  type: VARCHAR(255)
+              - column:
+                  name: country
+                  type: VARCHAR(255)
+              - column:
+                  name: created
+                  type: date
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+              - column:
+                  name: first_name
+                  type: VARCHAR(255)
+              - column:
+                  name: gender
+                  type: VARCHAR(255)
+              - column:
+                  name: house_number
+                  type: VARCHAR(255)
+              - column:
+                  name: house_number_extension
+                  type: VARCHAR(255)
+              - column:
+                  name: infix
+                  type: VARCHAR(255)
+              - column:
+                  name: language
+                  type: VARCHAR(255)
+              - column:
+                  name: phone_number
+                  type: VARCHAR(255)
+              - column:
+                  name: postal_code
+                  type: VARCHAR(255)
+              - column:
+                  name: status
+                  type: VARCHAR(255)
+              - column:
+                  name: street
+                  type: VARCHAR(255)
+              - column:
+                  name: sur_name
+                  type: VARCHAR(255)
+              - column:
+                  name: updated
+                  type: date
+            tableName: member
+  - changeSet:
+      id: 1591543875168-3
+      author: Flock. eco
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: member_fieldPK
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: disabled
+                  type: BOOLEAN
+              - column:
+                  name: label
+                  type: VARCHAR(255)
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: required
+                  type: BOOLEAN
+              - column:
+                  name: type
+                  type: VARCHAR(255)
+              - column:
+                  name: value
+                  type: VARCHAR(255)
+            tableName: member_field
+  - changeSet:
+      id: 1591543875168-4
+      author: Flock. eco
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: member_field_id
+                  type: BIGINT
+              - column:
+                  name: options
+                  type: VARCHAR(255)
+            tableName: member_field_options
+  - changeSet:
+      id: 1591543875168-5
+      author: Flock. eco
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: member_id
+                  type: BIGINT
+              - column:
+                  name: fields
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: fields_key
+                  type: VARCHAR(255)
+            tableName: member_fields
+  - changeSet:
+      id: 1591543875168-6
+      author: Flock. eco
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: member_groupPK
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: code
+                  type: VARCHAR(255)
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+            tableName: member_group
+  - changeSet:
+      id: 1591543875168-7
+      author: Flock. eco
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: member_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: groups_id
+                  type: BIGINT
+            tableName: member_groups
+  - changeSet:
+      id: 1591543875168-8
+      author: Flock. eco
+      changes:
+        - addUniqueConstraint:
+            columnNames: name
+            constraintName: UC_MEMBER_FIELDNAME_COL
+            tableName: member_field
+  - changeSet:
+      id: 1591543875168-9
+      author: Flock. eco
+      changes:
+        - addUniqueConstraint:
+            columnNames: code
+            constraintName: UC_MEMBER_GROUPCODE_COL
+            tableName: member_group
+  - changeSet:
+      id: 1591543875168-10
+      author: Flock. eco
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: groups_id
+            baseTableName: member_groups
+            constraintName: FK424ox49y6oe17oeryvfl8hv3s
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: member_group
+            validate: true
+  - changeSet:
+      id: 1591543875168-11
+      author: Flock. eco
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: member_field_id
+            baseTableName: member_field_options
+            constraintName: FK7uktdwwsvh4rqentps3wvx5n6
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: member_field
+            validate: true
+  - changeSet:
+      id: 1591543875168-12
+      author: Flock. eco
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: member_id
+            baseTableName: member_groups
+            constraintName: FKgeenhbm0ik7qm0jeedryp4i74
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: member
+            validate: true
+  - changeSet:
+      id: 1591543875168-13
+      author: Flock. eco
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: member_id
+            baseTableName: member_fields
+            constraintName: FKgqe79vm6l4foaq404iiwr4x8y
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: member
+            validate: true
+

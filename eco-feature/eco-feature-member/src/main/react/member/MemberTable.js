@@ -13,7 +13,7 @@ import {useQuery} from '@apollo/react-hooks'
 import gql from 'graphql-tag'
 import {MemberTableToolbar} from './MemberTableToolbar'
 import {CircularProgress, Snackbar} from '@material-ui/core'
-import {AlignedLoader} from '@flock-eco/core/src/main/react/components/AlignedLoader'
+import {AlignedLoader} from '@flock-community/flock-eco-core/src/main/react/components/AlignedLoader'
 import Card from '@material-ui/core/Card'
 import TableContainer from '@material-ui/core/TableContainer'
 

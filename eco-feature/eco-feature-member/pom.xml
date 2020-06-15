@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.github.flock-community.flock-eco</groupId>
         <artifactId>flock-eco-feature-parent</artifactId>
-        <version>1.7.26</version>
+        <version>1.8.0-877625c</version>
     </parent>
 
     <artifactId>flock-eco-feature-member</artifactId>
@@ -40,6 +40,10 @@
                         <Date>java.time.LocalDate</Date>
                     </scalarsKotlin>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
