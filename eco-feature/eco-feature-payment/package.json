@@ -1,6 +1,6 @@
 {
   "name": "@flock-community/flock-eco-feature-payment",
-  "version": "1.8.0-next.877625c",
+  "version": "1.8.0",
   "repository": {
     "type": "git",
     "url": "ssh://git@github.com/flock-community/flock-eco.git",
