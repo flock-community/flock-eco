@@ -24,7 +24,6 @@ class UserKeyTokenFilter(
         }
         if (key != null) {
             userAccountService.findUserAccountKeyByKey(key)
-                    .toNullable()
                     ?.also { account ->
                         val user = UserSecurityService.UserSecurityKey(account)
                         val auth = UsernamePasswordAuthenticationToken(user, null, user.authorities)

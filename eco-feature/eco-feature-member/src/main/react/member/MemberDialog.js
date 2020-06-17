@@ -10,7 +10,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import Snackbar from '@material-ui/core/Snackbar'
 
 import {MemberForm} from './MemberForm'
-import {ConfirmDialog} from '@flock-eco/core/src/main/react/components/ConfirmDialog'
+import {ConfirmDialog} from '@flock-community/flock-eco-core/src/main/react/components/ConfirmDialog'
 import {Typography} from '@material-ui/core'
 import {MemberClient} from './MemberClient'
 

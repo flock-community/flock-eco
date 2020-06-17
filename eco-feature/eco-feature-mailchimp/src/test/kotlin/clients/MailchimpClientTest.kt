@@ -20,7 +20,7 @@ class MailchimpClientTest {
     @Autowired
     private lateinit var mailchimpClient: MailchimpClient
 
-    private val listId ="1d3504aedc"
+    private val listId = "1d3504aedc"
 
     @Test
     fun `get member`() {
@@ -34,23 +34,26 @@ class MailchimpClientTest {
         val uuid = UUID.randomUUID().toString()
         val email = "$uuid@test.nl"
         val memberPost = mailchimpClient.postMember(listId, MailchimpMember(
-                id="1",
+                id = "1",
                 webId = "1",
                 email = email,
-                firstName = "Test",
-                lastName = "Test",
+                fields = mapOf(
+                        "FNAME" to "Test",
+                        "LNAME" to "Test"
+                ),
                 language = "nl"
         ))
         assertNotNull(memberPost)
         assertEquals(email, memberPost?.email)
-        assertEquals("Test", memberPost?.firstName)
-        assertEquals("Test", memberPost?.lastName)
+        assertEquals("Test", memberPost?.fields.getValue("FNAME"))
+        assertEquals("Test", memberPost?.fields.getValue("LNAME"))
 
         val memberGet = mailchimpClient.getMember(listId, email)
         assertNotNull(memberGet)
         assertEquals(email, memberGet?.email)
-        assertEquals("Test", memberGet?.firstName)
-        assertEquals("Test", memberGet?.firstName)
+        assertEquals("Test", memberPost?.fields.getValue("FNAME"))
+        assertEquals("Test", memberPost?.fields.getValue("LNAME"))
+
     }
 
     @Test
@@ -58,21 +61,21 @@ class MailchimpClientTest {
         val uuid = UUID.randomUUID().toString()
         val email = "$uuid@test.nl"
         val memberPost = mailchimpClient.postMember(listId, MailchimpMember(
-                id="1",
+                id = "1",
                 webId = "1",
                 email = email,
                 language = "nl"
         ))
         assertNotNull(memberPost)
         assertEquals(email, memberPost?.email)
-        assertNull(memberPost?.firstName)
-        assertNull(memberPost?.lastName)
+        assertNull(memberPost?.fields.getValue("FNAME"))
+        assertNull(memberPost?.fields.getValue("LNAME"))
 
         val memberGet = mailchimpClient.getMember(listId, email)
         assertNotNull(memberGet)
         assertEquals(email, memberGet?.email)
-        assertNull(memberGet?.firstName)
-        assertNull(memberGet?.lastName)
+        assertNull(memberPost?.fields.getValue("FNAME"))
+        assertNull(memberPost?.fields.getValue("LNAME"))
     }
 
 
@@ -83,30 +86,34 @@ class MailchimpClientTest {
         val email = "$uuid@test.nl"
 
         val memberPost = mailchimpClient.postMember(listId, MailchimpMember(
-                id="1",
+                id = "1",
                 webId = "1",
                 email = email,
-                firstName = "Test",
-                lastName = "Test",
+                fields = mapOf(
+                        "FNAME" to "Test",
+                        "LNAME" to "Test"
+                ),
                 language = "nl"
         ))
         assertNotNull(memberPost)
         assertEquals(email, memberPost?.email)
-        assertEquals("Test", memberPost?.firstName)
-        assertEquals("Test", memberPost?.lastName)
+        assertEquals("Test", memberPost?.fields?.getValue("FNAME"))
+        assertEquals("Test", memberPost?.fields?.getValue("LNAME"))
 
         val memberPut = mailchimpClient.putMember(listId, MailchimpMember(
-                id="1",
+                id = "1",
                 webId = "1",
                 email = email,
-                firstName = "Test 2",
-                lastName = "Tes 2",
+                fields = mapOf(
+                        "FNAME" to "Test 2",
+                        "LNAME" to "Test 2"
+                ),
                 language = "nl"
         ))
         assertNotNull(memberPut)
         assertEquals(email, memberPut?.email)
-        assertEquals("Test 2", memberPut?.firstName)
-        assertEquals("Test 2", memberPut?.firstName)
+        assertEquals("Test 2", memberPut?.fields?.getValue("FNAME"))
+        assertEquals("Test 2", memberPut?.fields?.getValue("LNAME"))
     }
 
     @Test
@@ -124,23 +131,25 @@ class MailchimpClientTest {
     @Test
     fun `put tags`() {
 
-        val tags = (0 .. 3).map {
+        val tags = (0..3).map {
             val tag = UUID.randomUUID().toString()
             val tagPost = mailchimpClient.postSegment(listId, tag)
             assertNotNull(tagPost)
             assertEquals(tag, tagPost)
-             tag
+            tag
         }
 
         val uuid = UUID.randomUUID().toString()
         val email = "$uuid@test.nl"
 
         val memberPost = mailchimpClient.postMember(listId, MailchimpMember(
-                id="1",
+                id = "1",
                 webId = "1",
                 email = email,
-                firstName = "Test",
-                lastName = "Test",
+                fields = mapOf(
+                        "FNAME" to "Test",
+                        "LNAME" to "Test"
+                ),
                 tags = setOf(tags[0], tags[1]),
                 language = "nl"
 
@@ -150,8 +159,10 @@ class MailchimpClientTest {
         assertEquals(setOf(tags[0], tags[1]), memberPost?.tags)
 
         val memberPut = mailchimpClient.putMember(listId, memberPost!!.copy(
-                firstName = "Test1",
-                lastName = "Test1"
+                fields = mapOf(
+                        "FNAME" to "Test1",
+                        "LNAME" to "Test1"
+                )
         ))
 
         mailchimpClient.putTags(listId, email, setOf(tags[2], tags[3]), setOf(tags[0], tags[1]))
@@ -160,8 +171,8 @@ class MailchimpClientTest {
 
         assertNotNull(memberPut)
         assertEquals(2, memberGet?.tags?.size)
-        assertEquals("Test1", memberGet?.firstName)
-        assertEquals("Test1", memberGet?.lastName)
+        assertEquals("Test1", memberGet?.fields?.getValue("FNAME"))
+        assertEquals("Test1", memberGet?.fields?.getValue("LNAME"))
         assertEquals(setOf(tags[2], tags[3]), memberGet?.tags)
     }
 }

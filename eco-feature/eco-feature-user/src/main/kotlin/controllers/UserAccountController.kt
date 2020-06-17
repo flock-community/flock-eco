@@ -1,14 +1,17 @@
 package community.flock.eco.feature.user.controllers
 
 import community.flock.eco.core.utils.toResponse
+import community.flock.eco.feature.user.forms.UserKeyForm
 import community.flock.eco.feature.user.model.UserAccount
 import community.flock.eco.feature.user.repositories.UserAccountRepository
 import community.flock.eco.feature.user.services.UserAccountService
 import org.springframework.data.domain.Pageable
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.server.ResponseStatusException
 
 @RestController
 @RequestMapping("/api/user-accounts")
@@ -19,7 +22,7 @@ class UserAccountController(
 
     @GetMapping
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
-    fun findAll(
+    fun findAllAccounts(
             @RequestParam(defaultValue = "", required = false) search: String,
             page: Pageable): ResponseEntity<Iterable<UserAccount>> = userAccountRepository
             .findAll()
@@ -32,13 +35,25 @@ class UserAccountController(
 
     @PostMapping("/generate-key")
     @PreAuthorize("isAuthenticated()")
-    fun generateKey(authentication: Authentication) = userAccountService
-            .generateKeyForUserCode(authentication.name)
+    fun generateKey(authentication: Authentication, @RequestBody form: UserKeyForm) = userAccountService
+            .generateKeyForUserCode(authentication.name, form.label)
+            .toResponse()
+
+    @PutMapping("/update-key")
+    @PreAuthorize("isAuthenticated()")
+    fun updateKey(authentication: Authentication, @RequestParam key: String, @RequestBody form: UserKeyForm) = userAccountService
+            .run {
+                if (!this.findUserAccountKeyByUserCode(authentication.name).contains(this.findUserAccountKeyByKey(key))) {
+                    throw ResponseStatusException(HttpStatus.FORBIDDEN, "User is not allowed to change this key")
+                }
+                this
+            }
+            .updateKey(key, form)
             .toResponse()
 
     @PostMapping("/revoke-key")
     @PreAuthorize("isAuthenticated()")
-    fun generateKey(authentication: Authentication, @RequestBody form: KeyRevokeForm) = userAccountService
+    fun revokeAccountKey(authentication: Authentication, @RequestBody form: KeyRevokeForm) = userAccountService
             .revokeKeyForUserCode(authentication.name, form.key)
             .toResponse()
 
@@ -50,5 +65,4 @@ class UserAccountController(
     data class KeyRevokeForm(
             val key: String
     )
-
 }

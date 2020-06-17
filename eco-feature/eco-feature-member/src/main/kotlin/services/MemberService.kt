@@ -41,21 +41,21 @@ class MemberService(
     fun findByStatus(status: MemberStatus) = memberRepository
             .findByStatus(status)
 
-    fun create(input: MemberInput): Member = input
-            .consume()
+    fun create(input: Member): Member = input
             .save()
             .publish { CreateMemberEvent(it) }
 
-    fun update(id: Long, input: MemberInput): Member = findById(id)
+    fun update(id: Long, input: Member): Member = findById(id)
             ?.apply {
                 if (status == MemberStatus.DELETED)
                     error("Cannot update DELETED member")
                 if (status == MemberStatus.MERGED)
                     error("Cannot update MERGED member")
             }
-            ?.run { input.consume(this) }
             ?.let {
-                it.copy(
+                input.copy(
+                        id = it.id,
+                        created = it.created,
                         updated = LocalDate.now()
                 )
             }
@@ -75,7 +75,7 @@ class MemberService(
             ?: error("Cannot delete member")
 
     @Transactional
-    fun merge(mergeMemberIds: List<Long>, newMember: MemberInput): Member {
+    fun merge(mergeMemberIds: List<Long>, newMember: Member): Member {
         val mergeMembers = memberRepository.findByIds(mergeMemberIds)
                 .map {
                     it.copy(
@@ -85,7 +85,6 @@ class MemberService(
                 }
                 .saveAll()
         return newMember
-                .consume()
                 .save()
                 .publish { MergeMemberEvent(it, mergeMembers.toSet()) }
     }
@@ -93,11 +92,9 @@ class MemberService(
     private fun Member.save() = memberRepository.save(this)
     private fun Iterable<Member>.saveAll() = memberRepository.saveAll(this)
 
-    private fun Member.publish(function: (member: Member) -> MemberEvent): Member = this
-            .also { publisher.publishEvent(it) }
-
-    private fun MemberInput.consume(member: Member? = null) = memberGraphqlMapper
-            .consume(this, member)
+    private fun Member.publish(function: (member: Member) -> MemberEvent): Member = apply{
+        publisher.publishEvent(function(this))
+    }
 
 }
 

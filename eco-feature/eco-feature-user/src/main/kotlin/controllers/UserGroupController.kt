@@ -20,32 +20,32 @@ class UserGroupController(
 
     @GetMapping()
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
-    fun findAll(@RequestParam(defaultValue = "", required = false) search: String,
+    fun findAllUserGroups(@RequestParam(defaultValue = "", required = false) search: String,
                 page: Pageable): ResponseEntity<List<UserGroup>> = userGroupRepository
             .findAllByNameIgnoreCaseContaining(search, page)
             .toResponse()
 
     @GetMapping("/{code}")
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
-    fun findById(@PathVariable code: String): ResponseEntity<UserGroup> = userGroupRepository
+    fun findUserGroupById(@PathVariable code: String): ResponseEntity<UserGroup> = userGroupRepository
             .findByCode(code)
             .toResponse()
 
     @PostMapping()
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
-    fun create(@RequestBody form: UserGroupForm) = userGroupService
+    fun createUserGroup(@RequestBody form: UserGroupForm) = userGroupService
             .create(form)
             .toResponse()
 
     @PutMapping("/{code}")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
-    fun update(@RequestBody form: UserGroupForm, @PathVariable code: String) = userGroupService
+    fun updateUserGroup(@RequestBody form: UserGroupForm, @PathVariable code: String) = userGroupService
             .update(code,form)
             .toResponse()
 
     @DeleteMapping("/{code}")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
-    fun delete(@PathVariable code: String) = userGroupService
+    fun deleteUserGroup(@PathVariable code: String) = userGroupService
             .delete(code)
             .toResponse()
 

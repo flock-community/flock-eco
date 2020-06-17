@@ -37,11 +37,20 @@ class PaymentBuckarooService(
 ) {
 
     sealed class PaymentMethod {
+
         abstract val amount: Double
+        abstract val successUrl: String?
+        abstract val failureUrl: String?
+
         abstract fun getType(): PaymentType
         abstract fun getContent(): String
 
-        data class Ideal(override val amount: Double, val description: String, val issuer: String) : PaymentMethod() {
+        data class Ideal(
+                override val amount: Double,
+                override val successUrl: String? = null,
+                override val failureUrl: String? = null,
+                val description: String,
+                val issuer: String) : PaymentMethod() {
             override fun getType() = PaymentType.IDEAL
             override fun getContent(): String = """{
                 "Currency": "EUR",
@@ -51,40 +60,62 @@ class PaymentBuckarooService(
                     "Type": 0,
                     "Address": "0.0.0.0"
                 },
-                    "Services": {
-                        "ServiceList": [
+                ${if (successUrl != null) """
+                   "ReturnURL": "$successUrl",
+                """ else ""}
+                ${if (failureUrl != null) """
+                    "ReturnURLCancel": "$failureUrl",
+                    "ReturnURLError": "$failureUrl",
+                    "ReturnURLReject": "$failureUrl",
+                """ else ""}
+                "Services": {
+                    "ServiceList": [
                         {
                             "Name": "ideal",
                             "Action": "Pay",
                             "Parameters": [
-                            {
-                                "Name": "issuer",
-                                "Value": "$issuer"
-                            }
-                        ]
-                    }
-                ]
+                                {
+                                    "Name": "issuer",
+                                    "Value": "$issuer"
+                                }
+                            ]
+                        }
+                    ]
+                }
             }"""
         }
 
-        data class CreditCard(override val amount: Double, val description: String, val issuer: String) : PaymentMethod() {
+        data class CreditCard(
+                override val amount: Double,
+                override val successUrl: String? = null,
+                override val failureUrl: String? = null,
+                val description: String,
+                val issuer: String) : PaymentMethod() {
             override fun getType() = PaymentType.CREDIT_CARD
             override fun getContent(): String = """{
-              "Currency": "EUR",
-              "AmountDebit": $amount,
-              "Invoice": "$description",
-              "ClientIP": {
-                  "Type": 0,
-                  "Address": "0.0.0.0"
-               },
-              "Services": {
-                "ServiceList": [
-                  {
-                    "Name": "$issuer",
-                    "Action": "Pay"
-                  }
-                ]
-              }
+                "Currency": "EUR",
+                "AmountDebit": $amount,
+                "Invoice": "$description",
+                "ClientIP": {
+                    "Type": 0,
+                    "Address": "0.0.0.0"
+                },
+                ${if (successUrl != null) """"
+                    "ReturnURL": "$successUrl",
+                """ else ""},
+                ${if (failureUrl != null) """"
+                    "ReturnURLCancel": "$failureUrl",
+                    "ReturnURLError: "$failureUrl",
+                    "ReturnURLReject: "$failureUrl",
+                """ else ""}
+                "Services": {
+                    "ServiceList": [
+                        {
+                            "Name": "$issuer",
+                            "Action": "Pay"
+                        }
+                    ]
+                }
             }"""
         }
     }
@@ -112,7 +143,7 @@ class PaymentBuckarooService(
 
         try {
             val res = restTemplate.postForEntity("https://$requestUri", HttpEntity(postContent, headers), ObjectNode::class.java)
-            if (res.statusCode.is2xxSuccessful && res.body != null) {
+            if (res.body != null && res.statusCode.is2xxSuccessful) {
                 val mandate = PaymentMandate(
                         code = UUID.randomUUID().toString(),
                         amount = paymentMethod.amount,
@@ -127,11 +158,16 @@ class PaymentBuckarooService(
                         mandate = mandate
                 ).also { paymentTransactionRepository.save(it) }
 
+                if (res.body["Status"]["Code"]["Code"].asInt() in 400..499) {
+                    throw PaymentNotCreatedException(res.body["Status"]["SubCode"]["Description"].asText())
+                }
+
                 return BuckarooResult(
                         mandate = mandate,
                         transaction = transaction,
                         redirectUrl = res.body["RequiredAction"]["RedirectURL"].asText()
                 )
+
             } else {
                 throw PaymentNotCreatedException(res.toString())
             }

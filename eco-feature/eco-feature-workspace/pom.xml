@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.github.flock-community.flock-eco</groupId>
         <artifactId>flock-eco-feature-parent</artifactId>
-        <version>1.7.17-7d2c74b</version>
+        <version>1.8.0</version>
     </parent>
 
     <artifactId>flock-eco-feature-workspace</artifactId>
@@ -20,10 +20,10 @@
                 <artifactId>graphql-simple-bindings-maven-plugin</artifactId>
                 <configuration>
                     <packageName>community.flock.eco.feature.workspace.graphql</packageName>
-                    <scalars>
+                    <scalarsKotlin>
                         <KeyValue>community.flock.eco.core.graphql.KeyValue</KeyValue>
                         <KeyValueInput>community.flock.eco.core.graphql.KeyValueInput</KeyValueInput>
-                    </scalars>
+                    </scalarsKotlin>
                 </configuration>
             </plugin>
         </plugins>

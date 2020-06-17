@@ -4,6 +4,8 @@
 target
 node_modules
 
+*/db/changelog/db.changelog-diff.yaml
+
 *.releaseBackup
 *.versionsBackup
 *.xml.next
@@ -14,6 +16,5 @@ node_modules
 release.properties
 
 settings.xml
-.npmrc
 .secrets
 secrets.tar

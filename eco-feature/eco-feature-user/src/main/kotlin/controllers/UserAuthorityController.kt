@@ -14,7 +14,7 @@ class UserAuthorityController(
 
     @GetMapping
     @PreAuthorize("isAuthenticated()")
-    fun findMe(): List<String> = userAuthorityService
+    fun findMeUserAuthority(): List<String> = userAuthorityService
             .allAuthorities()
             .map { it.toName() }
 

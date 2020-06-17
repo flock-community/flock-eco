@@ -66,7 +66,7 @@ class MailchimpMemberTable extends React.Component {
               onClick={event => this.handleRowClick(it)}
             >
               <TableCell component="th" scope="row">
-                {it.firstName} {it.lastName}
+                {it.fields.FNAME} {it.fields.LNAME}
               </TableCell>
               <TableCell>{it.email}</TableCell>
               <TableCell>{it.status}</TableCell>
