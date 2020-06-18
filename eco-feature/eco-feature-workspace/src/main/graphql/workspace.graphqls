@@ -39,3 +39,13 @@ input WorkspaceUserInput {
     reference:String!,
     role: String!,
 }
+
+type KeyValue{
+    key: String!
+    value: String
+}
+
+input KeyValueInput{
+    key: String!
+    value: String
+}

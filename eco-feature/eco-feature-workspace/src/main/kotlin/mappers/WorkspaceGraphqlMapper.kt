@@ -1,8 +1,8 @@
 package community.flock.eco.feature.workspace.mappers
 
 
-import community.flock.eco.core.graphql.KeyValue
-import community.flock.eco.core.graphql.KeyValueInput
+import community.flock.eco.feature.workspace.graphql.KeyValue
+import community.flock.eco.feature.workspace.graphql.KeyValueInput
 import community.flock.eco.feature.workspace.graphql.WorkspaceImageInput
 import community.flock.eco.feature.workspace.graphql.WorkspaceInput
 import community.flock.eco.feature.workspace.model.Workspace

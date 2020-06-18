@@ -17,7 +17,7 @@ databaseChangeLog:
             type: VARCHAR(255)
         - column:
             name: image_file
-            type: BLOB
+            type: BYTEA
         - column:
             name: image_name
             type: VARCHAR(255)

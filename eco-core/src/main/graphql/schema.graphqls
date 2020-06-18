@@ -1,15 +1,5 @@
 type Query
 
-type KeyValue{
-    key: String!
-    value: String
-}
-
-input KeyValueInput{
-    key: String!
-    value: String
-}
-
 input Pageable {
     page:Int
     size:Int
