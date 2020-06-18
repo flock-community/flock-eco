@@ -9,4 +9,6 @@ import java.util.*
 interface WorkspaceRepository : PagingAndSortingRepository<Workspace, UUID> {
 
     fun findByHost(host: String): Optional<Workspace>
+
+    fun findAllByUsersUserId(userId: String): Set<Workspace>
 }

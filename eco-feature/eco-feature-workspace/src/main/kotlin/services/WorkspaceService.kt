@@ -30,6 +30,9 @@ class WorkspaceService(
             .findByHost(host)
             .toNullable()
 
+    fun findWorkspacesByUserId(userId: String): Set<Workspace> =
+            workspaceRepository.findAllByUsersUserId(userId)
+
     fun create(input: Workspace): Workspace = input
             .save()
 
@@ -47,7 +50,7 @@ class WorkspaceService(
                         ?: workspaceUserProvider.createWorkspaceUserByReference(ref)
                 it.copy(
                         users = it.users + WorkspaceUserRole(
-                                id = user.id,
+                                userId = user.id,
                                 role = role.toUpperCase()
                         ))
             }

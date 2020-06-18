@@ -5,6 +5,7 @@ import community.flock.eco.feature.workspace.model.Workspace
 import community.flock.eco.feature.workspace.model.WorkspaceUserRole
 import community.flock.eco.feature.workspace.repositories.WorkspaceRepository
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Component
@@ -21,11 +22,11 @@ class WorkspaceLoadData(
                         name = "Localhost 8080",
                         users = setOf(
                                 WorkspaceUserRole(
-                                        id = "1",
+                                        userId = "1",
                                         role = "ADMIN"
                                 ),
                                 WorkspaceUserRole(
-                                        id = "2",
+                                        userId = "2",
                                         role = "USER"
                                 )
                         ),
@@ -40,15 +41,15 @@ class WorkspaceLoadData(
                         name = "Localhost 3000",
                         users = setOf(
                                 WorkspaceUserRole(
-                                        id = "1",
+                                        userId = "1",
                                         role = "ADMIN"
                                 ),
                                 WorkspaceUserRole(
-                                        id = "2",
+                                        userId = "2",
                                         role = "MANAGER"
                                 ),
                                 WorkspaceUserRole(
-                                        id = "3",
+                                        userId = "3",
                                         role = "USER"
                                 )
                         ),

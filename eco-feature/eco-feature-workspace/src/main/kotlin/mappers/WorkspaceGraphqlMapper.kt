@@ -1,5 +1,6 @@
 package community.flock.eco.feature.workspace.mappers
 
+
 import community.flock.eco.core.graphql.KeyValue
 import community.flock.eco.core.graphql.KeyValueInput
 import community.flock.eco.feature.workspace.graphql.WorkspaceImageInput
@@ -46,13 +47,13 @@ class WorkspaceGraphqlMapper(
             },
             users = it.users.let { users ->
                 users
-                        .map { it.id }
+                        .map { it.userId }
                         .let { workspaceUserProvider.findWorkspaceUser(it) }
                         .map { user ->
                             WorkspaceUserGraphql(
                                     id = user.id,
                                     name = user.name,
-                                    role = users.find { it.id == user.id }
+                                    role = users.find { it.userId == user.id }
                                             ?.role
                                             ?: error("Cannot find user")
                             )

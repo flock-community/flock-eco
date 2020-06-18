@@ -1,0 +1,100 @@
+databaseChangeLog:
+- changeSet:
+    id: 1592406957903-1
+    author: Flock. eco
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: workspacePK
+            name: id
+            type: UUID
+        - column:
+            name: host
+            type: VARCHAR(255)
+        - column:
+            name: image_file
+            type: BLOB
+        - column:
+            name: image_name
+            type: VARCHAR(255)
+        - column:
+            name: name
+            type: VARCHAR(255)
+        tableName: workspace
+- changeSet:
+    id: 1592406957903-2
+    author: Flock. eco
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: workspace_id
+            type: UUID
+        - column:
+            name: user_id
+            type: VARCHAR(255)
+        - column:
+            name: user_role
+            type: VARCHAR(255)
+        tableName: workspace_users
+    - createIndex:
+        columns:
+        - column:
+            name: user_id
+        indexName: user_id_idx
+        tableName: workspace_users
+- changeSet:
+    id: 1592406957903-3
+    author: Flock. eco
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: workspace_id
+            type: UUID
+        - column:
+            name: variables
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: variables_key
+            type: VARCHAR(255)
+        tableName: workspace_variables
+- changeSet:
+    id: 1592406957903-4
+    author: Flock. eco
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: workspace_id
+        baseTableName: workspace_users
+        constraintName: FK1vimj7dc9t896lgo0dlyumt4o
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: workspace
+        validate: true
+- changeSet:
+    id: 1592406957903-5
+    author: Flock. eco
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: workspace_id
+        baseTableName: workspace_variables
+        constraintName: FK84umtk63mlrdts48l5kv2ds6s
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: workspace
+        validate: true
+

@@ -1,4 +1,4 @@
 databaseChangeLog:
   - include:
-    - file: flock-eco-feature-user-001-init.yaml
+    - file: flock-eco-feature-workspace-001-init.yaml
       relativeToChangelogFile: true

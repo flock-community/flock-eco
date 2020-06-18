@@ -26,6 +26,14 @@
                     </scalarsKotlin>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <configuration>
+                    <changeLogFile>${project.basedir}/src/main/database/flock-eco-feature-workspace-master.yaml</changeLogFile>
+                    <diffChangeLogFile>${project.basedir}/src/main/database/flock-eco-feature-workspace-diff.yaml</diffChangeLogFile>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

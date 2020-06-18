@@ -39,6 +39,3 @@ input WorkspaceUserInput {
     reference:String!,
     role: String!,
 }
-
-scalar KeyValue
-scalar KeyValueInput
