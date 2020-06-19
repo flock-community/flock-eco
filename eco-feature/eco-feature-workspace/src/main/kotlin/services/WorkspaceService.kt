@@ -28,7 +28,6 @@ class WorkspaceService(
 
     fun findByHost(host: String) = workspaceRepository
             .findByHost(host)
-            .toNullable()
 
     fun findWorkspacesByUserId(userId: String): Set<Workspace> =
             workspaceRepository.findAllByUsersUserId(userId)
@@ -39,15 +38,15 @@ class WorkspaceService(
     fun update(id: UUID, input: Workspace): Workspace = findById(id)
             ?.run { input.copy(id = id) }
             ?.save()
-            ?: error("cannot update workspace: $id")
+            ?: error("Cannot update workspace: $id, workspace does not exist")
 
     fun delete(id: UUID) = workspaceRepository
             .deleteById(id)
 
     fun addWorkspaceUser(workspaceId: UUID, ref: String, role:String) = findById(workspaceId)
             ?.let {
-                val user = workspaceUserProvider.findWorkspaceUserByReference(ref)
-                        ?: workspaceUserProvider.createWorkspaceUserByReference(ref)
+                val user = workspaceUserProvider.findWorkspaceUsers(ref)
+                        ?: error("Cannot add user: $ref to workspace: $workspaceId, user does not exist")
                 it.copy(
                         users = it.users + WorkspaceUserRole(
                                 userId = user.id,
@@ -61,6 +60,6 @@ class WorkspaceService(
     fun Workspace.save(): Workspace = try {
         workspaceRepository.save(this)
     } catch (e: Exception) {
-        error("cannot save workspace")
+        error("Cannot save workspace")
     }
 }

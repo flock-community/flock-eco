@@ -7,11 +7,9 @@ import org.springframework.stereotype.Component
 @Component
 class WorkspaceUserProviderImp() : WorkspaceUserProvider {
 
-    override fun findWorkspaceUserByReference(ref: String): WorkspaceUser? = createUser(ref)
+    override fun findWorkspaceUsers(ref: String): WorkspaceUser? = createUser(ref)
 
-    override fun createWorkspaceUserByReference(ref: String): WorkspaceUser = createUser(ref)
-
-    override fun findWorkspaceUser(ids: List<String>): Iterable<WorkspaceUser> = ids
+    override fun findWorkspaceUsers(refs: List<String>): Iterable<WorkspaceUser> = refs
             .map { createUser(it) }
 
     override fun findRoles(): List<String> = listOf("MANAGER", "ADMIN", "USER")

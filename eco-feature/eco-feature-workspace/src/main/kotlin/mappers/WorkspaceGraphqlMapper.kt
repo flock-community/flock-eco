@@ -48,7 +48,7 @@ class WorkspaceGraphqlMapper(
             users = it.users.let { users ->
                 users
                         .map { it.userId }
-                        .let { workspaceUserProvider.findWorkspaceUser(it) }
+                        .let { workspaceUserProvider.findWorkspaceUsers(it) }
                         .map { user ->
                             WorkspaceUserGraphql(
                                     id = user.id,

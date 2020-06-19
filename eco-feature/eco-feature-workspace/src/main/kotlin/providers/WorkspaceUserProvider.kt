@@ -6,8 +6,7 @@ data class WorkspaceUser(
 )
 
 interface WorkspaceUserProvider {
-    fun findWorkspaceUserByReference(ref:String):WorkspaceUser?
-    fun createWorkspaceUserByReference(ref:String):WorkspaceUser
-    fun findWorkspaceUser(ids: List<String>): Iterable<WorkspaceUser>
+    fun findWorkspaceUsers(ref:String):WorkspaceUser?
+    fun findWorkspaceUsers(refs: List<String>): Iterable<WorkspaceUser>
     fun findRoles(): List<String>
 }
