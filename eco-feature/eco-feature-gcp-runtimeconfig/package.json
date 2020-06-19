@@ -1,6 +1,6 @@
 {
   "name": "@flock-community/flock-eco-feature-gcp-runtime",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "repository": {
     "type": "git",
     "url": "ssh://git@github.com/flock-community/flock-eco.git",
