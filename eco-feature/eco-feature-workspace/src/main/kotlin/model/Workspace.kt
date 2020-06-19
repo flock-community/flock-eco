@@ -11,7 +11,7 @@ import javax.persistence.Id
 data class Workspace(
 
         @Id
-        override val id: UUID,
+        override val id: UUID = UUID.randomUUID(),
 
         val name: String,
 
@@ -21,7 +21,7 @@ data class Workspace(
         @ElementCollection
         val variables: Map<String, String?> = mapOf(),
 
-        val host: String?,
+        val host: String? = null,
 
         @ElementCollection
         val users: Set<WorkspaceUserRole> = setOf()
