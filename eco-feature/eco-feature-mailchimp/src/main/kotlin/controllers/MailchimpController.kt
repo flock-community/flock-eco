@@ -68,11 +68,20 @@ class MailchimpController(
                         .let { MailchimpWebhookEventType.valueOf(it) },
                 firedAt = formData.getFirst("fired_at")
                         .let { LocalDateTime.parse(it, formatter) },
-                id = formData.getFirst("data[id]"),
-                firstName = formData.getFirst("data[merges][FNAME]"),
-                lastName = formData.getFirst("data[merges][LNAME]"),
+                id = formData.getFirst("data[id]")!!,
+                fields = formData
+                        .filter { it.key.startsWith("data[merges]") }
+                        .map {
+                            val match = "data\\[merges\\]\\[(.+)\\]".toRegex().find(it.key)
+                            if (match != null)
+                                match.groupValues.first() to it.value.first()
+                            else
+                                null
+                        }
+                        .filterNotNull()
+                        .toMap(),
                 listId = formData.getFirst("data[list_id]"),
-                email = formData.getFirst("data[email]"),
+                email = formData.getFirst("data[email]")!!,
                 interests = formData.getFirst("data[merges][INTERESTS]")
                         ?.split(",")
                         ?.map { it.trim() }

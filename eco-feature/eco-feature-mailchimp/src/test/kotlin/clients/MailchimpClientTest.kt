@@ -45,14 +45,14 @@ class MailchimpClientTest {
         ))
         assertNotNull(memberPost)
         assertEquals(email, memberPost?.email)
-        assertEquals("Test", memberPost?.fields.getValue("FNAME"))
-        assertEquals("Test", memberPost?.fields.getValue("LNAME"))
+        assertEquals("Test", memberPost?.fields?.getValue("FNAME"))
+        assertEquals("Test", memberPost?.fields?.getValue("LNAME"))
 
         val memberGet = mailchimpClient.getMember(listId, email)
         assertNotNull(memberGet)
         assertEquals(email, memberGet?.email)
-        assertEquals("Test", memberPost?.fields.getValue("FNAME"))
-        assertEquals("Test", memberPost?.fields.getValue("LNAME"))
+        assertEquals("Test", memberPost?.fields?.getValue("FNAME"))
+        assertEquals("Test", memberPost?.fields?.getValue("LNAME"))
 
     }
 
@@ -68,14 +68,14 @@ class MailchimpClientTest {
         ))
         assertNotNull(memberPost)
         assertEquals(email, memberPost?.email)
-        assertNull(memberPost?.fields.getValue("FNAME"))
-        assertNull(memberPost?.fields.getValue("LNAME"))
+        assertNull(memberPost?.fields?.getValue("FNAME"))
+        assertNull(memberPost?.fields?.getValue("LNAME"))
 
         val memberGet = mailchimpClient.getMember(listId, email)
         assertNotNull(memberGet)
         assertEquals(email, memberGet?.email)
-        assertNull(memberPost?.fields.getValue("FNAME"))
-        assertNull(memberPost?.fields.getValue("LNAME"))
+        assertNull(memberPost?.fields?.getValue("FNAME"))
+        assertNull(memberPost?.fields?.getValue("LNAME"))
     }
 
 
