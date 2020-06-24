@@ -13,7 +13,6 @@ class WorkspaceImage(
         @Column(name = "image_name")
         val name: String,
 
-        @Lob
         @Column(name = "image_file")
         val file: ByteArray
 

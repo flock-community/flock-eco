@@ -34,6 +34,12 @@
             <artifactId>liquibase-core</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
         <!-- Eco features-->
         <dependency>
             <groupId>com.github.flock-community.flock-eco</groupId>
