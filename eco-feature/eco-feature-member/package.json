@@ -1,11 +1,11 @@
 {
   "name": "@flock-community/flock-eco-feature-member",
-  "version": "1.9.2-next.f105570",
+  "version": "1.9.2-next.b10d4bc",
   "dependencies": {
-    "@flock-community/flock-eco-core": "^1.9.2-next.f105570"
+    "@flock-community/flock-eco-core": "^1.9.2-next.b10d4bc"
   },
   "devDependencies": {
-    "@flock-community/flock-eco-webpack": "^1.9.2-next.f105570",
+    "@flock-community/flock-eco-webpack": "^1.9.2-next.b10d4bc",
     "webpack-dev-server": "^3.2.1"
   },
   "repository": {

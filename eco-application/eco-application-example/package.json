@@ -1,6 +1,6 @@
 {
   "name": "@flock-community/flock-eco-application-example",
-  "version": "1.9.2-next.f105570",
+  "version": "1.9.2-next.b10d4bc",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -10,8 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@flock-community/flock-eco-feature-member": "^1.9.2-next.f105570",
-    "@flock-community/flock-eco-feature-user": "^1.9.2-next.f105570"
+    "@flock-community/flock-eco-feature-member": "^1.9.2-next.b10d4bc",
+    "@flock-community/flock-eco-feature-user": "^1.9.2-next.b10d4bc"
   },
   "repository": {
     "type": "git",
