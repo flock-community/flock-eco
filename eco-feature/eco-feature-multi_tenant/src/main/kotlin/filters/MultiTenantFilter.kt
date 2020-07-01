@@ -1,4 +1,4 @@
-package community.flock.eco.workday.multitenant.filters
+package community.flock.eco.feature.multi_tenant.filters
 
 import community.flock.eco.feature.multi_tenant.MultiTenantContext
 import org.springframework.stereotype.Component

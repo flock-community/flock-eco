@@ -15,6 +15,7 @@
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
+            <version>3.9.0</version>
         </dependency>
 
     </dependencies>

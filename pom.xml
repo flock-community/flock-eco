@@ -174,6 +174,11 @@
                 <artifactId>flock-eco-feature-gcp-mail</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.github.flock-community.flock-eco</groupId>
+                <artifactId>flock-eco-feature-multi_tenant</artifactId>
+                <version>${project.parent.version}</version>
+            </dependency>
 
             <!-- Mail -->
             <dependency>

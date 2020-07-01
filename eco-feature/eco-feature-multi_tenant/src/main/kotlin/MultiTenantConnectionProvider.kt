@@ -1,7 +1,5 @@
 package community.flock.eco.feature.multi_tenant
 
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import java.sql.Connection
 import java.sql.SQLException

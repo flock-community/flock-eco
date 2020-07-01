@@ -1,8 +1,8 @@
 package community.flock.eco.feature.multi_tenant
 
 
-import community.flock.eco.workday.multitenant.filters.MultiTenantFilter
-import community.flock.eco.workday.multitenant.services.MultiTenantSchemaService
+import community.flock.eco.feature.multi_tenant.filters.MultiTenantFilter
+import community.flock.eco.feature.multi_tenant.services.MultiTenantSchemaService
 import liquibase.integration.spring.MultiTenantSpringLiquibase
 import org.hibernate.MultiTenancyStrategy
 import org.hibernate.cfg.Environment
@@ -40,9 +40,6 @@ class MultiTenantConfiguration : WebMvcConfigurer {
             dataSource: DataSource,
             multitenantSchemaService: MultiTenantSchemaService,
             liquibaseProperties: LiquibaseProperties): MultiTenantSpringLiquibase {
-
-        multitenantSchemaService.createTenant("a")
-
         val schemas = multitenantSchemaService
                 .findAllTenant()
                 .map { it.schema }

@@ -1,4 +1,4 @@
-package community.flock.eco.workday.multitenant.services
+package community.flock.eco.feature.multi_tenant.services
 
 import liquibase.integration.spring.MultiTenantSpringLiquibase
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties
