@@ -6,7 +6,7 @@ import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableFooter from '@material-ui/core/TableFooter'
 import TableRow from '@material-ui/core/TableRow'
-import {PageableClient} from '@flock-eco/core'
+import {PageableClient} from '@flock-community/flock-eco-core'
 import TablePagination from '@material-ui/core/TablePagination'
 
 const DEFAULT_SIZE = 10

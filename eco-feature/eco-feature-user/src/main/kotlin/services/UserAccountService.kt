@@ -3,7 +3,6 @@ package community.flock.eco.feature.user.services
 import community.flock.eco.core.utils.toNullable
 import community.flock.eco.feature.user.events.UserAccountPasswordResetEvent
 import community.flock.eco.feature.user.events.UserAccountResetCodeGeneratedEvent
-import community.flock.eco.feature.user.events.UserUpdateEvent
 import community.flock.eco.feature.user.exceptions.UserAccountExistsException
 import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUserCode
 import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUserEmail
@@ -29,7 +28,7 @@ class UserAccountService(
     fun findUserAccountByUserCode(code: String) = userAccountRepository.findByUserCode(code)
 
     fun findUserAccountPasswordByUserCode(code: String) = userAccountPasswordRepository.findByUserCode(code).toNullable()
-    fun findUserAccountPasswordByUserEmail(email: String) = userAccountPasswordRepository.findByUserEmailIgnoreCaseContaining(email).toNullable()
+    fun findUserAccountPasswordByUserEmail(email: String) = userAccountPasswordRepository.findByUserEmailIgnoreCase(email).toNullable()
     fun findUserAccountPasswordByResetCode(resetCode: String) = userAccountPasswordRepository.findByResetCode(resetCode).toNullable()
 
     fun findUserAccountOauthByUserEmail(email: String, provider: UserAccountOauthProvider) = userAccountOauthRepository.findByUserEmailIgnoreCaseContainingAndProvider(email, provider).toNullable()

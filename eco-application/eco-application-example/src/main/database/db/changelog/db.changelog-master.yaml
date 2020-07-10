@@ -3,3 +3,5 @@ databaseChangeLog:
       - file: flock-eco-feature-user-master.yaml
   - include:
       - file: flock-eco-feature-member-master.yaml
+  - include:
+      - file: flock-eco-feature-workspace-master.yaml

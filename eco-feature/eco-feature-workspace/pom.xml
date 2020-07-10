@@ -1,0 +1,40 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.github.flock-community.flock-eco</groupId>
+        <artifactId>flock-eco-feature-parent</artifactId>
+        <version>1.9.0</version>
+    </parent>
+
+    <artifactId>flock-eco-feature-workspace</artifactId>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>community.flock</groupId>
+                <artifactId>graphql-simple-bindings-maven-plugin</artifactId>
+                <configuration>
+                    <packageName>community.flock.eco.feature.workspace.graphql</packageName>
+                    <scalarsKotlin>
+                        <KeyValue>community.flock.eco.core.graphql.KeyValue</KeyValue>
+                        <KeyValueInput>community.flock.eco.core.graphql.KeyValueInput</KeyValueInput>
+                    </scalarsKotlin>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <configuration>
+                    <changeLogFile>${project.basedir}/src/main/database/flock-eco-feature-workspace-master.yaml</changeLogFile>
+                    <diffChangeLogFile>${project.basedir}/src/main/database/flock-eco-feature-workspace-diff.yaml</diffChangeLogFile>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

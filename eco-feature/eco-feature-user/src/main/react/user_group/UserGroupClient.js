@@ -1,5 +1,5 @@
 import React from 'react'
-import {ResourceClient} from '@flock-eco/core'
+import {ResourceClient} from '@flock-community/flock-eco-core'
 
 const client = new ResourceClient('/api/user-groups')
 

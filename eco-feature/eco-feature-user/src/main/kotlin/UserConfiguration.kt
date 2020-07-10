@@ -1,5 +1,6 @@
 package community.flock.eco.feature.user
 
+import community.flock.eco.core.configurations.GraphqlConfiguration
 import community.flock.eco.feature.member.resolvers.UserQueryResolver
 import community.flock.eco.feature.user.controllers.*
 import community.flock.eco.feature.user.filters.UserKeyTokenFilter
@@ -23,7 +24,8 @@ import org.springframework.security.crypto.password.PasswordEncoder
 @EnableJpaRepositories
 @EntityScan
 @EnableConfigurationProperties(UserProperties::class)
-@Import(UserControllerAdvice::class,
+@Import(GraphqlConfiguration::class,
+        UserControllerAdvice::class,
         UserController::class,
         UserGroupController::class,
         UserGroupService::class,
@@ -53,9 +55,5 @@ class UserConfiguration {
                 .add(UserAccountKey::class.java)
     }
 
-    @Bean
-    fun dateTimeType(): GraphQLScalarType {
-        return ExtendedScalars.DateTime
-    }
 
 }

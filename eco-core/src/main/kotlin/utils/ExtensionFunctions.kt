@@ -10,8 +10,11 @@ import java.util.*
 fun <T> Page<T>?.toResponse(): ResponseEntity<List<T>> = this
         ?.let {
             ResponseEntity(it.content.toList(),
-                    HttpHeaders().apply { set("x-total", it.totalElements.toString()) },
-                    HttpStatus.OK)
+                    HttpHeaders().apply {
+                        set("x-total", it.totalElements.toString())
+                    },
+                    HttpStatus.OK
+            )
         }
         ?: ResponseEntity.notFound().build()
 
@@ -29,7 +32,7 @@ fun <T> Page<T>?.toResponse(page: Pageable): ResponseEntity<List<T>> = this
         }
         ?: ResponseEntity.notFound().build()
 
-fun Unit.toResponse():ResponseEntity<Unit> = ResponseEntity.noContent().build()
+fun Unit.toResponse(): ResponseEntity<Unit> = ResponseEntity.noContent().build()
 
 fun <T> Optional<T>.toResponse(): ResponseEntity<T> = toNullable().toResponse()
 

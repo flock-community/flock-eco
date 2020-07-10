@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.github.flock-community.flock-eco</groupId>
         <artifactId>flock-eco-parent</artifactId>
-        <version>1.9.0-111e719</version>
+        <version>1.9.0</version>
     </parent>
 
     <artifactId>flock-eco-core</artifactId>
@@ -42,6 +42,11 @@
             <artifactId>mail</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.graphql-java</groupId>
+            <artifactId>graphql-java-extended-scalars</artifactId>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>
@@ -64,6 +69,13 @@
             <plugin>
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <groupId>org.jetbrains.kotlin</groupId>
+            </plugin>
+            <plugin>
+                <groupId>community.flock</groupId>
+                <artifactId>graphql-simple-bindings-maven-plugin</artifactId>
+                <configuration>
+                    <packageName>community.flock.eco.core.graphql</packageName>
+                </configuration>
             </plugin>
         </plugins>
     </build>

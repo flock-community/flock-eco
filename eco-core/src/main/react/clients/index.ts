@@ -1,15 +1,22 @@
 import {PageableClient} from './PageableClient'
 import {ResourceClient} from './ResourceClient'
 
-export const responseValidation = res => {
+interface ValidResponse<T> {
+  headers:Headers
+  body:T
+}
+
+fetch("")
+  .then()
+
+export const responseValidation = <T>(res:Response):Promise<ValidResponse<T> | void> => {
   if (res.ok) {
     if (res.status === 204) {
-      return null
+      return Promise.resolve()
     }
     return res.json()
       .then(body => ({
-        headers: res.headers
-          .entries(),
+        headers: res.headers,
         body,
       }))
   }

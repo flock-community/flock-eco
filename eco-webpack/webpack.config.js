@@ -21,7 +21,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js|jsx$/,
+        test: /\.(js|jsx|ts|tsx)$/,
         exclude: /node_modules[\\\/](?!(@flock-eco)[\\\/]).*/,
         use: {
           loader: "babel-loader",
@@ -30,11 +30,19 @@ module.exports = {
               "@babel/plugin-proposal-class-properties",
               "@babel/plugin-transform-runtime",
             ],
-            presets: ["@babel/preset-env", "@babel/preset-react"],
+            presets: [
+              "@babel/preset-env",
+              "@babel/preset-react",
+              "@babel/preset-typescript"
+            ],
           },
         },
       },
     ],
+  },
+
+  resolve: {
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
 
   plugins: [htmlPlugin],
