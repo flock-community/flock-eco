@@ -12,6 +12,7 @@ extend type Query {
     ):Int
 }
 
+
 input MemberFilter {
     search:String,
     statuses:[MemberStatus!]

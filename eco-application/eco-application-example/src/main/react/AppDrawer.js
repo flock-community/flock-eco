@@ -47,6 +47,7 @@ export function AppDrawer({open, onClick}) {
     <List>
       {renderList('user')}
       {renderList('member')}
+      {renderList('workspace')}
     </List>
   </Drawer>)
 

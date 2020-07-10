@@ -25,6 +25,7 @@ class UserLoadData(
 
     private fun user(int: Int) = User(
             name = "name-$int",
+            code = int.toString(),
             email = "email-$int@email-$int.xx",
             authorities = userAuthorityService.allAuthorities()
                     .map { it.toName() }
