@@ -14,7 +14,7 @@ class MultiTenantFilter : HandlerInterceptorAdapter() {
     override fun preHandle(request: HttpServletRequest,
                            response: HttpServletResponse,
                            obj: Any): Boolean {
-        println("In preHandle we are Intercepting the Request")
+        println("In preHandle we are Intercepting the Request ---")
         val tenantID = request.getParameter("tenant")
 
         if(request.requestURI == "/tenant"){

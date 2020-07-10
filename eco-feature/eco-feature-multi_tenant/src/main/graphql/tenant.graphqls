@@ -1,0 +1,4 @@
+input TenantInput {
+    tenantName:String!
+    userEmail:String!
+}

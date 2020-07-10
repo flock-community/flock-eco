@@ -1,6 +1,7 @@
 package community.flock.eco.feature.multi_tenant
 
 
+import community.flock.eco.feature.multi_tenant.controllers.MultiTenantController
 import community.flock.eco.feature.multi_tenant.filters.MultiTenantFilter
 import community.flock.eco.feature.multi_tenant.services.MultiTenantSchemaService
 import liquibase.integration.spring.MultiTenantSpringLiquibase
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import javax.sql.DataSource
 
 @Import(
+        MultiTenantController::class,
         MultiTenantSchemaService::class,
         MultiTenantFilter::class,
         MultiTenantSchemaResolver::class,
