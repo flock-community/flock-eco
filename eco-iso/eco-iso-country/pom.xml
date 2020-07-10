@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.github.flock-community.flock-eco</groupId>
         <artifactId>flock-eco-iso</artifactId>
-        <version>1.9.2-76108a9</version>
+        <version>1.8.2</version>
     </parent>
 
     <artifactId>flock-eco-iso-country</artifactId>

@@ -6,7 +6,7 @@
     <parent>
         <artifactId>flock-eco-application-parent</artifactId>
         <groupId>com.github.flock-community.flock-eco</groupId>
-        <version>1.9.2-76108a9</version>
+        <version>1.8.2</version>
     </parent>
 
     <artifactId>flock-eco-application-example</artifactId>
@@ -34,12 +34,6 @@
             <artifactId>liquibase-core</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
         <!-- Eco features-->
         <dependency>
             <groupId>com.github.flock-community.flock-eco</groupId>
@@ -57,15 +51,6 @@
         <dependency>
             <groupId>com.github.flock-community.flock-eco</groupId>
             <artifactId>flock-eco-feature-user</artifactId>
-            <classifier>develop</classifier>
-        </dependency>
-        <dependency>
-            <groupId>com.github.flock-community.flock-eco</groupId>
-            <artifactId>flock-eco-feature-workspace</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.flock-community.flock-eco</groupId>
-            <artifactId>flock-eco-feature-workspace</artifactId>
             <classifier>develop</classifier>
         </dependency>
     </dependencies>

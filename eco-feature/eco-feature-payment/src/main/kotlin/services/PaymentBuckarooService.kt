@@ -100,13 +100,13 @@ class PaymentBuckarooService(
                     "Type": 0,
                     "Address": "0.0.0.0"
                 },
-                ${if (successUrl != null) """"
-                    "ReturnURL": "$successUrl",
-                """ else ""},
-                ${if (failureUrl != null) """"
+               ${if (successUrl != null) """
+                   "ReturnURL": "$successUrl",
+                """ else ""}
+                ${if (failureUrl != null) """
                     "ReturnURLCancel": "$failureUrl",
-                    "ReturnURLError: "$failureUrl",
-                    "ReturnURLReject: "$failureUrl",
+                    "ReturnURLError": "$failureUrl",
+                    "ReturnURLReject": "$failureUrl",
                 """ else ""}
                 "Services": {
                     "ServiceList": [
