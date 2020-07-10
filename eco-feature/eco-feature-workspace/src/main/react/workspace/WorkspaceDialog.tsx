@@ -5,7 +5,7 @@ import {Workspace, WorkspaceClient, WorkspaceInput} from './WorkspaceClient'
 import {WorkspaceUserTable} from './WorkspaceUsersTable'
 import {WorkspaceUsersForm} from './WorkspaceUsersForm'
 // @ts-ignore
-import {ConfirmDialog} from '@flock-eco/core/src/main/react/components/ConfirmDialog'
+import {ConfirmDialog} from '@flock-community/flock-eco-core/src/main/react/components/ConfirmDialog'
 
 
 interface Props {

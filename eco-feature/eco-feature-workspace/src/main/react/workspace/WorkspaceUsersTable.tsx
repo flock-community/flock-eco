@@ -9,7 +9,7 @@ import gql from 'graphql-tag'
 import {useQuery} from '@apollo/react-hooks'
 import {WorkspaceUserTableQuery, WorkspaceUserTableQueryVariables} from '../Apollo'
 // @ts-ignore
-import {AlignedLoader} from '@flock-eco/core/src/main/react/components/AlignedLoader'
+import {AlignedLoader} from '@flock-community/flock-eco-core/src/main/react/components/AlignedLoader'
 
 interface User {
   id: string,

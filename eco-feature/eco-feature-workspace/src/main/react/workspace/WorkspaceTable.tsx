@@ -12,7 +12,7 @@ import {useQuery} from '@apollo/react-hooks'
 import {TableSortLabel} from '@material-ui/core'
 import {Direction, WorkspaceTableQuery, WorkspaceTableQuery_list, WorkspaceTableQueryVariables} from '../Apollo'
 // @ts-ignore
-import {AlignedLoader} from '@flock-eco/core/src/main/react/components/AlignedLoader'
+import {AlignedLoader} from '@flock-community/flock-eco-core/src/main/react/components/AlignedLoader'
 import {Workspace, WorkspaceInput} from './WorkspaceClient'
 
 

@@ -1,4 +1,4 @@
-import {ResourceClient} from '@flock-eco/core/src/main/react/clients'
+import {ResourceClient} from '@flock-community/flock-eco-core/src/main/react/clients'
 import {WorkspaceUser, WorkspaceUserInput} from '../Simple'
 
 const path = (workspaceId:string) => `/api/workspaces/${workspaceId}/users`
