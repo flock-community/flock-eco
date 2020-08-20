@@ -33,6 +33,12 @@ class UserAccountController(
             .resetPasswordWithResetCode(form.resetCode, form.password)
             .toResponse()
 
+    @PutMapping("/new-password")
+    @PreAuthorize("isAuthenticated()")
+    fun resetPasswordWithNew(authentication: Authentication, @RequestBody form: NewPasswordForm) = userAccountService
+            .resetPasswordWithNew(authentication.name, form.oldPassword, form.newPassword)
+            .toResponse()
+
     @PostMapping("/generate-key")
     @PreAuthorize("isAuthenticated()")
     fun generateKey(authentication: Authentication, @RequestBody form: UserKeyForm) = userAccountService
@@ -56,6 +62,11 @@ class UserAccountController(
     fun revokeAccountKey(authentication: Authentication, @RequestBody form: KeyRevokeForm) = userAccountService
             .revokeKeyForUserCode(authentication.name, form.key)
             .toResponse()
+
+    data class NewPasswordForm(
+            val oldPassword: String,
+            val newPassword: String
+    )
 
     data class PasswordResetForm(
             val resetCode: String,

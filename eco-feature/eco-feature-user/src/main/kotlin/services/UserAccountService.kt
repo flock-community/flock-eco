@@ -1,11 +1,13 @@
 package community.flock.eco.feature.user.services
 
 import community.flock.eco.core.utils.toNullable
+import community.flock.eco.feature.user.events.UserAccountNewPasswordEvent
 import community.flock.eco.feature.user.events.UserAccountPasswordResetEvent
 import community.flock.eco.feature.user.events.UserAccountResetCodeGeneratedEvent
 import community.flock.eco.feature.user.exceptions.UserAccountExistsException
 import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUserCode
 import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUserEmail
+import community.flock.eco.feature.user.exceptions.UserAccountNotFoundWrongOldPasswordException
 import community.flock.eco.feature.user.forms.*
 import community.flock.eco.feature.user.model.*
 import community.flock.eco.feature.user.repositories.*
@@ -71,6 +73,17 @@ class UserAccountService(
             ?.resetPassword(password)
             ?.let(userAccountRepository::save)
             ?.let { applicationEventPublisher.publishEvent(UserAccountPasswordResetEvent(it)) }
+
+    fun resetPasswordWithNew(userCode: String, oldPassword: String, newPassword: String) = userService.findByCode(userCode)
+            ?.let{findUserAccountPasswordByUserEmail(it.email)}
+            ?.apply{
+                if(!passwordEncoder.matches(oldPassword, this.secret)) {
+                    throw UserAccountNotFoundWrongOldPasswordException()
+                }
+            }
+            ?.resetPassword(newPassword)
+            ?.let(userAccountRepository::save)
+            ?.let { applicationEventPublisher.publishEvent(UserAccountNewPasswordEvent(it)) }
 
     fun generateKeyForUserCode(userCode: String, label: String?) = userService.findByCode(userCode)
             ?.let { user ->
