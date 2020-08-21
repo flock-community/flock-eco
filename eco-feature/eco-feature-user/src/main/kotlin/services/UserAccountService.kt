@@ -4,10 +4,7 @@ import community.flock.eco.core.utils.toNullable
 import community.flock.eco.feature.user.events.UserAccountNewPasswordEvent
 import community.flock.eco.feature.user.events.UserAccountPasswordResetEvent
 import community.flock.eco.feature.user.events.UserAccountResetCodeGeneratedEvent
-import community.flock.eco.feature.user.exceptions.UserAccountExistsException
-import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUserCode
-import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUserEmail
-import community.flock.eco.feature.user.exceptions.UserAccountNotFoundWrongOldPasswordException
+import community.flock.eco.feature.user.exceptions.*
 import community.flock.eco.feature.user.forms.*
 import community.flock.eco.feature.user.model.*
 import community.flock.eco.feature.user.repositories.*
@@ -79,6 +76,11 @@ class UserAccountService(
             ?.apply{
                 if(!passwordEncoder.matches(oldPassword, this.secret)) {
                     throw UserAccountNotFoundWrongOldPasswordException()
+                }
+            }
+            ?.apply{
+                if(passwordEncoder.matches(newPassword, this.secret)) {
+                    throw UserAccounNewPasswordMatchesOldPasswordException()
                 }
             }
             ?.resetPassword(newPassword)

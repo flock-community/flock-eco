@@ -1,6 +1,7 @@
 package community.flock.eco.feature.user.services
 
 import community.flock.eco.feature.user.UserConfiguration
+import community.flock.eco.feature.user.exceptions.UserAccounNewPasswordMatchesOldPasswordException
 import community.flock.eco.feature.user.exceptions.UserAccountExistsException
 import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUserCode
 import community.flock.eco.feature.user.exceptions.UserAccountNotFoundWrongOldPasswordException
@@ -109,7 +110,7 @@ class UserAccountServiceTest {
     }
 
     @Test
-    fun `generate and reset password with old password`() {
+    fun `generate new password with old password`() {
         val userAccount = userAccountService.createUserAccountPassword(passwordForm.copy())
         val newPassword = "password"
         assertNotNull(userAccount.secret)
@@ -121,7 +122,7 @@ class UserAccountServiceTest {
     }
 
     @Test(expected = UserAccountNotFoundWrongOldPasswordException::class)
-    fun `generate and reset password with old password non matching old password should throw an exception`() {
+    fun `generate new password with old password non matching old password should throw an exception`() {
         val userAccount = userAccountService.createUserAccountPassword(passwordForm.copy())
         val newPassword = "password"
         assertNotNull(userAccount.secret)
@@ -130,6 +131,18 @@ class UserAccountServiceTest {
         val account = userAccountService.findUserAccountPasswordByUserEmail(passwordForm.email)!!
         assertNotNull(account.secret)
         assertFalse(passwordEncoder.matches(newPassword, account.secret))
+    }
+
+    @Test(expected = UserAccounNewPasswordMatchesOldPasswordException::class)
+    fun `generate new password with old password should not be the same as oldpassword`() {
+        val userAccount = userAccountService.createUserAccountPassword(passwordForm.copy())
+        val newPassword = passwordForm.password
+        assertNotNull(userAccount.secret)
+
+        userAccountService.resetPasswordWithNew(userAccount.user.code, passwordForm.password, newPassword)
+        val account = userAccountService.findUserAccountPasswordByUserEmail(passwordForm.email)!!
+        assertNotNull(account.secret)
+        assertTrue(passwordEncoder.matches(newPassword, account.secret))
     }
 
     @Test
