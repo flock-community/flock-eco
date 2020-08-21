@@ -1,6 +1,6 @@
 {
   "name": "@flock-community/flock-eco-application-example",
-  "version": "1.10.0",
+  "version": "1.10.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -10,8 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@flock-community/flock-eco-feature-member": "^1.10.0",
-    "@flock-community/flock-eco-feature-user": "^1.10.0"
+    "@flock-community/flock-eco-feature-member": "^1.10.1",
+    "@flock-community/flock-eco-feature-user": "^1.10.1"
   },
   "repository": {
     "type": "git",
