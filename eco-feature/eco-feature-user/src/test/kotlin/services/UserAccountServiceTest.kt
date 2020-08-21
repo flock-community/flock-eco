@@ -1,8 +1,10 @@
 package community.flock.eco.feature.user.services
 
 import community.flock.eco.feature.user.UserConfiguration
+import community.flock.eco.feature.user.exceptions.UserAccounNewPasswordMatchesOldPasswordException
 import community.flock.eco.feature.user.exceptions.UserAccountExistsException
 import community.flock.eco.feature.user.exceptions.UserAccountNotFoundForUserCode
+import community.flock.eco.feature.user.exceptions.UserAccountNotFoundWrongOldPasswordException
 import community.flock.eco.feature.user.forms.UserAccountOauthForm
 import community.flock.eco.feature.user.forms.UserAccountPasswordForm
 import community.flock.eco.feature.user.forms.UserForm
@@ -19,6 +21,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringRunner
+import kotlin.test.assertFalse
+import kotlin.test.assertNotEquals
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
@@ -103,6 +107,42 @@ class UserAccountServiceTest {
         val account = userAccountService.findUserAccountPasswordByUserEmail(passwordForm.email)!!
         assertNull(account.resetCode)
         assertTrue(passwordEncoder.matches("password", account.secret))
+    }
+
+    @Test
+    fun `generate new password with old password`() {
+        val userAccount = userAccountService.createUserAccountPassword(passwordForm.copy())
+        val newPassword = "password"
+        assertNotNull(userAccount.secret)
+
+        userAccountService.resetPasswordWithNew(userAccount.user.code, passwordForm.password, newPassword)
+        val account = userAccountService.findUserAccountPasswordByUserEmail(passwordForm.email)!!
+        assertNotNull(account.secret)
+        assertTrue(passwordEncoder.matches(newPassword, account.secret))
+    }
+
+    @Test(expected = UserAccountNotFoundWrongOldPasswordException::class)
+    fun `generate new password with old password non matching old password should throw an exception`() {
+        val userAccount = userAccountService.createUserAccountPassword(passwordForm.copy())
+        val newPassword = "password"
+        assertNotNull(userAccount.secret)
+
+        userAccountService.resetPasswordWithNew(userAccount.user.code, "randompassword", newPassword)
+        val account = userAccountService.findUserAccountPasswordByUserEmail(passwordForm.email)!!
+        assertNotNull(account.secret)
+        assertFalse(passwordEncoder.matches(newPassword, account.secret))
+    }
+
+    @Test(expected = UserAccounNewPasswordMatchesOldPasswordException::class)
+    fun `generate new password with old password should not be the same as oldpassword`() {
+        val userAccount = userAccountService.createUserAccountPassword(passwordForm.copy())
+        val newPassword = passwordForm.password
+        assertNotNull(userAccount.secret)
+
+        userAccountService.resetPasswordWithNew(userAccount.user.code, passwordForm.password, newPassword)
+        val account = userAccountService.findUserAccountPasswordByUserEmail(passwordForm.email)!!
+        assertNotNull(account.secret)
+        assertTrue(passwordEncoder.matches(newPassword, account.secret))
     }
 
     @Test
