@@ -12,7 +12,7 @@
         <junit.version>4.12</junit.version>
         <kotlin.version>1.3.70</kotlin.version>
         <main.basedir>${project.basedir}</main.basedir>
-        <spring.boot.version>2.2.0.RELEASE</spring.boot.version>
+        <spring.boot.version>2.4.0-RC1</spring.boot.version>
         <liquibase.version>3.9.0</liquibase.version>
         <node.version>v10.16.0</node.version>
         <npm.version>6.9.0</npm.version>
@@ -338,8 +338,10 @@
                     <artifactId>liquibase-maven-plugin</artifactId>
                     <version>${liquibase.version}</version>
                     <configuration>
-                        <changeLogFile>${project.basedir}/src/main/database/db/changelog/db.changelog-master.yaml</changeLogFile>
-                        <diffChangeLogFile>${project.basedir}/src/main/database/db/changelog/db.changelog-diff.yaml</diffChangeLogFile>
+                        <changeLogFile>${project.basedir}/src/main/database/db/changelog/db.changelog-master.yaml
+                        </changeLogFile>
+                        <diffChangeLogFile>${project.basedir}/src/main/database/db/changelog/db.changelog-diff.yaml
+                        </diffChangeLogFile>
                         <url>jdbc:h2:file:./target/liquibase;DB_CLOSE_ON_EXIT=FALSE</url>
                         <username>sa</username>
                         <driver>org.h2.Driver</driver>
@@ -484,17 +486,14 @@
 
     <repositories>
         <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+        </repository>
+        <repository>
             <id>bintray-flock-community</id>
             <name>bintray</name>
             <url>https://api.bintray.com/maven/flock-community/flock-maven</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>http://repo.spring.io/milestone</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
