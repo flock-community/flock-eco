@@ -8,7 +8,6 @@ import community.flock.eco.feature.user.repositories.UserGroupRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
 import org.springframework.boot.test.context.SpringBootTest
@@ -18,16 +17,13 @@ import javax.transaction.Transactional
 @AutoConfigureTestDatabase
 @AutoConfigureDataJpa
 @Transactional
-class UserGroupServiceTest {
+class UserGroupServiceTest(
+        private val userService: UserService,
+        private val userGroupService: UserGroupService,
+        private val userGroupRepository: UserGroupRepository
+) {
 
-    @Autowired
-    private lateinit var userService: UserService
 
-    @Autowired
-    private lateinit var userGroupService: UserGroupService
-
-    @Autowired
-    private lateinit var userGroupRepository: UserGroupRepository
 
     @Test
     fun `create new group`() {

@@ -4,7 +4,6 @@ import community.flock.eco.application.example.authorities.ExampleAuthority
 import community.flock.eco.feature.user.filters.UserKeyTokenFilter
 import community.flock.eco.feature.user.services.UserAuthorityService
 import community.flock.eco.feature.user.services.UserSecurityService
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.env.Environment
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
@@ -17,19 +16,11 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-class WebSecurityConfig : WebSecurityConfigurerAdapter() {
-
-    @Autowired
-    lateinit var environment: Environment
-
-    @Autowired
-    lateinit var userAuthorityService: UserAuthorityService
-
-    @Autowired
-    lateinit var userSecurityService: UserSecurityService
-
-    @Autowired
-    lateinit var userKeyTokenFilter: UserKeyTokenFilter
+class WebSecurityConfig(
+        private val userAuthorityService: UserAuthorityService,
+        private val userSecurityService: UserSecurityService,
+        private val userKeyTokenFilter: UserKeyTokenFilter
+) : WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity) {
 
@@ -51,7 +42,5 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
         userSecurityService.testLogin(http)
 
     }
-
-
 }
 

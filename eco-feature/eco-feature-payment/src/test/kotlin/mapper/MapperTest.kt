@@ -9,20 +9,17 @@ import community.flock.eco.feature.payment.model.PaymentTransaction
 import community.flock.eco.feature.payment.model.PaymentType
 import community.flock.eco.feature.payment.repositories.PaymentMandateRepository
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.SpringBootTest
 
 
 @SpringBootTest(classes = [PaymentConfiguration::class])
 @AutoConfigureTestDatabase
 @AutoConfigureDataJpa
-class MapperTest {
-
-    @Autowired
-    lateinit var paymentMandateRepository: PaymentMandateRepository
+class MapperTest(
+        val paymentMandateRepository: PaymentMandateRepository
+) {
 
     @Test
     fun tests1() {

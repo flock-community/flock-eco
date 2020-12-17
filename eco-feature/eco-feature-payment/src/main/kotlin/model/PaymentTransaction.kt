@@ -1,6 +1,6 @@
 package community.flock.eco.feature.payment.model
 
-import com.fasterxml.jackson.annotation.*
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import community.flock.eco.core.events.EventEntityListeners
 import java.time.LocalDate
 import java.util.*

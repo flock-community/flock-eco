@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import {useState} from 'react'
 
 import AddIcon from '@material-ui/icons/Add'
 
@@ -6,7 +6,6 @@ import {UserGroupTable} from './UserGroupTable'
 import {UserGroupDialog} from './UserGroupDialog'
 import Fab from '@material-ui/core/Fab'
 import makeStyles from '@material-ui/core/styles/makeStyles'
-import {MultipleSelect} from 'react-select-material-ui'
 import Grid from '@material-ui/core/Grid'
 import {TextField} from '@material-ui/core'
 import Paper from '@material-ui/core/Paper'

@@ -5,17 +5,13 @@ import community.flock.eco.feature.member.develop.data.MemberLoadData
 import community.flock.eco.feature.member.model.MemberStatus
 import community.flock.eco.feature.member.repositories.MemberRepository
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
-import org.springframework.test.annotation.Rollback
-import org.springframework.test.context.event.annotation.BeforeTestClass
 import javax.transaction.Transactional
 
 @SpringBootTest(classes = [MemberConfiguration::class])
@@ -24,13 +20,11 @@ import javax.transaction.Transactional
 @AutoConfigureWebClient
 @Transactional
 @Import(MemberLoadData::class)
-class MemberSpecificationTest {
+class MemberSpecificationTest(
+        private val memberRepository: MemberRepository,
+        private val memberLoadData: MemberLoadData
+) {
 
-    @Autowired
-    private lateinit var memberRepository: MemberRepository
-
-    @Autowired
-    private lateinit var memberLoadData: MemberLoadData
 
     @BeforeEach
     fun init() {

@@ -5,7 +5,6 @@ import community.flock.eco.feature.payment.model.*
 import community.flock.eco.feature.payment.services.PaymentSepaXmlService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
 import org.springframework.boot.test.context.SpringBootTest
@@ -23,10 +22,9 @@ import javax.xml.transform.stream.StreamResult
 @AutoConfigureTestDatabase
 @AutoConfigureDataJpa
 @Transactional
-class PaymentSepaXmlServiceTest {
-
-    @Autowired
-    lateinit var paymentSepaXmlService: PaymentSepaXmlService
+class PaymentSepaXmlServiceTest(
+        val paymentSepaXmlService: PaymentSepaXmlService
+) {
 
     val date: LocalDate = LocalDate.of(2019, 1, 1)
     val data = listOf(
@@ -101,7 +99,5 @@ class PaymentSepaXmlServiceTest {
         assertEquals(example, output)
 
     }
-
-
 }
 

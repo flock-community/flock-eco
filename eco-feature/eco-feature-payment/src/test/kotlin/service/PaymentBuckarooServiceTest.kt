@@ -3,10 +3,8 @@ package community.flock.eco.feature.payment.service
 import community.flock.eco.feature.payment.PaymentConfiguration
 import community.flock.eco.feature.payment.services.PaymentBuckarooService
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.SpringBootTest
 import javax.transaction.Transactional
 
@@ -14,10 +12,9 @@ import javax.transaction.Transactional
 @AutoConfigureTestDatabase
 @AutoConfigureDataJpa
 @Transactional
-class PaymentBuckarooServiceTest {
-
-    @Autowired
-    lateinit var service: PaymentBuckarooService
+class PaymentBuckarooServiceTest(
+        val service: PaymentBuckarooService
+) {
 
     @Test
     fun createCreditcardTransaction() {

@@ -7,7 +7,10 @@ import community.flock.eco.feature.user.events.UserAccountResetCodeGeneratedEven
 import community.flock.eco.feature.user.exceptions.*
 import community.flock.eco.feature.user.forms.*
 import community.flock.eco.feature.user.model.*
-import community.flock.eco.feature.user.repositories.*
+import community.flock.eco.feature.user.repositories.UserAccountKeyRepository
+import community.flock.eco.feature.user.repositories.UserAccountOauthRepository
+import community.flock.eco.feature.user.repositories.UserAccountPasswordRepository
+import community.flock.eco.feature.user.repositories.UserAccountRepository
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service

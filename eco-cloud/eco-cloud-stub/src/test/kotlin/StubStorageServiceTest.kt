@@ -3,15 +3,13 @@ package community.flock.eco.cloud.stub
 import community.flock.eco.core.services.StorageService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.util.ResourceUtils
 
 @SpringBootTest(classes = [StubCloudConfiguration::class])
-class StubStorageServiceTest {
-
-    @Autowired
-    lateinit var storageService: StorageService
+class StubStorageServiceTest(
+        private val storageService: StorageService
+) {
 
     val bucket: String = "bucket-test"
     val key: String = "key-test"

@@ -1,4 +1,3 @@
-import React from 'react'
 import {storiesOf} from '@storybook/react'
 import {UserFeature} from '../../../main/react/user/UserFeature'
 

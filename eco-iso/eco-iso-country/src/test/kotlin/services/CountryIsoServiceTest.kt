@@ -10,10 +10,9 @@ import kotlin.test.assertNull
 
 @SpringBootTest(classes = [CountryIsoConfiguration::class])
 @AutoConfigureWebClient
-class CountryIsoServiceTest() {
-
-    @Autowired
-    lateinit var countryIsoService: CountryIsoService
+class CountryIsoServiceTest(
+        private val countryIsoService: CountryIsoService
+) {
 
     @Test
     fun `find country by alpha-2 code`() {

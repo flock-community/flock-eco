@@ -4,7 +4,6 @@ import community.flock.eco.feature.user.UserConfiguration
 import community.flock.eco.feature.user.model.UserGroup
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
 import org.springframework.boot.test.context.SpringBootTest
@@ -15,10 +14,10 @@ import javax.transaction.Transactional
 @AutoConfigureTestDatabase
 @AutoConfigureDataJpa
 @Transactional
-class UserGroupRepositoryTest {
+class UserGroupRepositoryTest(
+       private val usergroupRepository: UserGroupRepository
 
-    @Autowired
-    lateinit var usergroupRepository: UserGroupRepository
+) {
 
     @Test
     fun `save userGroup via repository`() {

@@ -2,7 +2,6 @@ package community.flock.eco.iso.language.services
 
 import LanguageIsoConfiguration
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient
 import org.springframework.boot.test.context.SpringBootTest
 import kotlin.test.assertEquals
@@ -10,10 +9,9 @@ import kotlin.test.assertNull
 
 @SpringBootTest(classes = [LanguageIsoConfiguration::class])
 @AutoConfigureWebClient
-class LanguageIsoServiceTest {
-
-    @Autowired
-    lateinit var languageIsoService: LanguageIsoService
+class LanguageIsoServiceTest(
+        private val languageIsoService: LanguageIsoService
+) {
 
     @Test
     fun `find language by alpha-2 code`() {

@@ -1,15 +1,11 @@
 package community.flock.eco.feature.workspace.resolvers
 
-import community.flock.eco.core.graphql.Direction
 import community.flock.eco.core.graphql.Pageable
-import community.flock.eco.core.utils.toNullable
 import community.flock.eco.feature.workspace.mappers.WorkspaceGraphqlMapper
 import community.flock.eco.feature.workspace.providers.WorkspaceUserProvider
 import community.flock.eco.feature.workspace.services.WorkspaceService
 import extentions.consume
 import graphql.kickstart.tools.GraphQLQueryResolver
-import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Sort
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
 import java.util.*

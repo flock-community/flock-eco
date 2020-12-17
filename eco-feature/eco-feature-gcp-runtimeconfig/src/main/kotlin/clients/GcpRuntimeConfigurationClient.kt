@@ -15,13 +15,13 @@ import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.DefaultUriBuilderFactory
 
 @Component
-class GcpRuntimeConfigurationClient {
+class GcpRuntimeConfigurationClient(
+       private val idProvider: GcpProjectIdProvider,
 
-    @Autowired
-    lateinit var idProvider: GcpProjectIdProvider
+       private val  credentialsProvider: CredentialsProvider
+) {
 
-    @Autowired
-    lateinit var credentialsProvider: CredentialsProvider
+
 
     data class RuntimeConfigResponse(val configs: List<GcpRuntimeConfig>, val nextPageToken: String?)
     data class RuntimeVariableResponse(val variables: List<GcpRuntimeVariable>, val nextPageToken: String?)

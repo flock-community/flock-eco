@@ -7,9 +7,6 @@ import community.flock.eco.feature.user.filters.UserKeyTokenFilter
 import community.flock.eco.feature.user.graphql.*
 import community.flock.eco.feature.user.services.*
 import graphql.kickstart.tools.SchemaParserDictionary
-import graphql.scalars.ExtendedScalars
-import graphql.schema.GraphQLScalarType
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean

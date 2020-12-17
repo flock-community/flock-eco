@@ -1,4 +1,3 @@
-import React from 'react'
 import {storiesOf} from '@storybook/react'
 import {USER_GROUP_FORM_ID, UserGroupForm} from '../../../main/react/user_group/UserGroupForm'
 import Button from '@material-ui/core/Button'

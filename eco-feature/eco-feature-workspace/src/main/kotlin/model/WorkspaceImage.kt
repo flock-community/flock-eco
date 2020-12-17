@@ -5,7 +5,6 @@ import org.springframework.http.MediaType
 import java.io.File
 import javax.persistence.Column
 import javax.persistence.Embeddable
-import javax.persistence.Lob
 
 @Embeddable
 class WorkspaceImage(

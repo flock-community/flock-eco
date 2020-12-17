@@ -5,7 +5,6 @@ import community.flock.eco.feature.workspace.model.Workspace
 import community.flock.eco.feature.workspace.model.WorkspaceUserRole
 import community.flock.eco.feature.workspace.repositories.WorkspaceRepository
 import org.springframework.stereotype.Component
-import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Component

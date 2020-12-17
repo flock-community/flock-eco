@@ -12,9 +12,7 @@ import community.flock.eco.feature.user.forms.UserKeyForm
 import community.flock.eco.feature.user.model.UserAccountOauthProvider
 import community.flock.eco.feature.user.repositories.UserAccountPasswordRepository
 import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
 import org.springframework.boot.test.context.SpringBootTest
@@ -29,19 +27,12 @@ import kotlin.test.assertTrue
 @AutoConfigureTestDatabase
 @AutoConfigureDataJpa
 @Transactional
-class UserAccountServiceTest {
-
-    @Autowired
-    private lateinit var userService: UserService
-
-    @Autowired
-    private lateinit var userAccountService: UserAccountService
-
-    @Autowired
-    private lateinit var userAccountPasswordRepository: UserAccountPasswordRepository
-
-    @Autowired
-    private lateinit var passwordEncoder: PasswordEncoder
+class UserAccountServiceTest(
+        val userService: UserService,
+        val userAccountService: UserAccountService,
+        val userAccountPasswordRepository: UserAccountPasswordRepository,
+        val passwordEncoder: PasswordEncoder
+) {
 
     private val passwordForm = UserAccountPasswordForm(
             name = "Willem Veelenturf",
@@ -71,22 +62,22 @@ class UserAccountServiceTest {
     }
 
 
-//    @Test
-//    fun `test register oauth user`() {
-//        val form = UserAccountOauthForm(
-//                name = passwordForm.name,
-//                email = passwordForm.email,
-//                provider = UserAccountOauthProvider.GOOGLE,
-//                reference = "123123123"
-//        )
-//        val account = userAccountService.createUserAccountOauth(form)
-//
-//        assertNotNull(account.id)
-//        assertNotNull(account.user.id)
-//        assertNotNull(account.user.code)
-//
-//        assertEquals(form.reference, account.reference)
-//    }
+    @Test
+    fun `test register oauth user`() {
+        val form = UserAccountOauthForm(
+                name = passwordForm.name,
+                email = passwordForm.email,
+                provider = UserAccountOauthProvider.GOOGLE,
+                reference = "123123123"
+        )
+        val account = userAccountService.createUserAccountOauth(form)
+
+        assertNotNull(account.id)
+        assertNotNull(account.user.id)
+        assertNotNull(account.user.code)
+
+        assertEquals(form.reference, account.reference)
+    }
 
     @Test
     fun `generate reset code for user that doesn't exist`() {

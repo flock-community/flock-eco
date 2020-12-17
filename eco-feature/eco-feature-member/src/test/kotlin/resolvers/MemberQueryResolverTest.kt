@@ -7,14 +7,10 @@ import com.graphql.spring.boot.test.GraphQLTestTemplate
 import community.flock.eco.feature.member.MemberConfiguration
 import community.flock.eco.feature.member.develop.data.MemberLoadData
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient
 import org.springframework.context.annotation.Import
-import org.springframework.test.context.junit.jupiter.SpringExtension
-import javax.transaction.Transactional
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
@@ -24,37 +20,32 @@ import kotlin.test.assertTrue
 @AutoConfigureDataJpa
 @AutoConfigureWebClient
 @Import(MemberConfiguration::class, MemberLoadData::class)
-class MemberQueryResolverTest {
+class MemberQueryResolverTest(
+        private val graphQLTestTemplate: GraphQLTestTemplate,
+        private val memberLoadData: MemberLoadData
+) {
 
-    @Autowired
-    lateinit var graphQLTestTemplate: GraphQLTestTemplate
 
-    @Autowired
-    lateinit var memberLoadData: MemberLoadData
 
-    @Autowired
-    lateinit var mapper: ObjectMapper
+    @Test
+    fun countMembers() {
+        memberLoadData.load(33)
+        val res = graphQLTestTemplate.perform("count-member.graphql")
+        assertNotNull(res);
+        assertTrue(res.isOk);
+        assertEquals("33", res.get("$.data.countMembers"));
+    }
 
-//    @Test
-//    fun countMembers() {
-//        memberLoadData.load(33)
-//        val res = graphQLTestTemplate.perform("count-member.graphql")
-//        assertNotNull(res);
-//        assertTrue(res.isOk);
-//        assertEquals("33", res.get("$.data.countMembers"));
-//    }
+    @Test
+    fun findAllMembers() {
+        val variables: ObjectNode = ObjectMapper().createObjectNode()
+        variables.put("search", "1")
+        val res = graphQLTestTemplate.perform("find-page.graphql", variables)
+        assertNotNull(res);
+        assertTrue(res.isOk);
+        assertEquals("2", res.get("$.data.list.length()"));
+        assertEquals("first-name-1", res.get("$.data.list[0].firstName"));
+        assertEquals("13", res.get("$.data.count"));
 
-//    @Test
-//    fun findAllMembers() {
-//
-//        val variables: ObjectNode = ObjectMapper().createObjectNode()
-//        variables.put("search", "1")
-//        val res = graphQLTestTemplate.perform("find-page.graphql", variables)
-//        assertNotNull(res);
-//        assertTrue(res.isOk);
-//        assertEquals("2", res.get("$.data.list.length()"));
-//        assertEquals("first-name-1", res.get("$.data.list[0].firstName"));
-//        assertEquals("13", res.get("$.data.count"));
-//
-//    }
+    }
 }

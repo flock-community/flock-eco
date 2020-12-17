@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import {useState} from 'react'
 import AddIcon from '@material-ui/icons/Add'
 import {UserTable} from './UserTable'
 import {UserDialog} from './UserDialog'

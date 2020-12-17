@@ -1,10 +1,8 @@
 package nl.probo.catalog.controllers
 
 import community.flock.eco.core.utils.toResponse
-import community.flock.eco.feature.workspace.graphql.WorkspaceInput
 import community.flock.eco.feature.workspace.graphql.WorkspaceUserInput
 import community.flock.eco.feature.workspace.mappers.WorkspaceGraphqlMapper
-import community.flock.eco.feature.workspace.providers.WorkspaceUserProvider
 import community.flock.eco.feature.workspace.services.WorkspaceService
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller

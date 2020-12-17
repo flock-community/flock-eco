@@ -1,6 +1,5 @@
 package community.flock.eco.feature.user.filters
 
-import community.flock.eco.core.utils.toNullable
 import community.flock.eco.feature.user.services.UserAccountService
 import community.flock.eco.feature.user.services.UserSecurityService
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken

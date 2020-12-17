@@ -1,13 +1,10 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
-import gql from 'graphql-tag'
-import {useQuery} from '@apollo/react-hooks'
-import {WorkspaceUserTableQuery, WorkspaceUserTableQueryVariables} from '../Apollo'
 // @ts-ignore
 import {AlignedLoader} from '@flock-community/flock-eco-core/src/main/react/components/AlignedLoader'
 

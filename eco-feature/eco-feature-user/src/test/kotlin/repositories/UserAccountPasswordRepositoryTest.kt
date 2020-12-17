@@ -6,7 +6,6 @@ import community.flock.eco.feature.user.model.User
 import community.flock.eco.feature.user.model.UserAccountPassword
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
 import org.springframework.boot.test.context.SpringBootTest
@@ -16,13 +15,12 @@ import javax.transaction.Transactional
 @AutoConfigureTestDatabase
 @AutoConfigureDataJpa
 @Transactional
-class UserAccountPasswordRepositoryTest {
+class UserAccountPasswordRepositoryTest(
+        private val userRepository: UserRepository,
+private val userAccountPasswordRepository: UserAccountPasswordRepository
 
-    @Autowired
-    lateinit var userRepository: UserRepository
+) {
 
-    @Autowired
-    lateinit var userAccountPasswordRepository: UserAccountPasswordRepository
 
     @Test
     fun `save user via repository`() {

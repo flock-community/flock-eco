@@ -4,7 +4,6 @@ import community.flock.eco.feature.mailchimp.MailchimpConfiguration
 import community.flock.eco.feature.mailchimp.model.MailchimpMember
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient
@@ -21,10 +20,9 @@ import kotlin.test.assertNull
 @AutoConfigureWebClient
 @Transactional
 @Disabled
-class MailchimpClientTest {
-
-    @Autowired
-    private lateinit var mailchimpClient: MailchimpClient
+class MailchimpClientTest(
+        private val mailchimpClient: MailchimpClient
+) {
 
     private val listId = "1d3504aedc"
 

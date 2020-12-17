@@ -13,10 +13,9 @@ data class PostPersistEntityEvent(override val entity: Any) : EntityEvent(entity
 data class PostUpdateEntityEvent(override val entity: Any) : EntityEvent(entity)
 data class PostRemoveEntityEvent(override val entity: Any) : EntityEvent(entity)
 
-class EventEntityListeners {
-
-    @Autowired
-    private lateinit var publisher: ApplicationEventPublisher
+class EventEntityListeners(
+        private val publisher: ApplicationEventPublisher
+) {
 
     @PrePersist
     private fun prePersist(entity: Any) = publisher

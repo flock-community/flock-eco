@@ -2,7 +2,6 @@ package community.flock.eco.feature.user.services
 
 import community.flock.eco.core.utils.toNullable
 import community.flock.eco.feature.user.events.UserCreateEvent
-import community.flock.eco.feature.user.events.UserDeleteEvent
 import community.flock.eco.feature.user.events.UserUpdateEvent
 import community.flock.eco.feature.user.forms.UserForm
 import community.flock.eco.feature.user.model.User

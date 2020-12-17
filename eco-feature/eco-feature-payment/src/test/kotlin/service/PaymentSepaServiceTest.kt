@@ -8,10 +8,8 @@ import community.flock.eco.feature.payment.services.PaymentSepaService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.SpringBootTest
 import java.time.LocalDate
 import java.time.Month
@@ -22,13 +20,12 @@ import javax.transaction.Transactional
 @AutoConfigureTestDatabase
 @AutoConfigureDataJpa
 @Transactional
-class PaymentSepaServiceTest {
+class PaymentSepaServiceTest(
+        val service: PaymentSepaService,
+        val repository: PaymentMandateRepository
+) {
 
-    @Autowired
-    lateinit var service: PaymentSepaService
 
-    @Autowired
-    lateinit var repository: PaymentMandateRepository
 
     @Test
     fun createSimple() {
