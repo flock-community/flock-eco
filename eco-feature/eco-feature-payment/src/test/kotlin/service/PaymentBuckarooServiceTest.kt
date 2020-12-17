@@ -1,18 +1,19 @@
 package community.flock.eco.feature.payment.service
 
+import community.flock.eco.feature.payment.PaymentConfiguration
 import community.flock.eco.feature.payment.services.PaymentBuckarooService
-import org.junit.Ignore
-import org.junit.Test
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
+import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.boot.test.context.SpringBootTest
+import javax.transaction.Transactional
 
-@RunWith(SpringRunner::class)
-@DataJpaTest(showSql = false)
+@SpringBootTest(classes = [PaymentConfiguration::class])
 @AutoConfigureTestDatabase
-@Ignore
+@AutoConfigureDataJpa
+@Transactional
 class PaymentBuckarooServiceTest {
 
     @Autowired

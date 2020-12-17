@@ -1,20 +1,26 @@
 package community.flock.eco.feature.mailchimp.clients
 
+import community.flock.eco.feature.mailchimp.MailchimpConfiguration
 import community.flock.eco.feature.mailchimp.model.MailchimpMember
-import org.junit.Ignore
-import org.junit.Test
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.Disabled
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
+import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
+import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
+import javax.transaction.Transactional
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
-@RunWith(SpringRunner::class)
-@SpringBootTest
-@Ignore
+@SpringBootTest(classes = [MailchimpConfiguration::class])
+@AutoConfigureTestDatabase
+@AutoConfigureDataJpa
+@AutoConfigureWebClient
+@Transactional
+@Disabled
 class MailchimpClientTest {
 
     @Autowired

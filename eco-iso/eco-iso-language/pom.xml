@@ -37,10 +37,6 @@
     <build>
         <plugins>
             <plugin>
-                <artifactId>kotlin-maven-plugin</artifactId>
-                <groupId>org.jetbrains.kotlin</groupId>
-            </plugin>
-            <plugin>
                 <groupId>community.flock</groupId>
                 <artifactId>graphql-simple-bindings-maven-plugin</artifactId>
                 <configuration>

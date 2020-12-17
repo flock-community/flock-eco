@@ -1,23 +1,24 @@
 package community.flock.eco.feature.payment.mapper
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.KotlinModule
+import community.flock.eco.feature.payment.PaymentConfiguration
 import community.flock.eco.feature.payment.model.PaymentFrequency
 import community.flock.eco.feature.payment.model.PaymentMandate
 import community.flock.eco.feature.payment.model.PaymentTransaction
 import community.flock.eco.feature.payment.model.PaymentType
 import community.flock.eco.feature.payment.repositories.PaymentMandateRepository
-import org.junit.Test
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
+import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.test.context.junit4.SpringRunner
-import com.fasterxml.jackson.module.kotlin.KotlinModule
+import org.springframework.boot.test.context.SpringBootTest
 
 
-@RunWith(SpringRunner::class)
-@DataJpaTest(showSql=false)
+@SpringBootTest(classes = [PaymentConfiguration::class])
 @AutoConfigureTestDatabase
+@AutoConfigureDataJpa
 class MapperTest {
 
     @Autowired
@@ -62,8 +63,8 @@ class MapperTest {
     }
 
     @Test
-    fun test3(){
-        val data =paymentMandateRepository.findAll()
+    fun test3() {
+        val data = paymentMandateRepository.findAll()
 
         val mapper = ObjectMapper()
         mapper.registerModule(KotlinModule())

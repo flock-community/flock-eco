@@ -1,3 +1,5 @@
+package community.flock.eco.feature.member.mapper
+
 import community.flock.eco.feature.member.graphql.MemberFieldInput
 import community.flock.eco.feature.member.graphql.MemberInput
 import community.flock.eco.feature.member.model.Member
@@ -6,7 +8,6 @@ import community.flock.eco.feature.member.model.MemberGroup
 import community.flock.eco.feature.member.model.MemberStatus
 import community.flock.eco.feature.member.repositories.MemberGroupRepository
 import org.springframework.stereotype.Component
-import java.time.LocalDate
 import community.flock.eco.feature.member.graphql.Member as MemberGraphql
 import community.flock.eco.feature.member.graphql.MemberGender as MemberGenderGraphql
 import community.flock.eco.feature.member.graphql.MemberStatus as MemberStatusGraphql

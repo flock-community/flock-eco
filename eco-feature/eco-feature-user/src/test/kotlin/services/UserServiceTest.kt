@@ -4,20 +4,18 @@ import community.flock.eco.feature.user.UserConfiguration
 import community.flock.eco.feature.user.forms.UserForm
 import community.flock.eco.feature.user.forms.UserGroupForm
 import community.flock.eco.feature.user.repositories.UserGroupRepository
-import org.junit.Assert
-import org.junit.Test
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.test.annotation.DirtiesContext
-import org.springframework.test.context.ContextConfiguration
-import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
+import org.springframework.boot.test.context.SpringBootTest
+import javax.transaction.Transactional
 
-@RunWith(SpringRunner::class)
-@ContextConfiguration(classes = [UserConfiguration::class])
-@DataJpaTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@SpringBootTest(classes = [UserConfiguration::class])
+@AutoConfigureTestDatabase
+@AutoConfigureDataJpa
+@Transactional
 class UserServiceTest {
 
     @Autowired
@@ -36,7 +34,7 @@ class UserServiceTest {
                 email = "user-1@gmail.com"
         )
         val user = userService.create(form)
-        Assert.assertNotNull(user)
+        assertNotNull(user)
     }
 
 
@@ -47,11 +45,11 @@ class UserServiceTest {
                 email = "user-1@gmail.com"
         )
         val user = userService.create(form)
-        Assert.assertNotNull(user)
+        assertNotNull(user)
 
         userService.delete(user.code)
 
-        Assert.assertEquals(0, userService.findAll().count())
+        assertEquals(0, userService.findAll().count())
     }
 
     @Test
@@ -61,15 +59,15 @@ class UserServiceTest {
                 email = "user-3@gmail.com"
         )
         val user = userService.create(form)
-        Assert.assertNotNull(user.id)
+        assertNotNull(user.id)
 
         val group = userGroupService.create(UserGroupForm("Test", setOf(user.code)))
-        Assert.assertNotNull(group.id)
+        assertNotNull(group.id)
 
         userService.delete(user.code)
 
-        Assert.assertEquals(0, userService.findAll().count())
-        Assert.assertEquals(1, userGroupRepository.findAll().count())
+        assertEquals(0, userService.findAll().count())
+        assertEquals(1, userGroupRepository.findAll().count())
     }
 
 }

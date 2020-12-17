@@ -1,35 +1,34 @@
 package community.flock.eco.feature.payment.service;
 
+import community.flock.eco.feature.payment.PaymentConfiguration
 import community.flock.eco.feature.payment.model.*
 import community.flock.eco.feature.payment.services.PaymentSepaXmlService
-import org.junit.Assert
-import org.junit.Test
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
+import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.junit4.SpringRunner
 import java.io.StringWriter
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.Month
-import java.time.format.DateTimeFormatter
+import javax.transaction.Transactional
 import javax.xml.transform.OutputKeys
 import javax.xml.transform.TransformerFactory
 import javax.xml.transform.dom.DOMSource
 import javax.xml.transform.stream.StreamResult
 
-@RunWith(SpringRunner::class)
-@SpringBootTest
+@SpringBootTest(classes = [PaymentConfiguration::class])
 @AutoConfigureTestDatabase
-@ActiveProfiles("test")
+@AutoConfigureDataJpa
+@Transactional
 class PaymentSepaXmlServiceTest {
 
     @Autowired
     lateinit var paymentSepaXmlService: PaymentSepaXmlService
 
-    val date: LocalDate = LocalDate.of(2019, 1,1)
+    val date: LocalDate = LocalDate.of(2019, 1, 1)
     val data = listOf(
             PaymentTransaction(
                     amount = 5.00,
@@ -99,7 +98,7 @@ class PaymentSepaXmlServiceTest {
 
         val example = javaClass.classLoader.getResource("example_sepa.xml").readText()
 
-        Assert.assertEquals(example, output)
+        assertEquals(example, output)
 
     }
 

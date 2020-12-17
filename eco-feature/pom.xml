@@ -83,7 +83,6 @@
         <dependency>
             <groupId>com.graphql-java-kickstart</groupId>
             <artifactId>graphql-java-tools</artifactId>
-            <version>6.0.2</version>
         </dependency>
         <dependency>
             <groupId>com.graphql-java</groupId>
@@ -91,11 +90,6 @@
             <version>1.0</version>
         </dependency>
 
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>

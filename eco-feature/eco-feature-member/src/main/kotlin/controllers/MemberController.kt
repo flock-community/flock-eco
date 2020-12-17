@@ -1,12 +1,10 @@
 package community.flock.eco.feature.member.controllers
 
-import MemberGraphqlMapper
 import community.flock.eco.core.utils.toResponse
-import community.flock.eco.feature.member.events.MemberEvent
 import community.flock.eco.feature.member.graphql.MemberInput
+import community.flock.eco.feature.member.mapper.MemberGraphqlMapper
 import community.flock.eco.feature.member.model.Member
 import community.flock.eco.feature.member.model.MemberStatus
-import community.flock.eco.feature.member.repositories.MemberGroupRepository
 import community.flock.eco.feature.member.services.MemberService
 import community.flock.eco.feature.member.specifications.MemberSpecification
 import org.springframework.data.domain.Pageable

@@ -2,24 +2,19 @@ package community.flock.eco.feature.user.repositories
 
 import community.flock.eco.core.utils.toNullable
 import community.flock.eco.feature.user.UserConfiguration
-import community.flock.eco.feature.user.develop.data.UserGroupLoadData
-import community.flock.eco.feature.user.develop.data.UserLoadData
 import community.flock.eco.feature.user.model.User
-import org.junit.Assert.*
-import org.junit.Test
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.context.annotation.Import
-import org.springframework.test.context.ContextConfiguration
-import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
+import org.springframework.boot.test.context.SpringBootTest
+import javax.transaction.Transactional
 
-@RunWith(SpringRunner::class)
-@ContextConfiguration(classes = [UserConfiguration::class])
-@DataJpaTest
+@SpringBootTest(classes = [UserConfiguration::class])
 @AutoConfigureTestDatabase
-@Import(UserLoadData::class, UserGroupLoadData::class)
+@AutoConfigureDataJpa
+@Transactional
 class UserRepositoryTest {
 
     @Autowired
