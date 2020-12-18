@@ -1,11 +1,12 @@
 import React, {ChangeEvent, useEffect, useState} from 'react'
 import {AppBar, Button, Dialog, DialogActions, DialogContent, Tab, Tabs, Typography} from '@material-ui/core'
 import {WORKSPACE_FORM_ID, WorkspaceForm} from './WorkspaceForm'
-import {Workspace, WorkspaceClient, WorkspaceInput} from './WorkspaceClient'
+import {WorkspaceClient} from './WorkspaceClient'
 import {WorkspaceUserTable} from './WorkspaceUsersTable'
 import {WorkspaceUsersForm} from './WorkspaceUsersForm'
-// @ts-ignore
-import {ConfirmDialog} from '@flock-community/flock-eco-core/src/main/react/components/ConfirmDialog'
+
+import {ConfirmDialog} from '@flock-community/flock-eco-core'
+import {Workspace, WorkspaceInput} from "../Simple";
 
 
 interface Props {

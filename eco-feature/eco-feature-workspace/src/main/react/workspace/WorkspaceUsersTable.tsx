@@ -5,8 +5,8 @@ import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
-// @ts-ignore
-import {AlignedLoader} from '@flock-community/flock-eco-core/src/main/react/components/AlignedLoader'
+
+import {AlignedLoader} from '@flock-community/flock-eco-core'
 
 interface User {
   id: string,

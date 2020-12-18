@@ -11,9 +11,9 @@ import gql from 'graphql-tag'
 import {useQuery} from '@apollo/react-hooks'
 import {TableSortLabel} from '@material-ui/core'
 import {Direction, WorkspaceTableQuery, WorkspaceTableQuery_list, WorkspaceTableQueryVariables} from '../Apollo'
-// @ts-ignore
-import {AlignedLoader} from '@flock-community/flock-eco-core/src/main/react/components/AlignedLoader'
-import {Workspace, WorkspaceInput} from './WorkspaceClient'
+
+import {AlignedLoader} from '@flock-community/flock-eco-core'
+import {Workspace, WorkspaceInput} from '../Simple'
 
 
 interface Props {

@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react'
-// @ts-ignore
 import {FormControl, Grid, IconButton, InputLabel, MenuItem} from '@material-ui/core'
 import {Select, TextField} from 'formik-material-ui'
 import {Field, Form, Formik} from 'formik'
@@ -7,7 +6,6 @@ import AddIcon from '@material-ui/icons/Add'
 import * as yup from 'yup'
 import {WorkspaceUserClient} from './WorkspaceUserClient'
 import {WorkspaceRoleClient} from './WorkspaceRoleClient'
-import {FormikActions} from 'formik/dist/types'
 
 const schema = yup.object({
   reference: yup.string()
@@ -37,10 +35,9 @@ export function WorkspaceUsersForm({id, onComplete}: Props) {
       .then(res => setRoles(res.body))
   },[])
 
-  const handleSubmit = (values: Values, actions:FormikActions<Values>) => {
+  const handleSubmit = (values: Values) => {
     client.post({...values})
       .then(() => {
-        actions.setSubmitting(false)
         onComplete && onComplete()
       })
   }
@@ -78,7 +75,7 @@ export function WorkspaceUsersForm({id, onComplete}: Props) {
 
   return (<Formik
     validationSchema={schema}
-    initialValues={schema.cast()}
+    initialValues={schema.default()}
     render={renderForm}
     onSubmit={handleSubmit}
   />)

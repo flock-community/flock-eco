@@ -28,7 +28,7 @@ class ApplicationData(
                 .map { it.toName() }
                 .toSet()
         userAccountService
-                .createUserAccountPassword(UserAccountPasswordForm(email = "flock", password = "flock", authorities = all))
+                .createUserAccountPassword(UserAccountPasswordForm(email = "test", password = "test", authorities = all))
         userLoadData.load(10)
         memberLoadData.load(100)
         workspaceLoadData.load()

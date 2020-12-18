@@ -3,7 +3,7 @@ import * as Yup from 'yup'
 import {ArrayHelpers, Field, FieldArray, Form, Formik, FormikProps} from 'formik'
 import {TextField} from 'formik-material-ui'
 import {Grid, IconButton, Typography} from '@material-ui/core'
-import {WorkspaceInput} from './WorkspaceClient'
+import {WorkspaceInput} from '../Simple'
 import AddIcon from '@material-ui/icons/Add'
 import DeleteIcon from '@material-ui/icons/Delete'
 
