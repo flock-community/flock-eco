@@ -13,6 +13,7 @@ import community.flock.eco.feature.user.model.UserAccountOauthProvider
 import community.flock.eco.feature.user.repositories.UserAccountPasswordRepository
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
 import org.springframework.boot.test.context.SpringBootTest
@@ -28,10 +29,10 @@ import kotlin.test.assertTrue
 @AutoConfigureDataJpa
 @Transactional
 class UserAccountServiceTest(
-        val userService: UserService,
-        val userAccountService: UserAccountService,
-        val userAccountPasswordRepository: UserAccountPasswordRepository,
-        val passwordEncoder: PasswordEncoder
+        @Autowired val userService: UserService,
+        @Autowired val userAccountService: UserAccountService,
+        @Autowired val userAccountPasswordRepository: UserAccountPasswordRepository,
+        @Autowired val passwordEncoder: PasswordEncoder
 ) {
 
     private val passwordForm = UserAccountPasswordForm(

@@ -7,6 +7,7 @@ import community.flock.eco.feature.member.repositories.MemberRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient
@@ -21,8 +22,8 @@ import javax.transaction.Transactional
 @Transactional
 @Import(MemberLoadData::class)
 class MemberSpecificationTest(
-        private val memberRepository: MemberRepository,
-        private val memberLoadData: MemberLoadData
+        @Autowired private val memberRepository: MemberRepository,
+        @Autowired private val memberLoadData: MemberLoadData
 ) {
 
 

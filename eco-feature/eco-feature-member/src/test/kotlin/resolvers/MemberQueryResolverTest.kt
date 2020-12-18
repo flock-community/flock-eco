@@ -7,6 +7,7 @@ import com.graphql.spring.boot.test.GraphQLTestTemplate
 import community.flock.eco.feature.member.MemberConfiguration
 import community.flock.eco.feature.member.develop.data.MemberLoadData
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient
@@ -21,11 +22,9 @@ import kotlin.test.assertTrue
 @AutoConfigureWebClient
 @Import(MemberConfiguration::class, MemberLoadData::class)
 class MemberQueryResolverTest(
-        private val graphQLTestTemplate: GraphQLTestTemplate,
-        private val memberLoadData: MemberLoadData
+        @Autowired private val graphQLTestTemplate: GraphQLTestTemplate,
+        @Autowired private val memberLoadData: MemberLoadData
 ) {
-
-
 
     @Test
     fun countMembers() {

@@ -1,6 +1,5 @@
 package community.flock.eco.feature.member.resolvers
 
-
 import community.flock.eco.feature.user.services.UserService
 import graphql.kickstart.tools.GraphQLQueryResolver
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass

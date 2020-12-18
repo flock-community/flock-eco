@@ -2,6 +2,7 @@ package community.flock.eco.iso.language.services
 
 import LanguageIsoConfiguration
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient
 import org.springframework.boot.test.context.SpringBootTest
 import kotlin.test.assertEquals
@@ -10,7 +11,7 @@ import kotlin.test.assertNull
 @SpringBootTest(classes = [LanguageIsoConfiguration::class])
 @AutoConfigureWebClient
 class LanguageIsoServiceTest(
-        private val languageIsoService: LanguageIsoService
+        @Autowired private val languageIsoService: LanguageIsoService
 ) {
 
     @Test

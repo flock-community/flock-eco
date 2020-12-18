@@ -4,6 +4,7 @@ import community.flock.eco.feature.payment.PaymentConfiguration
 import community.flock.eco.feature.payment.model.*
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
 import org.springframework.boot.test.context.SpringBootTest
@@ -16,8 +17,8 @@ import kotlin.test.assertEquals
 @AutoConfigureDataJpa
 @Transactional
 class PaymentRepositoryTest(
-        val paymentTransactionRepository: PaymentTransactionRepository,
-        val paymentMandateRepository: PaymentMandateRepository
+        @Autowired private val paymentTransactionRepository: PaymentTransactionRepository,
+        @Autowired private val paymentMandateRepository: PaymentMandateRepository
 ) {
 
 

@@ -50,15 +50,9 @@ class MemberQueryResolver(
     fun MemberModel.produce() = memberGraphqlMapper.produce(this)
     fun MemberStatusGraphql.consume() = memberGraphqlMapper.consume(this)
 
-    fun pageable(page: Int?, size: Int?, sort: String?, order: String?) = PageRequest.of(
-            page ?: 0,
-            size ?: 10,
-            sort
-                    ?.let {
-                        Sort.by(
-                                Sort.Direction.fromOptionalString(order)
-                                        .orElse(Sort.DEFAULT_DIRECTION),
-                                sort)
-                    }
-                    ?: Sort.unsorted())
+    fun pageable(page: Int?, size: Int?, sort: String?, order: String?):PageRequest {
+        val order = order?.let{ Sort.Direction.fromString(it) } ?: Sort.DEFAULT_DIRECTION
+        val sort = sort?.let { Sort.by(order, sort) } ?: Sort.unsorted()
+        return PageRequest.of(page ?: 0, size ?: 10, sort)
+    }
 }

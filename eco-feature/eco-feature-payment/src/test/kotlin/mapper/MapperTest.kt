@@ -9,6 +9,7 @@ import community.flock.eco.feature.payment.model.PaymentTransaction
 import community.flock.eco.feature.payment.model.PaymentType
 import community.flock.eco.feature.payment.repositories.PaymentMandateRepository
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
 import org.springframework.boot.test.context.SpringBootTest
@@ -18,7 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest
 @AutoConfigureTestDatabase
 @AutoConfigureDataJpa
 class MapperTest(
-        val paymentMandateRepository: PaymentMandateRepository
+        @Autowired private val paymentMandateRepository: PaymentMandateRepository
 ) {
 
     @Test

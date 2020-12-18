@@ -5,6 +5,7 @@ import community.flock.eco.feature.member.model.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient
@@ -18,8 +19,8 @@ import javax.transaction.Transactional
 @AutoConfigureWebClient
 @Transactional
 class MemberRepositoryTest(
-        private val memberRepository: MemberRepository,
-        private val memberFieldRepository: MemberFieldRepository
+        @Autowired private val memberRepository: MemberRepository,
+        @Autowired private val memberFieldRepository: MemberFieldRepository
 ) {
 
     @BeforeEach
