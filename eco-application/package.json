@@ -1,22 +1,7 @@
 {
   "name": "@flock-community/flock-eco-application",
   "version": "2.0.0-next.eebc01a",
-  "dependencies": {
-    "@material-ui/core": "^4.1.1",
-    "@material-ui/icons": "^4.2.0",
-    "@material-ui/lab": "^4.0.0-alpha.16",
-    "@material-ui/styles": "^4.1.1",
-    "babel-polyfill": "^6.26.0",
-    "formik": "^1.5.7",
-    "formik-material-ui": "0.0.20",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-material-ui-form-validator": "^2.0.8",
-    "react-router-dom": "^5.0.1",
-    "react-select": "^2.4.3",
-    "whatwg-fetch": "^3.0.0",
-    "yup": "^0.27.0"
-  },
+  "dependencies": {},
   "repository": {
     "type": "git",
     "url": "ssh://git@github.com/flock-community/flock-eco.git",

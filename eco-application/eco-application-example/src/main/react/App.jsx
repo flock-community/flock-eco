@@ -4,6 +4,7 @@ import ApolloClient from 'apollo-boost'
 import {ApolloProvider} from '@apollo/react-hooks'
 import {AppDrawer} from './AppDrawer'
 import {features, findComponentName} from './data'
+import {MemberTable} from "@flock-community/flock-eco-feature-member";
 const client = new ApolloClient({
   uri: '/graphql',
 })

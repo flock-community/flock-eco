@@ -1,8 +1,12 @@
 {
   "name": "@flock-community/flock-eco-feature-member",
   "version": "2.0.0-next.eebc01a",
+  "main": "./src/main/react",
   "dependencies": {
     "@flock-community/flock-eco-core": "^2.0.0-next.eebc01a"
+  },
+  "scripts": {
+    "compile": "tsc"
   },
   "repository": {
     "type": "git",

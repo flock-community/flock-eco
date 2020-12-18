@@ -1,3 +1,3 @@
-import MemberGroupFeature from './MemberGroupFeature.js'
+import MemberGroupFeature from './MemberGroupFeature'
 
 export {MemberGroupFeature}

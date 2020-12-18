@@ -20,7 +20,7 @@ import community.flock.eco.feature.user.model.UserAccountPassword as UserAccount
 @Component
 @ConditionalOnClass(GraphQLQueryResolver::class)
 class UserQueryResolver(
-        private val userService: UserService) : GraphQLQueryResolver {
+        private val userService: UserService):GraphQLQueryResolver {
 
     fun findUserById(id: String): UserGraphql? = userService
             .findByCode(id)

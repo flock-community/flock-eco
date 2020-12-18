@@ -5,13 +5,14 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "webpack --mode production ./src/main/react"
+    "build": "webpack --mode production"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@flock-community/flock-eco-feature-user": "^2.0.0-next.eebc01a",
-    "@flock-community/flock-eco-feature-member": "^2.0.0-next.eebc01a"
+    "@flock-community/flock-eco-feature-member": "^2.0.0-next.eebc01a",
+    "@flock-community/flock-eco-feature-workspace": "^2.0.0-next.eebc01a"
   },
   "devDependencies": {
     "@flock-community/flock-eco-webpack": "^2.0.0-next.eebc01a",

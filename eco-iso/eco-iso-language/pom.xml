@@ -32,6 +32,11 @@
             <artifactId>graphql-spring-boot-starter</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.graphql-java-kickstart</groupId>
+            <artifactId>graphql-java-tools</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>

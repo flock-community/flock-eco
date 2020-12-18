@@ -12,7 +12,7 @@ module.exports = {
   output: {
     publicPath: '/',
     filename: '[name].[contenthash].js',
-    path: path.resolve(__dirname, 'target/classes/static'),
+    path: path.join(process.cwd(), 'target/classes/static'),
   },
 
   devtool: 'eval-source-map',

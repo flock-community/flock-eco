@@ -1,3 +1,4 @@
+import React from 'react'
 import classNames from 'classnames'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'

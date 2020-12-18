@@ -8,7 +8,11 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export function AlignedLoader({height}) {
+type AlignedLoaderProps = {
+  height:number
+}
+
+export function AlignedLoader({height}:AlignedLoaderProps) {
   const classes = useStyles()
 
   return (

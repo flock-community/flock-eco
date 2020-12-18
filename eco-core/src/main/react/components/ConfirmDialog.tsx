@@ -20,14 +20,21 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export function ConfirmDialog({open, children, onClose, onConfirm}) {
+type ConfirmDialogProps = {
+  open:boolean,
+  onClose: () => void,
+  onConfirm: () => void,
+  children: React.ReactNode
+}
+
+export function ConfirmDialog({open, onClose, onConfirm, children}: ConfirmDialogProps) {
   const classes = useStyles()
 
-  const handleClose = ev => {
+  const handleClose = () => {
     onClose && onClose()
   }
 
-  const handleConfirm = ev => {
+  const handleConfirm = () => {
     onConfirm && onConfirm()
   }
 

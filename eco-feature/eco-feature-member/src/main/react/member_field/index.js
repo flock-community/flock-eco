@@ -1,3 +1,3 @@
-import MemberFieldFeature from './MemberFieldFeature.js'
+import MemberFieldFeature from './MemberFieldFeature'
 
 export {MemberFieldFeature}

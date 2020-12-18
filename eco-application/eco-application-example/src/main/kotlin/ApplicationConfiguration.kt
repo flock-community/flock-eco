@@ -4,7 +4,6 @@ import LanguageIsoConfiguration
 import community.flock.eco.feature.member.MemberConfiguration
 import community.flock.eco.feature.user.UserConfiguration
 import community.flock.eco.feature.workspace.WorkspaceConfiguration
-import community.flock.eco.iso.country.CountryIsoConfiguration
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
@@ -17,7 +16,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 @ComponentScan
 @Import(UserConfiguration::class,
         MemberConfiguration::class,
-        CountryIsoConfiguration::class,
         LanguageIsoConfiguration::class,
         WorkspaceConfiguration::class)
 class ApplicationConfiguration
