@@ -54,7 +54,7 @@ export function WorkspaceForm({value, onSubmit}: Props) {
         </Grid>
       </Grid>
 
-      {props.values.variables.map((user, index) => (<Grid key={index} container spacing={1}>
+      {props.values?.variables?.map((user, index) => (<Grid key={index} container spacing={1}>
         <Grid item xs>
           <Field
             component={TextField}

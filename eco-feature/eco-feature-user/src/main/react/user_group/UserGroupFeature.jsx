@@ -1,11 +1,13 @@
-import {useState} from 'react'
+import React, {useState} from 'react'
+
 import AddIcon from '@material-ui/icons/Add'
-import {UserTable} from './UserTable'
-import {UserDialog} from './UserDialog'
+
+import {UserGroupTable} from './UserGroupTable'
+import {UserGroupDialog} from './UserGroupDialog'
 import Fab from '@material-ui/core/Fab'
+import makeStyles from '@material-ui/core/styles/makeStyles'
 import Grid from '@material-ui/core/Grid'
 import {TextField} from '@material-ui/core'
-import makeStyles from '@material-ui/core/styles/makeStyles'
 import Paper from '@material-ui/core/Paper'
 
 const useStyles = makeStyles(theme => ({
@@ -31,8 +33,10 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export function UserFeature({enablePassword}) {
+export function UserGroupFeature() {
   const classes = useStyles()
+
+  const [reload, setReload] = useState(false)
 
   const [searchState, setSearchState] = useState('')
 
@@ -41,17 +45,15 @@ export function UserFeature({enablePassword}) {
     code: null,
   })
 
-  const [reload, setReload] = useState(false)
+  const handleSearchChange = ev => {
+    setSearchState(ev.target.value)
+  }
 
   const handleRowClick = (ev, item) => {
     setDialogState({
       open: true,
       code: item.code,
     })
-  }
-
-  const handleSearchChange = ev => {
-    setSearchState(ev.target.value)
   }
 
   const handleNewClick = () => {
@@ -67,6 +69,10 @@ export function UserFeature({enablePassword}) {
       code: null,
     })
     setReload(!reload)
+  }
+
+  const handleFormUpdate = value => {
+    this.setState({item: value})
   }
 
   return (
@@ -85,22 +91,17 @@ export function UserFeature({enablePassword}) {
           </Grid>
           <Grid item xs={12}>
             <Paper>
-              <UserTable
-                reload={reload}
-                search={searchState}
-                onRowClick={handleRowClick}
-              />
+              <UserGroupTable onRowClick={handleRowClick} reload={reload} />
             </Paper>
           </Grid>
         </Grid>
         <div className={classes.spacer} />
       </div>
 
-      <UserDialog
-        open={dialogState.open}
+      <UserGroupDialog
         code={dialogState.code}
+        open={dialogState.open}
         onComplete={handleComplete}
-        enablePassword={enablePassword}
       />
 
       <Fab

@@ -50,10 +50,10 @@ export function MemberForm({
   onChange,
   onSubmit,
 }) {
-  const [state, setState] = useState(value || schema.cast())
+  const [state, setState] = useState(value || schema.default())
 
   useEffect(() => {
-    setState(value || schema.cast())
+    setState(value || schema.default())
   }, [value])
 
   const resolverGroup = code => groups.find(it => it.code === code) || {}
@@ -354,7 +354,6 @@ export function MemberForm({
           <FormControl disabled={disabled} fullWidth>
             <InputLabel htmlFor="country">Country</InputLabel>
             <Select
-              required
               value={state.country || ''}
               onChange={handleChange('country')}
               inputProps={{
@@ -379,7 +378,6 @@ export function MemberForm({
           <FormControl disabled={disabled} fullWidth>
             <InputLabel htmlFor="country">Language</InputLabel>
             <Select
-              required
               value={state.language || ''}
               onChange={handleChange('language')}
               inputProps={{

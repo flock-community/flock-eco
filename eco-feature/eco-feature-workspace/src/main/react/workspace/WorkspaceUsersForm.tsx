@@ -34,7 +34,7 @@ export function WorkspaceUsersForm({id, onComplete}: Props) {
 
   useEffect(() => {
     WorkspaceRoleClient.all()
-      .then(res => setRoles(res))
+      .then(res => setRoles(res.body))
   },[])
 
   const handleSubmit = (values: Values, actions:FormikActions<Values>) => {
@@ -62,7 +62,7 @@ export function WorkspaceUsersForm({id, onComplete}: Props) {
             component={Select}
             name="role"
           >
-            {roles.map(role => (<MenuItem value={role}>
+            {roles?.map(role => (<MenuItem value={role}>
               {role}
             </MenuItem>))}
           </Field>

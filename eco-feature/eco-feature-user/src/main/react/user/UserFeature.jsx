@@ -1,13 +1,11 @@
-import {useState} from 'react'
-
+import React, {useState} from 'react'
 import AddIcon from '@material-ui/icons/Add'
-
-import {UserGroupTable} from './UserGroupTable'
-import {UserGroupDialog} from './UserGroupDialog'
+import {UserTable} from './UserTable'
+import {UserDialog} from './UserDialog'
 import Fab from '@material-ui/core/Fab'
-import makeStyles from '@material-ui/core/styles/makeStyles'
 import Grid from '@material-ui/core/Grid'
 import {TextField} from '@material-ui/core'
+import makeStyles from '@material-ui/core/styles/makeStyles'
 import Paper from '@material-ui/core/Paper'
 
 const useStyles = makeStyles(theme => ({
@@ -33,10 +31,8 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export function UserGroupFeature() {
+export function UserFeature({enablePassword}) {
   const classes = useStyles()
-
-  const [reload, setReload] = useState(false)
 
   const [searchState, setSearchState] = useState('')
 
@@ -45,15 +41,17 @@ export function UserGroupFeature() {
     code: null,
   })
 
-  const handleSearchChange = ev => {
-    setSearchState(ev.target.value)
-  }
+  const [reload, setReload] = useState(false)
 
   const handleRowClick = (ev, item) => {
     setDialogState({
       open: true,
       code: item.code,
     })
+  }
+
+  const handleSearchChange = ev => {
+    setSearchState(ev.target.value)
   }
 
   const handleNewClick = () => {
@@ -69,10 +67,6 @@ export function UserGroupFeature() {
       code: null,
     })
     setReload(!reload)
-  }
-
-  const handleFormUpdate = value => {
-    this.setState({item: value})
   }
 
   return (
@@ -91,17 +85,22 @@ export function UserGroupFeature() {
           </Grid>
           <Grid item xs={12}>
             <Paper>
-              <UserGroupTable onRowClick={handleRowClick} reload={reload} />
+              <UserTable
+                reload={reload}
+                search={searchState}
+                onRowClick={handleRowClick}
+              />
             </Paper>
           </Grid>
         </Grid>
         <div className={classes.spacer} />
       </div>
 
-      <UserGroupDialog
-        code={dialogState.code}
+      <UserDialog
         open={dialogState.open}
+        code={dialogState.code}
         onComplete={handleComplete}
+        enablePassword={enablePassword}
       />
 
       <Fab
