@@ -37,4 +37,5 @@ jobs:
           restore-keys: ${{ runner.os }}-node-
       - run: npm ci
       - run: npm run bootstrap
+      - run: npm run compile
       - run: npm run build
