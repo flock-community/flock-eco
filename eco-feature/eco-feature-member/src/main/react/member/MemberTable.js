@@ -17,35 +17,45 @@ import Card from '@material-ui/core/Card'
 import TableContainer from '@material-ui/core/TableContainer'
 
 export const QUERY = gql`
-    query ($search: String!,
-        $statuses: [MemberStatus!],
-        $groups:[String!],
-        $page: Int!,
-        $sort: String,
-        $order: String) {
-        list: findAllMembers(
-            filter:{
-                search:$search, 
-                statuses:$statuses, 
-                groups:$groups
-            }, 
-            page:$page, 
-            size:10, 
-            sort:$sort,
-            order:$order) {
-            id,
-            firstName,
-            infix,
-            surName,
-            email,
-            created,
-            status,
-        }
-        count:countMembers(filter:{search:$search, statuses:$statuses, groups:$groups})
-    }`
+  query(
+    $search: String!
+    $statuses: [MemberStatus!]
+    $groups: [String!]
+    $page: Int!
+    $sort: String
+    $order: String
+  ) {
+    list: findAllMembers(
+      filter: {search: $search, statuses: $statuses, groups: $groups}
+      page: $page
+      size: 10
+      sort: $sort
+      order: $order
+    ) {
+      id
+      firstName
+      infix
+      surName
+      email
+      created
+      status
+    }
+    count: countMembers(
+      filter: {search: $search, statuses: $statuses, groups: $groups}
+    )
+  }
+`
 
-export function MemberTable({specification, refresh, size, page, order, direction, onRowClick, onMergeMembers}) {
-
+export function MemberTable({
+  specification,
+  refresh,
+  size,
+  page,
+  order,
+  direction,
+  onRowClick,
+  onMergeMembers,
+}) {
   const [state, setState] = useState({
     data: [],
     count: 0,
@@ -59,7 +69,7 @@ export function MemberTable({specification, refresh, size, page, order, directio
 
   const {data, error, loading, refetch} = useQuery(QUERY, {
     variables: {
-      search: state.specification.search || "",
+      search: state.specification.search || '',
       groups: state.specification.groups || [],
       statuses: state.specification.statuses || [],
       page: state.page,
@@ -70,28 +80,26 @@ export function MemberTable({specification, refresh, size, page, order, directio
 
   useEffect(() => {
     refetch()
-    setState(prev =>({
+    setState(prev => ({
       ...prev,
       selectedIds: [],
     }))
   }, [refresh])
 
   useEffect(() => {
-    setState(prev =>({
+    setState(prev => ({
       ...prev,
       page: page || 0,
     }))
   }, [page])
 
   useEffect(() => {
-    setState(prev =>({
+    setState(prev => ({
       ...prev,
       page: 0,
       specification: specification || {},
     }))
   }, [specification])
-
-
 
   const handleChangePage = (event, page) => {
     setState({...state, page: page})
@@ -102,16 +110,13 @@ export function MemberTable({specification, refresh, size, page, order, directio
   }
 
   const handleChangeSort = id => event => {
-    const toggleDirection = () => state.direction === 'desc' ? 'asc' : 'desc'
-    setState(
-      {
-        ...state,
-        order: id,
-        page: 0,
-        direction:
-          state.order === id ? toggleDirection() : state.direction,
-      },
-    )
+    const toggleDirection = () => (state.direction === 'desc' ? 'asc' : 'desc')
+    setState({
+      ...state,
+      order: id,
+      page: 0,
+      direction: state.order === id ? toggleDirection() : state.direction,
+    })
   }
 
   const isSelected = id => state.selectedIds.indexOf(id) !== -1
@@ -138,9 +143,11 @@ export function MemberTable({specification, refresh, size, page, order, directio
   ]
 
   if (loading)
-    return <Card>
-      <AlignedLoader height={250}/>
-    </Card>
+    return (
+      <Card>
+        <AlignedLoader height={250} />
+      </Card>
+    )
 
   return (
     <TableContainer>
@@ -148,60 +155,60 @@ export function MemberTable({specification, refresh, size, page, order, directio
         onMergeMembers={onMergeMembers}
         selectedIds={state.selectedIds}
       />
-      {data && (<Table>
-        <TableHead>
-          <TableRow>
-            <TableCell style={{width: 25}} padding="checkbox"/>
-            {rows.map(row => (
-              <TableCell key={row.id}>
-                <TableSortLabel
-                  active={state.order === row.id}
-                  direction={state.direction}
-                  onClick={handleChangeSort(row.id)}
-                >
-                  {row.label}
-                </TableSortLabel>
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-
-        <TableBody>
-          {data.list.map(it => (
-            <TableRow
-              key={it.id}
-              hover
-              selected={isSelected(it.id)}
-              aria-checked={isSelected(it.id)}
-            >
-              <TableCell style={{width: 25}} padding="checkbox">
-                <Checkbox
-                  onChange={e =>
-                    onCheckboxChange(e.target.checked, it.id)
-                  }
-                  checked={isSelected(it.id)}
-                />
-              </TableCell>
-              <TableCell
-                onClick={_ => handleRowClick(it)}
-                component="th"
-                scope="row"
-              >
-                {Member.toName(it)}
-              </TableCell>
-              <TableCell onClick={_ => handleRowClick(it)}>
-                {it.email}
-              </TableCell>
-              <TableCell onClick={_ => handleRowClick(it)}>
-                {it.created}
-              </TableCell>
-              <TableCell onClick={_ => handleRowClick(it)}>
-                {it.status}
-              </TableCell>
+      {data && (
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell style={{width: 25}} padding="checkbox" />
+              {rows.map(row => (
+                <TableCell key={row.id}>
+                  <TableSortLabel
+                    active={state.order === row.id}
+                    direction={state.direction}
+                    onClick={handleChangeSort(row.id)}
+                  >
+                    {row.label}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>)}
+          </TableHead>
+
+          <TableBody>
+            {data.list.map(it => (
+              <TableRow
+                key={it.id}
+                hover
+                selected={isSelected(it.id)}
+                aria-checked={isSelected(it.id)}
+              >
+                <TableCell style={{width: 25}} padding="checkbox">
+                  <Checkbox
+                    onChange={e => onCheckboxChange(e.target.checked, it.id)}
+                    checked={isSelected(it.id)}
+                  />
+                </TableCell>
+                <TableCell
+                  onClick={_ => handleRowClick(it)}
+                  component="th"
+                  scope="row"
+                >
+                  {Member.toName(it)}
+                </TableCell>
+                <TableCell onClick={_ => handleRowClick(it)}>
+                  {it.email}
+                </TableCell>
+                <TableCell onClick={_ => handleRowClick(it)}>
+                  {it.created}
+                </TableCell>
+                <TableCell onClick={_ => handleRowClick(it)}>
+                  {it.status}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
 
       <TablePagination
         count={data.count}
@@ -212,8 +219,7 @@ export function MemberTable({specification, refresh, size, page, order, directio
         component="div"
       />
 
-      <Snackbar open={error} message={error && error.message}/>
-
+      <Snackbar open={error} message={error && error.message} />
     </TableContainer>
   )
 }

@@ -14,14 +14,13 @@ const styles = theme => ({
     position: 'fixed',
     right: 20,
     bottom: 20,
-    margin: theme.spacing(1)
+    margin: theme.spacing(1),
   },
 })
 
 class GcpRuntimeVariableTable extends React.Component {
-
   state = {
-    list: []
+    list: [],
   }
   componentDidMount() {
     this.load()
@@ -37,7 +36,6 @@ class GcpRuntimeVariableTable extends React.Component {
         this.setState({list: json})
       })
   }
-
 
   render() {
     const {list} = this.state
@@ -69,7 +67,6 @@ class GcpRuntimeVariableTable extends React.Component {
       </Paper>
     )
   }
-
 }
 
 export default withStyles(styles)(GcpRuntimeVariableTable)

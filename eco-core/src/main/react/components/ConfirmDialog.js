@@ -21,7 +21,6 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export function ConfirmDialog({open, children, onClose, onConfirm}) {
-
   const classes = useStyles()
 
   const handleClose = ev => {
@@ -41,15 +40,15 @@ export function ConfirmDialog({open, children, onClose, onConfirm}) {
           className={classes.closeButton}
           onClick={handleClose}
         >
-          <CloseIcon/>
+          <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <DialogContent>
-        {children}
-      </DialogContent>
+      <DialogContent>{children}</DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button variant="contained" color="primary" onClick={handleConfirm}>Confirm</Button>
+        <Button variant="contained" color="primary" onClick={handleConfirm}>
+          Confirm
+        </Button>
       </DialogActions>
     </Dialog>
   )

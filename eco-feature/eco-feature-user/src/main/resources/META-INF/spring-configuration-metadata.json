@@ -1,9 +1,11 @@
 {
-  "groups": [{
-    "name": "flock.eco.feature.user",
-    "type": "community.flock.eco.feature.user.UserProperties",
-    "sourceType": "community.flock.eco.feature.user.UserProperties"
-  }],
+  "groups": [
+    {
+      "name": "flock.eco.feature.user",
+      "type": "community.flock.eco.feature.user.UserProperties",
+      "sourceType": "community.flock.eco.feature.user.UserProperties"
+    }
+  ],
   "properties": [
     {
       "name": "flock.eco.feature.user.secretType",

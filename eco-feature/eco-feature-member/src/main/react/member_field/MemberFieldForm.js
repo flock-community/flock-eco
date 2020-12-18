@@ -41,13 +41,15 @@ class MemberForm extends React.Component {
         direction="column"
         justify="space-evenly"
         alignItems="stretch"
-        spacing={1}>
+        spacing={1}
+      >
         <Grid item sx={12}>
           <TextField
             className={classes.input}
             label="Name"
             value={this.state.name || ''}
-            onChange={this.handleChange('name')}/>
+            onChange={this.handleChange('name')}
+          />
         </Grid>
 
         <Grid item sx={12}>
@@ -55,7 +57,8 @@ class MemberForm extends React.Component {
             className={classes.input}
             label="Label"
             value={this.state.label || ''}
-            onChange={this.handleChange('label')}/>
+            onChange={this.handleChange('label')}
+          />
         </Grid>
 
         <Grid item sx={12}>
@@ -64,7 +67,8 @@ class MemberForm extends React.Component {
             <Select
               className={classes.input}
               value={this.state.type || 'CHECKBOX'}
-              onChange={this.handleChange('type')}>
+              onChange={this.handleChange('type')}
+            >
               <MenuItem value="CHECKBOX">Checkbox</MenuItem>
               <MenuItem value="TEXT">Text</MenuItem>
               <MenuItem value="SINGLE_SELECT">Single Select</MenuItem>
@@ -75,7 +79,7 @@ class MemberForm extends React.Component {
 
         {(this.state.type === 'SINGLE_SELECT' ||
           this.state.type === 'MULTI_SELECT') &&
-        this.renderOptions()}
+          this.renderOptions()}
       </Grid>
     )
   }

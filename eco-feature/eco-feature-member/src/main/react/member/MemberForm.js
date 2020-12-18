@@ -20,43 +20,36 @@ const schema = Yup.object().shape({
   firstName: Yup.string()
     .required()
     .default(''),
-  infix: Yup.string()
-    .default(''),
+  infix: Yup.string().default(''),
   surName: Yup.string()
     .required()
     .default(''),
-  email: Yup.string()
-    .default(''),
-  phoneNumber: Yup.string()
-    .default(''),
-  street: Yup.string()
-    .default(''),
-  houseNumber: Yup.string()
-    .default(''),
-  houseNumberExtension: Yup.string()
-    .default(''),
-  postalCode: Yup.string()
-    .default(''),
-  city: Yup.string()
-    .default(''),
-  country: Yup.string()
-    .default(''),
-  language: Yup.string()
-    .default(''),
-  gender: Yup.string()
-    .default('UNKNOWN'),
-  birthDate: Yup.string()
-    .default(''),
-  groups: Yup.array()
-    .default([]),
-  fields: Yup.array()
-    .default([]),
-  status: Yup.string()
-    .default('NEW'),
+  email: Yup.string().default(''),
+  phoneNumber: Yup.string().default(''),
+  street: Yup.string().default(''),
+  houseNumber: Yup.string().default(''),
+  houseNumberExtension: Yup.string().default(''),
+  postalCode: Yup.string().default(''),
+  city: Yup.string().default(''),
+  country: Yup.string().default(''),
+  language: Yup.string().default(''),
+  gender: Yup.string().default('UNKNOWN'),
+  birthDate: Yup.string().default(''),
+  groups: Yup.array().default([]),
+  fields: Yup.array().default([]),
+  status: Yup.string().default('NEW'),
 })
 
-export function MemberForm({value, disabled, groups, fields, languages, countries, onChange, onSubmit}) {
-
+export function MemberForm({
+  value,
+  disabled,
+  groups,
+  fields,
+  languages,
+  countries,
+  onChange,
+  onSubmit,
+}) {
   const [state, setState] = useState(value || schema.cast())
 
   useEffect(() => {
@@ -64,9 +57,9 @@ export function MemberForm({value, disabled, groups, fields, languages, countrie
   }, [value])
 
   const resolverGroup = code => groups.find(it => it.code === code) || {}
-  const resolveField = key => (state.fields.find(it => it.key === key)) || {}
+  const resolveField = key => state.fields.find(it => it.key === key) || {}
 
-  const handleChange = (name) => (event) => {
+  const handleChange = name => event => {
     const it = {
       ...state,
       [name]: event.target.value,
@@ -75,7 +68,7 @@ export function MemberForm({value, disabled, groups, fields, languages, countrie
     onChange(it)
   }
 
-  const handleChangeGroup = (name) => (event) => {
+  const handleChangeGroup = name => event => {
     const value = event.target.value
     const it = {
       ...state,
@@ -85,15 +78,18 @@ export function MemberForm({value, disabled, groups, fields, languages, countrie
     onChange(it)
   }
 
-  const handleChangeField = (name) => (event) => {
+  const handleChangeField = name => event => {
     const value = event.target.value
     const it = {
       ...state,
       fields: fields.map(field => ({
         key: field.name,
-        value: field.name === name
-          ? Array.isArray(value) ? value.join(',') : value
-          : resolveField(field.name).value || '',
+        value:
+          field.name === name
+            ? Array.isArray(value)
+              ? value.join(',')
+              : value
+            : resolveField(field.name).value || '',
       })),
     }
     setState(it)
@@ -108,20 +104,19 @@ export function MemberForm({value, disabled, groups, fields, languages, countrie
           multiple
           disabled={disabled}
           value={state.groups || []}
-          input={<Input/>}
+          input={<Input />}
           onChange={handleChangeGroup('groups')}
           renderValue={selected =>
             selected
               .map(resolverGroup)
               .map(it => it.name)
               .join(',')
-          }>
+          }
+        >
           {groups.map(it => (
             <MenuItem key={it.code} value={it.code}>
-              <Checkbox
-                checked={state.groups.indexOf(it.code) > -1}
-              />
-              <ListItemText primary={it.name}/>
+              <Checkbox checked={state.groups.indexOf(it.code) > -1} />
+              <ListItemText primary={it.name} />
             </MenuItem>
           ))}
         </Select>
@@ -154,18 +149,16 @@ export function MemberForm({value, disabled, groups, fields, languages, countrie
   )
 
   const singleSelectField = field => (
-    <FormControl
-      fullWidth
-      disabled={disabled || field.disabled}>
+    <FormControl fullWidth disabled={disabled || field.disabled}>
       <InputLabel htmlFor={field.name}>{field.label}</InputLabel>
       <Select
         value={resolveField(field.name).value || ''}
-        input={<Input/>}
+        input={<Input />}
         onChange={handleChangeField(field.name)}
       >
         {field.options.map(it => (
           <MenuItem key={it} value={it}>
-            <ListItemText primary={it}/>
+            <ListItemText primary={it} />
           </MenuItem>
         ))}
       </Select>
@@ -173,14 +166,16 @@ export function MemberForm({value, disabled, groups, fields, languages, countrie
   )
 
   const multiSelectField = field => (
-    <FormControl
-      fullWidth
-      disabled={disabled || field.disabled}>
+    <FormControl fullWidth disabled={disabled || field.disabled}>
       <InputLabel htmlFor={field.name}>{field.label}</InputLabel>
       <Select
         multiple
-        value={resolveField(field.name).value ? resolveField(field.name).value.split(',') : []}
-        input={<Input/>}
+        value={
+          resolveField(field.name).value
+            ? resolveField(field.name).value.split(',')
+            : []
+        }
+        input={<Input />}
         onChange={handleChangeField(field.name)}
         renderValue={selected => selected.join(',')}
       >
@@ -188,31 +183,32 @@ export function MemberForm({value, disabled, groups, fields, languages, countrie
           <MenuItem key={it} value={it}>
             <Checkbox
               checked={
-                (resolveField(field.name).value || '').split(',').indexOf(it) > -1
+                (resolveField(field.name).value || '').split(',').indexOf(it) >
+                -1
               }
             />
-            <ListItemText primary={it}/>
+            <ListItemText primary={it} />
           </MenuItem>
         ))}
       </Select>
     </FormControl>
   )
 
-  const renderFieldsRow = fields && fields.map(it => (
-    <React.Fragment key={it.name}>
-      <Grid item xs={12}>
-        {it.type === 'CHECKBOX' && checkboxField(it)}
-        {it.type === 'TEXT' && textField(it)}
-        {it.type === 'SINGLE_SELECT' && singleSelectField(it)}
-        {it.type === 'MULTI_SELECT' && multiSelectField(it)}
-      </Grid>
-    </React.Fragment>
-  ))
+  const renderFieldsRow =
+    fields &&
+    fields.map(it => (
+      <React.Fragment key={it.name}>
+        <Grid item xs={12}>
+          {it.type === 'CHECKBOX' && checkboxField(it)}
+          {it.type === 'TEXT' && textField(it)}
+          {it.type === 'SINGLE_SELECT' && singleSelectField(it)}
+          {it.type === 'MULTI_SELECT' && multiSelectField(it)}
+        </Grid>
+      </React.Fragment>
+    ))
 
   return (
-    <ValidatorForm
-      id="member-form"
-      onSubmit={onSubmit}>
+    <ValidatorForm id="member-form" onSubmit={onSubmit}>
       <Grid container spacing={1}>
         <Grid item xs={5}>
           <TextValidator
@@ -265,8 +261,7 @@ export function MemberForm({value, disabled, groups, fields, languages, countrie
         </Grid>
 
         <Grid item xs={5}>
-          <FormControl
-            fullWidth>
+          <FormControl fullWidth>
             <InputLabel htmlFor="gender">Gender</InputLabel>
             <Select
               required
@@ -356,9 +351,7 @@ export function MemberForm({value, disabled, groups, fields, languages, countrie
         </Grid>
 
         <Grid item xs={6}>
-          <FormControl
-            disabled={disabled}
-            fullWidth>
+          <FormControl disabled={disabled} fullWidth>
             <InputLabel htmlFor="country">Country</InputLabel>
             <Select
               required
@@ -371,16 +364,19 @@ export function MemberForm({value, disabled, groups, fields, languages, countrie
             >
               <MenuItem value="">Unknown</MenuItem>
               {countries.map(country => (
-                <MenuItem key={`country-${country.alpha2}`} value={country.alpha2}>{country.name}</MenuItem>
+                <MenuItem
+                  key={`country-${country.alpha2}`}
+                  value={country.alpha2}
+                >
+                  {country.name}
+                </MenuItem>
               ))}
             </Select>
           </FormControl>
         </Grid>
 
         <Grid item xs={6}>
-          <FormControl
-            disabled={disabled}
-            fullWidth>
+          <FormControl disabled={disabled} fullWidth>
             <InputLabel htmlFor="country">Language</InputLabel>
             <Select
               required
@@ -393,7 +389,12 @@ export function MemberForm({value, disabled, groups, fields, languages, countrie
             >
               <MenuItem value="">Unknown</MenuItem>
               {languages.map(language => (
-                <MenuItem key={`language-${language.alpha2}`} value={language.alpha2}>{language.name}</MenuItem>
+                <MenuItem
+                  key={`language-${language.alpha2}`}
+                  value={language.alpha2}
+                >
+                  {language.name}
+                </MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -402,5 +403,6 @@ export function MemberForm({value, disabled, groups, fields, languages, countrie
         {renderGroupsRow}
         {renderFieldsRow}
       </Grid>
-    </ValidatorForm>)
+    </ValidatorForm>
+  )
 }

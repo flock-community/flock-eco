@@ -12,7 +12,9 @@ import TablePagination from '@material-ui/core/TablePagination'
 const DEFAULT_SIZE = 10
 
 export function UserGroupTable({reload, onRowClick, size}) {
-  const client = new PageableClient('/api/user-groups', {size: size || DEFAULT_SIZE})
+  const client = new PageableClient('/api/user-groups', {
+    size: size || DEFAULT_SIZE,
+  })
 
   const [count, setCount] = useState(0)
   const [page, setPage] = useState(0)

@@ -2,12 +2,11 @@
   "name": "flock-eco",
   "private": true,
   "scripts": {
-    "generate:h": "graphql-codegen",
     "generate": "graphql-codegen generate --schema=eco-feature/eco-feature-member/src/main/graphql/member.graphqls --output=test.ts",
     "bootstrap": "lerna bootstrap --hoist",
-    "lerna": "lerna",
     "prettier": "prettier --write \"{**/*.js,**/*.json,**/*.html}\"",
     "start": "cd ./eco-application/eco-application-example && webpack-dev-server --mode development --config ../../eco-webpack/webpack.config.js",
+    "start:example": "lerna run start --scope eco-application-example",
     "build": "webpack --mode production",
     "storybook": "start-storybook",
     "publish": "lerna publish from-package --yes --no-verify-access"
@@ -26,7 +25,7 @@
     "appolo": "^7.0.2",
     "babel-polyfill": "^6.26.0",
     "clsx": "^1.0.4",
-    "formik": "^1.5.7",
+    "formik": "^2.2.6",
     "formik-material-ui": "0.0.22",
     "graphql": "^15.0.0",
     "graphql-tag": "^2.10.3",
@@ -47,14 +46,14 @@
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.9.0",
-    "@storybook/react": "^5.1.4",
+    "@storybook/react": "^6.1.11",
     "babel-loader": "^8.0.6",
     "html-webpack-plugin": "^3.2.0",
-    "lerna": "^3.13.1",
-    "prettier": "^1.15.3",
-    "webpack": "^4.29.6",
+    "lerna": "^3.22.1",
+    "prettier": "1.19.1",
+    "webpack": "^5.11.0",
     "webpack-cli": "^3.3.0",
-    "webpack-dev-server": "^3.2.1"
+    "webpack-dev-server": "^3.11.0"
   },
   "prettier": {
     "singleQuote": true,

@@ -17,7 +17,7 @@ export function UserTable({search, size, reload, onRowClick, onChangePage}) {
   })
 
   useEffect(() => {
-    UserClient.findAllUsers(search || "", state.page, size || 10).then(res => {
+    UserClient.findAllUsers(search || '', state.page, size || 10).then(res => {
       setState({...state, ...res})
     })
   }, [reload, search, size, state.page])

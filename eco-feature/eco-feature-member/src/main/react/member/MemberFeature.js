@@ -28,7 +28,6 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export function MemberFeature({search}) {
-
   const classes = useStyles()
 
   const [state, setState] = useState({
@@ -40,7 +39,7 @@ export function MemberFeature({search}) {
     filter: {},
     refresh: false,
     mergeMemberIds: null,
-    specification: null
+    specification: null,
   })
 
   const handleRowClick = item => {
@@ -96,50 +95,53 @@ export function MemberFeature({search}) {
       mergeMemberIds: null,
     }))
 
-  return (<div className={classes.root}>
-    <Grid container direction="column" spacing={1}>
-      <Grid item>
-        <Card>
-          <CardContent>
-            <MemberFilter
+  return (
+    <div className={classes.root}>
+      <Grid container direction="column" spacing={1}>
+        <Grid item>
+          <Card>
+            <CardContent>
+              <MemberFilter
+                specification={state.specification}
+                onChange={handleFilterChange}
+              />
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item>
+          <Card>
+            <MemberTable
               specification={state.specification}
-              onChange={handleFilterChange}/>
-          </CardContent>
-        </Card>
+              page={state.page}
+              size={state.size}
+              refresh={state.refresh}
+              onRowClick={handleRowClick}
+              onMergeMembers={mergeMembers}
+            />
+          </Card>
+        </Grid>
       </Grid>
-      <Grid item>
-        <Card>
-          <MemberTable
-            specification={state.specification}
-            page={state.page}
-            size={state.size}
-            refresh={state.refresh}
-            onRowClick={handleRowClick}
-            onMergeMembers={mergeMembers}
-          />
-        </Card>
-      </Grid>
-    </Grid>
 
-    <MemberDialog
-      id={state.item && state.item.id}
-      open={state.openDialog}
-      onComplete={handleComplete}
-    />
+      <MemberDialog
+        id={state.item && state.item.id}
+        open={state.openDialog}
+        onComplete={handleComplete}
+      />
 
-    <MemberMerger
-      mergeMemberIds={state.mergeMemberIds}
-      onComplete={handleMergeComplete}
-      onCancel={handleMergerCancel}
-    />
+      <MemberMerger
+        mergeMemberIds={state.mergeMemberIds}
+        onComplete={handleMergeComplete}
+        onCancel={handleMergerCancel}
+      />
 
-    <Fab
-      color="primary"
-      aria-label="Add"
-      className={classes.button}
-      onClick={handleNewClick}
-    >
-      <AddIcon/>
-    </Fab>
-  </div>)
+      <Fab
+        color="primary"
+        aria-label="Add"
+        className={classes.button}
+        onClick={handleNewClick}
+      >
+        <AddIcon />
+      </Fab>
+    </div>
+  )
 }

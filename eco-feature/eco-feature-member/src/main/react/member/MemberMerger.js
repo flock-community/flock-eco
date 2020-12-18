@@ -21,34 +21,31 @@ function post(url, body) {
 }
 
 function get(id) {
-  return fetch(`/api/members/${id}`)
-    .then(it => it.json())
+  return fetch(`/api/members/${id}`).then(it => it.json())
 }
 
 function internalize(member) {
-  return ({
+  return {
     ...member,
-    groups: member.groups.map(it => it.code)
-  })
+    groups: member.groups.map(it => it.code),
+  }
 }
 
 export function MemberMerger({mergeMemberIds, onComplete, onCancel}) {
-
   const [state, setState] = useState({
     mergeMembers: [],
     newMember: null,
   })
 
   useEffect(() => {
-    if(mergeMemberIds && mergeMemberIds.length > 1) {
+    if (mergeMemberIds && mergeMemberIds.length > 1) {
       Promise.all((mergeMemberIds || []).map(id => get(id)))
         .then(it => it.map(internalize))
-        .then((mergeMembers) => {
+        .then(mergeMembers => {
           const {id, ...newMember} = mergeMembers[0]
           setState({mergeMembers, newMember})
         })
     }
-
   }, [mergeMemberIds])
 
   const merge = async () => {
@@ -96,10 +93,7 @@ export function MemberMerger({mergeMemberIds, onComplete, onCancel}) {
         ...prev,
         newMember: {
           ...prev.newMember,
-          fields: [
-            ...prev.newMember.fields,
-            {key, value}
-          ]
+          fields: [...prev.newMember.fields, {key, value}],
         },
       }))
     }
@@ -107,10 +101,13 @@ export function MemberMerger({mergeMemberIds, onComplete, onCancel}) {
 
   if (state.mergeMembers && state.mergeMembers.length < 2) return null
 
-  const flattenedMembers = state.mergeMembers.map(it => Member.flattenFields(it))
+  const flattenedMembers = state.mergeMembers.map(it =>
+    Member.flattenFields(it),
+  )
   const flattenedNewMember = Member.flattenFields(state.newMember)
 
-  return (<Dialog
+  return (
+    <Dialog
       fullWidth
       maxWidth={'md'}
       open={state.mergeMembers.length >= 2}
@@ -156,7 +153,7 @@ export function MemberMerger({mergeMemberIds, onComplete, onCancel}) {
                       <FormControlLabel
                         key={i}
                         value={JSON.stringify(value)}
-                        control={<Radio/>}
+                        control={<Radio />}
                         label={label}
                       />
                     ))}
@@ -180,5 +177,6 @@ export function MemberMerger({mergeMemberIds, onComplete, onCancel}) {
           Merge
         </Button>
       </DialogActions>
-    </Dialog>)
+    </Dialog>
+  )
 }

@@ -63,23 +63,27 @@ class MemberGroupFeature extends React.Component {
       <div>
         <MemberGroupTable
           list={this.state.list}
-          handleRowClick={this.rowClick}/>
+          handleRowClick={this.rowClick}
+        />
 
         <MemberGroupDialog
           open={this.state.item != null}
           onClose={this.handleFormClose}
           onSave={this.handleFormSave}
-          onDelete={this.handleFormDelete}>
+          onDelete={this.handleFormDelete}
+        >
           <MemberGroupForm
             item={this.state.item}
-            onChange={this.handleFormUpdate}/>
+            onChange={this.handleFormUpdate}
+          />
         </MemberGroupDialog>
 
         <Fab
           color="primary"
           aria-label="Add"
           className={classes.button}
-          onClick={this.newClick}>
+          onClick={this.newClick}
+        >
           <AddIcon />
         </Fab>
       </div>

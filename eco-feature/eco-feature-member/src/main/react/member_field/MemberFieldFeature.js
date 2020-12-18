@@ -68,18 +68,21 @@ class MemberFieldFeature extends React.Component {
           open={this.state.item != null}
           onClose={this.handleFormClose}
           onSave={this.handleFormSave}
-          onDelete={this.handleFormDelete}>
+          onDelete={this.handleFormDelete}
+        >
           <MemberGroupForm
             value={this.state.item}
-            onChange={this.handleFormUpdate}/>
+            onChange={this.handleFormUpdate}
+          />
         </MemberGroupDialog>
 
         <Fab
           color="primary"
           aria-label="Add"
           className={classes.button}
-          onClick={this.newClick}>
-          <AddIcon/>
+          onClick={this.newClick}
+        >
+          <AddIcon />
         </Fab>
       </div>
     )

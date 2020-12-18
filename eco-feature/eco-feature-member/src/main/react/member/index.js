@@ -13,5 +13,5 @@ export {
   MemberForm,
   MemberMerger,
   MemberFilter,
-  MemberTable
+  MemberTable,
 }

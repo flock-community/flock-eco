@@ -34,7 +34,9 @@ const useStyles = makeStyles(theme => ({
   },
   chipFocused: {
     backgroundColor: emphasize(
-      theme.palette.type === 'light' ? theme.palette.grey[300] : theme.palette.grey[700],
+      theme.palette.type === 'light'
+        ? theme.palette.grey[300]
+        : theme.palette.grey[700],
       0.08,
     ),
   },
@@ -71,7 +73,6 @@ function NoOptionsMessage(props) {
     </Typography>
   )
 }
-
 
 function inputComponent({inputRef, ...props}) {
   return <div ref={inputRef} {...props} />
@@ -121,15 +122,22 @@ function Option(props) {
 function Placeholder(props) {
   const {selectProps, innerProps = {}, children} = props
   return (
-    <Typography color="textSecondary" className={selectProps.classes.placeholder} {...innerProps}>
+    <Typography
+      color="textSecondary"
+      className={selectProps.classes.placeholder}
+      {...innerProps}
+    >
       {children}
     </Typography>
   )
 }
 
-
 function ValueContainer(props) {
-  return <div className={props.selectProps.classes.valueContainer}>{props.children}</div>
+  return (
+    <div className={props.selectProps.classes.valueContainer}>
+      {props.children}
+    </div>
+  )
 }
 
 function MultiValue(props) {
@@ -178,12 +186,10 @@ export function UserAutocomplete({value, onChange}) {
     const acc = value && JSON.stringify([...value].sort())
     const cur = state && JSON.stringify([...state].map(it => it.value).sort())
     if (acc !== cur) {
-      UserClient.findAllUserByCodes(value)
-        .then(res => {
-          setState(res.map(it => ({label: it.name, value: it.code})))
-        })
+      UserClient.findAllUserByCodes(value).then(res => {
+        setState(res.map(it => ({label: it.name, value: it.code})))
+      })
     }
-
   }, [value])
 
   const handleChange = ev => {
@@ -201,19 +207,15 @@ export function UserAutocomplete({value, onChange}) {
     }),
   }
 
-  const loadOptions = (inputValue) => {
-    return UserClient.findAllUsers(inputValue, 0, 25)
-      .then(res => {
-        return res.list
-          .map(it => ({label: it.name, value: it.code}))
-          .slice(0, 10)
-      })
+  const loadOptions = inputValue => {
+    return UserClient.findAllUsers(inputValue, 0, 25).then(res => {
+      return res.list.map(it => ({label: it.name, value: it.code})).slice(0, 10)
+    })
   }
 
   return (
     <div className={classes.root}>
       <NoSsr>
-
         <AsyncSelect
           classes={classes}
           styles={selectStyles}
@@ -236,6 +238,5 @@ export function UserAutocomplete({value, onChange}) {
         />
       </NoSsr>
     </div>
-
   )
 }

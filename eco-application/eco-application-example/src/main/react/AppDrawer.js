@@ -7,7 +7,6 @@ import Drawer from '@material-ui/core/Drawer'
 import List from '@material-ui/core/List'
 
 export function AppDrawer({open, onClick}) {
-
   const [state, setState] = useState({
     open,
   })
@@ -25,30 +24,36 @@ export function AppDrawer({open, onClick}) {
     })
   }
 
-  const handleClickItem = (component) => (ev) => {
+  const handleClickItem = component => ev => {
     onClick && onClick(component)
   }
 
-
-  const renderList = (name) => (<>
-      <ListItem><Typography><b>{name}</b></Typography></ListItem>
-      {features[name]
-        .map(component => (<ListItem
-            button
-            key={findComponentName(component)}
-            onClick={handleClickItem(component)}>
-            <ListItemText primary={findComponentName(component)}/>
-          </ListItem>
-        ))}
+  const renderList = name => (
+    <>
+      <ListItem>
+        <Typography>
+          <b>{name}</b>
+        </Typography>
+      </ListItem>
+      {features[name].map(component => (
+        <ListItem
+          button
+          key={findComponentName(component)}
+          onClick={handleClickItem(component)}
+        >
+          <ListItemText primary={findComponentName(component)} />
+        </ListItem>
+      ))}
     </>
   )
 
-  return (<Drawer open={state.open} onClose={toggleDrawer}>
-    <List>
-      {renderList('user')}
-      {renderList('member')}
-      {renderList('workspace')}
-    </List>
-  </Drawer>)
-
+  return (
+    <Drawer open={state.open} onClose={toggleDrawer}>
+      <List>
+        {renderList('user')}
+        {renderList('member')}
+        {renderList('workspace')}
+      </List>
+    </Drawer>
+  )
 }

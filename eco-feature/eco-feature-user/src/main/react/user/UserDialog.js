@@ -29,7 +29,6 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export function UserDialog({open, code, onComplete, enablePassword}) {
-
   const classes = useStyles()
 
   const [state, setState] = useState(null)
@@ -41,7 +40,9 @@ export function UserDialog({open, code, onComplete, enablePassword}) {
     if (code !== null) {
       UserClient.findUserByCode(code)
         .then(res => setState(res))
-        .catch(err => {setMessage(err.message)})
+        .catch(err => {
+          setMessage(err.message)
+        })
     } else {
       setState(null)
     }
@@ -50,7 +51,9 @@ export function UserDialog({open, code, onComplete, enablePassword}) {
   useEffect(() => {
     UserClient.findAllAuthorities()
       .then(setAuthorities)
-      .catch(err => {setMessage(err.message)})
+      .catch(err => {
+        setMessage(err.message)
+      })
   }, [])
 
   const handleDelete = ev => {
@@ -59,7 +62,9 @@ export function UserDialog({open, code, onComplete, enablePassword}) {
         onComplete && onComplete()
         setOpenDelete(false)
       })
-      .catch(err => {setMessage(err.message)})
+      .catch(err => {
+        setMessage(err.message)
+      })
   }
 
   const handleOpenDelete = () => {
@@ -77,7 +82,9 @@ export function UserDialog({open, code, onComplete, enablePassword}) {
   const handleReset = ev => {
     UserClient.resetUserPassword(state.code)
       .then(res => onComplete && onComplete())
-      .catch(err => {setMessage(err.message)})
+      .catch(err => {
+        setMessage(err.message)
+      })
   }
 
   const handleClose = ev => {
@@ -88,15 +95,20 @@ export function UserDialog({open, code, onComplete, enablePassword}) {
     if (value.code) {
       UserClient.updateUser(value.code, value)
         .then(() => onComplete && onComplete(state))
-        .catch(err => {setMessage(err.message)})
+        .catch(err => {
+          setMessage(err.message)
+        })
     } else {
       UserClient.createUser(value)
         .then(() => onComplete && onComplete(state))
-        .catch(err => {setMessage(err.message)})
+        .catch(err => {
+          setMessage(err.message)
+        })
     }
   }
 
-  return (<>
+  return (
+    <>
       <Dialog fullWidth maxWidth={'md'} open={open} onClose={handleClose}>
         <DialogTitle disableTypography>
           <Typography variant="h6">User</Typography>
@@ -105,7 +117,7 @@ export function UserDialog({open, code, onComplete, enablePassword}) {
             className={classes.closeButton}
             onClick={handleClose}
           >
-            <CloseIcon/>
+            <CloseIcon />
           </IconButton>
         </DialogTitle>
         <DialogContent>
@@ -119,7 +131,9 @@ export function UserDialog({open, code, onComplete, enablePassword}) {
           {enablePassword && state && state.code && (
             <Button onClick={handleReset}>Reset password</Button>
           )}
-          {state && state.code && <Button onClick={handleOpenDelete}>Delete</Button>}
+          {state && state.code && (
+            <Button onClick={handleOpenDelete}>Delete</Button>
+          )}
           <Button
             variant="contained"
             color="primary"
@@ -133,14 +147,18 @@ export function UserDialog({open, code, onComplete, enablePassword}) {
       <ConfirmDialog
         open={openDelete}
         onClose={handleCloseDelete}
-        onConfirm={handleDelete}>
-        <Typography>Would you Are you sure you want to delete user: {state && state.name}</Typography>
+        onConfirm={handleDelete}
+      >
+        <Typography>
+          Would you Are you sure you want to delete user: {state && state.name}
+        </Typography>
       </ConfirmDialog>
       <Snackbar
-        open={message!=null}
+        open={message != null}
         message={message}
         autoHideDuration={6000}
-        onClose={handleMessageClose}/>
+        onClose={handleMessageClose}
+      />
     </>
   )
 }

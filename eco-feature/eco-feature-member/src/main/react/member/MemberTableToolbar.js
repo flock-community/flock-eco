@@ -7,7 +7,6 @@ import MergeIcon from '@material-ui/icons/CallMerge'
 import {lighten} from '@material-ui/core/es/styles/colorManipulator'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 
-
 const useStyles = makeStyles(theme => ({
   root: {
     paddingRight: theme.spacing(1),
@@ -15,13 +14,13 @@ const useStyles = makeStyles(theme => ({
   highlight:
     theme.palette.type === 'light'
       ? {
-        color: theme.palette.secondary.main,
-        backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-      }
+          color: theme.palette.secondary.main,
+          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+        }
       : {
-        color: theme.palette.text.primary,
-        backgroundColor: theme.palette.secondary.dark,
-      },
+          color: theme.palette.text.primary,
+          backgroundColor: theme.palette.secondary.dark,
+        },
   spacer: {
     flex: '1 1 100%',
   },
@@ -31,9 +30,9 @@ const useStyles = makeStyles(theme => ({
   title: {
     flex: '0 0 auto',
   },
-}));
+}))
 
-export function MemberTableToolbar ({onMergeMembers, selectedIds}) {
+export function MemberTableToolbar({onMergeMembers, selectedIds}) {
   const classes = useStyles()
   const numSelected = selectedIds.length
   return (
@@ -53,14 +52,15 @@ export function MemberTableToolbar ({onMergeMembers, selectedIds}) {
           </Typography>
         )}
       </div>
-      <div className={classes.spacer}/>
+      <div className={classes.spacer} />
       <div className={classes.actions}>
-        {onMergeMembers && (numSelected >= 2) && (
+        {onMergeMembers && numSelected >= 2 && (
           <Tooltip title="Merge">
             <IconButton
               aria-label="Merge"
-              onClick={() => onMergeMembers && onMergeMembers(selectedIds)}>
-              <MergeIcon/>
+              onClick={() => onMergeMembers && onMergeMembers(selectedIds)}
+            >
+              <MergeIcon />
             </IconButton>
           </Tooltip>
         )}

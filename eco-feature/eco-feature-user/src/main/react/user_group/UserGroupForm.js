@@ -17,7 +17,6 @@ const init = {
  * @return {null}
  */
 export function UserGroupForm({value, onSummit, ...props}) {
-
   const [state, setState] = useState(init)
   const [users, setUsers] = useState(value && value.users)
 
@@ -35,11 +34,12 @@ export function UserGroupForm({value, onSummit, ...props}) {
     name: Yup.string().required('Name is required'),
   })
 
-  const handleSubmit = (ev) => {
-    onSummit && onSummit({
-      ...ev,
-      users,
-    })
+  const handleSubmit = ev => {
+    onSummit &&
+      onSummit({
+        ...ev,
+        users,
+      })
   }
 
   const handleUserChange = ev => {
@@ -56,10 +56,10 @@ export function UserGroupForm({value, onSummit, ...props}) {
       <Form id={USER_GROUP_FORM_ID}>
         <Grid container spacing={1}>
           <Grid item xs={12}>
-            <Field fullWidth name="name" label="Name" component={TextField}/>
+            <Field fullWidth name="name" label="Name" component={TextField} />
           </Grid>
           <Grid item xs={12}>
-            <UserAutocomplete value={users} onChange={handleUserChange}/>
+            <UserAutocomplete value={users} onChange={handleUserChange} />
           </Grid>
         </Grid>
       </Form>

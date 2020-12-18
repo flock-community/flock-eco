@@ -12,18 +12,17 @@ const styles = theme => ({
     position: 'fixed',
     right: 20,
     bottom: 20,
-    margin: theme.spacing(1)
+    margin: theme.spacing(1),
   },
 })
 
 class GcpRuntimeVariableFeature extends React.Component {
-
   render() {
     const {classes, config} = this.props
 
     return (
       <div>
-        <GcpRuntimeVariableTable config={config}/>
+        <GcpRuntimeVariableTable config={config} />
 
         <Fab
           color="primary"
@@ -36,7 +35,6 @@ class GcpRuntimeVariableFeature extends React.Component {
       </div>
     )
   }
-
 }
 
 export default withStyles(styles)(GcpRuntimeVariableFeature)

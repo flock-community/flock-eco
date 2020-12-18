@@ -14,9 +14,7 @@ import {ConfirmDialog} from '@flock-community/flock-eco-core/src/main/react/comp
 import {Typography} from '@material-ui/core'
 import {MemberClient} from './MemberClient'
 
-
 export function MemberDialog({id, open, onComplete}) {
-
   const [countries, setCountries] = useState(null)
   const [languages, setLanguages] = useState(null)
   const [state, setState] = useState({
@@ -28,14 +26,16 @@ export function MemberDialog({id, open, onComplete}) {
   useEffect(() => {
     if (id) {
       MemberClient.get(id)
-        .then(res => setState(prev => ({
-          ...prev,
-          item: {
-            ...res.body,
-            groups: res.body.groups.map(it => it.code),
-          },
-          message: null,
-        })))
+        .then(res =>
+          setState(prev => ({
+            ...prev,
+            item: {
+              ...res.body,
+              groups: res.body.groups.map(it => it.code),
+            },
+            message: null,
+          })),
+        )
         .catch(() => {
           setState(prev => ({
             ...prev,
@@ -105,14 +105,13 @@ export function MemberDialog({id, open, onComplete}) {
   }
 
   const handleDelete = () => {
-    MemberClient.delete(id)
-      .then(() => {
-        onComplete && onComplete()
-        setState(prevState => ({
-          ...prevState,
-          deleteOpen: false,
-        }))
-      })
+    MemberClient.delete(id).then(() => {
+      onComplete && onComplete()
+      setState(prevState => ({
+        ...prevState,
+        deleteOpen: false,
+      }))
+    })
   }
 
   const handleDeleteOpen = () => {
@@ -169,43 +168,45 @@ export function MemberDialog({id, open, onComplete}) {
     }))
   }
 
-  const isUpdatable = state.item ? (!['DELETED', 'MERGED'].includes(state.item.status)) : !id
+  const isUpdatable = state.item
+    ? !['DELETED', 'MERGED'].includes(state.item.status)
+    : !id
 
-  const dialogBody = (<>
-    <DialogContent>
-      <MemberForm
-        value={state.item}
-        groups={state.groups}
-        fields={state.fields}
-        languages={languages}
-        countries={countries}
-        onChange={handleFormUpdate}
-        onSubmit={handleSubmit}
-        disabled={!isUpdatable}
-      />
-    </DialogContent>
-    <DialogActions>
-      {(id && isUpdatable) && <Button onClick={handleDeleteOpen} color="secondary">
-          Delete
+  const dialogBody = (
+    <>
+      <DialogContent>
+        <MemberForm
+          value={state.item}
+          groups={state.groups}
+          fields={state.fields}
+          languages={languages}
+          countries={countries}
+          onChange={handleFormUpdate}
+          onSubmit={handleSubmit}
+          disabled={!isUpdatable}
+        />
+      </DialogContent>
+      <DialogActions>
+        {id && isUpdatable && (
+          <Button onClick={handleDeleteOpen} color="secondary">
+            Delete
+          </Button>
+        )}
+        <Button onClick={handleClose} color="primary">
+          Cancel
         </Button>
-      }
-      <Button onClick={handleClose} color="primary">
-        Cancel
-      </Button>
-      {isUpdatable && <Button type="submit" form="member-form" color="primary" autoFocus>
-        Save
-      </Button>}
-    </DialogActions>
-  </>)
+        {isUpdatable && (
+          <Button type="submit" form="member-form" color="primary" autoFocus>
+            Save
+          </Button>
+        )}
+      </DialogActions>
+    </>
+  )
 
   return (
     <>
-      <Dialog
-        fullWidth
-        maxWidth={'md'}
-        open={open}
-        onClose={handleClose}
-      >
+      <Dialog fullWidth maxWidth={'md'} open={open} onClose={handleClose}>
         <DialogTitle>Member</DialogTitle>
         {dialogBody}
       </Dialog>
@@ -220,10 +221,13 @@ export function MemberDialog({id, open, onComplete}) {
       <ConfirmDialog
         open={state.deleteOpen}
         onClose={handleDeleteClose}
-        onConfirm={handleDelete}>
-        <Typography>Delete member: {state.item && (`${state.item.firstName} ${state.item.surName}`)}</Typography>
+        onConfirm={handleDelete}
+      >
+        <Typography>
+          Delete member:{' '}
+          {state.item && `${state.item.firstName} ${state.item.surName}`}
+        </Typography>
       </ConfirmDialog>
-
     </>
   )
 }

@@ -20,10 +20,10 @@ const useStyles = makeStyles(theme => ({
     overflowX: 'hidden',
     padding: theme.spacing(1),
   },
-  spacer:{
+  spacer: {
     height: theme.spacing(8),
   },
-  paper:{
+  paper: {
     padding: theme.spacing(2),
   },
   button: {
@@ -32,7 +32,6 @@ const useStyles = makeStyles(theme => ({
     bottom: theme.spacing(1),
   },
 }))
-
 
 export function UserGroupFeature() {
   const classes = useStyles()
@@ -46,7 +45,7 @@ export function UserGroupFeature() {
     code: null,
   })
 
-  const handleSearchChange = (ev) => {
+  const handleSearchChange = ev => {
     setSearchState(ev.target.value)
   }
 
@@ -76,29 +75,27 @@ export function UserGroupFeature() {
     this.setState({item: value})
   }
 
-
   return (
     <div className={classes.root}>
       <div className={classes.content}>
         <Grid container spacing={1}>
           <Grid item xs={12}>
             <Paper className={classes.paper}>
-            <TextField
-              fullWidth
-              label="Search"
-              value={searchState}
-              onChange={handleSearchChange}/>
+              <TextField
+                fullWidth
+                label="Search"
+                value={searchState}
+                onChange={handleSearchChange}
+              />
             </Paper>
           </Grid>
           <Grid item xs={12}>
             <Paper>
-            <UserGroupTable
-              onRowClick={handleRowClick}
-              reload={reload}/>
+              <UserGroupTable onRowClick={handleRowClick} reload={reload} />
             </Paper>
           </Grid>
         </Grid>
-        <div className={classes.spacer}/>
+        <div className={classes.spacer} />
       </div>
 
       <UserGroupDialog
@@ -111,10 +108,10 @@ export function UserGroupFeature() {
         color="primary"
         aria-label="Add"
         className={classes.button}
-        onClick={handleNewClick}>
-        <AddIcon/>
+        onClick={handleNewClick}
+      >
+        <AddIcon />
       </Fab>
-
     </div>
   )
 }

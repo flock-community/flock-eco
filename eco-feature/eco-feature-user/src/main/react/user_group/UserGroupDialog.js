@@ -36,7 +36,9 @@ export function UserGroupDialog({open, code, onComplete}) {
     if (code !== null) {
       UserGroupClient.findByCode(code)
         .then(userGroup => setState(userGroup))
-        .catch(err => {setMessage(err.message)})
+        .catch(err => {
+          setMessage(err.message)
+        })
     } else {
       setState(null)
     }
@@ -54,11 +56,15 @@ export function UserGroupDialog({open, code, onComplete}) {
     if (!value.id) {
       UserGroupClient.createUserGroup(value)
         .then(it => onComplete && onComplete(it))
-        .catch(err => {setMessage(err.message)})
+        .catch(err => {
+          setMessage(err.message)
+        })
     } else {
       UserGroupClient.updateUserGroup(state.code, value)
         .then(it => onComplete && onComplete(it))
-        .catch(err => {setMessage(err.message)})
+        .catch(err => {
+          setMessage(err.message)
+        })
     }
   }
 
@@ -68,7 +74,9 @@ export function UserGroupDialog({open, code, onComplete}) {
         onComplete && onComplete(it)
         setOpenDelete(false)
       })
-      .catch(err => {setMessage(err.message)})
+      .catch(err => {
+        setMessage(err.message)
+      })
   }
 
   const handleMessageClose = () => {
@@ -95,19 +103,15 @@ export function UserGroupDialog({open, code, onComplete}) {
             className={classes.closeButton}
             onClick={handleClose}
           >
-            <CloseIcon/>
+            <CloseIcon />
           </IconButton>
         </DialogTitle>
         <DialogContent className={classes.autoCompleteFix}>
-          <UserGroupForm
-            value={state}
-            onSummit={handleSubmit}/>
+          <UserGroupForm value={state} onSummit={handleSubmit} />
         </DialogContent>
         <DialogActions>
-          {(state && state.id) && (
-            <Button onClick={handleConfirmDelete}>
-              Delete
-            </Button>
+          {state && state.id && (
+            <Button onClick={handleConfirmDelete}>Delete</Button>
           )}
           <Button
             variant="contained"
@@ -122,14 +126,18 @@ export function UserGroupDialog({open, code, onComplete}) {
       <ConfirmDialog
         open={openDelete}
         onClose={handleCloseDelete}
-        onConfirm={handleDelete}>
-        <Typography>Would you Are you sure you want to delete group: {state && state.name}</Typography>
+        onConfirm={handleDelete}
+      >
+        <Typography>
+          Would you Are you sure you want to delete group: {state && state.name}
+        </Typography>
       </ConfirmDialog>
       <Snackbar
-        open={message!=null}
+        open={message != null}
         message={message}
         autoHideDuration={6000}
-        onClose={handleMessageClose}/>
+        onClose={handleMessageClose}
+      />
     </>
   )
 }

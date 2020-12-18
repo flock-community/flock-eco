@@ -26,14 +26,12 @@ export function UserProfileFeature({value}) {
     UserClient.findUsersMe().then(json => {
       setUser(json)
     })
-  },[])
+  }, [])
 
   if (!user) return null
 
   return (
-
     <Grid container spacing={1}>
-
       <Grid item xs={12} sm={6}>
         <Typography variant="h6">{user.name}</Typography>
         <Typography>{user.email}</Typography>

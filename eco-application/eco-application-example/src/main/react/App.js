@@ -9,16 +9,15 @@ const client = new ApolloClient({
 })
 
 export function App() {
-
   const hash = window.location.hash
   const component = Object.keys(features)
-    .reduce((acc, cur) => (acc.concat(features[cur])), [])
+    .reduce((acc, cur) => acc.concat(features[cur]), [])
     .find(it => `#${findComponentName(it)}` === hash)
 
   const [state, setState] = useState({
     drawer: !hash,
     hash,
-    component
+    component,
   })
 
   const handleFeatureClick = component => {
@@ -26,18 +25,19 @@ export function App() {
     setState({
       component,
       drawer: false,
-      hash
+      hash,
     })
     window.location.hash = hash
   }
 
   const elm = state.component && createElement(state.component, {})
 
-  return (<ApolloProvider client={client}>
-    <Container style={{height:"100%"}}>
-      <AppDrawer open={state.drawer} onClick={handleFeatureClick}/>
-      {elm}
-    </Container>
-  </ApolloProvider>)
-
+  return (
+    <ApolloProvider client={client}>
+      <Container style={{height: '100%'}}>
+        <AppDrawer open={state.drawer} onClick={handleFeatureClick} />
+        {elm}
+      </Container>
+    </ApolloProvider>
+  )
 }

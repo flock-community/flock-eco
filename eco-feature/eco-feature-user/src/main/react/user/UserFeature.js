@@ -18,10 +18,10 @@ const useStyles = makeStyles(theme => ({
     overflowX: 'hidden',
     padding: theme.spacing(1),
   },
-  spacer:{
+  spacer: {
     height: theme.spacing(8),
   },
-  paper:{
+  paper: {
     padding: theme.spacing(2),
   },
   button: {
@@ -50,7 +50,7 @@ export function UserFeature({enablePassword}) {
     })
   }
 
-  const handleSearchChange = (ev) => {
+  const handleSearchChange = ev => {
     setSearchState(ev.target.value)
   }
 
@@ -79,7 +79,8 @@ export function UserFeature({enablePassword}) {
                 fullWidth
                 label="Search"
                 value={searchState}
-                onChange={handleSearchChange}/>
+                onChange={handleSearchChange}
+              />
             </Paper>
           </Grid>
           <Grid item xs={12}>
@@ -87,13 +88,13 @@ export function UserFeature({enablePassword}) {
               <UserTable
                 reload={reload}
                 search={searchState}
-                onRowClick={handleRowClick}/>
+                onRowClick={handleRowClick}
+              />
             </Paper>
           </Grid>
         </Grid>
-        <div className={classes.spacer}/>
+        <div className={classes.spacer} />
       </div>
-
 
       <UserDialog
         open={dialogState.open}
@@ -108,7 +109,7 @@ export function UserFeature({enablePassword}) {
         className={classes.button}
         onClick={handleNewClick}
       >
-        <AddIcon/>
+        <AddIcon />
       </Fab>
     </div>
   )

@@ -34,7 +34,6 @@ const init = {
 }
 
 export function MemberFilter({onChange, specification}) {
-
   const classes = useStyles()
 
   const [state, setState] = useState({
@@ -42,19 +41,19 @@ export function MemberFilter({onChange, specification}) {
     anchorEl: null,
     groups: [],
     statuses: ['NEW', 'ACTIVE', 'DISABLED', 'DELETED', 'MERGED'],
-    specification: init
+    specification: init,
   })
 
   useEffect(() => {
     onChange && onChange(init)
-  },[])
+  }, [])
 
   useEffect(() => {
     setState(prev => ({
       ...prev,
       specification: specification || init,
     }))
-  },[specification])
+  }, [specification])
 
   useEffect(() => {
     fetch(`/api/member_groups`)
@@ -105,7 +104,6 @@ export function MemberFilter({onChange, specification}) {
     onChange && onChange(specification)
   }
 
-
   const handleFilterClick = event => {
     setState(state => ({
       ...state,
@@ -127,22 +125,20 @@ export function MemberFilter({onChange, specification}) {
         multiple
         value={state.specification.statuses}
         onChange={handleStatusesChange()}
-        input={<Input id="select-multiple-checkbox"/>}
+        input={<Input id="select-multiple-checkbox" />}
         renderValue={selected => selected.join(', ')}
       >
         {state.statuses.map(status => (
           <MenuItem key={status} value={status}>
             <Checkbox
-              checked={
-                state.specification.statuses.indexOf(status) > -1
-              }
+              checked={state.specification.statuses.indexOf(status) > -1}
             />
-            <ListItemText primary={status}/>
+            <ListItemText primary={status} />
           </MenuItem>
         ))}
       </Select>
-    </FormControl>)
-
+    </FormControl>
+  )
 
   const renderGroupsSelect = () => (
     <FormControl className={classes.formControl} fullWidth>
@@ -151,7 +147,7 @@ export function MemberFilter({onChange, specification}) {
         multiple
         value={state.specification.groups}
         onChange={handleGroupsChange()}
-        input={<Input id="select-multiple-checkbox"/>}
+        input={<Input id="select-multiple-checkbox" />}
         renderValue={selected =>
           selected
             .map(key => state.groups.find(group => group.code === key))
@@ -162,11 +158,9 @@ export function MemberFilter({onChange, specification}) {
         {state.groups.map(group => (
           <MenuItem key={group.code} value={group.code}>
             <Checkbox
-              checked={
-                state.specification.groups.indexOf(group.code) > -1
-              }
+              checked={state.specification.groups.indexOf(group.code) > -1}
             />
-            <ListItemText primary={group.name}/>
+            <ListItemText primary={group.name} />
           </MenuItem>
         ))}
       </Select>
@@ -189,7 +183,7 @@ export function MemberFilter({onChange, specification}) {
             aria-haspopup="true"
             onClick={handleFilterClick}
           >
-            <FilterListIcon/>
+            <FilterListIcon />
           </IconButton>
         </Tooltip>
         <Popover
@@ -212,6 +206,4 @@ export function MemberFilter({onChange, specification}) {
       </Grid>
     </Grid>
   )
-
-
 }
