@@ -4,10 +4,6 @@
   "dependencies": {
     "@flock-community/flock-eco-core": "^2.0.0-next.eebc01a"
   },
-  "devDependencies": {
-    "@flock-community/flock-eco-webpack": "^2.0.0-next.eebc01a",
-    "webpack-dev-server": "^3.2.1"
-  },
   "scripts": {
     "generate": "npm run generate:apollo && npm run generate:simple",
     "generate:apollo": "apollo client:codegen ./src/main/react/Apollo.ts --target=typescript --outputFlat",

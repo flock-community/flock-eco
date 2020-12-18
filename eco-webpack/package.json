@@ -1,6 +1,7 @@
 {
   "name": "@flock-community/flock-eco-webpack",
   "version": "2.0.0-next.eebc01a",
+  "main": "./webpack.config.js",
   "dependencies": {
     "@babel/core": "^7.4.5",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
@@ -13,7 +14,7 @@
     "prettier": "^1.15.3",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0",
-    "webpack-dev-server": "^3.2.1"
+    "webpack-dev-server": "^3.11.0"
   },
   "repository": {
     "type": "git",

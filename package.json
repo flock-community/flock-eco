@@ -3,11 +3,10 @@
   "private": true,
   "scripts": {
     "generate": "graphql-codegen generate --schema=eco-feature/eco-feature-member/src/main/graphql/member.graphqls --output=test.ts",
-    "bootstrap": "lerna bootstrap --hoist",
+    "bootstrap": "lerna bootstrap",
     "prettier": "prettier --write \"{**/*.js,**/*.json,**/*.html}\"",
     "start": "cd ./eco-application/eco-application-example && webpack-dev-server --mode development --config ../../eco-webpack/webpack.config.js",
-    "start:example": "lerna run start --scope eco-application-example",
-    "build": "webpack --mode production",
+    "start:example": "lerna run start --scope @flock-community/flock-eco-application-example",
     "storybook": "start-storybook",
     "publish": "lerna publish from-package --yes --no-verify-access"
   },
