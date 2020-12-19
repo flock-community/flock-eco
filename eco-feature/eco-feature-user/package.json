@@ -1,11 +1,11 @@
 {
   "name": "@flock-community/flock-eco-feature-user",
-  "version": "2.0.0-next.15845d5",
+  "version": "2.0.0-next.60bf725",
   "scripts": {
     "compile": "tsc"
   },
   "dependencies": {
-    "@flock-community/flock-eco-core": "^2.0.0-next.15845d5"
+    "@flock-community/flock-eco-core": "^2.0.0-next.60bf725"
   },
   "repository": {
     "type": "git",
