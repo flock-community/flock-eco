@@ -1,8 +1,8 @@
 {
   "name": "@flock-community/flock-eco-feature-workspace",
-  "version": "2.0.0-next.869c3d6",
+  "version": "2.0.0-next.981bf78",
   "dependencies": {
-    "@flock-community/flock-eco-core": "^2.0.0-next.869c3d6"
+    "@flock-community/flock-eco-core": "^2.0.0-next.981bf78"
   },
   "scripts": {
     "compile": "tsc",
