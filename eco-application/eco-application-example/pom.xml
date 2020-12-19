@@ -20,6 +20,7 @@
 
     <dependencies>
 
+        <!-- Graphql -->
         <dependency>
             <groupId>com.graphql-java-kickstart</groupId>
             <artifactId>graphql-spring-boot-starter</artifactId>
@@ -33,6 +34,7 @@
             <artifactId>graphql-java-tools</artifactId>
         </dependency>
 
+        <!-- Database -->
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
