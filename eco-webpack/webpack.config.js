@@ -20,7 +20,7 @@ module.exports = {
     rules: [
       {
         test: /\.(js|jsx|ts|tsx)$/,
-        exclude: /node_modules[\\\/](?!(@flock-eco)[\\\/]).*/,
+        exclude: /node_modules[\\\/](?!(@flock-community)[\\\/]).*/,
         use: {
           loader: 'babel-loader',
           options: {
