@@ -1,25 +1,25 @@
 {
-	"name": "@flock-community/flock-eco-webpack",
-	"version": "2.0.0-next.eebc01a",
-	"main": "./webpack.config.js",
-	"dependencies": {
-		"@babel/core": "^7.12.10",
-		"@babel/plugin-proposal-class-properties": "^7.12.1",
-		"@babel/plugin-transform-runtime": "^7.12.10",
-		"@babel/preset-env": "^7.12.10",
-		"@babel/preset-react": "^7.12.10",
-		"@babel/preset-typescript": "^7.12.7",
-		"babel-loader": "^8.0.6",
-		"html-webpack-plugin": "^3.2.0",
-		"lerna": "^3.13.1",
-		"prettier": "^1.15.3",
-		"webpack": "^4.29.6",
-		"webpack-cli": "^3.3.0",
-		"webpack-dev-server": "^3.11.0"
-	},
-	"repository": {
-		"type": "git",
-		"url": "ssh://git@github.com/flock-community/flock-eco.git",
-		"directory": "eco-webpack"
-	}
+  "name": "@flock-community/flock-eco-webpack",
+  "version": "2.0.0-next.eebc01a",
+  "main": "./webpack.config.js",
+  "dependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/plugin-transform-runtime": "^7.12.10",
+    "@babel/preset-env": "^7.12.10",
+    "@babel/preset-react": "^7.12.10",
+    "@babel/preset-typescript": "^7.12.7",
+    "babel-loader": "^8.0.6",
+    "html-webpack-plugin": "^3.2.0",
+    "lerna": "^3.13.1",
+    "prettier": "^1.15.3",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com/flock-community/flock-eco.git",
+    "directory": "eco-webpack"
+  }
 }

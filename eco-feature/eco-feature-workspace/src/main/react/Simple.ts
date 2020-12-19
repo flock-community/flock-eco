@@ -1,59 +1,59 @@
 export interface Query {}
 
 export interface KeyValue {
-  key: string;
-  value?: string;
+  key: string
+  value?: string
 }
 
 export interface KeyValueInput {
-  key: string;
-  value?: string;
+  key: string
+  value?: string
 }
 
 export interface Pageable {
-  page?: number;
-  size?: number;
-  sort?: Sort;
+  page?: number
+  size?: number
+  sort?: Sort
 }
 
 export interface Sort {
-  order?: string;
-  direction?: Direction;
+  order?: string
+  direction?: Direction
 }
 
-export type Direction = "ASC" | "DESC";
+export type Direction = 'ASC' | 'DESC'
 
 export interface Workspace {
-  id: string;
-  name: string;
-  variables: KeyValue[];
-  users: WorkspaceUser[];
-  host?: string;
+  id: string
+  name: string
+  variables: KeyValue[]
+  users: WorkspaceUser[]
+  host?: string
 }
 
 export interface WorkspaceUser {
-  id: string;
-  name: string;
-  role: string;
+  id: string
+  name: string
+  role: string
 }
 
 export interface WorkspaceRole {
-  name: string;
+  name: string
 }
 
 export interface WorkspaceInput {
-  name: string;
-  image?: WorkspaceImageInput;
-  variables: KeyValueInput[];
-  host?: string;
+  name: string
+  image?: WorkspaceImageInput
+  variables: KeyValueInput[]
+  host?: string
 }
 
 export interface WorkspaceImageInput {
-  file: string;
-  name: string;
+  file: string
+  name: string
 }
 
 export interface WorkspaceUserInput {
-  reference: string;
-  role: string;
+  reference: string
+  role: string
 }

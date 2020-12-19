@@ -1,7 +1,4 @@
-import { AlignedLoader } from "./AlignedLoader";
-import { ConfirmDialog } from "./ConfirmDialog";
+import {AlignedLoader} from './AlignedLoader'
+import {ConfirmDialog} from './ConfirmDialog'
 
-export {
-  AlignedLoader,
-  ConfirmDialog,
-}
+export {AlignedLoader, ConfirmDialog}

@@ -3570,8 +3570,8 @@
       return (
         !1 !== a(e) &&
         'function' == typeof (t = e.constructor) &&
-          !1 !== a((n = t.prototype)) &&
-            !1 !== n.hasOwnProperty('isPrototypeOf')
+        !1 !== a((n = t.prototype)) &&
+        !1 !== n.hasOwnProperty('isPrototypeOf')
       )
     }
   },
@@ -8023,8 +8023,8 @@ object-assign
         ? 0 === a.type
         : !r &&
           2 < t.length &&
-            ('o' === t[0] || 'O' === t[0]) &&
-            ('n' === t[1] || 'N' === t[1])) ||
+          ('o' === t[0] || 'O' === t[0]) &&
+          ('n' === t[1] || 'N' === t[1])) ||
         ((function(e, t, n, r) {
           if (
             null == t ||
@@ -9921,7 +9921,8 @@ object-assign
         ? e.shouldComponentUpdate(r, o, i)
         : !t.prototype ||
             !t.prototype.isPureReactComponent ||
-            !en(n, r) || !en(a, o)
+            !en(n, r) ||
+            !en(a, o)
     }
     function Aa(e, t, n) {
       var r = !1,
@@ -10605,7 +10606,7 @@ object-assign
                 0 == (1 & t.mode) &&
                   (i = null !== t.memoizedState ? t.child.child : t.child) !==
                     r.child &&
-                    (a.child = i),
+                  (a.child = i),
                 (r = a.sibling = Hr(l, n, l.expirationTime)),
                 (n = a),
                 (a.childExpirationTime = 0),
@@ -11742,11 +11743,11 @@ object-assign
                     !u &&
                     l &&
                     null !== (o = o.child.sibling) &&
-                      (null !== (s = t.firstEffect)
-                        ? ((t.firstEffect = o), (o.nextEffect = s))
-                        : ((t.firstEffect = t.lastEffect = o),
-                          (o.nextEffect = null)),
-                      (o.effectTag = 8)),
+                    (null !== (s = t.firstEffect)
+                      ? ((t.firstEffect = o), (o.nextEffect = s))
+                      : ((t.firstEffect = t.lastEffect = o),
+                        (o.nextEffect = null)),
+                    (o.effectTag = 8)),
                   (u !== l || (0 == (1 & t.effectTag) && u)) &&
                     (t.effectTag |= 4)
                 break

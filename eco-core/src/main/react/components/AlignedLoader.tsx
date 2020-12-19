@@ -9,10 +9,10 @@ const useStyles = makeStyles(theme => ({
 }))
 
 type AlignedLoaderProps = {
-  height?:number
+  height?: number
 }
 
-export function AlignedLoader({height}:AlignedLoaderProps) {
+export function AlignedLoader({height}: AlignedLoaderProps) {
   const classes = useStyles()
 
   return (
