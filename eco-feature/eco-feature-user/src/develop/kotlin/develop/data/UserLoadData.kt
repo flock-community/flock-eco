@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component
 
 @Component
 class UserLoadData(
-        val userRepository: UserRepository,
-        val userAccountRepository: UserAccountRepository,
-        val userAuthorityService: UserAuthorityService,
-        val passwordEncoder: PasswordEncoder
+    val userRepository: UserRepository,
+    val userAccountRepository: UserAccountRepository,
+    val userAuthorityService: UserAuthorityService,
+    val passwordEncoder: PasswordEncoder
 ) : LoadData<User> {
 
     override fun load(n: Int): Iterable<User> {
@@ -24,17 +24,16 @@ class UserLoadData(
     }
 
     private fun user(int: Int) = User(
-            name = "name-$int",
-            code = int.toString(),
-            email = "email-$int@email-$int.xx",
-            authorities = userAuthorityService.allAuthorities()
-                    .map { it.toName() }
-                    .toMutableSet()
+        name = "name-$int",
+        code = int.toString(),
+        email = "email-$int@email-$int.xx",
+        authorities = userAuthorityService.allAuthorities()
+            .map { it.toName() }
+            .toMutableSet()
     )
 
     private fun account(user: User) = UserAccountPassword(
-            user = user,
-            secret = passwordEncoder.encode(user.name)
+        user = user,
+        secret = passwordEncoder.encode(user.name)
     )
-
 }
