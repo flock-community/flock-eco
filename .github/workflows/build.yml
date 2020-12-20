@@ -45,3 +45,4 @@ jobs:
       - run: npm run generate
       - run: npm run compile
       - run: npm run build
+      - run: npm run prettier
