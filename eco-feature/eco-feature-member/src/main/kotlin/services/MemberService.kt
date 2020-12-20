@@ -2,7 +2,6 @@ package community.flock.eco.feature.member.services
 
 import community.flock.eco.core.utils.toNullable
 import community.flock.eco.feature.member.events.*
-import community.flock.eco.feature.member.mapper.MemberGraphqlMapper
 import community.flock.eco.feature.member.model.Member
 import community.flock.eco.feature.member.model.MemberStatus
 import community.flock.eco.feature.member.repositories.MemberRepository
@@ -27,7 +26,7 @@ class MemberService(
         .findAll(specification, pageable)
 
     fun count(): Long = memberRepository
-            .count()
+        .count()
 
     fun count(specification: Specification<Member>): Long = memberRepository
         .count(specification)

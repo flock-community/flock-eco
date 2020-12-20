@@ -57,7 +57,7 @@ class MemberController(
     @PostMapping
     @PreAuthorize("hasAuthority('MemberAuthority.WRITE')")
     fun create(@RequestBody form: MemberInput) = memberService
-        .create(form.consume())
+        .create(form.consume().copy(status = MemberStatus.ACTIVE))
         .produce()
         .toResponse()
 
