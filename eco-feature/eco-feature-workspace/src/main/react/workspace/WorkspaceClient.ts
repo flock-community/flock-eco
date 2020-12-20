@@ -1,5 +1,5 @@
 import {ResourceClient} from '@flock-community/flock-eco-core/src/main/react/clients'
-import {Workspace, WorkspaceInput} from '../Simple'
+import {Workspace, WorkspaceInput} from '../graphql/workspace'
 
 const path = '/api/workspaces'
 

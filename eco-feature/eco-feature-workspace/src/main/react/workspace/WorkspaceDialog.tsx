@@ -15,7 +15,7 @@ import {WorkspaceUserTable} from './WorkspaceUsersTable'
 import {WorkspaceUsersForm} from './WorkspaceUsersForm'
 
 import {ConfirmDialog} from '@flock-community/flock-eco-core'
-import {Workspace, WorkspaceInput} from '../Simple'
+import {Workspace, WorkspaceInput} from '../graphql/workspace'
 
 interface Props {
   id: string | null

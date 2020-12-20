@@ -4,10 +4,14 @@
   "dependencies": {
     "@flock-community/flock-eco-core": "^2.0.0-next.0b26722"
   },
+  "devDependencies": {
+    "apollo": "^2.27.3",
+    "@flock/graphql-simple-bindings": "^1.0.8"
+  },
   "scripts": {
     "compile": "tsc",
     "generate": "npm run generate:apollo && npm run generate:simple",
     "generate:apollo": "apollo client:codegen ./src/main/react/Apollo.ts --target=typescript --outputFlat",
-    "generate:simple": "graphql-simple-bindings '{./src/main/graphql/*, ../../../../eco-core/src/main/graphql/*}' './src/main/react/Simple.ts'"
+    "generate:simple": "graphql-simple-bindings ./src/main/graphql/* './src/main/react/graphql'"
   }
 }

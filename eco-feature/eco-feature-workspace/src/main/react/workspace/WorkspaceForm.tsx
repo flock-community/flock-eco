@@ -10,7 +10,7 @@ import {
 } from 'formik'
 import {TextField} from 'formik-material-ui'
 import {Grid, IconButton, Typography} from '@material-ui/core'
-import {WorkspaceInput} from '../Simple'
+import {WorkspaceInput} from '../graphql/workspace'
 import AddIcon from '@material-ui/icons/Add'
 import DeleteIcon from '@material-ui/icons/Delete'
 
