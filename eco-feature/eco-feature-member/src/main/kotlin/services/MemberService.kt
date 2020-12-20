@@ -17,8 +17,7 @@ import javax.transaction.Transactional
 @Component
 class MemberService(
     private val publisher: ApplicationEventPublisher,
-    private val memberRepository: MemberRepository,
-    private val memberGraphqlMapper: MemberGraphqlMapper
+    private val memberRepository: MemberRepository
 ) {
 
     fun findAll(pageable: Pageable): Iterable<Member> = memberRepository
@@ -26,6 +25,9 @@ class MemberService(
 
     fun findAll(specification: Specification<Member>, pageable: Pageable): Page<Member> = memberRepository
         .findAll(specification, pageable)
+
+    fun count(): Long = memberRepository
+            .count()
 
     fun count(specification: Specification<Member>): Long = memberRepository
         .count(specification)
