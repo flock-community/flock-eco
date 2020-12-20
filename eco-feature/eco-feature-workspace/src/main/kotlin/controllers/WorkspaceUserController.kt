@@ -1,4 +1,4 @@
-package nl.probo.catalog.controllers
+package community.flock.eco.feature.workspace.controllers
 
 import community.flock.eco.core.utils.toResponse
 import community.flock.eco.feature.workspace.graphql.WorkspaceUserInput
