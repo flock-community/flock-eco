@@ -7,10 +7,10 @@ import javax.persistence.MappedSuperclass
 @MappedSuperclass
 abstract class AbstractCodeEntity(
 
-        override val id: Long = 0,
+    override val id: Long = 0,
 
-        @Column(unique = true)
-        open val code: String = UUID.randomUUID().toString()
+    @Column(unique = true)
+    open val code: String = UUID.randomUUID().toString()
 
 ) : AbstractIdEntity(id) {
 
@@ -25,5 +25,4 @@ abstract class AbstractCodeEntity(
         val other = obj as AbstractCodeEntity
         return Objects.equals(code, other.code)
     }
-
 }

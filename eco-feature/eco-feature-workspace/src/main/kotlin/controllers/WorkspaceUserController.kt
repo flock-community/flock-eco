@@ -12,34 +12,35 @@ import java.util.*
 @Controller
 @RequestMapping("/api/workspaces/{workspacesId}/users")
 class WorkspaceUserController(
-        private val workspaceGraphqlMapper: WorkspaceGraphqlMapper,
-        private val workspaceService: WorkspaceService) {
+    private val workspaceGraphqlMapper: WorkspaceGraphqlMapper,
+    private val workspaceService: WorkspaceService
+) {
 
     @GetMapping
     @PreAuthorize("hasAuthority('WorkspaceAuthority.READ')")
     fun getAll(@PathVariable workspacesId: UUID) = workspaceService
-            .findById(workspacesId)
-            ?.let { workspaceGraphqlMapper.produce(it) }
-            ?.let { workspace -> workspace.users }
-            .toResponse()
+        .findById(workspacesId)
+        ?.let { workspaceGraphqlMapper.produce(it) }
+        ?.let { workspace -> workspace.users }
+        .toResponse()
 
     @PostMapping
     @PreAuthorize("hasAuthority('WorkspaceAuthority.WRITE')")
-    fun post(@PathVariable workspacesId: UUID,
-             @RequestBody input: WorkspaceUserInput) = input
-            .let { workspaceService.addWorkspaceUser(workspacesId, it.reference, it.role) }
-            .let { workspaceGraphqlMapper.produce(it) }
-            .toResponse()
+    fun post(
+        @PathVariable workspacesId: UUID,
+        @RequestBody input: WorkspaceUserInput
+    ) = input
+        .let { workspaceService.addWorkspaceUser(workspacesId, it.reference, it.role) }
+        .let { workspaceGraphqlMapper.produce(it) }
+        .toResponse()
 
     @DeleteMapping("/{userId}")
     @PreAuthorize("hasAuthority('WorkspaceAuthority.WRITE')")
     fun delete(
-            @PathVariable workspacesId: UUID,
-            @PathVariable userId: UUID) = workspaceService
-            .findById(workspacesId)
-            ?.users
-            .toResponse()
+        @PathVariable workspacesId: UUID,
+        @PathVariable userId: UUID
+    ) = workspaceService
+        .findById(workspacesId)
+        ?.users
+        .toResponse()
 }
-
-
-

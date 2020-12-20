@@ -14,21 +14,20 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
 import org.springframework.boot.test.context.SpringBootTest
 
-
 @SpringBootTest(classes = [PaymentConfiguration::class])
 @AutoConfigureTestDatabase
 @AutoConfigureDataJpa
 class MapperTest(
-        @Autowired private val paymentMandateRepository: PaymentMandateRepository
+    @Autowired private val paymentMandateRepository: PaymentMandateRepository
 ) {
 
     @Test
     fun tests1() {
         val model = PaymentMandate(
-                id = 1,
-                amount = 10.0,
-                frequency = PaymentFrequency.MONTHLY,
-                type = PaymentType.SEPA
+            id = 1,
+            amount = 10.0,
+            frequency = PaymentFrequency.MONTHLY,
+            type = PaymentType.SEPA
         )
 
         val mapper = ObjectMapper()
@@ -39,20 +38,20 @@ class MapperTest(
     @Test
     fun tests2() {
         val mandate = PaymentMandate(
-                id = 1,
-                amount = 10.0,
-                frequency = PaymentFrequency.MONTHLY,
-                type = PaymentType.SEPA
+            id = 1,
+            amount = 10.0,
+            frequency = PaymentFrequency.MONTHLY,
+            type = PaymentType.SEPA
 
         )
 
         val transactions = PaymentTransaction(
-                amount = 10.0,
-                mandate = mandate
+            amount = 10.0,
+            mandate = mandate
         )
 
         val model = mandate.copy(
-                transactions = setOf(transactions)
+            transactions = setOf(transactions)
         )
 
         val mapper = ObjectMapper()
@@ -70,6 +69,4 @@ class MapperTest(
         val res = mapper.writeValueAsString(data)
         println(res)
     }
-
-
 }

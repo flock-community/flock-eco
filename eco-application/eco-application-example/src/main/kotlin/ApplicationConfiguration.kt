@@ -14,8 +14,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 @EnableJpaRepositories
 @EntityScan
 @ComponentScan
-@Import(UserConfiguration::class,
-        MemberConfiguration::class,
-        LanguageIsoConfiguration::class,
-        WorkspaceConfiguration::class)
+@Import(
+    UserConfiguration::class,
+    MemberConfiguration::class,
+    LanguageIsoConfiguration::class,
+    WorkspaceConfiguration::class
+)
 class ApplicationConfiguration

@@ -7,12 +7,12 @@ import javax.persistence.*
 @EntityListeners(EventEntityListeners::class)
 data class MemberGroup(
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Long = 0,
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    val id: Long = 0,
 
-        @Column(unique = true)
-        val code: String,
-        val name: String
+    @Column(unique = true)
+    val code: String,
+    val name: String
 
 )

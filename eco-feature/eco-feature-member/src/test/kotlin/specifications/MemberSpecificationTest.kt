@@ -22,10 +22,9 @@ import javax.transaction.Transactional
 @Transactional
 @Import(MemberLoadData::class)
 class MemberSpecificationTest(
-        @Autowired private val memberRepository: MemberRepository,
-        @Autowired private val memberLoadData: MemberLoadData
+    @Autowired private val memberRepository: MemberRepository,
+    @Autowired private val memberLoadData: MemberLoadData
 ) {
-
 
     @BeforeEach
     fun init() {
@@ -73,7 +72,8 @@ class MemberSpecificationTest(
     fun `find member by specification with group GROUP_3`() {
         val groups = setOf("GROUP_3")
         val specification = MemberSpecification(
-                groups = groups)
+            groups = groups
+        )
         val res = memberRepository.findAll(specification)
         assertEquals(100, res.size)
     }
@@ -83,8 +83,9 @@ class MemberSpecificationTest(
         val groups = setOf("GROUP_3")
         val statuses = setOf(MemberStatus.ACTIVE)
         val specification = MemberSpecification(
-                groups = groups,
-                statuses = statuses)
+            groups = groups,
+            statuses = statuses
+        )
         val res = memberRepository.findAll(specification)
         assertEquals(50, res.size)
     }
@@ -94,7 +95,8 @@ class MemberSpecificationTest(
         val group2 = "GROUP_2"
         val group4 = "GROUP_4"
         val specification = MemberSpecification(
-                groups = setOf(group2, group4))
+            groups = setOf(group2, group4)
+        )
         val res = memberRepository.findAll(specification)
         assertEquals(50, res.size)
         assertEquals(25, res.filter { it.groups.map { it.code }.contains(group2) }.size)

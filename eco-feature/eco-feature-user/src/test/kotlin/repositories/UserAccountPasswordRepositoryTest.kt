@@ -17,23 +17,22 @@ import javax.transaction.Transactional
 @AutoConfigureDataJpa
 @Transactional
 class UserAccountPasswordRepositoryTest(
-        @Autowired private val userRepository: UserRepository,
-        @Autowired private val userAccountPasswordRepository: UserAccountPasswordRepository
+    @Autowired private val userRepository: UserRepository,
+    @Autowired private val userAccountPasswordRepository: UserAccountPasswordRepository
 
 ) {
-
 
     @Test
     fun `save user via repository`() {
 
         val user = User(
-                name = "User Name",
-                email = "user@gmail.com"
+            name = "User Name",
+            email = "user@gmail.com"
         ).save()
 
         val account = UserAccountPassword(
-                user = user,
-                secret = "123456"
+            user = user,
+            secret = "123456"
         )
         userAccountPasswordRepository.save(account)
 
@@ -42,9 +41,7 @@ class UserAccountPasswordRepositoryTest(
 
         val res2 = userAccountPasswordRepository.findByUserEmailIgnoreCase("user@Gmail.com").toNullable()
         assertEquals("User Name", res2?.user?.name)
-
     }
 
     fun User.save() = userRepository.save(this)
-
 }

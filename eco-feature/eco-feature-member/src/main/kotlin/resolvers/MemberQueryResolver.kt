@@ -1,6 +1,5 @@
 package community.flock.eco.feature.member.resolvers
 
-
 import community.flock.eco.feature.member.graphql.MemberFilter
 import community.flock.eco.feature.member.mapper.MemberGraphqlMapper
 import community.flock.eco.feature.member.services.MemberService
@@ -16,42 +15,44 @@ import community.flock.eco.feature.member.model.Member as MemberModel
 
 @Component
 class MemberQueryResolver(
-        private val memberService: MemberService,
-        private val memberGraphqlMapper: MemberGraphqlMapper) : GraphQLQueryResolver {
+    private val memberService: MemberService,
+    private val memberGraphqlMapper: MemberGraphqlMapper
+) : GraphQLQueryResolver {
 
     @PreAuthorize("hasAuthority('MemberAuthority.READ')")
     fun findMemberById(id: Long): MemberGraphql? = memberService
-            .findById(id)
-            ?.produce()
+        .findById(id)
+        ?.produce()
 
     @PreAuthorize("hasAuthority('MemberAuthority.READ')")
     fun findAllMembers(
-            filter: MemberFilter?,
-            page: Int?,
-            size: Int?,
-            sort: String?,
-            order: String?) = pageable(page, size, sort, order)
-            .let { pageable ->
-                val specification = filter.consume()
-                memberService
-                        .findAll(specification, pageable)
-                        .map { it.produce() }
-            }
+        filter: MemberFilter?,
+        page: Int?,
+        size: Int?,
+        sort: String?,
+        order: String?
+    ) = pageable(page, size, sort, order)
+        .let { pageable ->
+            val specification = filter.consume()
+            memberService
+                .findAll(specification, pageable)
+                .map { it.produce() }
+        }
 
     @PreAuthorize("hasAuthority('MemberAuthority.READ')")
     fun countMembers(filter: MemberFilter?) = memberService.count(filter.consume())
 
     fun MemberFilter?.consume() = MemberSpecification(
-            search = this?.search ?: "",
-            statuses = this?.statuses?.map { it.consume() }?.toSet() ?: setOf(),
-            groups = this?.groups?.toSet() ?: setOf()
+        search = this?.search ?: "",
+        statuses = this?.statuses?.map { it.consume() }?.toSet() ?: setOf(),
+        groups = this?.groups?.toSet() ?: setOf()
     )
 
     fun MemberModel.produce() = memberGraphqlMapper.produce(this)
     fun MemberStatusGraphql.consume() = memberGraphqlMapper.consume(this)
 
-    fun pageable(page: Int?, size: Int?, sort: String?, order: String?):PageRequest {
-        val order = order?.let{ Sort.Direction.fromString(it) } ?: Sort.DEFAULT_DIRECTION
+    fun pageable(page: Int?, size: Int?, sort: String?, order: String?): PageRequest {
+        val order = order?.let { Sort.Direction.fromString(it) } ?: Sort.DEFAULT_DIRECTION
         val sort = sort?.let { Sort.by(order, sort) } ?: Sort.unsorted()
         return PageRequest.of(page ?: 0, size ?: 10, sort)
     }

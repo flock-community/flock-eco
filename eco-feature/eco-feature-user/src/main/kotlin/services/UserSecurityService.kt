@@ -15,10 +15,9 @@ import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService
 import org.springframework.security.oauth2.core.oidc.OidcIdToken
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser
 
-
 class UserSecurityService(
-        private val userAccountService: UserAccountService,
-        private val passwordEncoder: PasswordEncoder
+    private val userAccountService: UserAccountService,
+    private val passwordEncoder: PasswordEncoder
 ) {
 
     class UserSecurityOauth2(val account: UserAccountOauth, token: OidcIdToken) : DefaultOidcUser(account.user.getGrantedAuthority(), token) {
@@ -49,63 +48,59 @@ class UserSecurityService(
 
     fun testLogin(http: HttpSecurity): FormLoginConfigurer<HttpSecurity> {
         return http
-                .userDetailsService { ref ->
-                    userAccountService.findUserAccountPasswordByUserEmail(ref)
-                            ?.let { UserSecurityPassword(it) }
-                            ?: userAccountService.createUserAccountPassword(UserAccountPasswordForm(email = ref, password = ref))
-                                    .let { UserSecurityPassword(it) }
-
-                }
-                .formLogin()
+            .userDetailsService { ref ->
+                userAccountService.findUserAccountPasswordByUserEmail(ref)
+                    ?.let { UserSecurityPassword(it) }
+                    ?: userAccountService.createUserAccountPassword(UserAccountPasswordForm(email = ref, password = ref))
+                        .let { UserSecurityPassword(it) }
+            }
+            .formLogin()
     }
 
     fun databaseLogin(http: HttpSecurity): FormLoginConfigurer<HttpSecurity> {
 
         return http
-                .userDetailsService { ref ->
-                    userAccountService.findUserAccountPasswordByUserEmail(ref)
-                            ?.let { UserSecurityPassword(it) }
-                            ?: throw UsernameNotFoundException("User '$ref' not found")
-                }
-                .formLogin()
-
+            .userDetailsService { ref ->
+                userAccountService.findUserAccountPasswordByUserEmail(ref)
+                    ?.let { UserSecurityPassword(it) }
+                    ?: throw UsernameNotFoundException("User '$ref' not found")
+            }
+            .formLogin()
     }
 
     fun googleLogin(http: HttpSecurity): OAuth2LoginConfigurer<HttpSecurity>.UserInfoEndpointConfig {
 
         return http
-                .oauth2Login()
-                .userInfoEndpoint()
-                .oidcUserService { it ->
+            .oauth2Login()
+            .userInfoEndpoint()
+            .oidcUserService { it ->
 
-                    val delegate = OidcUserService()
-                    val oidcUser = delegate.loadUser(it)
+                val delegate = OidcUserService()
+                val oidcUser = delegate.loadUser(it)
 
-                    val reference = oidcUser.attributes["sub"].toString()
-                    val name = oidcUser.attributes["name"].toString()
-                    val email = oidcUser.attributes["email"].toString()
+                val reference = oidcUser.attributes["sub"].toString()
+                val name = oidcUser.attributes["name"].toString()
+                val email = oidcUser.attributes["email"].toString()
 
-                    val form = UserAccountOauthForm(
-                            email = email,
-                            name = name,
-                            reference = reference,
-                            provider = UserAccountOauthProvider.GOOGLE)
+                val form = UserAccountOauthForm(
+                    email = email,
+                    name = name,
+                    reference = reference,
+                    provider = UserAccountOauthProvider.GOOGLE
+                )
 
-                    if (userAccountService.findUserAccountOauthByReference(reference) == null) {
-                        userAccountService.createUserAccountOauth(form)
-                    }
-
-                    userAccountService.findUserAccountOauthByReference(reference)
-                            ?.let { UserSecurityOauth2(it, oidcUser.idToken) }
+                if (userAccountService.findUserAccountOauthByReference(reference) == null) {
+                    userAccountService.createUserAccountOauth(form)
                 }
+
+                userAccountService.findUserAccountOauthByReference(reference)
+                    ?.let { UserSecurityOauth2(it, oidcUser.idToken) }
+            }
     }
 }
 
 private fun User.getGrantedAuthority(): List<GrantedAuthority> {
     return this.authorities
-            .map { SimpleGrantedAuthority(it) }
-            .toList()
+        .map { SimpleGrantedAuthority(it) }
+        .toList()
 }
-
-
-

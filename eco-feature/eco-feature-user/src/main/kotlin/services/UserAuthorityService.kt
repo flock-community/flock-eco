@@ -1,4 +1,4 @@
-package community.flock.eco.feature.user.services;
+package community.flock.eco.feature.user.services
 
 import community.flock.eco.core.authorities.Authority
 import org.reflections.Reflections
@@ -16,8 +16,6 @@ class UserAuthorityService {
     }
 
     fun allAuthorities(): List<Authority> = classes
-            .filter { it.isEnum }
-            .flatMap { it.enumConstants.toList() }
-
-
+        .filter { it.isEnum }
+        .flatMap { it.enumConstants.toList() }
 }

@@ -13,9 +13,9 @@ fun Pageable?.consume(): PageRequest = when {
 }
 
 private fun Direction?.consume(): Sort.Direction = this
-        ?.run {
-            Sort.Direction
-                    .fromOptionalString(name)
-                    .toNullable()
-        }
-        ?: Sort.DEFAULT_DIRECTION
+    ?.run {
+        Sort.Direction
+            .fromOptionalString(name)
+            .toNullable()
+    }
+    ?: Sort.DEFAULT_DIRECTION

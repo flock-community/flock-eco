@@ -22,17 +22,17 @@ import kotlin.test.assertTrue
 @AutoConfigureWebClient
 @Import(MemberConfiguration::class, MemberLoadData::class)
 class MemberQueryResolverTest(
-        @Autowired private val graphQLTestTemplate: GraphQLTestTemplate,
-        @Autowired private val memberLoadData: MemberLoadData
+    @Autowired private val graphQLTestTemplate: GraphQLTestTemplate,
+    @Autowired private val memberLoadData: MemberLoadData
 ) {
 
     @Test
     fun countMembers() {
         memberLoadData.load(33)
         val res = graphQLTestTemplate.perform("count-member.graphql")
-        assertNotNull(res);
-        assertTrue(res.isOk);
-        assertEquals("33", res.get("$.data.countMembers"));
+        assertNotNull(res)
+        assertTrue(res.isOk)
+        assertEquals("33", res.get("$.data.countMembers"))
     }
 
     @Test
@@ -40,11 +40,10 @@ class MemberQueryResolverTest(
         val variables: ObjectNode = ObjectMapper().createObjectNode()
         variables.put("search", "1")
         val res = graphQLTestTemplate.perform("find-page.graphql", variables)
-        assertNotNull(res);
-        assertTrue(res.isOk);
-        assertEquals("2", res.get("$.data.list.length()"));
-        assertEquals("first-name-1", res.get("$.data.list[0].firstName"));
-        assertEquals("13", res.get("$.data.count"));
-
+        assertNotNull(res)
+        assertTrue(res.isOk)
+        assertEquals("2", res.get("$.data.list.length()"))
+        assertEquals("first-name-1", res.get("$.data.list[0].firstName"))
+        assertEquals("13", res.get("$.data.count"))
     }
 }

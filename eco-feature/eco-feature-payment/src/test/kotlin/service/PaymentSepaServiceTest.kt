@@ -22,11 +22,9 @@ import javax.transaction.Transactional
 @AutoConfigureDataJpa
 @Transactional
 class PaymentSepaServiceTest(
-        @Autowired private val service: PaymentSepaService,
-        @Autowired private val repository: PaymentMandateRepository
+    @Autowired private val service: PaymentSepaService,
+    @Autowired private val repository: PaymentMandateRepository
 ) {
-
-
 
     @Test
     fun createSimple() {
@@ -34,15 +32,15 @@ class PaymentSepaServiceTest(
         val code = UUID.randomUUID().toString()
 
         val sepa = PaymentSepaService.PaymentSepa(
-                code = code,
-                amount = 10.12,
-                frequency = PaymentFrequency.MONTHLY,
-                bankAccount = PaymentBankAccount(
-                        name = "W.F. Veelenturf",
-                        iban = "NL00ABCD0012345678",
-                        bic = "BIC123",
-                        country = "NL"
-                )
+            code = code,
+            amount = 10.12,
+            frequency = PaymentFrequency.MONTHLY,
+            bankAccount = PaymentBankAccount(
+                name = "W.F. Veelenturf",
+                iban = "NL00ABCD0012345678",
+                bic = "BIC123",
+                country = "NL"
+            )
         )
 
         service.create(sepa)
@@ -56,7 +54,6 @@ class PaymentSepaServiceTest(
             assertEquals(10.12, it.amount, 0.0)
             assertEquals(LocalDate.now().month, it.collectionMonth)
         }
-
     }
 
     @Test
@@ -65,16 +62,16 @@ class PaymentSepaServiceTest(
         val code = UUID.randomUUID().toString()
 
         val sepa = PaymentSepaService.PaymentSepa(
-                code = code,
-                amount = 10.12,
-                frequency = PaymentFrequency.YEARLY,
-                collectionMonth = Month.APRIL,
-                bankAccount = PaymentBankAccount(
-                        name = "W.F. Veelenturf",
-                        iban = "NL00ABCD0012345678",
-                        bic = "BIC123",
-                        country = "NL"
-                )
+            code = code,
+            amount = 10.12,
+            frequency = PaymentFrequency.YEARLY,
+            collectionMonth = Month.APRIL,
+            bankAccount = PaymentBankAccount(
+                name = "W.F. Veelenturf",
+                iban = "NL00ABCD0012345678",
+                bic = "BIC123",
+                country = "NL"
+            )
         )
 
         service.create(sepa)
@@ -87,8 +84,5 @@ class PaymentSepaServiceTest(
             assertEquals(code, it.code)
             assertEquals(Month.APRIL, it.collectionMonth)
         }
-
     }
-
-
 }

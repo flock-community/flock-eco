@@ -17,28 +17,27 @@ import kotlin.test.assertEquals
 @AutoConfigureDataJpa
 @Transactional
 class PaymentRepositoryTest(
-        @Autowired private val paymentTransactionRepository: PaymentTransactionRepository,
-        @Autowired private val paymentMandateRepository: PaymentMandateRepository
+    @Autowired private val paymentTransactionRepository: PaymentTransactionRepository,
+    @Autowired private val paymentMandateRepository: PaymentMandateRepository
 ) {
-
 
     @Test
     fun testsSave() {
         val amount = 10.0
 
         val mandate = PaymentMandate(
-                amount = amount,
-                frequency = PaymentFrequency.ONCE,
-                type = PaymentType.CREDIT_CARD
+            amount = amount,
+            frequency = PaymentFrequency.ONCE,
+            type = PaymentType.CREDIT_CARD
         ).let {
             paymentMandateRepository.save(it)
         }
 
         val transaction = PaymentTransaction(
-                amount = amount,
-                reference = "1010101010",
-                status = PaymentTransactionStatus.PENDING,
-                mandate = mandate
+            amount = amount,
+            reference = "1010101010",
+            status = PaymentTransactionStatus.PENDING,
+            mandate = mandate
         ).let {
             paymentTransactionRepository.save(it)
         }
@@ -51,9 +50,7 @@ class PaymentRepositoryTest(
         val endDate = now.withDayOfMonth(now.lengthOfMonth())
 
         val transactions = paymentTransactionRepository.findBetweenDate(startDate, endDate)
-                .map { it.mandate }
+            .map { it.mandate }
         assertEquals(1, transactions.size)
-
     }
-
 }

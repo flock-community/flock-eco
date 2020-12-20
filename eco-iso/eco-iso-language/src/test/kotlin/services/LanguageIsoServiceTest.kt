@@ -11,7 +11,7 @@ import kotlin.test.assertNull
 @SpringBootTest(classes = [LanguageIsoConfiguration::class])
 @AutoConfigureWebClient
 class LanguageIsoServiceTest(
-        @Autowired private val languageIsoService: LanguageIsoService
+    @Autowired private val languageIsoService: LanguageIsoService
 ) {
 
     @Test
@@ -26,5 +26,4 @@ class LanguageIsoServiceTest(
         val language = languageIsoService.findByAlpha2("xx")
         assertNull(language)
     }
-
 }

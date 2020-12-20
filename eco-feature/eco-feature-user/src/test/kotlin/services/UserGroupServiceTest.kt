@@ -19,12 +19,10 @@ import javax.transaction.Transactional
 @AutoConfigureDataJpa
 @Transactional
 class UserGroupServiceTest(
-        @Autowired private val userService: UserService,
-        @Autowired private val userGroupService: UserGroupService,
-        @Autowired private val userGroupRepository: UserGroupRepository
+    @Autowired private val userService: UserService,
+    @Autowired private val userGroupService: UserGroupService,
+    @Autowired private val userGroupRepository: UserGroupRepository
 ) {
-
-
 
     @Test
     fun `create new group`() {
@@ -35,8 +33,8 @@ class UserGroupServiceTest(
     @Test
     fun `create new group with user`() {
         val form = UserForm(
-                name = "User 2",
-                email = "user-2@gmail.com"
+            name = "User 2",
+            email = "user-2@gmail.com"
         )
         val user = userService.create(form)
         val group = userGroupService.create(UserGroupForm("Test", mutableSetOf(user.code)))
@@ -46,8 +44,8 @@ class UserGroupServiceTest(
     @Test
     fun `remove user from group`() {
         val form = UserForm(
-                name = "User 3",
-                email = "user-3@gmail.com"
+            name = "User 3",
+            email = "user-3@gmail.com"
         )
         val user = userService.create(form)
         assertNotNull(user.id)
@@ -55,9 +53,12 @@ class UserGroupServiceTest(
         val group = userGroupService.create(UserGroupForm("Test", mutableSetOf(user.code)))
         assertNotNull(group.id)
 
-        userGroupService.update(group.code, UserGroupForm(
+        userGroupService.update(
+            group.code,
+            UserGroupForm(
                 users = setOf()
-        ))
+            )
+        )
 
         assertEquals(1, userService.findAll().count())
         assertEquals(1, userGroupRepository.findAll().count())

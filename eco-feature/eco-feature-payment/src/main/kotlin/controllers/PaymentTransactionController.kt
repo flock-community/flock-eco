@@ -16,5 +16,4 @@ class PaymentTransactionController(private val paymentTransactionRepository: Pay
     @GetMapping
     @PreAuthorize("hasAuthority('PaymentTransactionAuthority.READ')")
     fun findAll(pageable: Pageable): Page<PaymentTransaction> = paymentTransactionRepository.findAll(pageable)
-
 }

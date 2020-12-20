@@ -9,7 +9,7 @@ import org.springframework.util.ResourceUtils
 
 @SpringBootTest(classes = [StubCloudConfiguration::class])
 class StubStorageServiceTest(
-       @Autowired private val storageService: StorageService
+    @Autowired private val storageService: StorageService
 ) {
 
     val bucket: String = "bucket-test"
@@ -36,6 +36,5 @@ class StubStorageServiceTest(
         val res = storageService.getObject(bucket, key)
 
         assertEquals("test\n", res?.let { String(it) })
-
     }
 }

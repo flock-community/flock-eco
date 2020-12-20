@@ -14,28 +14,27 @@ import javax.transaction.Transactional
 @Component
 @Transactional
 class WorkspaceQueryResolver(
-        private val workspaceUserProvider: WorkspaceUserProvider,
-        private val workspaceGraphqlMapper: WorkspaceGraphqlMapper,
-        private val workspaceService: WorkspaceService) : GraphQLQueryResolver {
+    private val workspaceUserProvider: WorkspaceUserProvider,
+    private val workspaceGraphqlMapper: WorkspaceGraphqlMapper,
+    private val workspaceService: WorkspaceService
+) : GraphQLQueryResolver {
 
     @PreAuthorize("hasAuthority('WorkspaceAuthority.READ')")
     fun findWorkspaceAll(pageable: Pageable?) = workspaceService
-            .findAll(pageable.consume())
-            .map { workspaceGraphqlMapper.produce(it) }
-            .toList()
+        .findAll(pageable.consume())
+        .map { workspaceGraphqlMapper.produce(it) }
+        .toList()
 
     @PreAuthorize("hasAuthority('WorkspaceAuthority.READ')")
     fun findWorkspaceById(id: UUID) = workspaceService
-            .findById(id)
-            ?.let { workspaceGraphqlMapper.produce(it) }
-
+        .findById(id)
+        ?.let { workspaceGraphqlMapper.produce(it) }
 
     @PreAuthorize("hasAuthority('WorkspaceAuthority.READ')")
     fun countWorkspaceAll() = workspaceService
-            .count()
+        .count()
 
     @PreAuthorize("hasAuthority('WorkspaceAuthority.READ')")
     fun findWorkspaceRolesAll() = workspaceUserProvider
-            .findRoles()
-
+        .findRoles()
 }

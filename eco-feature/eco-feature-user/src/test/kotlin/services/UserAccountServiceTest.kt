@@ -29,16 +29,16 @@ import kotlin.test.assertTrue
 @AutoConfigureDataJpa
 @Transactional
 class UserAccountServiceTest(
-        @Autowired val userService: UserService,
-        @Autowired val userAccountService: UserAccountService,
-        @Autowired val userAccountPasswordRepository: UserAccountPasswordRepository,
-        @Autowired val passwordEncoder: PasswordEncoder
+    @Autowired val userService: UserService,
+    @Autowired val userAccountService: UserAccountService,
+    @Autowired val userAccountPasswordRepository: UserAccountPasswordRepository,
+    @Autowired val passwordEncoder: PasswordEncoder
 ) {
 
     private val passwordForm = UserAccountPasswordForm(
-            name = "Willem Veelenturf",
-            email = "willem.veelenturf@gmail.com",
-            password = "123456"
+        name = "Willem Veelenturf",
+        email = "willem.veelenturf@gmail.com",
+        password = "123456"
     )
 
     @Test
@@ -62,14 +62,13 @@ class UserAccountServiceTest(
         }
     }
 
-
     @Test
     fun `test register oauth user`() {
         val form = UserAccountOauthForm(
-                name = passwordForm.name,
-                email = passwordForm.email,
-                provider = UserAccountOauthProvider.GOOGLE,
-                reference = "123123123"
+            name = passwordForm.name,
+            email = passwordForm.email,
+            provider = UserAccountOauthProvider.GOOGLE,
+            reference = "123123123"
         )
         val account = userAccountService.createUserAccountOauth(form)
 
@@ -82,7 +81,7 @@ class UserAccountServiceTest(
 
     @Test
     fun `generate reset code for user that doesn't exist`() {
-        assertFailsWith<UserAccountNotFoundForUserCode>{
+        assertFailsWith<UserAccountNotFoundForUserCode> {
             userAccountService.generateResetCodeForUserCode("doesn't exist")
         }
     }
@@ -144,7 +143,7 @@ class UserAccountServiceTest(
             val account = userAccountService.findUserAccountPasswordByUserEmail(passwordForm.email)!!
             assertNotNull(account.secret)
             assertTrue(passwordEncoder.matches(newPassword, account.secret))
-        };
+        }
     }
 
     @Test
@@ -156,29 +155,31 @@ class UserAccountServiceTest(
 
     @Test
     fun `create user account password without password`() {
-        val user = userService.create(UserForm(
+        val user = userService.create(
+            UserForm(
                 name = "Pino",
                 email = "pino@sesamstreet.xx"
-        ))
+            )
+        )
         userAccountService.createUserAccountPasswordWithoutPassword(user.code)
 
         val account = userAccountService.findUserAccountPasswordByUserEmail(user.email)
 
         assertNotNull(account)
-
     }
 
     @Test
     fun `create user account password without password create twice`() {
-        val user = userService.create(UserForm(
+        val user = userService.create(
+            UserForm(
                 name = "Pino",
                 email = "pino@sesamstreet.xx"
-        ))
+            )
+        )
         userAccountService.createUserAccountPasswordWithoutPassword(user.code)
         assertFailsWith<UserAccountExistsException> {
             userAccountService.createUserAccountPasswordWithoutPassword(user.code)
         }
-
     }
 
     @Test
@@ -198,7 +199,6 @@ class UserAccountServiceTest(
         val accountKey = userAccountService.generateKeyForUserCode(account.user.code, label)
         val foundAccountKey = userAccountService.findUserAccountKeyByKey(accountKey?.key!!)
         assertEquals(label, foundAccountKey?.label)
-
     }
 
     @Test
@@ -208,7 +208,7 @@ class UserAccountServiceTest(
         var newLabel = "Alrighty then"
 
         val form = UserKeyForm(
-                label = newLabel
+            label = newLabel
         )
 
         val account = userAccountService.createUserAccountPassword(passwordForm.copy())
@@ -220,7 +220,5 @@ class UserAccountServiceTest(
         val foundAccountKey = userAccountService.findUserAccountKeyByKey(accountKey?.key!!)
 
         assertEquals(newLabel, foundAccountKey?.label)
-
     }
-
 }

@@ -10,9 +10,11 @@ import org.springframework.stereotype.Service
 @Service
 interface MemberRepository : PagingAndSortingRepository<Member, Long>, JpaSpecificationExecutor<Member> {
 
-    @Query("SELECT m " +
+    @Query(
+        "SELECT m " +
             "FROM Member m " +
-            "WHERE m.id IN ?1")
+            "WHERE m.id IN ?1"
+    )
     fun findByIds(ids: List<Long>): Iterable<Member>
 
     fun findAllByEmail(email: String): Iterable<Member>

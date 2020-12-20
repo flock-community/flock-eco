@@ -11,7 +11,7 @@ import kotlin.test.assertNull
 @SpringBootTest(classes = [CountryIsoConfiguration::class])
 @AutoConfigureWebClient
 class CountryIsoServiceTest(
-        @Autowired private val countryIsoService: CountryIsoService
+    @Autowired private val countryIsoService: CountryIsoService
 ) {
 
     @Test
@@ -33,5 +33,4 @@ class CountryIsoServiceTest(
         val country = countryIsoService.findByAlpha2("XX")
         assertNull(country)
     }
-
 }

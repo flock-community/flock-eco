@@ -4,8 +4,7 @@ import graphql.scalars.ExtendedScalars
 import graphql.schema.GraphQLScalarType
 import org.springframework.context.annotation.Bean
 
-
-class GraphqlConfiguration(){
+class GraphqlConfiguration() {
 
     @Bean
     fun dateScalarType(): GraphQLScalarType {
@@ -16,6 +15,4 @@ class GraphqlConfiguration(){
     fun dateTimeScalarType(): GraphQLScalarType {
         return ExtendedScalars.DateTime
     }
-
-
 }

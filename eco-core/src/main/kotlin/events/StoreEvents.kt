@@ -1,6 +1,5 @@
 package events
 
-import community.flock.eco.core.events.EntityEvent
 import community.flock.eco.core.events.Event
 
 sealed class StorageEvent(open val entity: Any) : Event

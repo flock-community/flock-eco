@@ -15,13 +15,13 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 @Configuration
 @EnableJpaRepositories
 @EntityScan
-@Import(GraphqlConfiguration::class,
-        WorkspaceService::class,
-        WorkspaceGraphqlMapper::class,
-        WorkspaceController::class,
-        WorkspaceUserController::class,
-        WorkspaceRoleController::class,
-        WorkspaceQueryResolver::class)
-class WorkspaceConfiguration {
-
-}
+@Import(
+    GraphqlConfiguration::class,
+    WorkspaceService::class,
+    WorkspaceGraphqlMapper::class,
+    WorkspaceController::class,
+    WorkspaceUserController::class,
+    WorkspaceRoleController::class,
+    WorkspaceQueryResolver::class
+)
+class WorkspaceConfiguration

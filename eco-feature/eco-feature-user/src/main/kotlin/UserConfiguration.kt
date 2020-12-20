@@ -16,25 +16,26 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 
-
 @Configuration
 @EnableJpaRepositories
 @EntityScan
 @EnableConfigurationProperties(UserProperties::class)
-@Import(GraphqlConfiguration::class,
-        UserControllerAdvice::class,
-        UserController::class,
-        UserGroupController::class,
-        UserGroupService::class,
-        UserAuthorityController::class,
-        UserAccountController::class,
-        UserStatusController::class,
-        UserService::class,
-        UserAccountService::class,
-        UserAuthorityService::class,
-        UserSecurityService::class,
-        UserQueryResolver::class,
-        UserKeyTokenFilter::class)
+@Import(
+    GraphqlConfiguration::class,
+    UserControllerAdvice::class,
+    UserController::class,
+    UserGroupController::class,
+    UserGroupService::class,
+    UserAuthorityController::class,
+    UserAccountController::class,
+    UserStatusController::class,
+    UserService::class,
+    UserAccountService::class,
+    UserAuthorityService::class,
+    UserSecurityService::class,
+    UserQueryResolver::class,
+    UserKeyTokenFilter::class
+)
 class UserConfiguration {
 
     @Bean
@@ -45,12 +46,10 @@ class UserConfiguration {
     @Bean
     fun schemaParserDictionary(): SchemaParserDictionary {
         return SchemaParserDictionary()
-                .add(User::class.java)
-                .add(UserAccount::class.java)
-                .add(UserAccountPassword::class.java)
-                .add(UserAccountOauth::class.java)
-                .add(UserAccountKey::class.java)
+            .add(User::class.java)
+            .add(UserAccount::class.java)
+            .add(UserAccountPassword::class.java)
+            .add(UserAccountOauth::class.java)
+            .add(UserAccountKey::class.java)
     }
-
-
 }

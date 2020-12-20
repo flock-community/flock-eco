@@ -17,13 +17,15 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 @Configuration
 @EnableJpaRepositories
 @EntityScan
-@Import(GraphqlConfiguration::class,
-        CountryIsoConfiguration::class,
-        LanguageIsoConfiguration::class,
-        MemberService::class,
-        MemberController::class,
-        MemberGroupController::class,
-        MemberFieldController::class,
-        MemberGraphqlMapper::class,
-        MemberQueryResolver::class)
+@Import(
+    GraphqlConfiguration::class,
+    CountryIsoConfiguration::class,
+    LanguageIsoConfiguration::class,
+    MemberService::class,
+    MemberController::class,
+    MemberGroupController::class,
+    MemberFieldController::class,
+    MemberGraphqlMapper::class,
+    MemberQueryResolver::class
+)
 class MemberConfiguration

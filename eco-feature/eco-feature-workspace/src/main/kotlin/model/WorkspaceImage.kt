@@ -9,20 +9,16 @@ import javax.persistence.Embeddable
 @Embeddable
 class WorkspaceImage(
 
-        @Column(name = "image_name")
-        val name: String,
+    @Column(name = "image_name")
+    val name: String,
 
-        @Column(name = "image_file")
-        val file: ByteArray
+    @Column(name = "image_file")
+    val file: ByteArray
 
 )
 
 fun WorkspaceImage.getMediaType(): MediaType {
-        val extension = File(name).extension
-        val mime = MimeMappings.DEFAULT.get(extension)
-        return MediaType.parseMediaType(mime)
+    val extension = File(name).extension
+    val mime = MimeMappings.DEFAULT.get(extension)
+    return MediaType.parseMediaType(mime)
 }
-
-
-
-

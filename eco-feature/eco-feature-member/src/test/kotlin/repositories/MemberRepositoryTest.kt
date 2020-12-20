@@ -19,8 +19,8 @@ import javax.transaction.Transactional
 @AutoConfigureWebClient
 @Transactional
 class MemberRepositoryTest(
-        @Autowired private val memberRepository: MemberRepository,
-        @Autowired private val memberFieldRepository: MemberFieldRepository
+    @Autowired private val memberRepository: MemberRepository,
+    @Autowired private val memberFieldRepository: MemberFieldRepository
 ) {
 
     @BeforeEach
@@ -28,20 +28,24 @@ class MemberRepositoryTest(
         memberRepository.deleteAll()
 
         (1..3).forEach {
-            memberRepository.save(Member(
+            memberRepository.save(
+                Member(
                     firstName = "member$it",
                     surName = "member$it",
                     email = "member$it@gmail.com",
                     status = MemberStatus.ACTIVE
-            ))
+                )
+            )
         }
 
-        memberRepository.save(Member(
+        memberRepository.save(
+            Member(
                 firstName = "joop",
                 surName = "joop",
                 email = "joop@gmail.com",
                 status = MemberStatus.ACTIVE
-        ))
+            )
+        )
     }
 
     @Test
@@ -61,7 +65,7 @@ class MemberRepositoryTest(
     @Test
     fun testsCreate() {
         val member = createMember(
-                email = "willem.veelenturf@gmail.com"
+            email = "willem.veelenturf@gmail.com"
         )
         val res = memberRepository.save(member)
         assertEquals("Willem", res.firstName)
@@ -71,11 +75,11 @@ class MemberRepositoryTest(
     fun testsGroup() {
 
         val group = MemberGroup(
-                code = "LEKSTREEK",
-                name = "Lekstreek"
+            code = "LEKSTREEK",
+            name = "Lekstreek"
         )
         val member1 = createMember(
-                groups = setOf(group)
+            groups = setOf(group)
         )
         val res1 = memberRepository.save(member1)
 
@@ -83,8 +87,8 @@ class MemberRepositoryTest(
         assertEquals("LEKSTREEK", res1.groups.toList()[0].code)
 
         val member2 = createMember(
-                email = "willem.veelenturf@gmail.com2",
-                groups = setOf(group)
+            email = "willem.veelenturf@gmail.com2",
+            groups = setOf(group)
         )
         val res2 = memberRepository.save(member2)
 
@@ -96,15 +100,15 @@ class MemberRepositoryTest(
     fun testsField() {
 
         val fieldAgreement = MemberField(
-                name = "agreement",
-                label = "Agreement",
-                type = MemberFieldType.TEXT
+            name = "agreement",
+            label = "Agreement",
+            type = MemberFieldType.TEXT
         )
 
         val fieldCheckbox = MemberField(
-                name = "checkbox",
-                label = "Checkbox",
-                type = MemberFieldType.TEXT
+            name = "checkbox",
+            label = "Checkbox",
+            type = MemberFieldType.TEXT
         )
 
         memberFieldRepository.save(fieldAgreement)
@@ -117,28 +121,26 @@ class MemberRepositoryTest(
         assertEquals("Test123", res1.fields["agreement"])
 
         val member2 = createMember(
-                email = "willem.veelenturf@gmail.com2",
-                fields = mapOf(fieldCheckbox.name to "Checked")
+            email = "willem.veelenturf@gmail.com2",
+            fields = mapOf(fieldCheckbox.name to "Checked")
         )
         val res2 = memberRepository.save(member2)
 
         assertEquals("Willem", res2.firstName)
         assertEquals("Checked", res2.fields["checkbox"])
-
     }
 
     private fun createMember(
-            firstName: String = "Willem",
-            surName: String = "Veelenturf",
-            email: String = "willem.veelenturf@gmail.com1",
-            groups: Set<MemberGroup> = setOf(),
-            fields: Map<String, String> = mapOf()
+        firstName: String = "Willem",
+        surName: String = "Veelenturf",
+        email: String = "willem.veelenturf@gmail.com1",
+        groups: Set<MemberGroup> = setOf(),
+        fields: Map<String, String> = mapOf()
     ): Member = Member(
-            firstName = firstName,
-            surName = surName,
-            email = email,
-            groups = groups,
-            fields = fields
+        firstName = firstName,
+        surName = surName,
+        email = email,
+        groups = groups,
+        fields = fields
     )
-
 }

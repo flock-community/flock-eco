@@ -19,8 +19,8 @@ import java.time.LocalDate
 @RestController
 @RequestMapping("/api/payment/buckaroo")
 class PaymentBuckarooController(
-        private val transactionRepository: PaymentTransactionRepository,
-        private val publisher: ApplicationEventPublisher
+    private val transactionRepository: PaymentTransactionRepository,
+    private val publisher: ApplicationEventPublisher
 ) {
 
     private val mapper = ObjectMapper()
@@ -31,19 +31,20 @@ class PaymentBuckarooController(
     @PostMapping("error")
     fun error(@RequestBody json: String): ResponseEntity<Unit> = respond(json, ERROR)
 
-
     private fun respond(json: String, status: PaymentTransactionStatus): ResponseEntity<Unit> = mapper.readValue(json, ObjectNode::class.java)
-            .let { it["Transaction"]["Key"].asText() }
-            .apply {
-                transactionRepository.findByReference(this)?.let {
-                    transactionRepository.save(it.copy(
-                            confirmed = LocalDate.now(),
-                            status = status
-                    ))
-                }
+        .let { it["Transaction"]["Key"].asText() }
+        .apply {
+            transactionRepository.findByReference(this)?.let {
+                transactionRepository.save(
+                    it.copy(
+                        confirmed = LocalDate.now(),
+                        status = status
+                    )
+                )
             }
-            .also { publisher.publishEvent(selectEvent(status)) }
-            .let { ResponseEntity(HttpStatus.NO_CONTENT) }
+        }
+        .also { publisher.publishEvent(selectEvent(status)) }
+        .let { ResponseEntity(HttpStatus.NO_CONTENT) }
 
     private fun selectEvent(status: PaymentTransactionStatus) = when (status) {
         SUCCESS -> PaymentSuccessEvent()
@@ -52,5 +53,4 @@ class PaymentBuckarooController(
         CANCELED -> TODO()
         FAILED -> TODO()
     }
-
 }

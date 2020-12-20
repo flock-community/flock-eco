@@ -17,84 +17,86 @@ import java.security.Principal
 @RestController
 @RequestMapping("/api/users")
 class UserController(
-        private val userRepository: UserRepository,
-        private val userService: UserService,
-        private val userAccountService: UserAccountService
+    private val userRepository: UserRepository,
+    private val userService: UserService,
+    private val userAccountService: UserAccountService
 ) {
 
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
     fun findMeUser(authentication: Authentication) = userService
-            .read(authentication.name)
-            .toResponse()
+        .read(authentication.name)
+        .toResponse()
 
     @GetMapping("/me/accounts")
     @PreAuthorize("isAuthenticated()")
     fun findMeUserAccounts(authentication: Authentication) = userAccountService
-            .findUserAccountByUserCode(authentication.name)
-            .toList()
-            .toResponse()
+        .findUserAccountByUserCode(authentication.name)
+        .toList()
+        .toResponse()
 
     @GetMapping
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
     fun findAllUsers(
-            @RequestParam(defaultValue = "", required = false) search: String,
-            page: Pageable): ResponseEntity<List<User>> {
+        @RequestParam(defaultValue = "", required = false) search: String,
+        page: Pageable
+    ): ResponseEntity<List<User>> {
         return userRepository
-                .findAllByNameIgnoreCaseContainingOrEmailIgnoreCaseContaining(search, search, page)
-                .toResponse()
+            .findAllByNameIgnoreCaseContainingOrEmailIgnoreCaseContaining(search, search, page)
+            .toResponse()
     }
 
     @PostMapping("search")
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
     fun findAllUsersByCodes(
-            @RequestBody(required = false) codes: Set<String>): ResponseEntity<List<User>> {
+        @RequestBody(required = false) codes: Set<String>
+    ): ResponseEntity<List<User>> {
         return userRepository.findAllByCodeIn(codes)
-                .toList()
-                .toResponse()
+            .toList()
+            .toResponse()
     }
 
     @PostMapping
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
     fun createUser(@RequestBody form: UserForm): ResponseEntity<User> = userService
-            .create(form)
-            .toResponse()
+        .create(form)
+        .toResponse()
 
     @GetMapping("/{code}")
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
     fun findUserById(@PathVariable code: String): ResponseEntity<User> = userService
-            .read(code)
-            .toResponse()
+        .read(code)
+        .toResponse()
 
     @PutMapping("/{code}")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
     fun updateUser(@PathVariable code: String, @RequestBody form: UserForm): ResponseEntity<User> = userService
-            .update(code, form)
-            .toResponse()
+        .update(code, form)
+        .toResponse()
 
     @DeleteMapping("/{code}")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
     fun deleteUser(@PathVariable code: String, principal: Principal?): ResponseEntity<Unit> {
         if (principal?.name == code) throw UserCannotRemoveOwnAccount()
         return userService
-                .delete(code)
-                .toResponse()
+            .delete(code)
+            .toResponse()
     }
 
     @PutMapping("/{code}/reset-password")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
     fun generateUserResetCodeForUserCode(@PathVariable code: String) = userAccountService
-            .generateResetCodeForUserCode(code)
-            .let { Unit }
-            .toResponse()
+        .generateResetCodeForUserCode(code)
+        .let { Unit }
+        .toResponse()
 
     @PutMapping("/reset-password")
     fun generateUserResetCode(@RequestBody form: RequestPasswordReset) = userAccountService
-            .generateResetCodeForUserEmail(form.email)
-            .let { Unit }
-            .toResponse()
+        .generateResetCodeForUserEmail(form.email)
+        .let { Unit }
+        .toResponse()
 
     data class RequestPasswordReset(
-            val email: String
+        val email: String
     )
 }

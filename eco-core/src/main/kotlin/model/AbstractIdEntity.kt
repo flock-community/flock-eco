@@ -8,10 +8,10 @@ import javax.persistence.MappedSuperclass
 
 @MappedSuperclass
 abstract class AbstractIdEntity(
-        @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
-        open val id: Long = 0
-):Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    open val id: Long = 0
+) : Serializable {
 
     override fun hashCode(): Int {
         return 13
@@ -26,5 +26,4 @@ abstract class AbstractIdEntity(
     }
 
     override fun toString() = "Entity of type ${this.javaClass.name} with id: $id"
-
 }
