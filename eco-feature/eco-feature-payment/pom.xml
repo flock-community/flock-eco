@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.github.flock-community.flock-eco</groupId>
         <artifactId>flock-eco-feature-parent</artifactId>
-        <version>2.0.0-250e75e</version>
+        <version>2.0.0-0e8556c</version>
     </parent>
 
     <artifactId>flock-eco-feature-payment</artifactId>
