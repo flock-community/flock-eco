@@ -1,9 +1,9 @@
 {
   "name": "@flock-community/flock-eco-feature-member",
-  "version": "2.0.0-next.b25ec23",
+  "version": "2.0.0-next.2a6bb1f",
   "main": "./src/main/react",
   "dependencies": {
-    "@flock-community/flock-eco-core": "^2.0.0-next.b25ec23"
+    "@flock-community/flock-eco-core": "^2.0.0-next.2a6bb1f"
   },
   "devDependencies": {
     "@flock/graphql-simple-bindings": "^1.0.8",
