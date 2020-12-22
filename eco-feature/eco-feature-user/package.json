@@ -2,7 +2,8 @@
   "name": "@flock-community/flock-eco-feature-user",
   "version": "2.0.0-next.a9121d4",
   "dependencies": {
-    "@flock-community/flock-eco-core": "^2.0.0-next.a9121d4"
+    "@flock-community/flock-eco-core": "^2.0.0-next.a9121d4",
+    "react-password-strength-bar": "^0.3.2"
   },
   "devDependencies": {
     "@flock/graphql-simple-bindings": "^1.0.8",

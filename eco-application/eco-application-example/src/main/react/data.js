@@ -1,6 +1,6 @@
 import {UserTable} from '@flock-community/flock-eco-feature-user/src/main/react/user/UserTable'
 import {UserProfileFeature} from '@flock-community/flock-eco-feature-user/src/main/react/user_profile/UserProfileFeature'
-import {UserLoginForm} from '@flock-community/flock-eco-feature-user/src/main/react/user_login/UserLoginForm'
+import {UserLoginSignInForm} from '@flock-community/flock-eco-feature-user/src/main/react/user_login/UserLoginForm'
 
 import {
   MemberFeature,
@@ -20,7 +20,7 @@ export const findComponentName = component =>
   component.Naked ? component.Naked.name : component.name
 
 export const features = {
-  user: [UserTable, UserProfileFeature, UserLoginForm],
+  user: [UserTable, UserProfileFeature, UserLoginSignInForm],
   member: [
     MemberTable,
     MemberForm,

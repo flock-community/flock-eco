@@ -6,7 +6,7 @@ const value = {
   email: 'willem.veelenturf@flock.community',
 }
 
-storiesOf('User|UserRegisterForm', module)
+storiesOf('User/UserRegisterForm', module)
   .add('default', () => {
     return (
       <UserRegisterForm

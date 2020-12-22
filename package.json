@@ -37,7 +37,8 @@
     "react-select-material-ui": "^6.0.0",
     "typescript": "^3.8.3",
     "whatwg-fetch": "^3.0.0",
-    "yup": "^0.28.4"
+    "yup": "^0.28.4",
+    "react-password-strength-bar": "^0.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
