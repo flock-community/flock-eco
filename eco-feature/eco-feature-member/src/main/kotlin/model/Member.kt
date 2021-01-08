@@ -2,6 +2,7 @@ package community.flock.eco.feature.member.model
 
 import community.flock.eco.core.events.EventEntityListeners
 import java.time.LocalDate
+import java.util.*
 import javax.persistence.*
 
 @Entity
@@ -11,6 +12,7 @@ data class Member(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     val id: Long = 0,
+    val uuid: UUID = UUID.randomUUID(),
 
     val firstName: String,
     val infix: String? = null,

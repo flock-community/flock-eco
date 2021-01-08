@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Component
 import java.time.LocalDate
+import java.util.*
 import javax.transaction.Transactional
 
 @Component
@@ -31,8 +32,8 @@ class MemberService(
     fun count(specification: Specification<Member>): Long = memberRepository
         .count(specification)
 
-    fun findById(id: Long) = memberRepository
-        .findById(id)
+    fun findByUuid(uuid: UUID) = memberRepository
+        .findByUuid(uuid)
         .toNullable()
 
     fun findAllByEmail(email: String) = memberRepository
@@ -45,7 +46,7 @@ class MemberService(
         .save()
         .publish { CreateMemberEvent(it) }
 
-    fun update(id: Long, input: Member): Member = findById(id)
+    fun update(uuid: UUID, input: Member): Member = findByUuid(uuid)
         ?.apply {
             if (status == MemberStatus.DELETED)
                 error("Cannot update DELETED member")
@@ -63,7 +64,7 @@ class MemberService(
         ?.publish { UpdateMemberEvent(it) }
         ?: error("Cannot update member")
 
-    fun delete(id: Long) = findById(id)
+    fun delete(uuid: UUID) = findByUuid(uuid)
         ?.let {
             it.copy(
                 status = MemberStatus.DELETED,
@@ -75,8 +76,8 @@ class MemberService(
         ?: error("Cannot delete member")
 
     @Transactional
-    fun merge(mergeMemberIds: List<Long>, newMember: Member): Member {
-        val mergeMembers = memberRepository.findByIds(mergeMemberIds)
+    fun merge(mergeMemberIds: List<UUID>, newMember: Member): Member {
+        val mergeMembers = memberRepository.findByUuids(mergeMemberIds)
             .map {
                 it.copy(
                     status = MemberStatus.MERGED,

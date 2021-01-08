@@ -1,4 +1,4 @@
-package community.flock.eco.feature.member.resolvers
+package community.flock.eco.feature.user.resolvers
 
 import community.flock.eco.feature.user.services.UserService
 import graphql.kickstart.tools.GraphQLQueryResolver

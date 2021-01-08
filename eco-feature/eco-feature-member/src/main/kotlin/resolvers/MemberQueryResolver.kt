@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
+import java.util.*
 import community.flock.eco.feature.member.graphql.Member as MemberGraphql
 import community.flock.eco.feature.member.graphql.MemberStatus as MemberStatusGraphql
 import community.flock.eco.feature.member.model.Member as MemberModel
@@ -20,8 +21,8 @@ class MemberQueryResolver(
 ) : GraphQLQueryResolver {
 
     @PreAuthorize("hasAuthority('MemberAuthority.READ')")
-    fun findMemberById(id: Long): MemberGraphql? = memberService
-        .findById(id)
+    fun findMemberById(id: UUID): MemberGraphql? = memberService
+        .findByUuid(id)
         ?.produce()
 
     @PreAuthorize("hasAuthority('MemberAuthority.READ')")

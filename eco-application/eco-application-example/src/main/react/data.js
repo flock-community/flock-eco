@@ -1,6 +1,7 @@
 import {
   UserProfileFeature,
   UserTable,
+  UserFeature,
   UserLoginSignInForm,
   UserLoginResetForm,
 } from '@flock-community/flock-eco-feature-user'
@@ -23,6 +24,7 @@ export const findComponentName = component =>
 
 export const features = {
   user: [
+    UserFeature,
     UserTable,
     UserProfileFeature,
     UserLoginSignInForm,

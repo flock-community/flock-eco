@@ -1,0 +1,13 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: flock-eco-feature-member-002-uuid-1
+      author: Flock. eco
+      changes:
+        - addColumn:
+            tableName: member
+            columns:
+               - column:
+                  name: uuid
+                  type: uuid
+                  defaultValueComputed: uuid()

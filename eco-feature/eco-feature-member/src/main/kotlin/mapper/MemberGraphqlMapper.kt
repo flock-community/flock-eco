@@ -39,7 +39,7 @@ class MemberGraphqlMapper(
     )
 
     fun produce(it: Member) = MemberGraphql(
-        id = it.id.toString(),
+        id = it.uuid.toString(),
         firstName = it.firstName,
         infix = it.infix,
         surName = it.surName,

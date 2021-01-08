@@ -1,7 +1,7 @@
 package community.flock.eco.feature.user
 
 import community.flock.eco.core.configurations.GraphqlConfiguration
-import community.flock.eco.feature.member.resolvers.UserQueryResolver
+import community.flock.eco.feature.user.resolvers.UserQueryResolver
 import community.flock.eco.feature.user.controllers.*
 import community.flock.eco.feature.user.filters.UserKeyTokenFilter
 import community.flock.eco.feature.user.graphql.*

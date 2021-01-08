@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
+import java.util.*
 import community.flock.eco.feature.member.graphql.Member as MemberGraphql
 
 @RestController
@@ -20,7 +21,7 @@ class MemberController(
     private val memberService: MemberService
 ) {
 
-    data class MergeForm(val mergeMemberIds: List<Long>, val newMember: MemberInput)
+    data class MergeForm(val mergeMemberIds: List<UUID>, val newMember: MemberInput)
 
     @GetMapping
     @PreAuthorize("hasAuthority('MemberAuthority.READ')")
@@ -48,9 +49,9 @@ class MemberController(
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('MemberAuthority.READ')")
     fun findById(
-        @PathVariable("id") id: Long
+        @PathVariable("id") uuid: UUID
     ) = memberService
-        .findById(id)
+        .findByUuid(uuid)
         ?.produce()
         .toResponse()
 
@@ -63,15 +64,15 @@ class MemberController(
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('MemberAuthority.WRITE')")
-    fun update(@PathVariable("id") id: String, @RequestBody member: MemberInput) = memberService
-        .update(id.toLong(), member.consume())
+    fun update(@PathVariable("id") uuid: UUID, @RequestBody member: MemberInput) = memberService
+        .update(uuid, member.consume())
         .produce()
         .toResponse()
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('MemberAuthority.WRITE')")
-    fun delete(@PathVariable("id") id: String) = memberService
-        .delete(id.toLong())
+    fun delete(@PathVariable("id") uuid: UUID) = memberService
+        .delete(uuid)
         .produce()
         .toResponse()
 
