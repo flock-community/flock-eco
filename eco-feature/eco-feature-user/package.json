@@ -1,9 +1,9 @@
 {
   "name": "@flock-community/flock-eco-feature-user",
-  "version": "2.0.0-next.2c960eb",
+  "version": "2.0.0-next.1688f6a",
   "main": "./src/main/react",
   "dependencies": {
-    "@flock-community/flock-eco-core": "^2.0.0-next.2c960eb",
+    "@flock-community/flock-eco-core": "^2.0.0-next.1688f6a",
     "react-password-strength-bar": "^0.3.2"
   },
   "devDependencies": {
