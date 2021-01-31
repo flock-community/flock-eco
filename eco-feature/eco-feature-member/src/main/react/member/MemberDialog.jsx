@@ -110,6 +110,7 @@ export function MemberDialog({id, open, onComplete}) {
       setState(prevState => ({
         ...prevState,
         deleteOpen: false,
+        item: null,
       }))
     })
   }
@@ -140,10 +141,15 @@ export function MemberDialog({id, open, onComplete}) {
       MemberClient.put(id, state.item)
         .then(() => {
           onComplete && onComplete()
+          setState(prevState => ({
+            ...prevState,
+            item: null,
+          }))
         })
         .catch(e => {
           setState(prevState => ({
             ...prevState,
+            item: null,
             message: 'Cannot load fields',
           }))
         })
@@ -151,10 +157,15 @@ export function MemberDialog({id, open, onComplete}) {
       MemberClient.post(state.item)
         .then(() => {
           onComplete && onComplete()
+          setState(prevState => ({
+            ...prevState,
+            item: null,
+          }))
         })
         .catch(e => {
           setState(prevState => ({
             ...prevState,
+            item: null,
             message: 'Cannot load fields',
           }))
         })

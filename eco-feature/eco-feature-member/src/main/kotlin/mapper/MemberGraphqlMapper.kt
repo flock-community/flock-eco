@@ -71,12 +71,13 @@ class MemberGraphqlMapper(
 
     fun List<MemberFieldInput>.consume() = this
         .fold(mapOf<String, String>()) { acc, cur -> acc + (cur.key to cur.value) }
+        .toMutableMap()
 
     fun List<String>.consume() = this
         .map { it }
         .toSet()
         .let { memberGroupRepository.findByCodes(it) }
-        .toSet()
+        .toMutableSet()
 
     fun consume(it: MemberStatusGraphql?) = it?.name
         ?.let { MemberStatus.valueOf(it) }

@@ -79,7 +79,7 @@ class MemberRepositoryTest(
             name = "Lekstreek"
         )
         val member1 = createMember(
-            groups = setOf(group)
+            groups = mutableSetOf(group)
         )
         val res1 = memberRepository.save(member1)
 
@@ -88,7 +88,7 @@ class MemberRepositoryTest(
 
         val member2 = createMember(
             email = "willem.veelenturf@gmail.com2",
-            groups = setOf(group)
+            groups = mutableSetOf(group)
         )
         val res2 = memberRepository.save(member2)
 
@@ -114,7 +114,7 @@ class MemberRepositoryTest(
         memberFieldRepository.save(fieldAgreement)
         memberFieldRepository.save(fieldCheckbox)
 
-        val member1 = createMember(fields = mapOf(fieldAgreement.name to "Test123"))
+        val member1 = createMember(fields = mutableMapOf(fieldAgreement.name to "Test123"))
         val res1 = memberRepository.save(member1)
 
         assertEquals("Willem", res1.firstName)
@@ -122,7 +122,7 @@ class MemberRepositoryTest(
 
         val member2 = createMember(
             email = "willem.veelenturf@gmail.com2",
-            fields = mapOf(fieldCheckbox.name to "Checked")
+            fields = mutableMapOf(fieldCheckbox.name to "Checked")
         )
         val res2 = memberRepository.save(member2)
 
@@ -134,8 +134,8 @@ class MemberRepositoryTest(
         firstName: String = "Willem",
         surName: String = "Veelenturf",
         email: String = "willem.veelenturf@gmail.com1",
-        groups: Set<MemberGroup> = setOf(),
-        fields: Map<String, String> = mapOf()
+        groups: MutableSet<MemberGroup> = mutableSetOf(),
+        fields: MutableMap<String, String> = mutableMapOf()
     ): Member = Member(
         firstName = firstName,
         surName = surName,

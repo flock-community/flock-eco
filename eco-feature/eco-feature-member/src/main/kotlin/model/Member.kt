@@ -1,12 +1,10 @@
 package community.flock.eco.feature.member.model
 
-import community.flock.eco.core.events.EventEntityListeners
 import java.time.LocalDate
 import java.util.*
 import javax.persistence.*
 
 @Entity
-@EntityListeners(EventEntityListeners::class)
 data class Member(
 
     @Id
@@ -35,10 +33,10 @@ data class Member(
     val birthDate: LocalDate? = null,
 
     @ManyToMany(fetch = FetchType.EAGER)
-    val groups: Set<MemberGroup> = setOf(),
+    val groups: MutableSet<MemberGroup> = mutableSetOf(),
 
     @ElementCollection(fetch = FetchType.EAGER)
-    val fields: Map<String, String> = mapOf(),
+    val fields: MutableMap<String, String> = mutableMapOf(),
 
     @Enumerated(EnumType.STRING)
     val status: MemberStatus = MemberStatus.NEW,

@@ -21,9 +21,9 @@ interface MemberRepository : PagingAndSortingRepository<Member, Long>, JpaSpecif
     fun findByIds(ids: List<Long>): Iterable<Member>
 
     @Query(
-            "SELECT m " +
-                    "FROM Member m " +
-                    "WHERE m.id IN ?1"
+        "SELECT m " +
+            "FROM Member m " +
+            "WHERE m.id IN ?1"
     )
     fun findByUuids(ids: List<UUID>): Iterable<Member>
 

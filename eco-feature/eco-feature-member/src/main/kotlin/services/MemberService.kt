@@ -54,11 +54,12 @@ class MemberService(
                 throw error("Cannot update MERGED member")
             val update = input.copy(
                 id = id,
+                uuid = uuid,
                 created = created,
                 updated = LocalDate.now()
             )
             update.save()
-            update.publish { UpdateMemberEvent(update, this)  }
+            update.publish { UpdateMemberEvent(update, this) }
         }
         ?: error("Cannot update member")
 

@@ -1,10 +1,10 @@
 package community.flock.eco.feature.user
 
 import community.flock.eco.core.configurations.GraphqlConfiguration
-import community.flock.eco.feature.user.resolvers.UserQueryResolver
 import community.flock.eco.feature.user.controllers.*
 import community.flock.eco.feature.user.filters.UserKeyTokenFilter
 import community.flock.eco.feature.user.graphql.*
+import community.flock.eco.feature.user.resolvers.UserQueryResolver
 import community.flock.eco.feature.user.services.*
 import graphql.kickstart.tools.SchemaParserDictionary
 import org.springframework.boot.autoconfigure.domain.EntityScan

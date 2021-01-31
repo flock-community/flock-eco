@@ -65,13 +65,13 @@ class MemberLoadData(
                     gender = MemberGender.MALE,
                     email = "$it@member.com",
                     groups = when (it % 4) {
-                        0 -> setOf(groups.toList()[2], groups.toList()[3])
-                        1 -> setOf(groups.toList()[2])
-                        2 -> setOf(groups.toList()[2], groups.toList()[0])
-                        3 -> setOf(groups.toList()[2], groups.toList()[1])
-                        else -> setOf()
+                        0 -> mutableSetOf(groups.toList()[2], groups.toList()[3])
+                        1 -> mutableSetOf(groups.toList()[2])
+                        2 -> mutableSetOf(groups.toList()[2], groups.toList()[0])
+                        3 -> mutableSetOf(groups.toList()[2], groups.toList()[1])
+                        else -> mutableSetOf()
                     },
-                    fields = mapOf(
+                    fields = mutableMapOf(
                         fields.toList()[0].name to "123",
                         fields.toList()[1].name to "true",
                         fields.toList()[2].name to "Option 1",

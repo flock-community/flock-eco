@@ -1,10 +1,8 @@
 package community.flock.eco.feature.member.model
 
-import community.flock.eco.core.events.EventEntityListeners
 import javax.persistence.*
 
 @Entity
-@EntityListeners(EventEntityListeners::class)
 data class MemberGroup(
 
     @Id

@@ -4,17 +4,10 @@ import community.flock.eco.core.utils.toNullable
 import community.flock.eco.feature.member.events.*
 import community.flock.eco.feature.member.model.Member
 import community.flock.eco.feature.member.model.MemberField
-import community.flock.eco.feature.member.model.MemberStatus
 import community.flock.eco.feature.member.repositories.MemberFieldRepository
-import community.flock.eco.feature.member.repositories.MemberRepository
 import org.springframework.context.ApplicationEventPublisher
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
-import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Component
-import java.time.LocalDate
 import java.util.*
-import javax.transaction.Transactional
 
 @Component
 class MemberFieldService(
@@ -24,18 +17,18 @@ class MemberFieldService(
 
     fun findByName(name: String): MemberField? = memberFieldRepository
         .findByName(name)
-            .toNullable()
+        .toNullable()
 
     fun upsert(input: MemberField): MemberField = findByName(input.name)
-            ?.apply {
-                memberFieldRepository.save(input.copy(id = id))
-            }
-            ?: memberFieldRepository.save(input)
+        ?.apply {
+            memberFieldRepository.save(input.copy(id = id))
+        }
+        ?: memberFieldRepository.save(input)
 
     fun delete(name: String) = findByName(name)
-            ?.apply {
-                memberFieldRepository.deleteById(id)
-            }
+        ?.apply {
+            memberFieldRepository.deleteById(id)
+        }
 
     private fun Member.publish(function: (member: Member) -> MemberEvent): Member = apply {
         publisher.publishEvent(function(this))

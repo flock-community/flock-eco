@@ -1,11 +1,9 @@
 package community.flock.eco.feature.member.model
 
-import community.flock.eco.core.events.EventEntityListeners
 import java.util.*
 import javax.persistence.*
 
 @Entity
-@EntityListeners(EventEntityListeners::class)
 data class MemberField(
 
     @Id
