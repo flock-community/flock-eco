@@ -1,9 +1,11 @@
 {
-  "groups": [{
-    "name": "flock.eco.cloud.aws",
-    "type": "community.flock.eco.cloud.aws.AwsCloudProperties",
-    "sourceType": "community.flock.eco.cloud.aws.AwsCloudProperties"
-  }],
+  "groups": [
+    {
+      "name": "flock.eco.cloud.aws",
+      "type": "community.flock.eco.cloud.aws.AwsCloudProperties",
+      "sourceType": "community.flock.eco.cloud.aws.AwsCloudProperties"
+    }
+  ],
   "properties": [
     {
       "name": "flock.eco.cloud.aws.enabled",

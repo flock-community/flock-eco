@@ -9,5 +9,4 @@ import java.util.*
 interface MemberFieldRepository : CrudRepository<MemberField, Long> {
 
     fun findByName(name: String): Optional<MemberField>
-
 }

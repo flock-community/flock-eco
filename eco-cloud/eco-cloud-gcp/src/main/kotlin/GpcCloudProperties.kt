@@ -6,5 +6,5 @@ import org.springframework.stereotype.Component
 @Component
 @ConfigurationProperties(prefix = "flock.eco.cloud.gpc")
 class GpcCloudProperties(
-        val enabled: Boolean
+    val enabled: Boolean
 )

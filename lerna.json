@@ -1,10 +1,10 @@
 {
   "packages": [
-    "eco-application",
-    "eco-application/*",
     "eco-core",
+    "eco-webpack",
     "eco-feature/*",
-    "eco-webpack"
+    "eco-application",
+    "eco-application/*"
   ],
-  "version": "1.10.3"
+  "version": "2.0.0-next.17004df"
 }

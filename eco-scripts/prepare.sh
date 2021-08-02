@@ -75,6 +75,7 @@ npx lerna version --yes --no-git-tag-version ${npm_version}
 
 find . -name 'pom.xml' | xargs git add
 find . -name 'package.json' | xargs git add
+find . -name 'package-lock.json' | xargs git add
 find . -name 'lerna.json' | xargs git add
 
 git commit -m "$(commit_message ${mvn_version})"

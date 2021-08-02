@@ -2,7 +2,6 @@ import {ResourceClient} from '@flock-community/flock-eco-core/src/main/react/cli
 
 const path = `/api/workspace-roles`
 
-
-export const WorkspaceRoleClient = ({
+export const WorkspaceRoleClient = {
   ...ResourceClient<string, string>(path),
-})
+}

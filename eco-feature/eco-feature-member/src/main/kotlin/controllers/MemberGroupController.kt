@@ -13,31 +13,30 @@ class MemberGroupController(private val memberGroupRepository: MemberGroupReposi
     @GetMapping
     @PreAuthorize("hasAuthority('MemberFieldAuthority.READ')")
     fun findAll() = memberGroupRepository.findAll()
-            .toList()
-            .toResponse()
+        .toList()
+        .toResponse()
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('MemberFieldAuthority.READ')")
     fun findById(@PathVariable("id") id: Long) = memberGroupRepository
-            .findById(id)
-            .toResponse()
+        .findById(id)
+        .toResponse()
 
     @PostMapping
     @PreAuthorize("hasAuthority('MemberFieldAuthority.WRITE')")
     fun create(@RequestBody memberGroup: MemberGroup) = memberGroupRepository
-            .save(memberGroup)
-            .toResponse()
+        .save(memberGroup)
+        .toResponse()
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('MemberFieldAuthority.WRITE')")
     fun update(@PathVariable("id") id: Long, @RequestBody memberGroup: MemberGroup) = memberGroupRepository
-            .save(memberGroup.copy(id = id))
-            .toResponse()
+        .save(memberGroup.copy(id = id))
+        .toResponse()
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('MemberFieldAuthority.WRITE')")
     fun delete(@PathVariable("id") id: Long) = memberGroupRepository
-            .deleteById(id)
-            .toResponse()
-
+        .deleteById(id)
+        .toResponse()
 }

@@ -1,15 +1,19 @@
 {
   "name": "@flock-community/flock-eco-feature-user",
-  "version": "1.10.3",
-  "scripts": {
-    "start": "webpack-dev-server"
-  },
+  "version": "2.0.0-next.17004df",
+  "main": "./src/main/react",
   "dependencies": {
-    "@flock-community/flock-eco-core": "^1.10.3"
+    "@flock-community/flock-eco-core": "^2.0.0-next.17004df",
+    "react-password-strength-bar": "^0.3.2"
   },
   "devDependencies": {
-    "@flock-community/flock-eco-webpack": "^1.10.3",
-    "webpack-dev-server": "^3.2.1"
+    "@flock/graphql-simple-bindings": "^1.0.8",
+    "apollo": "^2.27.3"
+  },
+  "scripts": {
+    "compile": "tsc",
+    "generate": "npm run generate:simple",
+    "generate:simple": "graphql-simple-bindings '{./src/main/graphql/*, ../../../../eco-core/src/main/graphql/*}' './src/main/react/graphql'"
   },
   "repository": {
     "type": "git",

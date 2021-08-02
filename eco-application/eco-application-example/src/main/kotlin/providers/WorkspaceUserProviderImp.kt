@@ -10,13 +10,12 @@ class WorkspaceUserProviderImp() : WorkspaceUserProvider {
     override fun findWorkspaceUsers(ref: String): WorkspaceUser? = createUser(ref)
 
     override fun findWorkspaceUsers(refs: List<String>): Iterable<WorkspaceUser> = refs
-            .map { createUser(it) }
+        .map { createUser(it) }
 
     override fun findRoles(): List<String> = listOf("MANAGER", "ADMIN", "USER")
-
 }
 
 fun createUser(ref: String) = WorkspaceUser(
-        id = ref,
-        name = "Name $ref"
+    id = ref,
+    name = "Name $ref"
 )

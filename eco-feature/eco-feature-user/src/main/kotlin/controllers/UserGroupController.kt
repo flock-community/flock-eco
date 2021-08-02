@@ -14,44 +14,41 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/user-groups")
 class UserGroupController(
-        private val userGroupService: UserGroupService,
-        private val userRepository: UserRepository,
-        private val userGroupRepository: UserGroupRepository) {
+    private val userGroupService: UserGroupService,
+    private val userRepository: UserRepository,
+    private val userGroupRepository: UserGroupRepository
+) {
 
     @GetMapping()
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
-    fun findAllUserGroups(@RequestParam(defaultValue = "", required = false) search: String,
-                page: Pageable): ResponseEntity<List<UserGroup>> = userGroupRepository
-            .findAllByNameIgnoreCaseContaining(search, page)
-            .toResponse()
+    fun findAllUserGroups(
+        @RequestParam(defaultValue = "", required = false) search: String,
+        page: Pageable
+    ): ResponseEntity<List<UserGroup>> = userGroupRepository
+        .findAllByNameIgnoreCaseContaining(search, page)
+        .toResponse()
 
     @GetMapping("/{code}")
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
     fun findUserGroupById(@PathVariable code: String): ResponseEntity<UserGroup> = userGroupRepository
-            .findByCode(code)
-            .toResponse()
+        .findByCode(code)
+        .toResponse()
 
     @PostMapping()
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
     fun createUserGroup(@RequestBody form: UserGroupForm) = userGroupService
-            .create(form)
-            .toResponse()
+        .create(form)
+        .toResponse()
 
     @PutMapping("/{code}")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
     fun updateUserGroup(@RequestBody form: UserGroupForm, @PathVariable code: String) = userGroupService
-            .update(code,form)
-            .toResponse()
+        .update(code, form)
+        .toResponse()
 
     @DeleteMapping("/{code}")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
     fun deleteUserGroup(@PathVariable code: String) = userGroupService
-            .delete(code)
-            .toResponse()
-
-
-
-
+        .delete(code)
+        .toResponse()
 }
-
-

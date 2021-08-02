@@ -6,28 +6,29 @@ import {WorkspaceTable} from './WorkspaceTable'
 import {WorkspaceDialog} from './WorkspaceDialog'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
-  root: {
-    position: 'relative',
-    height: '100%',
-  },
-  content: {
-    maxHeight: '100%',
-  },
-  add: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    bottom: theme.spacing(1),
-  },
-}))
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      position: 'relative',
+      height: '100%',
+    },
+    content: {
+      maxHeight: '100%',
+    },
+    add: {
+      position: 'absolute',
+      right: theme.spacing(1),
+      bottom: theme.spacing(1),
+    },
+  }),
+)
 
 interface DialogState {
-  open: boolean,
+  open: boolean
   id: string | null
 }
 
 export function WorkspaceFeature() {
-
   const classes = useStyles()
 
   const [reload, setReload] = useState<boolean>(false)
@@ -63,16 +64,13 @@ export function WorkspaceFeature() {
     })
   }
 
-  return (<>
+  return (
+    <>
       <div className={classes.root}>
         <div className={classes.content}>
           <Card>
-            <WorkspaceTable
-              reload={reload}
-              onRowClick={handleClickRow}/>
+            <WorkspaceTable reload={reload} onRowClick={handleClickRow} />
           </Card>
-
-
         </div>
         <Fab
           color="primary"
@@ -80,7 +78,7 @@ export function WorkspaceFeature() {
           className={classes.add}
           onClick={handleClickNew}
         >
-          <AddIcon/>
+          <AddIcon />
         </Fab>
       </div>
       <WorkspaceDialog

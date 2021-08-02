@@ -9,6 +9,4 @@ import java.util.*
 interface PaymentMandateRepository : PagingAndSortingRepository<PaymentMandate, Long> {
 
     fun findByCode(name: String): Optional<PaymentMandate>
-
 }
-

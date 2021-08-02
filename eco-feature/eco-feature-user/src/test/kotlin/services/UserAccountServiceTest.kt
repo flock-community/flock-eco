@@ -11,42 +11,34 @@ import community.flock.eco.feature.user.forms.UserForm
 import community.flock.eco.feature.user.forms.UserKeyForm
 import community.flock.eco.feature.user.model.UserAccountOauthProvider
 import community.flock.eco.feature.user.repositories.UserAccountPasswordRepository
-import org.junit.Assert
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Test
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
+import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.crypto.password.PasswordEncoder
-import org.springframework.test.context.ContextConfiguration
-import org.springframework.test.context.junit4.SpringRunner
+import javax.transaction.Transactional
+import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
-import kotlin.test.assertNotEquals
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
-@RunWith(SpringRunner::class)
-@ContextConfiguration(classes = [UserConfiguration::class])
-@DataJpaTest
-class UserAccountServiceTest {
-
-    @Autowired
-    private lateinit var userService: UserService
-
-    @Autowired
-    private lateinit var userAccountService: UserAccountService
-
-    @Autowired
-    private lateinit var userAccountPasswordRepository: UserAccountPasswordRepository
-
-    @Autowired
-    private lateinit var passwordEncoder: PasswordEncoder
+@SpringBootTest(classes = [UserConfiguration::class])
+@AutoConfigureTestDatabase
+@AutoConfigureDataJpa
+@Transactional
+class UserAccountServiceTest(
+    @Autowired val userService: UserService,
+    @Autowired val userAccountService: UserAccountService,
+    @Autowired val userAccountPasswordRepository: UserAccountPasswordRepository,
+    @Autowired val passwordEncoder: PasswordEncoder
+) {
 
     private val passwordForm = UserAccountPasswordForm(
-            name = "Willem Veelenturf",
-            email = "willem.veelenturf@gmail.com",
-            password = "123456"
+        name = "Willem Veelenturf",
+        email = "willem.veelenturf@gmail.com",
+        password = "123456"
     )
 
     @Test
@@ -62,20 +54,21 @@ class UserAccountServiceTest {
         assertEquals(1, userService.findAll().count())
     }
 
-    @Test(expected = UserAccountExistsException::class)
+    @Test
     fun `register user with password twice`() {
         userAccountService.createUserAccountPassword(passwordForm.copy())
-        userAccountService.createUserAccountPassword(passwordForm.copy())
+        assertFailsWith<UserAccountExistsException> {
+            userAccountService.createUserAccountPassword(passwordForm.copy())
+        }
     }
-
 
     @Test
     fun `test register oauth user`() {
         val form = UserAccountOauthForm(
-                name = passwordForm.name,
-                email = passwordForm.email,
-                provider = UserAccountOauthProvider.GOOGLE,
-                reference = "123123123"
+            name = passwordForm.name,
+            email = passwordForm.email,
+            provider = UserAccountOauthProvider.GOOGLE,
+            reference = "123123123"
         )
         val account = userAccountService.createUserAccountOauth(form)
 
@@ -86,9 +79,11 @@ class UserAccountServiceTest {
         assertEquals(form.reference, account.reference)
     }
 
-    @Test(expected = UserAccountNotFoundForUserCode::class)
+    @Test
     fun `generate reset code for user that doesn't exist`() {
-        userAccountService.generateResetCodeForUserCode("doesn't exist")
+        assertFailsWith<UserAccountNotFoundForUserCode> {
+            userAccountService.generateResetCodeForUserCode("doesn't exist")
+        }
     }
 
     @Test
@@ -121,28 +116,34 @@ class UserAccountServiceTest {
         assertTrue(passwordEncoder.matches(newPassword, account.secret))
     }
 
-    @Test(expected = UserAccountNotFoundWrongOldPasswordException::class)
+    @Test
     fun `generate new password with old password non matching old password should throw an exception`() {
         val userAccount = userAccountService.createUserAccountPassword(passwordForm.copy())
         val newPassword = "password"
         assertNotNull(userAccount.secret)
 
-        userAccountService.resetPasswordWithNew(userAccount.user.code, "randompassword", newPassword)
+        assertFailsWith<UserAccountNotFoundWrongOldPasswordException> {
+            userAccountService.resetPasswordWithNew(userAccount.user.code, "randompassword", newPassword)
+        }
+
         val account = userAccountService.findUserAccountPasswordByUserEmail(passwordForm.email)!!
         assertNotNull(account.secret)
         assertFalse(passwordEncoder.matches(newPassword, account.secret))
     }
 
-    @Test(expected = UserAccounNewPasswordMatchesOldPasswordException::class)
+    @Test
     fun `generate new password with old password should not be the same as oldpassword`() {
         val userAccount = userAccountService.createUserAccountPassword(passwordForm.copy())
         val newPassword = passwordForm.password
+
         assertNotNull(userAccount.secret)
 
-        userAccountService.resetPasswordWithNew(userAccount.user.code, passwordForm.password, newPassword)
-        val account = userAccountService.findUserAccountPasswordByUserEmail(passwordForm.email)!!
-        assertNotNull(account.secret)
-        assertTrue(passwordEncoder.matches(newPassword, account.secret))
+        assertThrows(UserAccounNewPasswordMatchesOldPasswordException::class.java) {
+            userAccountService.resetPasswordWithNew(userAccount.user.code, passwordForm.password, newPassword)
+            val account = userAccountService.findUserAccountPasswordByUserEmail(passwordForm.email)!!
+            assertNotNull(account.secret)
+            assertTrue(passwordEncoder.matches(newPassword, account.secret))
+        }
     }
 
     @Test
@@ -154,27 +155,31 @@ class UserAccountServiceTest {
 
     @Test
     fun `create user account password without password`() {
-        val user = userService.create(UserForm(
+        val user = userService.create(
+            UserForm(
                 name = "Pino",
                 email = "pino@sesamstreet.xx"
-        ))
+            )
+        )
         userAccountService.createUserAccountPasswordWithoutPassword(user.code)
 
         val account = userAccountService.findUserAccountPasswordByUserEmail(user.email)
 
         assertNotNull(account)
-
     }
 
-    @Test(expected = UserAccountExistsException::class)
+    @Test
     fun `create user account password without password create twice`() {
-        val user = userService.create(UserForm(
+        val user = userService.create(
+            UserForm(
                 name = "Pino",
                 email = "pino@sesamstreet.xx"
-        ))
+            )
+        )
         userAccountService.createUserAccountPasswordWithoutPassword(user.code)
-        userAccountService.createUserAccountPasswordWithoutPassword(user.code)
-
+        assertFailsWith<UserAccountExistsException> {
+            userAccountService.createUserAccountPasswordWithoutPassword(user.code)
+        }
     }
 
     @Test
@@ -183,7 +188,7 @@ class UserAccountServiceTest {
 
         userService.delete(account.user.code)
 
-        Assert.assertNull(userService.findByCode(account.user.code))
+        assertNull(userService.findByCode(account.user.code))
         assertEquals(0, userAccountPasswordRepository.findAll().count())
     }
 
@@ -191,13 +196,9 @@ class UserAccountServiceTest {
     fun `create account key for user with label`() {
         var label = "1 2 3 my key"
         val account = userAccountService.createUserAccountPassword(passwordForm.copy())
-
         val accountKey = userAccountService.generateKeyForUserCode(account.user.code, label)
-
         val foundAccountKey = userAccountService.findUserAccountKeyByKey(accountKey?.key!!)
-
         assertEquals(label, foundAccountKey?.label)
-
     }
 
     @Test
@@ -207,7 +208,7 @@ class UserAccountServiceTest {
         var newLabel = "Alrighty then"
 
         val form = UserKeyForm(
-                label = newLabel
+            label = newLabel
         )
 
         val account = userAccountService.createUserAccountPassword(passwordForm.copy())
@@ -219,7 +220,5 @@ class UserAccountServiceTest {
         val foundAccountKey = userAccountService.findUserAccountKeyByKey(accountKey?.key!!)
 
         assertEquals(newLabel, foundAccountKey?.label)
-
     }
-
 }

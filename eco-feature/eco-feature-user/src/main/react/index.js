@@ -1,14 +1,5 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-
-import UserFeature from './user/UserFeature'
-import ProfileFeature from './user_profile/ProfileFeature'
-import UserGroupFeature from "./user_group/UserGroupFeature";
-
-class App extends React.Component {
-  render() {
-    return <UserGroupFeature />
-  }
-}
-
-ReactDOM.render(<App />, document.getElementById('index'))
+export * from './user'
+export * from './user_group'
+export * from './user_login'
+export * from './user_profile'
+export * from './user_utils'

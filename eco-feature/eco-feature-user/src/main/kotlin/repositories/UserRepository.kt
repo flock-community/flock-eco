@@ -10,7 +10,7 @@ import java.util.*
 @Repository
 interface UserRepository : PagingAndSortingRepository<User, Long> {
 
-    fun findAllByCodeIn(codes:Set<String>): Iterable<User>
+    fun findAllByCodeIn(codes: Set<String>): Iterable<User>
     fun findAllByNameIgnoreCaseContainingOrEmailIgnoreCaseContaining(name: String, email: String, pageable: Pageable): Page<User>
 
     fun findByCode(code: String): Optional<User>
@@ -18,5 +18,4 @@ interface UserRepository : PagingAndSortingRepository<User, Long> {
     fun findByEmail(code: String): Optional<User>
 
     fun deleteByCode(code: String)
-
 }

@@ -1,20 +1,18 @@
 package community.flock.eco.iso.language.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import org.junit.Test
-import org.junit.runner.RunWith
+import LanguageIsoConfiguration
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.annotation.Import
-import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient
+import org.springframework.boot.test.context.SpringBootTest
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
-@RunWith(SpringRunner::class)
-@Import(LanguageIsoService::class, ObjectMapper::class)
-class LanguageIsoServiceTest() {
-
-    @Autowired
-    lateinit var languageIsoService: LanguageIsoService
+@SpringBootTest(classes = [LanguageIsoConfiguration::class])
+@AutoConfigureWebClient
+class LanguageIsoServiceTest(
+    @Autowired private val languageIsoService: LanguageIsoService
+) {
 
     @Test
     fun `find language by alpha-2 code`() {
@@ -28,5 +26,4 @@ class LanguageIsoServiceTest() {
         val language = languageIsoService.findByAlpha2("xx")
         assertNull(language)
     }
-
 }

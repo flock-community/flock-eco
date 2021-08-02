@@ -1,57 +1,56 @@
 package community.flock.eco.feature.payment.model
 
-import com.fasterxml.jackson.annotation.*
+import com.fasterxml.jackson.annotation.JsonBackReference
 import community.flock.eco.core.events.EventEntityListeners
 import java.time.LocalDate
 import java.time.Month
 import java.util.*
 import javax.persistence.*
 
-
 @Entity
 @EntityListeners(EventEntityListeners::class)
 data class PaymentMandate(
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Long = 0,
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    val id: Long = 0,
 
-        @Column(unique = true)
-        val code: String = UUID.randomUUID().toString(),
+    @Column(unique = true)
+    val code: String = UUID.randomUUID().toString(),
 
-        val startDate: LocalDate = LocalDate.now(),
-        val endDate: LocalDate? = null,
+    val startDate: LocalDate = LocalDate.now(),
+    val endDate: LocalDate? = null,
 
-        val amount: Double,
+    val amount: Double,
 
-        @Enumerated(EnumType.STRING)
-        val frequency: PaymentFrequency,
+    @Enumerated(EnumType.STRING)
+    val frequency: PaymentFrequency,
 
-        @Enumerated(EnumType.STRING)
-        val type: PaymentType,
+    @Enumerated(EnumType.STRING)
+    val type: PaymentType,
 
-        @Enumerated(EnumType.STRING)
-        val collectionMonth: Month? = null,
+    @Enumerated(EnumType.STRING)
+    val collectionMonth: Month? = null,
 
-        @Embedded
-        val bankAccount: PaymentBankAccount? = null,
+    @Embedded
+    val bankAccount: PaymentBankAccount? = null,
 
-        @OneToMany(mappedBy = "mandate")
-        @JsonBackReference
-        val transactions: Set<PaymentTransaction> = setOf()
+    @OneToMany(mappedBy = "mandate")
+    @JsonBackReference
+    val transactions: Set<PaymentTransaction> = setOf()
 
 ) {
 
-    constructor(int: Int, type: PaymentType = PaymentType.IDEAL):this(
-            amount = when (int % 4) {
-                0 -> 2.0
-                1 -> 4.0
-                2 -> 8.0
-                3 -> 16.0
-                else -> 0.0
-            },
-            type = type,
-            frequency = PaymentFrequency.ONCE
+    constructor(int: Int, type: PaymentType = PaymentType.IDEAL) : this(
+        amount = when (int % 4) {
+            0 -> 2.0
+            1 -> 4.0
+            2 -> 8.0
+            3 -> 16.0
+            else -> 0.0
+        },
+        type = type,
+        frequency = PaymentFrequency.ONCE
     )
 
     override fun equals(other: Any?): Boolean {
@@ -63,5 +62,4 @@ data class PaymentMandate(
     override fun hashCode(): Int {
         return this.id.hashCode()
     }
-
 }

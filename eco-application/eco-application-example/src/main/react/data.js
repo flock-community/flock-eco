@@ -1,18 +1,34 @@
-import {UserTable} from '@flock-eco/feature-user/src/main/react/user/UserTable'
-import {UserProfileFeature} from '@flock-eco/feature-user/src/main/react/user_profile/UserProfileFeature'
+import {
+  UserProfileFeature,
+  UserTable,
+  UserFeature,
+  UserLoginSignInForm,
+  UserLoginResetForm,
+} from '@flock-community/flock-eco-feature-user'
+import {
+  MemberFeature,
+  MemberFilter,
+  MemberForm,
+  MemberTable,
+  MemberFieldFeature,
+  MemberGroupFeature,
+} from '@flock-community/flock-eco-feature-member'
+import {
+  WorkspaceFeature,
+  WorkspaceForm,
+  WorkspaceTable,
+} from '@flock-community/flock-eco-feature-workspace/src/main/react/workspace'
 
-import {MemberFeature, MemberFilter, MemberForm, MemberTable} from '@flock-eco/feature-member/src/main/react/member'
-import {MemberFieldFeature} from '@flock-eco/feature-member/src/main/react/member_field'
-import {MemberGroupFeature} from '@flock-eco/feature-member/src/main/react/member_group'
-
-import {WorkspaceFeature, WorkspaceForm, WorkspaceTable} from '@flock-eco/feature-workspace/src/main/react/workspace'
-
-export const findComponentName = component => component.Naked ? component.Naked.name : component.name
+export const findComponentName = component =>
+  component.Naked ? component.Naked.name : component.name
 
 export const features = {
   user: [
+    UserFeature,
     UserTable,
     UserProfileFeature,
+    UserLoginSignInForm,
+    UserLoginResetForm,
   ],
   member: [
     MemberTable,
@@ -22,9 +38,5 @@ export const features = {
     MemberFieldFeature,
     MemberGroupFeature,
   ],
-  workspace: [
-    WorkspaceFeature,
-    WorkspaceTable,
-    WorkspaceForm,
-  ],
+  workspace: [WorkspaceFeature, WorkspaceTable, WorkspaceForm],
 }

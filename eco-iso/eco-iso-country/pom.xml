@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.github.flock-community.flock-eco</groupId>
         <artifactId>flock-eco-iso</artifactId>
-        <version>1.10.3</version>
+        <version>2.0.0-17004df</version>
     </parent>
 
     <artifactId>flock-eco-iso-country</artifactId>
@@ -34,11 +34,6 @@
     </dependencies>
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring.boot.version}</version>
-            </plugin>
             <plugin>
                 <groupId>community.flock</groupId>
                 <artifactId>graphql-simple-bindings-maven-plugin</artifactId>

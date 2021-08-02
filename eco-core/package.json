@@ -1,8 +1,8 @@
 {
   "name": "@flock-community/flock-eco-core",
-  "version": "1.10.3",
-  "main": "src/main/react/index.js",
-  "module": "src/main/react/index.js",
+  "version": "2.0.0-next.17004df",
+  "main": "src/main/react/index.ts",
+  "module": "src/main/react/index.ts",
   "repository": {
     "type": "git",
     "url": "ssh://git@github.com/flock-community/flock-eco.git",

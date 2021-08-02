@@ -7,15 +7,14 @@ import org.springframework.stereotype.Component
 
 @Component
 class UserGroupLoadData(
-        val userGroupRepository: UserGroupRepository
+    val userGroupRepository: UserGroupRepository
 ) : LoadData<UserGroup> {
 
     override fun load(n: Int): Iterable<UserGroup> = (1..n)
-            .map { user(it) }
-            .also { userGroupRepository.saveAll(it) }
+        .map { user(it) }
+        .also { userGroupRepository.saveAll(it) }
 
     private fun user(int: Int) = UserGroup(
-            name = "name-$int"
+        name = "name-$int"
     )
-
 }

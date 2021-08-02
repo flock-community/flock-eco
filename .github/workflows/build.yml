@@ -2,9 +2,12 @@ name: Flock. eco build
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - 'master'
   pull_request:
-    branches: [ master ]
+    branches:
+      - 'master'
+      - '!v*'
 
 jobs:
 
@@ -22,6 +25,11 @@ jobs:
           key: ${{ runner.os }}-maven
       - name: Build with Maven
         run: mvn -B package --file ./pom.xml
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v1
+        with:
+          report_paths: '**/target/surefire-reports/TEST-*.xml'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
   build-react:
     runs-on: ubuntu-latest
@@ -37,3 +45,7 @@ jobs:
           restore-keys: ${{ runner.os }}-node-
       - run: npm ci
       - run: npm run bootstrap
+      - run: npm run generate
+      - run: npm run compile
+      - run: npm run build
+      - run: npm run prettier

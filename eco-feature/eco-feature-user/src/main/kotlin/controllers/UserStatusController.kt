@@ -11,14 +11,13 @@ import java.security.Principal
 class UserStatusController {
 
     data class Status(
-            val isLoggedIn: Boolean,
-            val authorities: List<String>
+        val isLoggedIn: Boolean,
+        val authorities: List<String>
     )
 
     @GetMapping("/status")
     fun index(principal: Principal?) = Status(
-            isLoggedIn = principal != null,
-            authorities = if (principal is AbstractAuthenticationToken) principal.authorities.map { it.authority } else listOf()
+        isLoggedIn = principal != null,
+        authorities = if (principal is AbstractAuthenticationToken) principal.authorities.map { it.authority } else listOf()
     )
-
 }

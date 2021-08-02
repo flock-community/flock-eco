@@ -10,22 +10,20 @@ import javax.persistence.Id
 @Entity
 data class Workspace(
 
-        @Id
-        override val id: UUID = UUID.randomUUID(),
+    @Id
+    override val id: UUID = UUID.randomUUID(),
 
-        val name: String,
+    val name: String,
 
-        @Embedded
-        val image: WorkspaceImage? = null,
+    @Embedded
+    val image: WorkspaceImage? = null,
 
-        @ElementCollection
-        val variables: Map<String, String?> = mapOf(),
+    @ElementCollection
+    val variables: Map<String, String?> = mapOf(),
 
-        val host: String? = null,
+    val host: String? = null,
 
-        @ElementCollection
-        val users: Set<WorkspaceUserRole> = setOf()
+    @ElementCollection
+    val users: Set<WorkspaceUserRole> = setOf()
 
-): AbstractEntity<UUID>(id)
-
-
+) : AbstractEntity<UUID>(id)

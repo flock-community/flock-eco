@@ -9,13 +9,12 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/authorities")
 class UserAuthorityController(
-        private val userAuthorityService: UserAuthorityService
+    private val userAuthorityService: UserAuthorityService
 ) {
 
     @GetMapping
     @PreAuthorize("isAuthenticated()")
     fun findMeUserAuthority(): List<String> = userAuthorityService
-            .allAuthorities()
-            .map { it.toName() }
-
+        .allAuthorities()
+        .map { it.toName() }
 }

@@ -36,7 +36,5 @@ class GpcMailService : MailService {
         } catch (e: UnsupportedEncodingException) {
             // ...
         }
-
     }
-
 }

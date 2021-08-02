@@ -16,64 +16,65 @@ import org.springframework.web.server.ResponseStatusException
 @RestController
 @RequestMapping("/api/user-accounts")
 class UserAccountController(
-        private val userAccountRepository: UserAccountRepository,
-        private val userAccountService: UserAccountService
+    private val userAccountRepository: UserAccountRepository,
+    private val userAccountService: UserAccountService
 ) {
 
     @GetMapping
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
     fun findAllAccounts(
-            @RequestParam(defaultValue = "", required = false) search: String,
-            page: Pageable): ResponseEntity<Iterable<UserAccount>> = userAccountRepository
-            .findAll()
-            .toResponse()
+        @RequestParam(defaultValue = "", required = false) search: String,
+        page: Pageable
+    ): ResponseEntity<Iterable<UserAccount>> = userAccountRepository
+        .findAll()
+        .toResponse()
 
     @PutMapping("/reset-password")
     fun resetPasswordWithResetCode(@RequestBody form: PasswordResetForm) = userAccountService
-            .resetPasswordWithResetCode(form.resetCode, form.password)
-            .toResponse()
+        .resetPasswordWithResetCode(form.resetCode, form.password)
+        .toResponse()
 
     @PutMapping("/new-password")
     @PreAuthorize("isAuthenticated()")
     fun resetPasswordWithNew(authentication: Authentication, @RequestBody form: NewPasswordForm) = userAccountService
-            .resetPasswordWithNew(authentication.name, form.oldPassword, form.newPassword)
-            .toResponse()
+        .resetPasswordWithNew(authentication.name, form.oldPassword, form.newPassword)
+        .toResponse()
 
     @PostMapping("/generate-key")
     @PreAuthorize("isAuthenticated()")
     fun generateKey(authentication: Authentication, @RequestBody form: UserKeyForm) = userAccountService
-            .generateKeyForUserCode(authentication.name, form.label)
-            .toResponse()
+        .generateKeyForUserCode(authentication.name, form.label)
+        .toResponse()
 
     @PutMapping("/update-key")
     @PreAuthorize("isAuthenticated()")
     fun updateKey(authentication: Authentication, @RequestParam key: String, @RequestBody form: UserKeyForm) = userAccountService
-            .run {
-                if (!this.findUserAccountKeyByUserCode(authentication.name).contains(this.findUserAccountKeyByKey(key))) {
-                    throw ResponseStatusException(HttpStatus.FORBIDDEN, "User is not allowed to change this key")
-                }
-                this
+        .run {
+            if (!this.findUserAccountKeyByUserCode(authentication.name).contains(this.findUserAccountKeyByKey(key))) {
+                throw ResponseStatusException(HttpStatus.FORBIDDEN, "User is not allowed to change this key")
             }
-            .updateKey(key, form)
-            .toResponse()
+            this
+        }
+        .updateKey(key, form)
+        .toResponse()
 
     @PostMapping("/revoke-key")
     @PreAuthorize("isAuthenticated()")
     fun revokeAccountKey(authentication: Authentication, @RequestBody form: KeyRevokeForm) = userAccountService
-            .revokeKeyForUserCode(authentication.name, form.key)
-            .toResponse()
+        .revokeKeyForUserCode(authentication.name, form.key)
+        .toResponse()
 
     data class NewPasswordForm(
-            val oldPassword: String,
-            val newPassword: String
+        val oldPassword: String,
+        val newPassword: String
     )
 
     data class PasswordResetForm(
-            val resetCode: String,
-            val password: String
+        val resetCode: String,
+        val password: String
     )
 
     data class KeyRevokeForm(
-            val key: String
+        val key: String
     )
 }

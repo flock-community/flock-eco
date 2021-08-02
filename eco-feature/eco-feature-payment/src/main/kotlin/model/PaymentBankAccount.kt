@@ -1,4 +1,4 @@
-package community.flock.eco.feature.payment.model;
+package community.flock.eco.feature.payment.model
 
 import javax.persistence.Embeddable
 
