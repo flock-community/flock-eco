@@ -190,23 +190,4 @@
         </profile>
     </profiles>
 
-    <repositories>
-        <repository>
-            <id>bintray-flock-community</id>
-            <name>bintray</name>
-            <url>https://api.bintray.com/maven/flock-community/flock-maven/flock-eco</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>http://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
 </project>
