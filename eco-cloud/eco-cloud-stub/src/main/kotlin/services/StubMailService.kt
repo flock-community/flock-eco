@@ -3,9 +3,8 @@ package community.flock.eco.cloud.stub.services
 import community.flock.eco.core.model.MailMessage
 import community.flock.eco.core.services.MailService
 import org.slf4j.LoggerFactory
-import org.springframework.stereotype.Component
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
-
+import org.springframework.stereotype.Component
 
 @Component
 @ConditionalOnProperty("flock.eco.cloud.stub.enabled")
@@ -20,7 +19,5 @@ class StubMailService : MailService {
         logger.warn(message.recipients.toString())
         logger.warn(message.text)
         logger.warn("=================")
-
     }
-
 }

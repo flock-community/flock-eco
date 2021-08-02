@@ -2,7 +2,6 @@ package community.flock.eco.feature.user.model
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo
 import com.fasterxml.jackson.annotation.JsonIdentityReference
-import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.fasterxml.jackson.annotation.ObjectIdGenerators
 import community.flock.eco.core.events.EventEntityListeners
 import javax.persistence.Entity
@@ -12,13 +11,13 @@ import javax.persistence.EntityListeners
 @EntityListeners(EventEntityListeners::class)
 class UserAccountKey(
 
-        override val id: Long = 0,
+    override val id: Long = 0,
 
-        @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator::class, property = "code")
-        @JsonIdentityReference(alwaysAsId = true)
-        override val user: User,
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator::class, property = "code")
+    @JsonIdentityReference(alwaysAsId = true)
+    override val user: User,
 
-        val key: String,
-        val label: String?
+    val key: String,
+    val label: String?
 
 ) : UserAccount(id, user)

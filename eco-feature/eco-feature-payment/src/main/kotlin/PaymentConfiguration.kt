@@ -14,10 +14,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 @Configuration
 @EnableJpaRepositories
 @EntityScan
-@Import(PaymentBuckarooService::class,
-        PaymentSepaService::class,
-        PaymentSepaXmlService::class,
-        PaymentMandateController::class,
-        PaymentTransactionController::class,
-        PaymentBuckarooController::class)
+@Import(
+    PaymentBuckarooService::class,
+    PaymentSepaService::class,
+    PaymentSepaXmlService::class,
+    PaymentMandateController::class,
+    PaymentTransactionController::class,
+    PaymentBuckarooController::class
+)
 class PaymentConfiguration

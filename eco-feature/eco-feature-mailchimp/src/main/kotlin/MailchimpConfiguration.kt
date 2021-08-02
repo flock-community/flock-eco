@@ -12,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 @EnableJpaRepositories
 @EntityScan
 @Import(
-        MailchimpClient::class,
-        MailchimpController::class)
+    MailchimpClient::class,
+    MailchimpController::class
+)
 class MailchimpConfiguration : WebMvcConfigurer

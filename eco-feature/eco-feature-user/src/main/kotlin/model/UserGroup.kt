@@ -14,28 +14,28 @@ import javax.persistence.*
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator::class, property = "code")
 data class UserGroup(
 
-        override val id: Long = 0,
+    override val id: Long = 0,
 
-        @Column(unique = true)
-        val code: String = UUID.randomUUID().toString(),
+    @Column(unique = true)
+    val code: String = UUID.randomUUID().toString(),
 
-        val name: String,
+    val name: String,
 
-        @ManyToMany
-        @JoinTable(name = "group_users",
-                joinColumns = [JoinColumn(name = "group_id")],
-                inverseJoinColumns = [JoinColumn(name = "user_id")]
-        )
+    @ManyToMany
+    @JoinTable(
+        name = "group_users",
+        joinColumns = [JoinColumn(name = "group_id")],
+        inverseJoinColumns = [JoinColumn(name = "user_id")]
+    )
 
-        @JsonIdentityReference(alwaysAsId = true)
-        @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator::class, property = "code")
-        val users: MutableSet<User> = mutableSetOf(),
+    @JsonIdentityReference(alwaysAsId = true)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator::class, property = "code")
+    val users: MutableSet<User> = mutableSetOf(),
 
-        val created: LocalDateTime = LocalDateTime.now()
+    val created: LocalDateTime = LocalDateTime.now()
 
-) : AbstractIdEntity(id){
-        override fun equals(other: Any?) = super.equals(other)
-        override fun hashCode() = super.hashCode()
-        override fun toString() = super.toString()
+) : AbstractIdEntity(id) {
+    override fun equals(other: Any?) = super.equals(other)
+    override fun hashCode() = super.hashCode()
+    override fun toString() = super.toString()
 }
-

@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/payment/mandates")
 class PaymentMandateController(
-        private val paymentMandateRepository: PaymentMandateRepository,
-        private val paymentTransactionRepository: PaymentTransactionRepository
+    private val paymentMandateRepository: PaymentMandateRepository,
+    private val paymentTransactionRepository: PaymentTransactionRepository
 ) {
 
     @GetMapping
@@ -27,14 +27,13 @@ class PaymentMandateController(
     @GetMapping("/{id}/transactions")
     @PreAuthorize("hasAuthority('PaymentMandateAuthority.READ')")
     fun findByIdTransactions(@PathVariable id: Long): List<PaymentTransaction> = paymentMandateRepository.findById(id)
-            .map { paymentTransactionRepository.findByMandate(it) }
-            .orElse(listOf())
+        .map { paymentTransactionRepository.findByMandate(it) }
+        .orElse(listOf())
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('PaymentMandateAuthority.READ')")
     fun update(@PathVariable id: Long, @RequestBody form: PaymentMandate): PaymentMandate? = paymentMandateRepository.findById(id)
-            .let {
-                it.orElse(null).apply { paymentMandateRepository.save(form.copy(id = this.id)) }
-            }
-
+        .let {
+            it.orElse(null).apply { paymentMandateRepository.save(form.copy(id = this.id)) }
+        }
 }

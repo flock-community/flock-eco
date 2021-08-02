@@ -6,9 +6,10 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
 
 @Configuration
-@Import(GraphqlConfiguration::class,
-        LanguageIsoService::class,
-        LanguageIsoController::class,
-        LanguageIsoQueryResolver::class
+@Import(
+    GraphqlConfiguration::class,
+    LanguageIsoService::class,
+    LanguageIsoController::class,
+    LanguageIsoQueryResolver::class
 )
 class LanguageIsoConfiguration

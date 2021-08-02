@@ -6,27 +6,27 @@ import community.flock.eco.feature.member.model.MemberStatus
 import org.springframework.data.jpa.domain.Specification
 import javax.persistence.criteria.*
 
-
 class MemberSpecification(
-        private val search: String = "",
-        private val statuses: Set<MemberStatus> = setOf(),
-        private val groups: Set<String> = setOf()
+    private val search: String = "",
+    private val statuses: Set<MemberStatus> = setOf(),
+    private val groups: Set<String> = setOf()
 ) : Specification<Member> {
 
     override fun toPredicate(
-            root: Root<Member>,
-            cq: CriteriaQuery<*>,
-            cb: CriteriaBuilder): Predicate {
+        root: Root<Member>,
+        cq: CriteriaQuery<*>,
+        cb: CriteriaBuilder
+    ): Predicate {
 
         val searchCriteria = if (search.isNotBlank()) {
             cb.or(
-                    cb.like(cb.lower(root.get("firstName")), "%${search.toLowerCase()}%"),
-                    cb.like(cb.lower(root.get("surName")), "%${search.toLowerCase()}%"),
-                    cb.like(cb.lower(root.get("email")), "%${search.toLowerCase()}%"))
+                cb.like(cb.lower(root.get("firstName")), "%${search.toLowerCase()}%"),
+                cb.like(cb.lower(root.get("surName")), "%${search.toLowerCase()}%"),
+                cb.like(cb.lower(root.get("email")), "%${search.toLowerCase()}%")
+            )
         } else {
             cb.conjunction()
         }
-
 
         val statusCriteria = if (statuses.isNotEmpty()) {
             val path: Expression<MemberStatus> = root.get("status")
@@ -47,9 +47,6 @@ class MemberSpecification(
             cb.conjunction()
         }
 
-
         return cb.and(searchCriteria, statusCriteria, groupCriteria)
-
     }
-
 }

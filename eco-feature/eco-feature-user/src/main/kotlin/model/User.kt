@@ -11,26 +11,26 @@ import javax.persistence.*
 @EntityListeners(EventEntityListeners::class)
 data class User(
 
-        override val id: Long = 0,
+    override val id: Long = 0,
 
-        @Column(unique = true)
-        val code: String = UUID.randomUUID().toString(),
+    @Column(unique = true)
+    val code: String = UUID.randomUUID().toString(),
 
-        val name: String? = null,
+    val name: String? = null,
 
-        @Column(unique = true)
-        val email: String,
+    @Column(unique = true)
+    val email: String,
 
-        val enabled: Boolean = true,
+    val enabled: Boolean = true,
 
-        @ElementCollection(fetch = FetchType.EAGER)
-        val authorities: Set<String> = setOf(),
+    @ElementCollection(fetch = FetchType.EAGER)
+    val authorities: Set<String> = setOf(),
 
-        @JsonBackReference
-        @OneToMany(mappedBy = "user")
-        val accounts: Set<UserAccount> = setOf(),
+    @JsonBackReference
+    @OneToMany(mappedBy = "user")
+    val accounts: Set<UserAccount> = setOf(),
 
-        val created: LocalDateTime = LocalDateTime.now()
+    val created: LocalDateTime = LocalDateTime.now()
 
 ) : AbstractIdEntity(id) {
     override fun equals(other: Any?) = super.equals(other)

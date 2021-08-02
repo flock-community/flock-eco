@@ -1,8 +1,5 @@
 package community.flock.eco.core.services
 
-import com.sun.org.apache.xpath.internal.operations.Bool
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
 import java.io.InputStream
@@ -12,7 +9,7 @@ interface StorageService {
     class StorageObject()
 
     data class StorageMultipartObject(
-            val uploadId:String
+        val uploadId: String
     )
 
     class StorageChuck
@@ -34,5 +31,4 @@ interface StorageService {
     fun putChunk(bucket: String, key: String, uploadId: String, index: Int, length: Long, input: InputStream): StorageChuck
 
     fun completeChunk(bucket: String, key: String, uploadId: String): StorageObject
-
 }

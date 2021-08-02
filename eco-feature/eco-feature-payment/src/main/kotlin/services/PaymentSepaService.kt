@@ -12,40 +12,39 @@ import java.util.*
 
 @Component
 class PaymentSepaService(
-        private val paymentMandateRepository: PaymentMandateRepository
+    private val paymentMandateRepository: PaymentMandateRepository
 ) {
 
     data class PaymentSepa(
-            val code: String = UUID.randomUUID().toString(),
+        val code: String = UUID.randomUUID().toString(),
 
-            val amount: Double,
-            val frequency: PaymentFrequency,
-            val collectionMonth: Month? = null,
+        val amount: Double,
+        val frequency: PaymentFrequency,
+        val collectionMonth: Month? = null,
 
-            val bankAccount: PaymentBankAccount
+        val bankAccount: PaymentBankAccount
     )
 
     data class SepaResult(
-            val mandate: PaymentMandate
+        val mandate: PaymentMandate
     )
 
     fun create(paymentSepa: PaymentSepa): SepaResult = paymentSepa.toPaymentMandate()
-            .also { paymentMandateRepository.save(it) }
-            .let { SepaResult(mandate = it) }
+        .also { paymentMandateRepository.save(it) }
+        .let { SepaResult(mandate = it) }
 
     private fun PaymentSepa.toPaymentMandate(): PaymentMandate = LocalDate.now().let {
         PaymentMandate(
-                code = code,
-                startDate = it,
+            code = code,
+            startDate = it,
 
-                amount = amount,
-                frequency = frequency,
-                type = PaymentType.SEPA,
+            amount = amount,
+            frequency = frequency,
+            type = PaymentType.SEPA,
 
-                collectionMonth = collectionMonth ?: it.month,
+            collectionMonth = collectionMonth ?: it.month,
 
-                bankAccount = bankAccount
+            bankAccount = bankAccount
         )
     }
-
 }

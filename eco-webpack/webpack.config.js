@@ -1,20 +1,18 @@
 const path = require('path')
 const HtmlWebPackPlugin = require('html-webpack-plugin')
 
-
 const htmlPlugin = new HtmlWebPackPlugin({
-  template: path.join(process.cwd(),'src/main/react/index.html'),
+  template: path.join(process.cwd(), 'src/main/react/index.html'),
   filename: './index.html',
 })
 
 module.exports = {
-
-  entry: path.join(process.cwd(),'src/main/react'),
+  entry: path.join(process.cwd(), 'src/main/react'),
 
   output: {
-    publicPath: "/",
-    filename: "[name].[contenthash].js",
-    path: path.resolve(__dirname, "target/classes/static"),
+    publicPath: '/',
+    filename: '[name].[contenthash].js',
+    path: path.join(process.cwd(), 'target/classes/static'),
   },
 
   devtool: 'eval-source-map',
@@ -22,18 +20,18 @@ module.exports = {
     rules: [
       {
         test: /\.(js|jsx|ts|tsx)$/,
-        exclude: /node_modules[\\\/](?!(@flock-eco)[\\\/]).*/,
+        exclude: /node_modules[\\\/](?!(@flock-community)[\\\/]).*/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
             plugins: [
-              "@babel/plugin-proposal-class-properties",
-              "@babel/plugin-transform-runtime",
+              '@babel/plugin-proposal-class-properties',
+              '@babel/plugin-transform-runtime',
             ],
             presets: [
-              "@babel/preset-env",
-              "@babel/preset-react",
-              "@babel/preset-typescript"
+              '@babel/preset-env',
+              '@babel/preset-react',
+              '@babel/preset-typescript',
             ],
           },
         },
@@ -50,10 +48,12 @@ module.exports = {
   devServer: {
     port: 3000,
     host: 'localhost',
+    historyApiFallback: true,
     proxy: {
       '/api/**': 'http://localhost:8080',
       '/graphql': 'http://localhost:8080',
       '/login': 'http://localhost:8080',
+      '/logout': 'http://localhost:8080',
     },
   },
 }

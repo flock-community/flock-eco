@@ -25,5 +25,4 @@ class UserControllerAdvice {
 
     private fun respond(status: HttpStatus) = ResponseEntity<String>(status)
     private fun respond(e: FlockEcoException, status: HttpStatus) = ResponseEntity<String>(e.message, status)
-
 }

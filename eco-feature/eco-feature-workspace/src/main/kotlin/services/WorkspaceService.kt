@@ -14,48 +14,49 @@ import javax.transaction.Transactional
 @Service
 @Transactional
 class WorkspaceService(
-        private val workspaceUserProvider: WorkspaceUserProvider,
-        private val workspaceRepository: WorkspaceRepository) {
+    private val workspaceUserProvider: WorkspaceUserProvider,
+    private val workspaceRepository: WorkspaceRepository
+) {
 
     fun findById(id: UUID) = workspaceRepository
-            .findById(id)
-            .toNullable()
+        .findById(id)
+        .toNullable()
 
     fun findAll(pageable: Pageable): Page<Workspace> = workspaceRepository
-            .findAll(pageable)
+        .findAll(pageable)
 
     fun count() = workspaceRepository.count()
 
     fun findByHost(host: String) = workspaceRepository
-            .findByHost(host)
+        .findByHost(host)
 
     fun findWorkspacesByUserId(userId: String): Set<Workspace> =
-            workspaceRepository.findAllByUsersUserId(userId)
+        workspaceRepository.findAllByUsersUserId(userId)
 
     fun create(input: Workspace): Workspace = input
-            .save()
+        .save()
 
     fun update(id: UUID, input: Workspace): Workspace = findById(id)
-            ?.run { input.copy(id = id) }
-            ?.save()
-            ?: error("Cannot update workspace: $id, workspace does not exist")
+        ?.run { input.copy(id = id) }
+        ?.save()
+        ?: error("Cannot update workspace: $id, workspace does not exist")
 
     fun delete(id: UUID) = workspaceRepository
-            .deleteById(id)
+        .deleteById(id)
 
-    fun addWorkspaceUser(workspaceId: UUID, ref: String, role:String) = findById(workspaceId)
-            ?.let {
-                val user = workspaceUserProvider.findWorkspaceUsers(ref)
-                        ?: error("Cannot add user: $ref to workspace: $workspaceId, user does not exist")
-                it.copy(
-                        users = it.users + WorkspaceUserRole(
-                                userId = user.id,
-                                role = role.toUpperCase()
-                        ))
-            }
-            ?.save()
-            ?: error("Cannot add user to workspace: $workspaceId")
-
+    fun addWorkspaceUser(workspaceId: UUID, ref: String, role: String) = findById(workspaceId)
+        ?.let {
+            val user = workspaceUserProvider.findWorkspaceUsers(ref)
+                ?: error("Cannot add user: $ref to workspace: $workspaceId, user does not exist")
+            it.copy(
+                users = it.users + WorkspaceUserRole(
+                    userId = user.id,
+                    role = role.toUpperCase()
+                )
+            )
+        }
+        ?.save()
+        ?: error("Cannot add user to workspace: $workspaceId")
 
     fun Workspace.save(): Workspace = try {
         workspaceRepository.save(this)

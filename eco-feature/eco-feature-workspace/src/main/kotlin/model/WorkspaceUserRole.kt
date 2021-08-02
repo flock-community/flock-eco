@@ -6,10 +6,9 @@ import javax.persistence.Embeddable
 @Embeddable
 data class WorkspaceUserRole(
 
-        @Column(name = "user_id")
-        val userId: String,
+    @Column(name = "user_id")
+    val userId: String,
 
-        @Column(name = "user_role")
-        val role: String
+    @Column(name = "user_role")
+    val role: String
 )
-

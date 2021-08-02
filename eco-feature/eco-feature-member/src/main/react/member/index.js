@@ -1,10 +1,10 @@
-import {MemberClient} from './MemberClient.js'
-import {MemberDialog} from './MemberDialog.js'
-import {MemberFeature} from './MemberFeature.js'
-import {MemberForm} from './MemberForm.js'
-import {MemberMerger} from './MemberMerger.js'
-import {MemberFilter} from './MemberFilter.js'
-import {MemberTable} from './MemberTable.js'
+import {MemberClient} from './MemberClient'
+import {MemberDialog} from './MemberDialog'
+import {MemberFeature} from './MemberFeature'
+import {MemberForm} from './MemberForm'
+import {MemberMerger} from './MemberMerger'
+import {MemberFilter} from './MemberFilter'
+import {MemberTable} from './MemberTable'
 
 export {
   MemberClient,
@@ -13,5 +13,5 @@ export {
   MemberForm,
   MemberMerger,
   MemberFilter,
-  MemberTable
+  MemberTable,
 }

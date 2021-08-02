@@ -1,18 +1,16 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 
-import Table from '@material-ui/core/Table'
-import TableBody from '@material-ui/core/TableBody'
-import TableCell from '@material-ui/core/TableCell'
-import TableHead from '@material-ui/core/TableHead'
-import TableRow from '@material-ui/core/TableRow'
-import gql from 'graphql-tag'
-import {useQuery} from '@apollo/react-hooks'
-import {WorkspaceUserTableQuery, WorkspaceUserTableQueryVariables} from '../Apollo'
-// @ts-ignore
-import {AlignedLoader} from '@flock-community/flock-eco-core/src/main/react/components/AlignedLoader'
+import {AlignedLoader} from '@flock-community/flock-eco-core'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from '@material-ui/core'
 
 interface User {
-  id: string,
+  id: string
   name: string
   role: string
 }
@@ -23,18 +21,16 @@ interface Props {
 }
 
 interface Fields {
-  key: keyof User,
+  key: keyof User
   label: string
 }
 
 export function WorkspaceUserTable({value, onRowClick}: Props) {
-
   const handleRowClick = (it: string) => () => {
     onRowClick && onRowClick(it)
   }
 
-  if (!value)
-    return (<AlignedLoader/>)
+  if (!value) return <AlignedLoader />
 
   const fields: Fields[] = [
     {key: 'name', label: 'Name'},
@@ -45,19 +41,22 @@ export function WorkspaceUserTable({value, onRowClick}: Props) {
     <Table>
       <TableHead>
         <TableRow>
-          {fields.map(field => (<TableCell key={field.key}>
-            {field.label}
-          </TableCell>))}
+          {fields.map(field => (
+            <TableCell key={field.key}>{field.label}</TableCell>
+          ))}
         </TableRow>
       </TableHead>
       <TableBody>
         {list.map(it => (
           <TableRow key={it.name} hover onClick={handleRowClick(it.id)}>
-            {fields.map(field => (<TableCell key={field.key}>{it[field.key]}</TableCell>))}
+            {fields.map(field => (
+              <TableCell key={field.key}>{it[field.key]}</TableCell>
+            ))}
           </TableRow>
         ))}
       </TableBody>
-    </Table>)
+    </Table>
+  )
 
   return renderTable(value)
 }

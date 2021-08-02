@@ -1,0 +1,22 @@
+databaseChangeLog:
+
+  - property:
+      dbms: postgresql
+      name: uuid_function
+      value: uuid_generate_v4()
+  - property:
+      dbms: mysql
+      name: uuid_function
+      value: uuid()
+
+  - changeSet:
+      id: flock-eco-feature-member-002-uuid-1
+      author: Flock. eco
+      changes:
+        - addColumn:
+            tableName: member
+            columns:
+               - column:
+                  name: uuid
+                  type: uuid
+                  defaultValueComputed: ${uuid_function}
