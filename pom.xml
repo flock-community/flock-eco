@@ -511,9 +511,9 @@
             <url>https://repo.spring.io/milestone</url>
         </repository>
         <repository>
-            <id>bintray-flock-community</id>
-            <name>bintray</name>
-            <url>https://api.bintray.com/maven/flock-community/flock-maven</url>
+            <id>jfrog-flock-community</id>
+            <name>jfrog-repositories</name>
+            <url>https://flock.jfrog.io/artifactory/flock-maven</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
@@ -525,19 +525,24 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
-            <id>bintray-flock-community-flock-maven</id>
-            <name>bintray-plugins</name>
-            <url>https://dl.bintray.com/flock-community/flock-maven</url>
+            <id>jfrog-flock-community</id>
+            <name>jfrog-plugins</name>
+            <url>https://flock.jfrog.io/artifactory/flock-maven</url>
         </pluginRepository>
     </pluginRepositories>
 
 
     <distributionManagement>
         <repository>
-            <id>bintray-flock-community</id>
-            <name>flock-community-maven-flock-eco-snapshots</name>
-            <url>https://api.bintray.com/maven/flock-community/flock-maven/flock-eco/;publish=1</url>
+            <id>jfrog-flock-community</id>
+            <name>jfrog-repo-releases</name>
+            <url>https://flock.jfrog.io/artifactory/flock-maven</url>
         </repository>
+        <snapshotRepository>
+            <id>jfrog-flock-community</id>
+            <name>jfrog-repo-snapshots</name>
+            <url>https://flock.jfrog.io/artifactory/flock-maven</url>
+        </snapshotRepository>
     </distributionManagement>
 
     <scm>
