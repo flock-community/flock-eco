@@ -11,9 +11,13 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 @Configuration
 @EnableJpaRepositories
 @EntityScan
-@ComponentScan(basePackages = [
-    "community.flock.eco.application.multi_tenant.controllers"
-])
-@Import(UserConfiguration::class,
-        MultiTenantConfiguration::class)
+@ComponentScan(
+    basePackages = [
+        "community.flock.eco.application.multi_tenant.controllers"
+    ]
+)
+@Import(
+    UserConfiguration::class,
+    MultiTenantConfiguration::class
+)
 class ApplicationConfiguration

@@ -7,14 +7,12 @@ object MultiTenantContext {
     private val currentTenant: ThreadLocal<String> = InheritableThreadLocal()
 
     fun getCurrentTenant(): String = currentTenant
-            .get()
-            ?: defaultTenant
+        .get()
+        ?: defaultTenant
 
     fun setCurrentTenant(tenant: String?) = currentTenant
-            .set(tenant ?: defaultTenant)
-
+        .set(tenant ?: defaultTenant)
 
     fun clear() = currentTenant
-            .set(null)
-
+        .set(null)
 }

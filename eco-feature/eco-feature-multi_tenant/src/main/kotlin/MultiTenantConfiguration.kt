@@ -1,6 +1,5 @@
 package community.flock.eco.feature.multi_tenant
 
-
 import community.flock.eco.feature.multi_tenant.controllers.MultiTenantController
 import community.flock.eco.feature.multi_tenant.filters.MultiTenantFilter
 import community.flock.eco.feature.multi_tenant.services.MultiTenantSchemaService
@@ -22,11 +21,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import javax.sql.DataSource
 
 @Import(
-        MultiTenantController::class,
-        MultiTenantSchemaService::class,
-        MultiTenantFilter::class,
-        MultiTenantSchemaResolver::class,
-        MultiTenantConnectionProvider::class)
+    MultiTenantController::class,
+    MultiTenantSchemaService::class,
+    MultiTenantFilter::class,
+    MultiTenantSchemaResolver::class,
+    MultiTenantConnectionProvider::class
+)
 class MultiTenantConfiguration : WebMvcConfigurer {
 
     @Autowired
@@ -39,35 +39,33 @@ class MultiTenantConfiguration : WebMvcConfigurer {
     @Bean
     @DependsOn("liquibase")
     fun liquibaseMt(
-            dataSource: DataSource,
-            multitenantSchemaService: MultiTenantSchemaService,
-            liquibaseProperties: LiquibaseProperties): MultiTenantSpringLiquibase {
+        dataSource: DataSource,
+        multitenantSchemaService: MultiTenantSchemaService,
+        liquibaseProperties: LiquibaseProperties
+    ): MultiTenantSpringLiquibase {
         val schemas = multitenantSchemaService
-                .findAllTenant()
-                .map { it.schema }
+            .findAllTenant()
+            .map { it.schema }
         return multitenantSchemaService.liquibase(schemas)
     }
 
     @Bean
     fun entityManagerFactoryBuilder(
-            tenantConnectionProvider: MultiTenantConnectionProvider,
-            multiTenantSchemaResolver: MultiTenantSchemaResolver,
-            jpaVendorAdapter: JpaVendorAdapter,
-            persistenceUnitManager: ObjectProvider<PersistenceUnitManager>,
-            customizers: ObjectProvider<EntityManagerFactoryBuilderCustomizer>): EntityManagerFactoryBuilder {
+        tenantConnectionProvider: MultiTenantConnectionProvider,
+        multiTenantSchemaResolver: MultiTenantSchemaResolver,
+        jpaVendorAdapter: JpaVendorAdapter,
+        persistenceUnitManager: ObjectProvider<PersistenceUnitManager>,
+        customizers: ObjectProvider<EntityManagerFactoryBuilderCustomizer>
+    ): EntityManagerFactoryBuilder {
         val properties = mapOf(
-                Environment.MULTI_TENANT to MultiTenancyStrategy.SCHEMA,
-                Environment.MULTI_TENANT_CONNECTION_PROVIDER to tenantConnectionProvider,
-                Environment.MULTI_TENANT_IDENTIFIER_RESOLVER to multiTenantSchemaResolver
+            Environment.MULTI_TENANT to MultiTenancyStrategy.SCHEMA,
+            Environment.MULTI_TENANT_CONNECTION_PROVIDER to tenantConnectionProvider,
+            Environment.MULTI_TENANT_IDENTIFIER_RESOLVER to multiTenantSchemaResolver
         )
         return EntityManagerFactoryBuilder(jpaVendorAdapter, properties, persistenceUnitManager.ifAvailable)
-                .apply {
-                    customizers.orderedStream()
-                            .forEach { it.customize(this) }
-                }
-
+            .apply {
+                customizers.orderedStream()
+                    .forEach { it.customize(this) }
+            }
     }
-
 }
-
-

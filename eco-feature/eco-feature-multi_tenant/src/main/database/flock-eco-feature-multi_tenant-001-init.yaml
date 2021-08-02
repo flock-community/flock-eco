@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: flock-eco-feature-multi_tenant-001-1
+      author: Flock. eco
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: key
+                  type: VARCHAR(255)
+              - column:
+                  name: value
+                  type: VARCHAR(255)
+            tableName: multi_tenant_key_value

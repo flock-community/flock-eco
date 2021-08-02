@@ -7,19 +7,20 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-
 @Component
 class MultiTenantFilter : HandlerInterceptorAdapter() {
 
-    override fun preHandle(request: HttpServletRequest,
-                           response: HttpServletResponse,
-                           obj: Any): Boolean {
+    override fun preHandle(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        obj: Any
+    ): Boolean {
         println("In preHandle we are Intercepting the Request ---")
         val tenantID = request.getParameter("tenant")
 
-        if(request.requestURI == "/tenant"){
+        if (request.requestURI == "/tenant") {
             MultiTenantContext.setCurrentTenant("TENANT_TEST")
-        } else{
+        } else {
             MultiTenantContext.setCurrentTenant(tenantID)
         }
 
@@ -30,7 +31,8 @@ class MultiTenantFilter : HandlerInterceptorAdapter() {
         request: HttpServletRequest,
         response: HttpServletResponse,
         handler: Any,
-        modelAndView: ModelAndView?) {
+        modelAndView: ModelAndView?
+    ) {
         MultiTenantContext.clear()
     }
 }

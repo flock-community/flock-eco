@@ -14,7 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod.POST
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
@@ -35,23 +34,19 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity) {
 
         http
-                .csrf().disable()
+            .csrf().disable()
         http
-                .authorizeRequests()
-                .antMatchers("/login/**").permitAll()
-                .antMatchers("/_ah/**").permitAll()
-                .antMatchers(HttpMethod.POST,"/api/tenants/create").permitAll()
-                .anyRequest().authenticated()
+            .authorizeRequests()
+            .antMatchers("/login/**").permitAll()
+            .antMatchers("/_ah/**").permitAll()
+            .antMatchers(HttpMethod.POST, "/api/tenants/create").permitAll()
+            .anyRequest().authenticated()
         http
-                .cors()
+            .cors()
 
         http
-                .addFilterAfter(userKeyTokenFilter, BasicAuthenticationFilter::class.java)
+            .addFilterAfter(userKeyTokenFilter, BasicAuthenticationFilter::class.java)
 
         userSecurityService.testLogin(http)
-
     }
-
-
 }
-

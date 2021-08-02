@@ -7,7 +7,8 @@ import javax.sql.DataSource
 
 @Component
 class MultiTenantConnectionProvider(
-    private val dataSource: DataSource) : org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider {
+    private val dataSource: DataSource
+) : org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider {
 
     private val DEFAULT_TENANT: String = "PUBLIC"
 
@@ -24,7 +25,7 @@ class MultiTenantConnectionProvider(
     @Throws(SQLException::class)
     override fun getConnection(tenantIdentifier: String): Connection {
         return anyConnection
-                .apply { schema =  tenantIdentifier}
+            .apply { schema = tenantIdentifier }
     }
 
     @Throws(SQLException::class)
