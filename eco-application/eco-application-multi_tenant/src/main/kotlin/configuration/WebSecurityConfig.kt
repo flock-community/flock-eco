@@ -3,6 +3,7 @@ package community.flock.eco.application.multi_tenant.config
 import community.flock.eco.feature.user.filters.UserKeyTokenFilter
 import community.flock.eco.feature.user.services.UserAuthorityService
 import community.flock.eco.feature.user.services.UserSecurityService
+import community.flock.eco.feature.multi_tenant.filters.MultiTenantFilter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.env.Environment
@@ -11,8 +12,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.oauth2.core.ClientAuthenticationMethod.POST
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
+
 
 @Configuration
 @EnableWebSecurity
@@ -31,6 +33,9 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     @Autowired
     lateinit var userKeyTokenFilter: UserKeyTokenFilter
 
+    @Autowired
+    lateinit var multiTenantFilter: MultiTenantFilter
+
     override fun configure(http: HttpSecurity) {
 
         http
@@ -38,15 +43,25 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
         http
             .authorizeRequests()
             .antMatchers("/login/**").permitAll()
-            .antMatchers("/_ah/**").permitAll()
+            .antMatchers("/api/tenants/register").permitAll()
+            .antMatchers("/h2-console/**").permitAll()
             .antMatchers(HttpMethod.POST, "/api/tenants/create").permitAll()
             .anyRequest().authenticated()
         http
             .cors()
 
         http
+            .addFilterBefore(multiTenantFilter, UsernamePasswordAuthenticationFilter::class.java)
             .addFilterAfter(userKeyTokenFilter, BasicAuthenticationFilter::class.java)
 
-        userSecurityService.testLogin(http)
+        http
+           .headers().frameOptions().disable();
+
+        userSecurityService
+                .databaseLogin(http)
+                .successHandler { request, response, _ ->
+                    request.session.setAttribute("tenant", request.getHeader("X-TENANT"))
+                    response.sendRedirect(request.contextPath);
+                }
     }
 }

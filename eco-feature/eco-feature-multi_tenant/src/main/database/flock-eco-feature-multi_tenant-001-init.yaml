@@ -6,6 +6,10 @@ databaseChangeLog:
         - createTable:
             columns:
               - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: multi_tenant_key_valuePK
                   name: key
                   type: VARCHAR(255)
               - column:

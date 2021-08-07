@@ -10,6 +10,18 @@ const config = {
             '/bootstrap': 'http://localhost:8080',
             '/logout': 'http://localhost:8080',
             '/tasks/*': 'http://localhost:8080',
+            '/api/**': {
+                target: 'http://localhost:8080',
+                onProxyReq: (proxyReq, req, res) => {
+                    proxyReq.setHeader('x-tenant', 'FOOBAR');
+                }
+            },
+            '/login': {
+                target: 'http://localhost:8080',
+                onProxyReq: (proxyReq, req, res) => {
+                    proxyReq.setHeader('x-tenant', 'FOOBAR');
+                }
+            },
         },
     },
     module: {

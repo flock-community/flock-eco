@@ -1,40 +1,40 @@
 package community.flock.eco.feature.multi_tenant
 
 import community.flock.eco.feature.multi_tenant.controllers.MultiTenantController
-import community.flock.eco.feature.multi_tenant.filters.MultiTenantFilter
 import community.flock.eco.feature.multi_tenant.services.MultiTenantSchemaService
+import community.flock.eco.feature.multi_tenant.filters.MultiTenantFilter
+import community.flock.eco.feature.multi_tenant.services.MultiTenantKeyValueService
 import liquibase.integration.spring.MultiTenantSpringLiquibase
 import org.hibernate.MultiTenancyStrategy
 import org.hibernate.cfg.Environment
 import org.springframework.beans.factory.ObjectProvider
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties
 import org.springframework.boot.autoconfigure.orm.jpa.EntityManagerFactoryBuilderCustomizer
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.DependsOn
 import org.springframework.context.annotation.Import
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.orm.jpa.JpaVendorAdapter
 import org.springframework.orm.jpa.persistenceunit.PersistenceUnitManager
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import javax.sql.DataSource
 
+@Configuration
 @Import(
     MultiTenantController::class,
     MultiTenantSchemaService::class,
+    MultiTenantKeyValueService::class,
     MultiTenantFilter::class,
     MultiTenantSchemaResolver::class,
     MultiTenantConnectionProvider::class
 )
+@EnableJpaRepositories
+@EntityScan
 class MultiTenantConfiguration : WebMvcConfigurer {
-
-    @Autowired
-    lateinit var multitenantFilter: MultiTenantFilter
-
-    override fun addInterceptors(registry: InterceptorRegistry) {
-        registry.addInterceptor(multitenantFilter)
-    }
 
     @Bean
     @DependsOn("liquibase")

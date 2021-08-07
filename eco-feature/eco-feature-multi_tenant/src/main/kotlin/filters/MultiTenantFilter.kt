@@ -1,38 +1,35 @@
 package community.flock.eco.feature.multi_tenant.filters
 
 import community.flock.eco.feature.multi_tenant.MultiTenantContext
+import community.flock.eco.feature.multi_tenant.services.MultiTenantSchemaService
 import org.springframework.stereotype.Component
-import org.springframework.web.servlet.ModelAndView
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter
+import org.springframework.web.filter.OncePerRequestFilter
+import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Component
-class MultiTenantFilter : HandlerInterceptorAdapter() {
+class MultiTenantFilter(
+       private val multiTenantSchemaService: MultiTenantSchemaService
+        ): OncePerRequestFilter() {
 
-    override fun preHandle(
-        request: HttpServletRequest,
-        response: HttpServletResponse,
-        obj: Any
-    ): Boolean {
-        println("In preHandle we are Intercepting the Request ---")
-        val tenantID = request.getParameter("tenant")
+    override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
+        val tenantName = request.getHeader("X-TENANT")
 
-        if (request.requestURI == "/tenant") {
-            MultiTenantContext.setCurrentTenant("TENANT_TEST")
-        } else {
-            MultiTenantContext.setCurrentTenant(tenantID)
+        val tenantSession = request.session.getAttribute("tenant")
+        if(tenantSession != null && tenantSession != tenantName){
+            response.sendError(401)
         }
 
-        return true
-    }
+        if (tenantName != null) {
+            val tenant = multiTenantSchemaService.schemaName(tenantName)
+            MultiTenantContext.setCurrentTenant(tenant.schema)
+        }
 
-    override fun postHandle(
-        request: HttpServletRequest,
-        response: HttpServletResponse,
-        handler: Any,
-        modelAndView: ModelAndView?
-    ) {
-        MultiTenantContext.clear()
+        filterChain.doFilter(request, response)
+
+        if (tenantName != null) {
+            MultiTenantContext.clear()
+        }
     }
 }

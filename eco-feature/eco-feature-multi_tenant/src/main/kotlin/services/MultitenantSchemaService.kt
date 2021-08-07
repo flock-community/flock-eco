@@ -2,7 +2,7 @@ package community.flock.eco.feature.multi_tenant.services
 
 import community.flock.eco.feature.multi_tenant.events.MultiTenantCreateEvent
 import community.flock.eco.feature.multi_tenant.events.MultiTenantDeleteEvent
-import community.flock.eco.feature.multi_tenant.model.Tenant
+import community.flock.eco.feature.multi_tenant.model.MultiTenant
 import liquibase.integration.spring.MultiTenantSpringLiquibase
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties
 import org.springframework.context.ApplicationEventPublisher
@@ -17,14 +17,14 @@ class MultiTenantSchemaService(
 ) {
     val prefix = "TENANT"
 
-    private fun schemaName(name: String) = name
+    fun schemaName(name: String) = name
         .apply {
             if (contains("-")) {
                 throw error("Hyphen not allowed in tenant name")
             }
         }
         .run {
-            Tenant(
+            MultiTenant(
                 name = name,
                 schema = "${prefix}_${this.toUpperCase()}"
             )
@@ -39,21 +39,24 @@ class MultiTenantSchemaService(
         return liquibase
     }
 
+    // TODO: input validation
     fun createTenant(name: String) = schemaName(name)
-        .apply { jdbcTemplate.update("CREATE SCHEMA ${this.schema}") }
-        .apply { jdbcTemplate.update("CREATE SEQUENCE ${this.schema}.HIBERNATE_SEQUENCE START WITH 1 INCREMENT BY 1") }
+        .apply { jdbcTemplate.update("CREATE SCHEMA $schema") }
+        .apply { jdbcTemplate.update("CREATE SEQUENCE $schema.HIBERNATE_SEQUENCE START WITH 1 INCREMENT BY 1") }
         .apply { applicationEventPublisher.publishEvent(MultiTenantCreateEvent(this)) }
 
+    // TODO: input validation
     fun deleteTenant(name: String) = schemaName(name)
-        .apply { jdbcTemplate.update("DROP SCHEMA ${this.schema}") }
+        .apply { jdbcTemplate.update("DROP SCHEMA $schema") }
         .apply { applicationEventPublisher.publishEvent(MultiTenantDeleteEvent(this)) }
 
+    // TODO: input validation
     fun findAllTenant() = jdbcTemplate
         .queryForList("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA")
         .map { it["SCHEMA_NAME"] as String }
         .filter { it.startsWith("${prefix}_", true) }
         .map {
-            Tenant(
+            MultiTenant(
                 name = it.replace("${prefix}_", "", true),
                 schema = it
             )
