@@ -54,14 +54,11 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
             .addFilterBefore(multiTenantFilter, UsernamePasswordAuthenticationFilter::class.java)
             .addFilterAfter(userKeyTokenFilter, BasicAuthenticationFilter::class.java)
 
-        http
-           .headers().frameOptions().disable();
-
         userSecurityService
                 .databaseLogin(http)
                 .successHandler { request, response, _ ->
                     request.session.setAttribute("tenant", request.getHeader("X-TENANT"))
-                    response.sendRedirect(request.contextPath);
+                    response.sendRedirect(request.contextPath)
                 }
     }
 }

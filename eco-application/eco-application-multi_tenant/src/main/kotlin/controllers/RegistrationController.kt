@@ -28,7 +28,9 @@ class RegistrationController(
         private val userAccountService: UserAccountService,
 ) {
     @PostMapping("/register")
-    fun register(@RequestBody input: RegistrationInput): User {
+    fun register(@RequestBody input: RegistrationInput) {
+
+        // Find all tenants
         val tenant = multiTenantSchemaService.schemaName(input.tenantName)
         multiTenantSchemaService.createTenant(input.tenantName)
 
@@ -36,18 +38,17 @@ class RegistrationController(
         multiTenantSpringLiquibase.schemas = listOf(tenant.schema)
         multiTenantSpringLiquibase.afterPropertiesSet()
 
-        MultiTenantContext.setCurrentTenant(tenant.schema)
-
-        val account = userAccountService.createUserAccountPassword(UserAccountPasswordForm(
+        // Create User account
+        userAccountService.createUserAccountPassword(UserAccountPasswordForm(
                 email = input.email,
                 password = "password"
         ))
 
+        // Create Tenant Key Value
         multiTenantKeyValueService.save(MultiTenantKeyValue(
                 key = "NAME",
                 value = tenant.name
         ))
-        MultiTenantContext.clear()
-        return account.user
+
     }
 }
