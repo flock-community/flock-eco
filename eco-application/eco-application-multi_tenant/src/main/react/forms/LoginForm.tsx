@@ -12,5 +12,5 @@ function LoginForm() {
     alert(JSON.stringify(values, null, 2))
   }
 
-  return <Formik initialValues={init} onSubmit={handleSubmit}/>
+  return <Formik initialValues={init} onSubmit={handleSubmit} />
 }
