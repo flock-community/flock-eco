@@ -14,7 +14,7 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: 1.8
-          server-id: bintray-flock-community
+          server-id: jfrog-flock-community
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
       - uses: actions/cache@v1
