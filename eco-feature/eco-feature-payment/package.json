@@ -1,6 +1,6 @@
 {
   "name": "@flock-community/flock-eco-feature-payment",
-  "version": "2.0.0-next.f910e66",
+  "version": "2.0.0-next.81d7069",
   "scripts": {
     "compile": "tsc"
   },
