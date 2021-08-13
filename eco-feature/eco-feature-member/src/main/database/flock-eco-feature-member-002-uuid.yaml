@@ -8,6 +8,10 @@ databaseChangeLog:
       dbms: mysql
       name: uuid_function
       value: uuid()
+  - property:
+      dbms: h2
+      name: uuid_function
+      value: RANDOM_UUID()
 
   - changeSet:
       id: flock-eco-feature-member-002-uuid-1
