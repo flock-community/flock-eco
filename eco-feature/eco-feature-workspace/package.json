@@ -1,8 +1,8 @@
 {
   "name": "@flock-community/flock-eco-feature-workspace",
-  "version": "2.0.0-next.106d0d0",
+  "version": "2.0.0-next.7619e0a",
   "dependencies": {
-    "@flock-community/flock-eco-core": "^2.0.0-next.106d0d0"
+    "@flock-community/flock-eco-core": "^2.0.0-next.7619e0a"
   },
   "devDependencies": {
     "@flock/graphql-simple-bindings": "^1.0.8",
