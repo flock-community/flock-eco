@@ -43,7 +43,7 @@ jobs:
           npm run build
           npm run prettier
           npm config set @flock-community:registry https://flock.jfrog.io/artifactory/api/npm/flock-npm/
-          npm config set //flock.jfrog.io/artifactory/api/npm/flock-npm/:_password=$NODE_AUTH_TOKEN
+          npm config set //flock.jfrog.io/artifactory/api/npm/flock-npm/:_password=$NODE_PASSWORD
           npm config set //flock.jfrog.io/artifactory/api/npm/flock-npm/:username=$NODE_USERNAME
           npm config set //flock.jfrog.io/artifactory/api/npm/flock-npm/:email=$NODE_EMAIL
           npm config set //flock.jfrog.io/artifactory/api/npm/flock-npm/:always-auth=true
@@ -51,4 +51,4 @@ jobs:
         env:
           NODE_USERNAME: ${{secrets.JFROG_USERNAME}}
           NODE_EMAIL: ${{secrets.JFROG_USERNAME}}
-          NODE_AUTH_TOKEN: ${{secrets.JFROG_NODE_TOKEN}}
+          NODE_PASSWORD: ${{secrets.JFROG_NPM_PASSWORD}}
