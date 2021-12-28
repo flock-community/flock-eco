@@ -1,0 +1,27 @@
+{
+  "name": "@flock-community/flock-eco-application-multi_tenant",
+  "version": "2.0.0-next.81d7069",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --mode development --open",
+    "build": "webpack --mode production ./src/main/react"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@flock-community/flock-eco-feature-member": "^2.0.0-next.81d7069",
+    "@flock-community/flock-eco-feature-user": "^2.0.0-next.81d7069"
+  },
+  "devDependencies": {
+    "@flock-community/flock-eco-webpack": "^2.0.0-next.81d7069",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com/flock-community/flock-eco.git",
+    "directory": "eco-application/eco-application-multi_tenant"
+  }
+}

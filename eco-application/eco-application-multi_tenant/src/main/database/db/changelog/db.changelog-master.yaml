@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      - file: flock-eco-feature-user-master.yaml
+  - include:
+      - file: flock-eco-feature-multi_tenant-master.yaml

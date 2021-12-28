@@ -1,5 +1,18 @@
 databaseChangeLog:
   - changeSet:
+      id: 1591541616322-0
+      author: Flock. eco
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          sequenceExists:
+            sequenceName: hibernate_sequence
+      changes:
+        - createSequence:
+            incrementBy: 1
+            sequenceName: hibernate_sequence
+            startValue: 1
+  - changeSet:
       id: 1591541616322-1
       author: Flock. eco
       preConditions:

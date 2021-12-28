@@ -8,12 +8,13 @@
         <module>eco-feature-member</module>
         <module>eco-feature-payment</module>
         <module>eco-feature-workspace</module>
+        <module>eco-feature-multi_tenant</module>
     </modules>
 
     <parent>
         <groupId>com.github.flock-community.flock-eco</groupId>
         <artifactId>flock-eco-parent</artifactId>
-        <version>2.0.0-17004df</version>
+        <version>2.0.0-81d7069</version>
     </parent>
 
     <artifactId>flock-eco-feature-parent</artifactId>

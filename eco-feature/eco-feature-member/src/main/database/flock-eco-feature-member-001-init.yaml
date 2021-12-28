@@ -6,7 +6,6 @@ databaseChangeLog:
         onFail: MARK_RAN
         not:
           sequenceExists:
-            schemaName: public
             sequenceName: hibernate_sequence
       changes:
         - createSequence:
