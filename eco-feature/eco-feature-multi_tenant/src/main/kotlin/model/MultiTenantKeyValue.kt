@@ -5,7 +5,7 @@ import javax.persistence.Id
 
 @Entity
 data class MultiTenantKeyValue(
-        @Id
-        val key: String,
-        val value: String
+    @Id
+    val key: String,
+    val value: String
 )

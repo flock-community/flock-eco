@@ -5,7 +5,4 @@ import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface MultiTenantKeyValueRepository : PagingAndSortingRepository<MultiTenantKeyValue, String> {
-
-
-}
+interface MultiTenantKeyValueRepository : PagingAndSortingRepository<MultiTenantKeyValue, String>

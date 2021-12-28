@@ -1,17 +1,17 @@
 package community.flock.eco.feature.multi_tenant
 
-object MultiTenantContext {
+import community.flock.eco.feature.multi_tenant.MultiTenantConstants.DEFAULT_TENANT
 
-    private const val defaultTenant = "PUBLIC"
+object MultiTenantContext {
 
     private val currentTenant: ThreadLocal<String> = InheritableThreadLocal()
 
     fun getCurrentTenant(): String = currentTenant
         .get()
-        ?: defaultTenant
+        ?: DEFAULT_TENANT
 
     fun setCurrentTenant(tenant: String?) = currentTenant
-        .set(tenant ?: defaultTenant)
+        .set(tenant ?: DEFAULT_TENANT)
 
     fun clear() = currentTenant
         .set(null)

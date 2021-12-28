@@ -1,5 +1,6 @@
 package community.flock.eco.feature.multi_tenant
 
+import community.flock.eco.feature.multi_tenant.MultiTenantConstants.DEFAULT_TENANT
 import org.springframework.stereotype.Component
 import java.sql.Connection
 import java.sql.SQLException
@@ -9,8 +10,6 @@ import javax.sql.DataSource
 class MultiTenantConnectionProvider(
     private val dataSource: DataSource
 ) : org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider {
-
-    private val DEFAULT_TENANT: String = "PUBLIC"
 
     @Throws(SQLException::class)
     override fun getAnyConnection(): Connection {
@@ -24,8 +23,9 @@ class MultiTenantConnectionProvider(
 
     @Throws(SQLException::class)
     override fun getConnection(tenantIdentifier: String): Connection {
-        return anyConnection
-            .apply { schema = tenantIdentifier }
+        val connection = anyConnection
+        connection.schema = tenantIdentifier
+        return connection
     }
 
     @Throws(SQLException::class)

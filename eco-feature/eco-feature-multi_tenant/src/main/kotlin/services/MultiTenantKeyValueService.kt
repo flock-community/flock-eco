@@ -7,14 +7,14 @@ import org.springframework.stereotype.Service
 
 @Service
 class MultiTenantKeyValueService(
-     private val multiTenantKeyValueRepository: MultiTenantKeyValueRepository
+    private val multiTenantKeyValueRepository: MultiTenantKeyValueRepository
 ) {
 
-    fun findByKey(key:String): MultiTenantKeyValue? {
+    fun findByKey(key: String): MultiTenantKeyValue? {
         return multiTenantKeyValueRepository.findById(key).toNullable()
     }
 
-    fun save(keyValue:MultiTenantKeyValue){
+    fun save(keyValue: MultiTenantKeyValue) {
         multiTenantKeyValueRepository.save(keyValue)
     }
 }

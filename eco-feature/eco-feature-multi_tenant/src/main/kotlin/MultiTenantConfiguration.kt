@@ -1,14 +1,13 @@
 package community.flock.eco.feature.multi_tenant
 
 import community.flock.eco.feature.multi_tenant.controllers.MultiTenantController
-import community.flock.eco.feature.multi_tenant.services.MultiTenantSchemaService
 import community.flock.eco.feature.multi_tenant.filters.MultiTenantFilter
 import community.flock.eco.feature.multi_tenant.services.MultiTenantKeyValueService
+import community.flock.eco.feature.multi_tenant.services.MultiTenantSchemaService
 import liquibase.integration.spring.MultiTenantSpringLiquibase
 import org.hibernate.MultiTenancyStrategy
 import org.hibernate.cfg.Environment
 import org.springframework.beans.factory.ObjectProvider
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties
 import org.springframework.boot.autoconfigure.orm.jpa.EntityManagerFactoryBuilderCustomizer

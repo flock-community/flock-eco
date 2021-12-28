@@ -1,5 +1,6 @@
 package community.flock.eco.feature.multi_tenant.services
 
+import community.flock.eco.feature.multi_tenant.MultiTenantConstants.DEFAULT_TENANT
 import community.flock.eco.feature.multi_tenant.events.MultiTenantCreateEvent
 import community.flock.eco.feature.multi_tenant.events.MultiTenantDeleteEvent
 import community.flock.eco.feature.multi_tenant.model.MultiTenant
@@ -7,8 +8,12 @@ import liquibase.integration.spring.MultiTenantSpringLiquibase
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.jdbc.core.JdbcTemplate
+import org.springframework.stereotype.Service
+import java.sql.Connection
+import javax.annotation.PostConstruct
 import javax.sql.DataSource
 
+@Service
 class MultiTenantSchemaService(
     private val dataSource: DataSource,
     private val jdbcTemplate: JdbcTemplate,
@@ -17,38 +22,55 @@ class MultiTenantSchemaService(
 ) {
     val prefix = "TENANT"
 
-    fun schemaName(name: String) = name
-        .apply {
-            if (contains("-")) {
-                throw error("Hyphen not allowed in tenant name")
+    lateinit var databaseName: String
+
+    private val lowerCase = arrayOf("PostgreSQL")
+    private val upperCase = arrayOf("H2")
+
+    @PostConstruct
+    fun init() {
+        val connection: Connection = dataSource.connection
+        databaseName = connection.metaData.databaseProductName
+        connection.close()
+    }
+
+    fun createMultiTenant(name: String): MultiTenant {
+        if (name.contains("-")) {
+            throw error("Hyphen not allowed in tenant name")
+        }
+        val schemaName = "${prefix}_${name.toUpperCase()}"
+        return MultiTenant(
+            name = name,
+            schema = when {
+                lowerCase.contains(databaseName) -> schemaName.toLowerCase()
+                upperCase.contains(databaseName) -> schemaName.toUpperCase()
+                else -> schemaName
             }
-        }
-        .run {
-            MultiTenant(
-                name = name,
-                schema = "${prefix}_${this.toUpperCase()}"
-            )
-        }
+        )
+    }
 
     fun liquibase(schemas: List<String>): MultiTenantSpringLiquibase {
         val liquibase = MultiTenantSpringLiquibase()
         liquibase.changeLog = liquibaseProperties.changeLog
         liquibase.dataSource = dataSource
-        liquibase.defaultSchema = "PUBLIC"
+        liquibase.defaultSchema = DEFAULT_TENANT
         liquibase.schemas = schemas
         return liquibase
     }
 
     // TODO: input validation
-    fun createTenant(name: String) = schemaName(name)
-        .apply { jdbcTemplate.update("CREATE SCHEMA $schema") }
-        .apply { jdbcTemplate.update("CREATE SEQUENCE $schema.HIBERNATE_SEQUENCE START WITH 1 INCREMENT BY 1") }
-        .apply { applicationEventPublisher.publishEvent(MultiTenantCreateEvent(this)) }
+    fun createTenant(name: String) {
+        val multiTenant = createMultiTenant(name)
+        jdbcTemplate.update("CREATE SCHEMA ${multiTenant.schema}")
+        applicationEventPublisher.publishEvent(MultiTenantCreateEvent(multiTenant))
+    }
 
     // TODO: input validation
-    fun deleteTenant(name: String) = schemaName(name)
-        .apply { jdbcTemplate.update("DROP SCHEMA $schema") }
-        .apply { applicationEventPublisher.publishEvent(MultiTenantDeleteEvent(this)) }
+    fun deleteTenant(name: String) {
+        val multiTenant = createMultiTenant(name)
+        jdbcTemplate.update("DROP SCHEMA ${multiTenant.schema}")
+        applicationEventPublisher.publishEvent(MultiTenantDeleteEvent(multiTenant))
+    }
 
     // TODO: input validation
     fun findAllTenant() = jdbcTemplate

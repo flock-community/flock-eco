@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletResponse
 
 @Component
 class MultiTenantFilter(
-       private val multiTenantSchemaService: MultiTenantSchemaService
-        ): OncePerRequestFilter() {
+    private val multiTenantSchemaService: MultiTenantSchemaService
+): OncePerRequestFilter() {
 
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
         val tenantName = request.getHeader("X-TENANT")
@@ -22,7 +22,7 @@ class MultiTenantFilter(
         }
 
         if (tenantName != null) {
-            val tenant = multiTenantSchemaService.schemaName(tenantName)
+            val tenant = multiTenantSchemaService.createMultiTenant(tenantName)
             MultiTenantContext.setCurrentTenant(tenant.schema)
         }
 
