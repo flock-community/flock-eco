@@ -12,7 +12,7 @@
         <kotlin.version>1.6.10</kotlin.version>
         <main.basedir>${project.basedir}</main.basedir>
         <spring.boot.version>2.6.2</spring.boot.version>
-        <spring.boot.graphql.version>8.0.0</spring.boot.graphql.version>
+        <spring.boot.graphql.version>12.0.0</spring.boot.graphql.version>
         <liquibase.version>3.9.0</liquibase.version>
         <jackson.version>2.13.1</jackson.version>
         <node.version>v10.16.0</node.version>
@@ -64,22 +64,22 @@
             <dependency>
                 <groupId>com.graphql-java-kickstart</groupId>
                 <artifactId>graphiql-spring-boot-starter</artifactId>
-                <version>${spring.boot.graphql.version}</version>
+                <version>11.1.0</version>
             </dependency>
             <dependency>
                 <groupId>com.graphql-java-kickstart</groupId>
                 <artifactId>graphql-java-tools</artifactId>
-                <version>6.3.0</version>
+                <version>12.0.1</version>
             </dependency>
             <dependency>
                 <groupId>com.graphql-java</groupId>
                 <artifactId>graphql-java</artifactId>
-                <version>15.0</version>
+                <version>17.3</version>
             </dependency>
             <dependency>
                 <groupId>com.graphql-java</groupId>
                 <artifactId>graphql-java-extended-scalars</artifactId>
-                <version>1.0</version>
+                <version>17.0</version>
             </dependency>
 
             <!-- Database -->

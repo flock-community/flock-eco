@@ -29,7 +29,7 @@ class MemberQueryResolverTest(
     @Test
     fun countMembers() {
         memberLoadData.load(33)
-        val res = graphQLTestTemplate.perform("count-member.graphql")
+        val res = graphQLTestTemplate.postForResource("count-member.graphql")
         assertNotNull(res)
         assertTrue(res.isOk)
         assertEquals("33", res.get("$.data.countMembers"))
