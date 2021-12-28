@@ -11,5 +11,4 @@ class WebMvcConfig() : WebMvcConfigurer {
             .addResourceLocations("/main.js", "classpath:/main.js")
             .addResourceLocations("/donation.html", "classpath:/donation.html")
     }
-
 }
