@@ -11,13 +11,13 @@ import javax.servlet.http.HttpServletResponse
 @Component
 class MultiTenantFilter(
     private val multiTenantSchemaService: MultiTenantSchemaService
-): OncePerRequestFilter() {
+) : OncePerRequestFilter() {
 
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
         val tenantName = request.getHeader("X-TENANT")
 
         val tenantSession = request.session.getAttribute("tenant")
-        if(tenantSession != null && tenantSession != tenantName){
+        if (tenantSession != null && tenantSession != tenantName) {
             response.sendError(401)
         }
 

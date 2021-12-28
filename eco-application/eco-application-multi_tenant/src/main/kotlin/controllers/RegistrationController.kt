@@ -31,7 +31,7 @@ class RegistrationController(
     fun register(@RequestBody input: RegistrationInput) {
 
         // Find all tenants
-        val tenant = multiTenantSchemaService.schemaName(input.tenantName)
+        val tenant = multiTenantSchemaService.createMultiTenant(input.tenantName)
         multiTenantSchemaService.createTenant(input.tenantName)
 
         // Deploy liquibase schema
