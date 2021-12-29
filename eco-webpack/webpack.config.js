@@ -47,7 +47,7 @@ module.exports = (env, argv) => ({
   plugins: [
       argv.mode === 'development' ? new BundleAnalyzerPlugin() : undefined,
       htmlPlugin
-  ],
+  ].filter(it => it !== undefined),
 
   devServer: {
     port: 3000,
