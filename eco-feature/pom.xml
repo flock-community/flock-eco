@@ -14,7 +14,7 @@
     <parent>
         <groupId>com.github.flock-community.flock-eco</groupId>
         <artifactId>flock-eco-parent</artifactId>
-        <version>2.2.0-b1e0e03</version>
+        <version>2.2.0-aa7d31c</version>
     </parent>
 
     <artifactId>flock-eco-feature-parent</artifactId>
