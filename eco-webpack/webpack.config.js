@@ -1,5 +1,6 @@
 const path = require('path')
 const HtmlWebPackPlugin = require('html-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const htmlPlugin = new HtmlWebPackPlugin({
   template: path.join(process.cwd(), 'src/main/react/index.html'),
@@ -43,7 +44,10 @@ module.exports = {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
 
-  plugins: [htmlPlugin],
+  plugins: [
+      new BundleAnalyzerPlugin(),
+      htmlPlugin
+  ],
 
   devServer: {
     port: 3000,

@@ -5,7 +5,8 @@ import Box from '@material-ui/core/Box'
 
 import {makeStyles} from '@material-ui/core/styles'
 import PasswordStrengthBar from 'react-password-strength-bar'
-import {InputProps, Typography} from '@material-ui/core'
+import {Typography} from '@material-ui/core'
+import {useTranslation} from "react-i18next";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,11 +24,13 @@ const useStyles = makeStyles(theme => ({
 }))
 
 type UserLoginResetFormProps = {
-  onReset?: (password: string) => void
+  onSubmit?: (password: string, score?: number) => void
 }
 
-export const UserLoginResetForm = ({onReset}: UserLoginResetFormProps) => {
+export const UserLoginResetForm = ({onSubmit}: UserLoginResetFormProps) => {
   const classes = useStyles()
+
+  const { t } = useTranslation();
 
   const [message, setMessage] = useState<string>()
   const [password, setPassword] = useState<string>()
@@ -45,9 +48,9 @@ export const UserLoginResetForm = ({onReset}: UserLoginResetFormProps) => {
   const handleReset = () => {
     if (password !== undefined && password === rePassword) {
       setMessage(undefined)
-      onReset?.(password)
+      onSubmit?.(password, score)
     } else {
-      setMessage('Password not equal')
+      setMessage( t('eco.feature.user.passwordNoEqual'))
     }
   }
 
@@ -65,7 +68,10 @@ export const UserLoginResetForm = ({onReset}: UserLoginResetFormProps) => {
           autoComplete="current-password"
           onChange={handleChangePassword}
         />
-        <PasswordStrengthBar password={password} onChangeScore={setScore} />
+        <PasswordStrengthBar
+          password={password ?? ''}
+          onChangeScore={setScore}
+        />
         <TextField
           margin="normal"
           required
@@ -84,7 +90,7 @@ export const UserLoginResetForm = ({onReset}: UserLoginResetFormProps) => {
           className={classes.submit}
           onClick={handleReset}
         >
-          Reset
+          {t('eco.feature.user.choosePassword')}
         </Button>
       </form>
     </Box>
