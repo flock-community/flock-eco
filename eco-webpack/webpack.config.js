@@ -1,13 +1,12 @@
 const path = require('path')
 const HtmlWebPackPlugin = require('html-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const htmlPlugin = new HtmlWebPackPlugin({
   template: path.join(process.cwd(), 'src/main/react/index.html'),
   filename: './index.html',
 })
 
-module.exports = (env, argv) => ({
+module.exports = {
   entry: path.join(process.cwd(), 'src/main/react'),
 
   output: {
@@ -45,9 +44,8 @@ module.exports = (env, argv) => ({
   },
 
   plugins: [
-      argv.mode === 'development' ? new BundleAnalyzerPlugin() : undefined,
       htmlPlugin
-  ].filter(it => it !== undefined),
+  ],
 
   devServer: {
     port: 3000,
@@ -60,4 +58,4 @@ module.exports = (env, argv) => ({
       '/logout': 'http://localhost:8080',
     },
   },
-})
+}
