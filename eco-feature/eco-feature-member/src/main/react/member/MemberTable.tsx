@@ -10,11 +10,11 @@ import Checkbox from '@material-ui/core/Checkbox'
 import * as Member from '../model/Member'
 import {useQuery} from '@apollo/react-hooks'
 import gql from 'graphql-tag'
-import {MemberTableToolbar} from './MemberTableToolbar'
 import {Snackbar} from '@material-ui/core'
 import {AlignedLoader} from '@flock-community/flock-eco-core/src/main/react/components/AlignedLoader'
 import Card from '@material-ui/core/Card'
 import TableContainer from '@material-ui/core/TableContainer'
+import {Direction, Specification} from './MemberModel'
 
 export const QUERY = gql`
   query(
@@ -46,6 +46,26 @@ export const QUERY = gql`
   }
 `
 
+type MemberTableState = {
+  page: number
+  size: number
+  specification: Specification
+  order: string
+  direction: Direction
+  selectedIds: string[]
+}
+
+type MemberTableProps = {
+  specification?: Specification
+  refresh?: boolean
+  size?: number
+  page?: number
+  order?: string
+  direction?: Direction
+  onRowClick?: (event: any) => void
+  onRowSelect?: (ids: string[]) => void
+}
+
 export function MemberTable({
   specification,
   refresh,
@@ -54,18 +74,23 @@ export function MemberTable({
   order,
   direction,
   onRowClick,
-  onMergeMembers,
-}) {
-  const init = {
+  onRowSelect,
+}: MemberTableProps) {
+  const initSpecification: Specification = {
+    search: '',
+    groups: [],
+    statuses: [],
+  }
+  const initState: MemberTableState = {
     page: page || 0,
     size: size || 10,
-    specification: specification || {},
+    specification: specification || initSpecification,
     order: order || 'surName',
     direction: direction || 'asc',
     selectedIds: [],
   }
 
-  const [state, setState] = useState(init)
+  const [state, setState] = useState<MemberTableState>(initState)
 
   const {data, error, loading, refetch} = useQuery(QUERY, {
     variables: {
@@ -76,6 +101,7 @@ export function MemberTable({
       sort: state.order,
       order: state.direction,
     },
+    fetchPolicy: 'no-cache',
   })
 
   useEffect(() => {
@@ -97,7 +123,7 @@ export function MemberTable({
     setState(prev => ({
       ...prev,
       page: 0,
-      specification: specification || {},
+      specification: specification || initSpecification,
     }))
   }, [specification])
 
@@ -105,8 +131,8 @@ export function MemberTable({
     setState({...state, page: page})
   }
 
-  const handleRowClick = (event, user) => {
-    if (onRowClick) onRowClick(event, user)
+  const handleRowClick = (event: any) => {
+    if (onRowClick) onRowClick(event)
   }
 
   const handleChangeSort = id => event => {
@@ -121,17 +147,21 @@ export function MemberTable({
 
   const isSelected = id => state.selectedIds.indexOf(id) !== -1
 
-  const onCheckboxChange = (checked, id) => {
+  const onCheckboxChange = (checked: boolean, id: string) => {
     if (checked) {
+      const selectedIds = [...state.selectedIds, id] || []
       setState({
         ...state,
-        selectedIds: [...state.selectedIds, id],
+        selectedIds,
       })
+      onRowSelect?.(selectedIds)
     } else {
+      const selectedIds = state.selectedIds.filter(it => it !== id)
       setState({
         ...state,
-        selectedIds: state.selectedIds.filter(it => it !== id),
+        selectedIds,
       })
+      onRowSelect?.(selectedIds)
     }
   }
 
@@ -151,10 +181,6 @@ export function MemberTable({
 
   return (
     <TableContainer>
-      <MemberTableToolbar
-        onMergeMembers={onMergeMembers}
-        selectedIds={state.selectedIds}
-      />
       {data && (
         <Table>
           <TableHead>
@@ -219,7 +245,7 @@ export function MemberTable({
         component="div"
       />
 
-      <Snackbar open={error} message={error && error.message} />
+      <Snackbar open={!!error} message={error && error.message} />
     </TableContainer>
   )
 }
