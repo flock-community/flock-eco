@@ -1,6 +1,6 @@
 {
   "name": "@flock-community/flock-eco-core",
-  "version": "2.1.0",
+  "version": "2.2.0-next.d97ac10",
   "main": "src/main/react/index.ts",
   "module": "src/main/react/index.ts",
   "repository": {
