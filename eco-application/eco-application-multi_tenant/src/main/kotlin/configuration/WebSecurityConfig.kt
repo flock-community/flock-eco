@@ -1,9 +1,9 @@
 package community.flock.eco.application.multi_tenant.config
 
+import community.flock.eco.feature.multi_tenant.filters.MultiTenantFilter
 import community.flock.eco.feature.user.filters.UserKeyTokenFilter
 import community.flock.eco.feature.user.services.UserAuthorityService
 import community.flock.eco.feature.user.services.UserSecurityService
-import community.flock.eco.feature.multi_tenant.filters.MultiTenantFilter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.env.Environment
@@ -14,7 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
-
 
 @Configuration
 @EnableWebSecurity
@@ -55,10 +54,10 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
             .addFilterAfter(userKeyTokenFilter, BasicAuthenticationFilter::class.java)
 
         userSecurityService
-                .databaseLogin(http)
-                .successHandler { request, response, _ ->
-                    request.session.setAttribute("tenant", request.getHeader("X-TENANT"))
-                    response.sendRedirect(request.contextPath)
-                }
+            .databaseLogin(http)
+            .successHandler { request, response, _ ->
+                request.session.setAttribute("tenant", request.getHeader("X-TENANT"))
+                response.sendRedirect(request.contextPath)
+            }
     }
 }
