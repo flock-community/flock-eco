@@ -6,7 +6,7 @@ import Box from '@material-ui/core/Box'
 import {makeStyles} from '@material-ui/core/styles'
 import PasswordStrengthBar from 'react-password-strength-bar'
 import {Typography} from '@material-ui/core'
-import {useTranslation} from "react-i18next";
+import {useTranslation} from 'react-i18next'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,7 +30,7 @@ type UserLoginResetFormProps = {
 export const UserLoginResetForm = ({onSubmit}: UserLoginResetFormProps) => {
   const classes = useStyles()
 
-  const { t } = useTranslation(['translation']);
+  const {t} = useTranslation(['translation'])
 
   const [message, setMessage] = useState<string>()
   const [password, setPassword] = useState<string>()
@@ -50,7 +50,7 @@ export const UserLoginResetForm = ({onSubmit}: UserLoginResetFormProps) => {
       setMessage(undefined)
       onSubmit?.(password, score)
     } else {
-      setMessage( t('eco.feature.user.passwordNoEqual'))
+      setMessage(t('eco.feature.user.passwordNoEqual'))
     }
   }
 
