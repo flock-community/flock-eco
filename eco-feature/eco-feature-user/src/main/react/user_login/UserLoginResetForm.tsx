@@ -30,7 +30,7 @@ type UserLoginResetFormProps = {
 export const UserLoginResetForm = ({onSubmit}: UserLoginResetFormProps) => {
   const classes = useStyles()
 
-  const { t } = useTranslation();
+  const { t } = useTranslation(['translation']);
 
   const [message, setMessage] = useState<string>()
   const [password, setPassword] = useState<string>()

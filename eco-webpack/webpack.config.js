@@ -7,7 +7,7 @@ const htmlPlugin = new HtmlWebPackPlugin({
   filename: './index.html',
 })
 
-module.exports = {
+module.exports = (env, argv) => ({
   entry: path.join(process.cwd(), 'src/main/react'),
 
   output: {
@@ -45,7 +45,7 @@ module.exports = {
   },
 
   plugins: [
-      new BundleAnalyzerPlugin(),
+      argv.mode === 'development' ? new BundleAnalyzerPlugin() : undefined,
       htmlPlugin
   ],
 
@@ -60,4 +60,4 @@ module.exports = {
       '/logout': 'http://localhost:8080',
     },
   },
-}
+})
