@@ -6,22 +6,21 @@ import InputLabel from '@material-ui/core/InputLabel'
 import Select from '@material-ui/core/Select'
 import TextField from '@material-ui/core/TextField'
 import MenuItem from '@material-ui/core/MenuItem'
-import {MemberField} from './MemberFieldClient'
 
-type MemberFormInput = {
+type MemberFieldFormInput = {
   name: string
   label: string
   type: string
   options: string[]
 }
 
-type MemberFormProps = {
-  value: MemberFormInput
-  onChange: (value: MemberFormInput) => void
+type MemberFieldFormProps = {
+  value: MemberFieldFormInput
+  onChange: (value: MemberFieldFormInput) => void
 }
 
-export function MemberFieldForm({value, onChange}: MemberFormProps) {
-  const [state, setState] = useState<MemberFormInput>({
+export function MemberFieldForm({value, onChange}: MemberFieldFormProps) {
+  const [state, setState] = useState<MemberFieldFormInput>({
     ...value,
   })
 
@@ -80,22 +79,18 @@ export function MemberFieldForm({value, onChange}: MemberFormProps) {
         </FormControl>
       </Grid>
 
-      {isSelect && renderOptions()}
+      {isSelect && (
+        <Grid item sx={12}>
+          <TextField
+            fullWidth
+            label="Options"
+            value={state.options || ''}
+            onChange={ev => {
+              handleOptionsChange(ev.target.value.split(','))
+            }}
+          />
+        </Grid>
+      )}
     </Grid>
   )
-
-  function renderOptions() {
-    return (
-      <Grid item sx={12}>
-        <TextField
-          fullWidth
-          label="Options"
-          value={state.options || ''}
-          onChange={ev => {
-            handleOptionsChange(ev.target.value.split(','))
-          }}
-        />
-      </Grid>
-    )
-  }
 }

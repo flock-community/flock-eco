@@ -35,14 +35,14 @@ type MemberFieldToolbarProps = {
   onSpecificationChange: (specification: Specification) => void
 }
 
-export function MemberFieldToolbar({onAdd}: MemberFieldToolbarProps) {
+export function MemberGroupToolbar({onAdd}: MemberFieldToolbarProps) {
   const classes = useStyles()
 
   return (
     <Toolbar className={classes.root}>
       <Box className={classes.title}>
         <Typography variant="h6" id="tableTitle">
-          Fields
+          Groups
         </Typography>
       </Box>
       <Box className={classes.spacer} />

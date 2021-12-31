@@ -5,7 +5,7 @@ import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
-import {MemberField} from './MemberFieldClient'
+import {MemberGroup} from './MemberGroupClient'
 import {makeStyles, Theme} from '@material-ui/core'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -17,45 +17,34 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 
-type MemberTableProps = {
-  list: MemberField[]
-  onRowClick: (item: MemberField) => void
+type MemberGroupTableProps = {
+  list: MemberGroup[]
+  onRowClick?: (item: MemberGroup) => void
 }
-export const MemberFieldTable = ({list, onRowClick}: MemberTableProps) => {
+export const MemberGroupTable = ({list, onRowClick}: MemberGroupTableProps) => {
   const classes = useStyles()
-
-  function handleClick(item) {
-    if (!item.disabled) {
-      onRowClick?.(item)
-    }
-  }
-
   return (
     <Table>
       <TableHead>
         <TableRow>
+          <TableCell>Code</TableCell>
           <TableCell>Name</TableCell>
-          <TableCell>Label</TableCell>
-          <TableCell>Type</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
         {list.map(it => (
           <TableRow
             className={classes.row}
-            key={it.name}
+            key={it.code}
             hover
-            onClick={() => handleClick(it)}
+            onClick={() => {
+              onRowClick?.(it)
+            }}
           >
-            <TableCell className={it.disabled ? classes.cell : 'null'}>
-              {it.name}
+            <TableCell component="th" scope="row">
+              {it.code}
             </TableCell>
-            <TableCell className={it.disabled ? classes.cell : 'null'}>
-              {it.label}
-            </TableCell>
-            <TableCell className={it.disabled ? classes.cell : 'null'}>
-              {it.type}
-            </TableCell>
+            <TableCell>{it.name}</TableCell>
           </TableRow>
         ))}
       </TableBody>

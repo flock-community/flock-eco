@@ -1,22 +1,11 @@
 import React, {useEffect, useState} from 'react'
 
-import AddIcon from '@material-ui/icons/Add'
-
 import {MemberFieldTable} from './MemberFieldTable'
 import {MemberFieldForm} from './MemberFieldForm'
 import {MemberFieldDialog} from './MemberFieldDialog'
-import Fab from '@material-ui/core/Fab'
 import {MemberField, MemberFieldClient} from './MemberFieldClient'
-import makeStyles from '@material-ui/core/styles/makeStyles'
-
-const useStyles = makeStyles(theme => ({
-  button: {
-    position: 'fixed',
-    right: 20,
-    bottom: 20,
-    margin: theme.spacing(1),
-  },
-}))
+import {MemberFieldToolbar} from './MemberFieldToolbar'
+import {Card} from '@material-ui/core'
 
 type MemberFieldFeatureState = {
   list: MemberField[]
@@ -28,7 +17,6 @@ type MemberFieldFeatureProps = {
 }
 
 export function MemberFieldFeature({list}: MemberFieldFeatureProps) {
-  const classes = useStyles()
   const [state, setState] = useState<MemberFieldFeatureState>({
     list: list || [],
   })
@@ -85,26 +73,19 @@ export function MemberFieldFeature({list}: MemberFieldFeatureProps) {
   }
 
   return (
-    <div>
+    <Card>
+      <MemberFieldToolbar onAdd={newClick} />
       <MemberFieldTable list={state.list} onRowClick={rowClick} />
-
       <MemberFieldDialog
         open={state.item != null}
         onClose={handleFormClose}
         onSave={handleFormSave}
         onDelete={handleFormDelete}
       >
-        <MemberFieldForm value={state.item} onChange={handleFormUpdate} />
+        {state.item && (
+          <MemberFieldForm value={state.item} onChange={handleFormUpdate} />
+        )}
       </MemberFieldDialog>
-
-      <Fab
-        color="primary"
-        aria-label="Add"
-        className={classes.button}
-        onClick={newClick}
-      >
-        <AddIcon />
-      </Fab>
-    </div>
+    </Card>
   )
 }
