@@ -1,4 +1,4 @@
-package community.flock.eco.fundraising.config
+package community.flock.eco.application.example.config
 
 import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.Resource

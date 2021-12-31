@@ -38,12 +38,12 @@ class MultiTenantSchemaService(
         if (name.contains("-")) {
             throw error("Hyphen not allowed in tenant name")
         }
-        val schemaName = "${prefix}_${name.toUpperCase()}"
+        val schemaName = "${prefix}_${name.uppercase()}"
         return MultiTenant(
             name = name,
             schema = when {
-                lowerCase.contains(databaseName) -> schemaName.toLowerCase()
-                upperCase.contains(databaseName) -> schemaName.toUpperCase()
+                lowerCase.contains(databaseName) -> schemaName.uppercase()
+                upperCase.contains(databaseName) -> schemaName.uppercase()
                 else -> schemaName
             }
         )

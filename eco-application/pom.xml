@@ -98,16 +98,4 @@
 
     </dependencies>
 
-    <profiles>
-        <profile>
-            <id>develop</id>
-            <dependencies>
-                <dependency>
-                    <groupId>com.github.flock-community.flock-eco</groupId>
-                    <artifactId>flock-eco-cloud-stub</artifactId>
-                </dependency>
-            </dependencies>
-        </profile>
-    </profiles>
-
 </project>

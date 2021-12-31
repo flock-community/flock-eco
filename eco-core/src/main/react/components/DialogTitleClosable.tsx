@@ -26,7 +26,7 @@ export const DialogTitleClosable: React.FC<DialogTitleClosableProps> = ({
   const classes = useStyles()
 
   return (
-    <DialogTitle disableTypography>
+    <DialogTitle>
       {children}
 
       {onClose && (
