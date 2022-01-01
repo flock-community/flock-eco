@@ -35,7 +35,7 @@ const init: Filter = {
 type MemberFilterState = {
   name: string[]
   anchorEl: any | null
-  groups: unknown[]
+  groups: {name: string; code: string}[]
   statuses: string[]
   filter: Filter
 }
@@ -146,7 +146,7 @@ export function MemberFilter({filter, onChange}: MemberFilterProps) {
                   value={state.filter.groups}
                   onChange={handleGroupsChange}
                   input={<Input id="select-multiple-checkbox" />}
-                  renderValue={selected =>
+                  renderValue={(selected: string[]) =>
                     selected
                       .map(key =>
                         state.groups.find(group => group.code === key),
@@ -176,7 +176,7 @@ export function MemberFilter({filter, onChange}: MemberFilterProps) {
                   value={state.filter.statuses}
                   onChange={handleStatusesChange}
                   input={<Input id="select-multiple-checkbox" />}
-                  renderValue={selected => selected.join(', ')}
+                  renderValue={(selected: string[]) => selected.join(', ')}
                 >
                   {state.statuses.map(status => (
                     <MenuItem key={status} value={status}>

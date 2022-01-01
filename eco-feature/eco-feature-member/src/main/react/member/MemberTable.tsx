@@ -241,7 +241,7 @@ export function MemberTable({
         rowsPerPage={state.size}
         page={state.page}
         rowsPerPageOptions={[]}
-        onChangePage={handleChangePage}
+        onPageChange={handleChangePage}
         component="div"
       />
 

@@ -14,24 +14,36 @@ import {WorkspaceInput} from '../graphql/workspace'
 import AddIcon from '@material-ui/icons/Add'
 import DeleteIcon from '@material-ui/icons/Delete'
 
-const schema = Yup.object({
-  name: Yup.string()
-    .required()
-    .default(''),
-  host: Yup.string().default(''),
-  variables: Yup.array()
-    .of(
-      Yup.object({
-        key: Yup.string()
-          .required()
-          .default(''),
-        value: Yup.string()
-          .label('Value')
-          .default(''),
-      }),
+const schema = Yup.object()
+  .shape({
+    name: Yup.string()
+      .required()
+      .default('')
+      .defined(),
+    host: Yup.string()
+      .required()
+      .default('')
+      .defined(),
+    variables: Yup.array(
+      Yup.object()
+        .shape({
+          key: Yup.string()
+            .required()
+            .default('')
+            .defined(),
+          value: Yup.string()
+            .label('Value')
+            .default('')
+            .defined(),
+        })
+        .defined(),
     )
-    .default([]),
-})
+      .default([])
+      .defined(),
+  })
+  .defined()
+
+type SchemaType = Yup.InferType<typeof schema>
 
 interface Props {
   value: WorkspaceInput | null
@@ -46,7 +58,7 @@ export function WorkspaceForm({value, onSubmit}: Props) {
     onSubmit && onSubmit(input)
   }
 
-  const renderVariables = (props: FormikProps<WorkspaceInput>) => (
+  const renderVariables = (props: FormikProps<SchemaType>) => (
     helpers: ArrayHelpers,
   ) => {
     const addVariable = () =>
@@ -65,34 +77,36 @@ export function WorkspaceForm({value, onSubmit}: Props) {
           </Grid>
         </Grid>
 
-        {props.values?.variables?.map((user, index) => (
-          <Grid key={index} container spacing={1}>
-            <Grid item xs>
-              <Field
-                component={TextField}
-                fullWidth
-                name={`variables.${index}.key`}
-              />
+        {props.values?.variables?.map(
+          (user: SchemaType['variables'], index: number) => (
+            <Grid key={index} container spacing={1}>
+              <Grid item xs>
+                <Field
+                  component={TextField}
+                  fullWidth
+                  name={`variables.${index}.key`}
+                />
+              </Grid>
+              <Grid item xs>
+                <Field
+                  component={TextField}
+                  fullWidth
+                  name={`variables.${index}.value`}
+                />
+              </Grid>
+              <Grid item>
+                <IconButton color="primary" onClick={removeVariable(index)}>
+                  <DeleteIcon />
+                </IconButton>
+              </Grid>
             </Grid>
-            <Grid item xs>
-              <Field
-                component={TextField}
-                fullWidth
-                name={`variables.${index}.value`}
-              />
-            </Grid>
-            <Grid item>
-              <IconButton color="primary" onClick={removeVariable(index)}>
-                <DeleteIcon />
-              </IconButton>
-            </Grid>
-          </Grid>
-        ))}
+          ),
+        )}
       </>
     )
   }
 
-  const renderForm = (props: FormikProps<WorkspaceInput>) => (
+  const renderForm = (props: FormikProps<SchemaType>) => (
     <Form id={WORKSPACE_FORM_ID}>
       <Grid container spacing={1}>
         <Grid item xs={12}>
@@ -111,7 +125,7 @@ export function WorkspaceForm({value, onSubmit}: Props) {
   return (
     <Formik
       validationSchema={schema}
-      initialValues={value || schema.cast()}
+      initialValues={value || schema.default()}
       enableReinitialize
       onSubmit={handleSubmit}
       render={renderForm}

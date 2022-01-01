@@ -41,7 +41,7 @@ export const MemberFieldDialog: React.FC<MemberFieldDialogProps> = ({
       onClose={handleClose}
       aria-labelledby="simple-dialog-title"
     >
-      <DialogTitleClosable id="simple-dialog-title" onClose={handleClose}>
+      <DialogTitleClosable onClose={handleClose}>
         Member Field
       </DialogTitleClosable>
       <DialogContent>{children}</DialogContent>

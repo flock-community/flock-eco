@@ -19,7 +19,6 @@ import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator'
 const schema = Yup.object()
   .shape({
     firstName: Yup.string()
-      .defined()
       .required()
       .default('')
       .defined(),
@@ -76,10 +75,10 @@ type MemberInput = Yup.InferType<typeof schema>
 type MemberFormProps = {
   value: any
   disabled: boolean
-  groups: unknown[]
-  fields: unknown[]
-  languages: unknown[]
-  countries: unknown[]
+  groups: {code: string; name: string}[]
+  fields: {name: string; type: string}[]
+  languages: {name: string; alpha2: string}[]
+  countries: {name: string; alpha2: string}[]
   onChange: (input: MemberInput) => void
   onSubmit: (input: MemberInput) => void
 }
@@ -101,8 +100,8 @@ export function MemberForm({
     setState(value || schema.default())
   }, [value])
 
-  const resolverGroup = code => groups.find(it => it.code === code) || {}
-  const resolveField = key => state.fields.find(it => it.key === key) || {}
+  const resolverGroup = (code: string) => groups.find(it => it.code === code)
+  const resolveField = (key: string) => state.fields.find(it => it.key === key)
 
   const handleChange = name => event => {
     const it = {
@@ -151,7 +150,7 @@ export function MemberForm({
           value={state.groups || []}
           input={<Input />}
           onChange={handleChangeGroup('groups')}
-          renderValue={selected =>
+          renderValue={(selected: string[]) =>
             selected
               .map(resolverGroup)
               .map(it => it.name)
@@ -222,7 +221,7 @@ export function MemberForm({
         }
         input={<Input />}
         onChange={handleChangeField(field.name)}
-        renderValue={selected => selected.join(',')}
+        renderValue={(selected: string[]) => selected.join(',')}
       >
         {field.options.map(it => (
           <MenuItem key={it} value={it}>

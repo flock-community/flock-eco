@@ -32,8 +32,8 @@ function internalize(member) {
 }
 
 type MemberMergerState = {
-  mergeMembers: unknown[]
-  newMember: unknown | null
+  mergeMembers: {id: string; fields: any[]}[]
+  newMember: any | null
   message?: string
 }
 
@@ -42,7 +42,11 @@ type MemberMergerProps = {
   onComplete: () => void
   onCancel: () => void
 }
-export function MemberMerger({mergeMemberIds, onComplete, onCancel}) {
+export function MemberMerger({
+  mergeMemberIds,
+  onComplete,
+  onCancel,
+}: MemberMergerProps) {
   const [state, setState] = useState<MemberMergerState>({
     mergeMembers: [],
     newMember: null,

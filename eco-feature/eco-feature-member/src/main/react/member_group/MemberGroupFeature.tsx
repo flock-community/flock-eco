@@ -9,7 +9,7 @@ import {MemberGroupToolbar} from './MemberGroupToolbar'
 
 type MemberGroupFeatureState = {
   list: MemberGroup[]
-  item?: Partial<MemberGroup>
+  item?: MemberGroup
 }
 
 type MemberGroupFeatureProps = {
@@ -29,7 +29,13 @@ export function MemberGroupFeature({list}: MemberGroupFeatureProps) {
   }
 
   const newClick = () => {
-    setState({...state, item: {}})
+    setState({
+      ...state,
+      item: {
+        code: '',
+        name: '',
+      },
+    })
   }
 
   const handleFormClose = () => {

@@ -44,7 +44,7 @@ export function MemberFieldForm({value, onChange}: MemberFieldFormProps) {
 
   return (
     <Grid container direction="column" alignItems="stretch" spacing={1}>
-      <Grid item sx={12}>
+      <Grid item xs={12}>
         <TextField
           fullWidth
           label="Name"
@@ -54,7 +54,7 @@ export function MemberFieldForm({value, onChange}: MemberFieldFormProps) {
         />
       </Grid>
 
-      <Grid item sx={12}>
+      <Grid item xs={12}>
         <TextField
           fullWidth
           label="Label"
@@ -64,7 +64,7 @@ export function MemberFieldForm({value, onChange}: MemberFieldFormProps) {
         />
       </Grid>
 
-      <Grid item sx={12}>
+      <Grid item xs={12}>
         <FormControl fullWidth>
           <InputLabel htmlFor="age-helper">Type</InputLabel>
           <Select
@@ -80,7 +80,7 @@ export function MemberFieldForm({value, onChange}: MemberFieldFormProps) {
       </Grid>
 
       {isSelect && (
-        <Grid item sx={12}>
+        <Grid item xs={12}>
           <TextField
             fullWidth
             label="Options"

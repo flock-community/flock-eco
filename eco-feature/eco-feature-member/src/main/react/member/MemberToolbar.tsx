@@ -59,7 +59,7 @@ export function MemberToolbar({
 
   const [state, setState] = useState<Specification>(specification)
 
-  const handleSearchChange = (search: String) => {
+  const handleSearchChange = (search: string) => {
     const value = {...state, search}
     setState(value)
     onSpecificationChange(value)
@@ -96,7 +96,7 @@ export function MemberToolbar({
       </Box>
 
       <Box className={classes.actions}>
-        <MemberFilter onChange={handleFilterChange} />
+        <MemberFilter filter={state} onChange={handleFilterChange} />
       </Box>
       {onAddMembers && (
         <Box className={classes.actions}>

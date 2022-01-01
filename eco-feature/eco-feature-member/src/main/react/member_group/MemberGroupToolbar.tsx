@@ -1,5 +1,4 @@
-import React, {useState} from 'react'
-import classNames from 'classnames'
+import React from 'react'
 import Box from '@material-ui/core/Box'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
@@ -7,7 +6,6 @@ import Tooltip from '@material-ui/core/Tooltip'
 import IconButton from '@material-ui/core/IconButton'
 import AddIcon from '@material-ui/icons/Add'
 import {createStyles, lighten, makeStyles} from '@material-ui/core/styles'
-import {Specification} from './MemberModel'
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -28,11 +26,7 @@ const useStyles = makeStyles(theme =>
 )
 
 type MemberFieldToolbarProps = {
-  specification: Specification
-  selectedIds: string[]
-  onMergeMembers: (memberIds: string[]) => void
   onAdd: () => void
-  onSpecificationChange: (specification: Specification) => void
 }
 
 export function MemberGroupToolbar({onAdd}: MemberFieldToolbarProps) {

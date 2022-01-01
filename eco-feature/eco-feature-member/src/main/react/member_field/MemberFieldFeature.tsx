@@ -9,7 +9,7 @@ import {Card} from '@material-ui/core'
 
 type MemberFieldFeatureState = {
   list: MemberField[]
-  item?: Partial<MemberField>
+  item?: MemberField
 }
 
 type MemberFieldFeatureProps = {
@@ -42,6 +42,8 @@ export function MemberFieldFeature({list}: MemberFieldFeatureProps) {
         label: '',
         type: 'TEXT',
         options: [],
+        disabled: false,
+        required: false,
       },
     })
   }
@@ -51,8 +53,9 @@ export function MemberFieldFeature({list}: MemberFieldFeatureProps) {
   }
 
   const handleFormSave = async () => {
-    if (state.item?.id) {
-      await MemberFieldClient.put(state.item.id, state.item)
+    const id = state?.item?.id
+    if (id) {
+      await MemberFieldClient.put(id, state.item)
     } else {
       await MemberFieldClient.post(state.item)
     }
