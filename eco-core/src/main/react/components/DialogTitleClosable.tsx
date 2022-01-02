@@ -1,7 +1,7 @@
 import React from 'react'
 import {DialogTitle, IconButton, makeStyles, Theme} from '@material-ui/core'
 
-import {Close} from '@material-ui/icons'
+import Close from '@material-ui/icons/Close'
 
 const useStyles = makeStyles((theme: Theme) => ({
   closeButton: {
