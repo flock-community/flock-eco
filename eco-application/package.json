@@ -1,6 +1,6 @@
 {
   "name": "@flock-community/flock-eco-application",
-  "version": "2.2.0",
+  "version": "2.2.3",
   "repository": {
     "type": "git",
     "url": "ssh://git@github.com/flock-community/flock-eco.git",
