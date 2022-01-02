@@ -31,8 +31,23 @@ function internalize(member) {
   }
 }
 
-export function MemberMerger({mergeMemberIds, onComplete, onCancel}) {
-  const [state, setState] = useState({
+type MemberMergerState = {
+  mergeMembers: {id: string; fields: any[]}[]
+  newMember: any | null
+  message?: string
+}
+
+type MemberMergerProps = {
+  mergeMemberIds: string[]
+  onComplete: () => void
+  onCancel: () => void
+}
+export function MemberMerger({
+  mergeMemberIds,
+  onComplete,
+  onCancel,
+}: MemberMergerProps) {
+  const [state, setState] = useState<MemberMergerState>({
     mergeMembers: [],
     newMember: null,
   })
@@ -56,7 +71,7 @@ export function MemberMerger({mergeMemberIds, onComplete, onCancel}) {
 
     if (!res.ok) {
       const e = await res.json()
-      setState({message: e.message || 'Cannot merge members'})
+      setState({...state, message: e.message || 'Cannot merge members'})
     }
     handleComplete()
   }
@@ -154,7 +169,7 @@ export function MemberMerger({mergeMemberIds, onComplete, onCancel}) {
                         key={i}
                         value={JSON.stringify(value)}
                         control={<Radio />}
-                        label={label}
+                        label={label as string}
                       />
                     ))}
                   </RadioGroup>
@@ -173,6 +188,7 @@ export function MemberMerger({mergeMemberIds, onComplete, onCancel}) {
           form="member-form"
           color="primary"
           autoFocus
+          variant="contained"
         >
           Merge
         </Button>

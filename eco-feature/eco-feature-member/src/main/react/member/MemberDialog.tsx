@@ -5,7 +5,6 @@ import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
-import DialogTitle from '@material-ui/core/DialogTitle'
 
 import Snackbar from '@material-ui/core/Snackbar'
 
@@ -13,11 +12,24 @@ import {MemberForm} from './MemberForm'
 import {ConfirmDialog} from '@flock-community/flock-eco-core/src/main/react/components/ConfirmDialog'
 import {Typography} from '@material-ui/core'
 import {MemberClient} from './MemberClient'
+import {DialogTitleClosable} from '@flock-community/flock-eco-core'
 
-export function MemberDialog({id, open, onComplete}) {
+type MemberDialogProps = {
+  id: string
+  open: boolean
+  onComplete: () => void
+}
+type MemberDialogState = {
+  item: any | null
+  message: string | null
+  deleteOpen: boolean
+  groups?: any[]
+  fields?: any[]
+}
+export function MemberDialog({id, open, onComplete}: MemberDialogProps) {
   const [countries, setCountries] = useState(null)
   const [languages, setLanguages] = useState(null)
-  const [state, setState] = useState({
+  const [state, setState] = useState<MemberDialogState>({
     item: null,
     message: null,
     deleteOpen: false,
@@ -207,7 +219,13 @@ export function MemberDialog({id, open, onComplete}) {
           Cancel
         </Button>
         {isUpdatable && (
-          <Button type="submit" form="member-form" color="primary" autoFocus>
+          <Button
+            type="submit"
+            form="member-form"
+            variant="contained"
+            color="primary"
+            autoFocus
+          >
             Save
           </Button>
         )}
@@ -218,7 +236,7 @@ export function MemberDialog({id, open, onComplete}) {
   return (
     <>
       <Dialog fullWidth maxWidth={'md'} open={open} onClose={handleClose}>
-        <DialogTitle>Member</DialogTitle>
+        <DialogTitleClosable>Member</DialogTitleClosable>
         {dialogBody}
       </Dialog>
 

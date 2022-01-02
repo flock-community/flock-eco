@@ -1,0 +1,10 @@
+{
+  "eco": {
+    "feature": {
+      "user": {
+        "choosePassword": "Kies een wachtwoord",
+        "passwordNoEqual": "Wachtwoord is niet gelijk"
+      }
+    }
+  }
+}

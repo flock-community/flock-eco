@@ -30,14 +30,14 @@ const useStyles = makeStyles(theme => ({
 
 type UserLoginFormProps = {
   remember: boolean
-  reset?: () => void
-  forgot?: () => void
+  onReset?: () => void
+  onForgot?: () => void
 }
 
 export const UserLoginSignInForm = ({
   remember,
-  reset,
-  forgot,
+  onReset,
+  onForgot,
 }: UserLoginFormProps) => {
   const classes = useStyles()
 
@@ -80,16 +80,16 @@ export const UserLoginSignInForm = ({
           Sign In
         </Button>
         <Grid container>
-          {forgot && (
+          {onForgot && (
             <Grid item xs>
-              <Link href="#" variant="body2" onClick={forgot}>
+              <Link href="#" variant="body2" onClick={onForgot}>
                 Forgot password?
               </Link>
             </Grid>
           )}
-          {reset && (
+          {onReset && (
             <Grid item>
-              <Link href="#" variant="body2" onClick={reset}>
+              <Link href="#" variant="body2" onClick={onReset}>
                 Sign Up
               </Link>
             </Grid>

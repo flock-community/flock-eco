@@ -6,17 +6,11 @@
     <parent>
         <artifactId>flock-eco-application-parent</artifactId>
         <groupId>com.github.flock-community.flock-eco</groupId>
-        <version>2.1.0</version>
+        <version>2.2.0-b6ac568</version>
     </parent>
 
     <artifactId>flock-eco-application-multi_tenant</artifactId>
     <packaging>jar</packaging>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
-    </properties>
 
     <dependencies>
 
@@ -99,7 +93,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>community.flock.eco.fundraising.ApplicationKt</mainClass>
+                    <mainClass>community.flock.eco.application.multi_tenant.ApplicationKt</mainClass>
                 </configuration>
             </plugin>
 
@@ -141,44 +135,5 @@
 
     </build>
 
-    <profiles>
-        <profile>
-            <id>debug</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.google.cloud.tools</groupId>
-                        <artifactId>appengine-maven-plugin</artifactId>
-                        <version>1.3.1</version>
-                        <configuration>
-                            <jvmFlags>
-                                <jvmFlag>-Xdebug</jvmFlag>
-                                <jvmFlag>-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005</jvmFlag>
-                            </jvmFlags>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>cloud</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-web</artifactId>
-                    <exclusions>
-                        <exclusion>
-                            <groupId>org.slf4j</groupId>
-                            <artifactId>jul-to-slf4j</artifactId>
-                        </exclusion>
-                        <exclusion>
-                            <groupId>org.springframework.boot</groupId>
-                            <artifactId>spring-boot-starter-tomcat</artifactId>
-                        </exclusion>
-                    </exclusions>
-                </dependency>
-            </dependencies>
-        </profile>
-    </profiles>
 
 </project>

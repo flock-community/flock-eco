@@ -16,29 +16,72 @@ import ListItemText from '@material-ui/core/ListItemText'
 
 import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator'
 
-const schema = Yup.object().shape({
-  firstName: Yup.string()
-    .required()
-    .default(''),
-  infix: Yup.string().default(''),
-  surName: Yup.string()
-    .required()
-    .default(''),
-  email: Yup.string().default(''),
-  phoneNumber: Yup.string().default(''),
-  street: Yup.string().default(''),
-  houseNumber: Yup.string().default(''),
-  houseNumberExtension: Yup.string().default(''),
-  postalCode: Yup.string().default(''),
-  city: Yup.string().default(''),
-  country: Yup.string().default(''),
-  language: Yup.string().default(''),
-  gender: Yup.string().default('UNKNOWN'),
-  birthDate: Yup.string().default(''),
-  groups: Yup.array().default([]),
-  fields: Yup.array().default([]),
-  status: Yup.string().default('NEW'),
-})
+const schema = Yup.object()
+  .shape({
+    firstName: Yup.string()
+      .required()
+      .default('')
+      .defined(),
+    infix: Yup.string().default(''),
+    surName: Yup.string()
+      .required()
+      .default('')
+      .defined(),
+    email: Yup.string()
+      .default('')
+      .defined(),
+    phoneNumber: Yup.string()
+      .default('')
+      .defined(),
+    street: Yup.string()
+      .default('')
+      .defined(),
+    houseNumber: Yup.string()
+      .default('')
+      .defined(),
+    houseNumberExtension: Yup.string()
+      .default('')
+      .defined(),
+    postalCode: Yup.string()
+      .default('')
+      .defined(),
+    city: Yup.string()
+      .default('')
+      .defined(),
+    country: Yup.string()
+      .default('')
+      .defined(),
+    language: Yup.string()
+      .default('')
+      .defined(),
+    gender: Yup.string().default('UNKNOWN'),
+    birthDate: Yup.string()
+      .default('')
+      .defined(),
+    groups: Yup.array(Yup.string())
+      .default([])
+      .defined(),
+    fields: Yup.array(Yup.string())
+      .default([])
+      .defined(),
+    status: Yup.string()
+      .default('NEW')
+      .defined(),
+  })
+  .defined()
+
+type MemberInput = Yup.InferType<typeof schema>
+
+type MemberFormProps = {
+  value: any
+  disabled: boolean
+  groups: {code: string; name: string}[]
+  fields: {name: string; type: string}[]
+  languages: {name: string; alpha2: string}[]
+  countries: {name: string; alpha2: string}[]
+  onChange: (input: MemberInput) => void
+  onSubmit: (input: MemberInput) => void
+}
 
 export function MemberForm({
   value,
@@ -49,15 +92,16 @@ export function MemberForm({
   countries,
   onChange,
   onSubmit,
-}) {
-  const [state, setState] = useState(value || schema.default())
+}: MemberFormProps) {
+  const [state, setState] = useState<MemberInput>(value || schema.default())
 
+  state
   useEffect(() => {
     setState(value || schema.default())
   }, [value])
 
-  const resolverGroup = code => groups.find(it => it.code === code) || {}
-  const resolveField = key => state.fields.find(it => it.key === key) || {}
+  const resolverGroup = (code: string) => groups.find(it => it.code === code)
+  const resolveField = (key: string) => state.fields.find(it => it.key === key)
 
   const handleChange = name => event => {
     const it = {
@@ -106,7 +150,7 @@ export function MemberForm({
           value={state.groups || []}
           input={<Input />}
           onChange={handleChangeGroup('groups')}
-          renderValue={selected =>
+          renderValue={(selected: string[]) =>
             selected
               .map(resolverGroup)
               .map(it => it.name)
@@ -177,7 +221,7 @@ export function MemberForm({
         }
         input={<Input />}
         onChange={handleChangeField(field.name)}
-        renderValue={selected => selected.join(',')}
+        renderValue={(selected: string[]) => selected.join(',')}
       >
         {field.options.map(it => (
           <MenuItem key={it} value={it}>

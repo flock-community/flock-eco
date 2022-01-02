@@ -1,7 +1,12 @@
 const ecoConfig = require("@flock-community/flock-eco-webpack");
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-const config = {
+module.exports = (env, argv) => ({
     ...ecoConfig,
+    plugins: [
+        ...ecoConfig.plugins,
+        argv.mode === 'development' ? new BundleAnalyzerPlugin() : undefined,
+    ].filter(it => it !== undefined),
     devServer: {
         ...ecoConfig.devServer,
         historyApiFallback: true,
@@ -29,5 +34,4 @@ const config = {
           ...ecoConfig.module.rules,
         ],
     },
-}
-module.exports = config;
+})

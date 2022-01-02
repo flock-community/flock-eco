@@ -5,8 +5,8 @@ import {
 
 const path = '/api/members'
 
-const resourceClient = ResourceClient(path)
-const pageableClient = PageableClient(path)
+const resourceClient = ResourceClient<any, any>(path)
+const pageableClient = PageableClient<any>(path)
 
 export const MemberClient = {
   ...resourceClient,

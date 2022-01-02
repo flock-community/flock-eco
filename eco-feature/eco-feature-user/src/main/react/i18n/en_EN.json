@@ -1,0 +1,10 @@
+{
+  "eco": {
+    "feature": {
+      "user": {
+        "choosePassword": "Choose password",
+        "passwordNoEqual": "Password not equal"
+      }
+    }
+  }
+}

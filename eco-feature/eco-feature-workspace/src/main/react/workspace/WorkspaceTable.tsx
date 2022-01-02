@@ -139,7 +139,7 @@ export function WorkspaceTable({reload, size, onRowClick}: Props) {
             rowsPerPage={state.size}
             page={state.page}
             rowsPerPageOptions={[]}
-            onChangePage={handleChangePage}
+            onPageChange={handleChangePage}
           />
         </TableRow>
       </TableFooter>

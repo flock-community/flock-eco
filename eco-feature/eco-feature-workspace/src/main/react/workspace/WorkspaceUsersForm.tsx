@@ -7,22 +7,29 @@ import {
   MenuItem,
 } from '@material-ui/core'
 import {Select, TextField} from 'formik-material-ui'
-import {Field, Form, Formik} from 'formik'
+import {Field, Form, Formik, FormikProps} from 'formik'
 import AddIcon from '@material-ui/icons/Add'
 import * as yup from 'yup'
 import {WorkspaceUserClient} from './WorkspaceUserClient'
 import {WorkspaceRoleClient} from './WorkspaceRoleClient'
 
-const schema = yup.object({
-  reference: yup
-    .string()
-    .required()
-    .default(''),
-  role: yup
-    .string()
-    .required()
-    .default(''),
-})
+const schema = yup
+  .object()
+  .shape({
+    reference: yup
+      .string()
+      .required()
+      .default('')
+      .defined(),
+    role: yup
+      .string()
+      .required()
+      .default('')
+      .defined(),
+  })
+  .defined()
+
+type WorkspaceUsersSchema = yup.InferType<typeof schema>
 
 interface Props {
   id: string
@@ -47,7 +54,7 @@ export function WorkspaceUsersForm({id, onComplete}: Props) {
     })
   }
 
-  const renderForm = () => (
+  const renderForm = (props: FormikProps<WorkspaceUsersSchema>) => (
     <Form>
       <Grid container spacing={1}>
         <Grid item xs>

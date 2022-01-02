@@ -43,7 +43,9 @@ module.exports = {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
 
-  plugins: [htmlPlugin],
+  plugins: [
+      htmlPlugin
+  ],
 
   devServer: {
     port: 3000,
