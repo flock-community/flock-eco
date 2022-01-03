@@ -1,6 +1,6 @@
 import {User} from '../graphql/user'
 
-function internalize<T>(res): T {
+function internalize<T>(res): Promise<T> {
   if (res.ok) {
     if (res.status === 204) {
       return null
@@ -28,13 +28,11 @@ export function findAllUsers(
   size,
 ): Promise<{list: User[]; count: number}> {
   return fetch(`/api/users?search=${search}&page=${page}&size=${size}`).then(
-    res => {
-      const json = internalize<User[]>(res)
-      return {
+    res =>
+      internalize<User[]>(res).then(json => ({
         list: json,
         count: parseInt(res.headers.get('x-total')),
-      }
-    },
+      })),
   )
 }
 

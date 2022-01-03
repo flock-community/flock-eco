@@ -1,42 +1,14 @@
 import React, {useState} from 'react'
-import AddIcon from '@material-ui/icons/Add'
 import {UserTable} from './UserTable'
 import {UserDialog} from './UserDialog'
-import Fab from '@material-ui/core/Fab'
-import Grid from '@material-ui/core/Grid'
-import {TextField} from '@material-ui/core'
-import makeStyles from '@material-ui/core/styles/makeStyles'
-import Paper from '@material-ui/core/Paper'
+import {Card} from '@material-ui/core'
+import {UserToolbar} from './UserToolbar'
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    height: '100%',
-    position: 'relative',
-  },
-  content: {
-    height: '100%',
-    overflowX: 'hidden',
-    padding: theme.spacing(1),
-  },
-  spacer: {
-    height: theme.spacing(8),
-  },
-  paper: {
-    padding: theme.spacing(2),
-  },
-  button: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    bottom: theme.spacing(1),
-  },
-}))
-
-type UserFeature = {
+type UserFeatureProps = {
   enablePassword?: boolean
 }
-export function UserFeature({enablePassword}) {
-  const classes = useStyles()
 
+export function UserFeature({enablePassword}: UserFeatureProps) {
   const [searchState, setSearchState] = useState<string>('')
 
   const [dialogState, setDialogState] = useState({
@@ -53,8 +25,8 @@ export function UserFeature({enablePassword}) {
     })
   }
 
-  const handleSearchChange = ev => {
-    setSearchState(ev.target.value)
+  const handleSearchChange = (search: string) => {
+    setSearchState(search)
   }
 
   const handleNewClick = () => {
@@ -73,47 +45,24 @@ export function UserFeature({enablePassword}) {
   }
 
   return (
-    <div className={classes.root}>
-      <div className={classes.content}>
-        <Grid container spacing={1}>
-          <Grid item xs={12}>
-            <Paper className={classes.paper}>
-              <TextField
-                fullWidth
-                label="Search"
-                value={searchState}
-                onChange={handleSearchChange}
-              />
-            </Paper>
-          </Grid>
-          <Grid item xs={12}>
-            <Paper>
-              <UserTable
-                reload={reload}
-                search={searchState}
-                onRowClick={handleRowClick}
-              />
-            </Paper>
-          </Grid>
-        </Grid>
-        <div className={classes.spacer} />
-      </div>
-
+    <>
+      <Card>
+        <UserToolbar
+          onAdd={handleNewClick}
+          onSearchChange={handleSearchChange}
+        />
+        <UserTable
+          reload={reload}
+          search={searchState}
+          onRowClick={handleRowClick}
+        />
+      </Card>
       <UserDialog
         open={dialogState.open}
         id={dialogState.id}
         onComplete={handleComplete}
         enablePassword={enablePassword}
       />
-
-      <Fab
-        color="primary"
-        aria-label="Add"
-        className={classes.button}
-        onClick={handleNewClick}
-      >
-        <AddIcon />
-      </Fab>
-    </div>
+    </>
   )
 }

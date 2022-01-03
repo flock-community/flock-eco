@@ -44,6 +44,7 @@ export function UserTable({
     onRowClick?.(user)
   }
 
+  console.log(state.list)
   return (
     <Table>
       <TableHead>

@@ -53,7 +53,6 @@ export function MemberFeature({search}: MemberFeatureProps) {
   }
 
   const handleRowSelect = selectedIds => {
-    console.log(selectedIds)
     setState({
       ...state,
       selectedIds,
@@ -69,7 +68,6 @@ export function MemberFeature({search}: MemberFeatureProps) {
   }
 
   const handleFilterChange = filter => {
-    console.log(filter)
     setState(prev => ({
       ...prev,
       page: 0,

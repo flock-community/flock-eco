@@ -2,7 +2,7 @@ import {
   PageableClient,
   ResourceClient,
 } from '@flock-community/flock-eco-core/src/main/react/clients'
-import {Member} from "../graphql/member";
+import {Member} from '../graphql/member'
 
 const path = '/api/members'
 

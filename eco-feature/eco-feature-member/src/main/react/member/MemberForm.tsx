@@ -22,7 +22,9 @@ const schema = Yup.object()
       .required()
       .default('')
       .defined(),
-    infix: Yup.string().default(''),
+    infix: Yup.string()
+      .default('')
+      .defined(),
     surName: Yup.string()
       .required()
       .default('')
@@ -54,14 +56,34 @@ const schema = Yup.object()
     language: Yup.string()
       .default('')
       .defined(),
-    gender: Yup.string().default('UNKNOWN'),
+    gender: Yup.string()
+      .default('UNKNOWN')
+      .defined(),
     birthDate: Yup.string()
       .default('')
       .defined(),
-    groups: Yup.array(Yup.string())
+    groups: Yup.array()
+      .of(
+        Yup.string()
+          .required()
+          .default('')
+          .defined(),
+      )
       .default([])
       .defined(),
-    fields: Yup.array(Yup.string())
+    fields: Yup.array()
+      .of(
+        Yup.object()
+          .shape({
+            key: Yup.string()
+              .default('')
+              .defined(),
+            value: Yup.string()
+              .default('')
+              .defined(),
+          })
+          .defined(),
+      )
       .default([])
       .defined(),
     status: Yup.string()
@@ -70,7 +92,7 @@ const schema = Yup.object()
   })
   .defined()
 
-type MemberInput = Yup.InferType<typeof schema>
+type MemberSchema = Yup.InferType<typeof schema>
 
 type MemberFormProps = {
   value: any
@@ -79,8 +101,8 @@ type MemberFormProps = {
   fields: {name: string; type: string}[]
   languages: {name: string; alpha2: string}[]
   countries: {name: string; alpha2: string}[]
-  onChange: (input: MemberInput) => void
-  onSubmit: (input: MemberInput) => void
+  onChange: (input: MemberSchema) => void
+  onSubmit: (input: MemberSchema) => void
 }
 
 export function MemberForm({
@@ -93,7 +115,7 @@ export function MemberForm({
   onChange,
   onSubmit,
 }: MemberFormProps) {
-  const [state, setState] = useState<MemberInput>(value || schema.default())
+  const [state, setState] = useState<MemberSchema>(value || schema.default())
 
   state
   useEffect(() => {
@@ -133,7 +155,7 @@ export function MemberForm({
             ? Array.isArray(value)
               ? value.join(',')
               : value
-            : resolveField(field.name).value || '',
+            : resolveField(field.name)?.value || '',
       })),
     }
     setState(it)
@@ -173,7 +195,7 @@ export function MemberForm({
       label={field.label}
       fullWidth
       disabled={disabled || field.disabled}
-      value={resolveField(field.name).value || ''}
+      value={resolveField(field.name)?.value || ''}
       onChange={handleChangeField(field.name)}
     />
   )
@@ -184,8 +206,8 @@ export function MemberForm({
       control={
         <Checkbox
           onChange={handleChangeField(field.name)}
-          checked={resolveField(field.name).value === 'true'}
-          value={(resolveField(field.name).value !== 'true').toString()}
+          checked={resolveField(field.name)?.value === 'true'}
+          value={(resolveField(field.name)?.value !== 'true').toString()}
         />
       }
       label={field.label}
@@ -196,7 +218,7 @@ export function MemberForm({
     <FormControl fullWidth disabled={disabled || field.disabled}>
       <InputLabel htmlFor={field.name}>{field.label}</InputLabel>
       <Select
-        value={resolveField(field.name).value || ''}
+        value={resolveField(field.name)?.value || ''}
         input={<Input />}
         onChange={handleChangeField(field.name)}
       >
@@ -215,8 +237,8 @@ export function MemberForm({
       <Select
         multiple
         value={
-          resolveField(field.name).value
-            ? resolveField(field.name).value.split(',')
+          resolveField(field.name)?.value
+            ? resolveField(field.name)?.value.split(',')
             : []
         }
         input={<Input />}
@@ -227,7 +249,7 @@ export function MemberForm({
           <MenuItem key={it} value={it}>
             <Checkbox
               checked={
-                (resolveField(field.name).value || '').split(',').indexOf(it) >
+                (resolveField(field.name)?.value || '').split(',').indexOf(it) >
                 -1
               }
             />
@@ -241,14 +263,12 @@ export function MemberForm({
   const renderFieldsRow =
     fields &&
     fields.map(it => (
-      <React.Fragment key={it.name}>
-        <Grid item xs={12}>
-          {it.type === 'CHECKBOX' && checkboxField(it)}
-          {it.type === 'TEXT' && textField(it)}
-          {it.type === 'SINGLE_SELECT' && singleSelectField(it)}
-          {it.type === 'MULTI_SELECT' && multiSelectField(it)}
-        </Grid>
-      </React.Fragment>
+      <Grid key={it.name} item xs={12}>
+        {it.type === 'CHECKBOX' && checkboxField(it)}
+        {it.type === 'TEXT' && textField(it)}
+        {it.type === 'SINGLE_SELECT' && singleSelectField(it)}
+        {it.type === 'MULTI_SELECT' && multiSelectField(it)}
+      </Grid>
     ))
 
   return (
