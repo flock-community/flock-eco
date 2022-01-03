@@ -13,27 +13,27 @@ const internalize = res => {
   }
 }
 
-export function findByCode(code) {
+export function findByid(id) {
   const opts = {
     method: 'GET',
   }
-  return fetch(`/api/user-groups/${code}`, opts).then(internalize)
+  return fetch(`/api/user-groups/${id}`, opts).then(internalize)
 }
 
 export function createUserGroup(item) {
   return client.create(item).then(internalize)
 }
 
-export function updateUserGroup(code, item) {
-  return client.update(code, item).then(internalize)
+export function updateUserGroup(id, item) {
+  return client.update(id, item).then(internalize)
 }
 
-export function deleteUserGroup(code) {
-  return client.delete(code).then(internalize)
+export function deleteUserGroup(id) {
+  return client.delete(id).then(internalize)
 }
 
 export default {
-  findByCode,
+  findByid,
   createUserGroup,
   updateUserGroup,
   deleteUserGroup,

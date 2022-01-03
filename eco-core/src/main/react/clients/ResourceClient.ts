@@ -61,7 +61,7 @@ export function ResourceClient<Out, In>(path: string) {
     }
     return fetch(`${path}/${id}`, opts)
       .then(it => validateResponse<void>(it))
-      .then(() => {})
+      .then(() => undefined)
   }
 
   return {all, get, post, put, delete: del}

@@ -42,7 +42,7 @@ export function UserGroupFeature() {
 
   const [dialogState, setDialogState] = useState({
     open: false,
-    code: null,
+    id: null,
   })
 
   const handleSearchChange = ev => {
@@ -52,21 +52,21 @@ export function UserGroupFeature() {
   const handleRowClick = (ev, item) => {
     setDialogState({
       open: true,
-      code: item.code,
+      id: item.id,
     })
   }
 
   const handleNewClick = () => {
     setDialogState({
       open: true,
-      code: null,
+      id: null,
     })
   }
 
   const handleComplete = value => {
     setDialogState({
       open: false,
-      code: null,
+      id: null,
     })
     setReload(!reload)
   }
@@ -99,7 +99,7 @@ export function UserGroupFeature() {
       </div>
 
       <UserGroupDialog
-        code={dialogState.code}
+        id={dialogState.id}
         open={dialogState.open}
         onComplete={handleComplete}
       />

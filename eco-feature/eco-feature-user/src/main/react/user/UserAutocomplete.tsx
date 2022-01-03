@@ -15,7 +15,7 @@ export function UserAutocomplete({value, onChange}: UserAutocompleteProps) {
   const [options, setOptions] = React.useState([])
 
   useEffect(() => {
-    UserClient.findAllUserByCodes(state || []).then(res => {
+    UserClient.findAllUserByids(state || []).then(res => {
       setState(res)
     })
   }, [value])

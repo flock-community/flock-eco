@@ -11,7 +11,6 @@ extend type Query {
 
 type User {
     id:ID
-    code:String
     name:String
     email:String
     authorities:[String]

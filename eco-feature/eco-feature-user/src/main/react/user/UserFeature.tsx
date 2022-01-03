@@ -41,7 +41,7 @@ export function UserFeature({enablePassword}) {
 
   const [dialogState, setDialogState] = useState({
     open: false,
-    code: null,
+    id: null,
   })
 
   const [reload, setReload] = useState(false)
@@ -49,7 +49,7 @@ export function UserFeature({enablePassword}) {
   const handleRowClick = item => {
     setDialogState({
       open: true,
-      code: item.code,
+      id: item.id,
     })
   }
 
@@ -60,14 +60,14 @@ export function UserFeature({enablePassword}) {
   const handleNewClick = () => {
     setDialogState({
       open: true,
-      code: null,
+      id: null,
     })
   }
 
   const handleComplete = () => {
     setDialogState({
       open: false,
-      code: null,
+      id: null,
     })
     setReload(!reload)
   }
@@ -101,7 +101,7 @@ export function UserFeature({enablePassword}) {
 
       <UserDialog
         open={dialogState.open}
-        code={dialogState.code}
+        id={dialogState.id}
         onComplete={handleComplete}
         enablePassword={enablePassword}
       />

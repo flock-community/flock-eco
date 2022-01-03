@@ -31,13 +31,13 @@ const useStyles = makeStyles(theme => ({
 
 type UserDialogProps = {
   open: boolean
-  code: string
+  id: string
   onComplete: () => void
   enablePassword: boolean
 }
 export function UserDialog({
   open,
-  code,
+  id,
   onComplete,
   enablePassword,
 }: UserDialogProps) {
@@ -50,8 +50,8 @@ export function UserDialog({
   const [authorities, setAuthorities] = useState<string[]>(null)
 
   useEffect(() => {
-    if (code !== null) {
-      UserClient.findUserByCode(code)
+    if (id !== null) {
+      UserClient.findUserByid(id)
         .then(res => setState(res))
         .catch(err => {
           setMessage(err.message)
@@ -59,7 +59,7 @@ export function UserDialog({
     } else {
       setState(null)
     }
-  }, [code])
+  }, [id])
 
   useEffect(() => {
     UserClient.findAllAuthorities()
@@ -70,7 +70,7 @@ export function UserDialog({
   }, [])
 
   const handleDelete = () => {
-    UserClient.deleteUser(state.code)
+    UserClient.deleteUser(state.id)
       .then(res => {
         onComplete?.()
         setOpenDelete(false)
@@ -93,7 +93,7 @@ export function UserDialog({
   }
 
   const handleReset = ev => {
-    UserClient.resetUserPassword(state.code)
+    UserClient.resetUserPassword(state.id)
       .then(res => onComplete?.())
       .catch(err => {
         setMessage(err.message)
@@ -105,8 +105,8 @@ export function UserDialog({
   }
 
   const handleSubmit = value => {
-    if (value.code) {
-      UserClient.updateUser(value.code, value)
+    if (value.id) {
+      UserClient.updateUser(value.id, value)
         .then(() => onComplete?.())
         .catch(err => {
           setMessage(err.message)
@@ -141,10 +141,10 @@ export function UserDialog({
           />
         </DialogContent>
         <DialogActions>
-          {enablePassword && state && state.code && (
+          {enablePassword && state && state.id && (
             <Button onClick={handleReset}>Reset password</Button>
           )}
-          {state && state.code && (
+          {state && state.id && (
             <Button onClick={handleOpenDelete}>Delete</Button>
           )}
           <Button

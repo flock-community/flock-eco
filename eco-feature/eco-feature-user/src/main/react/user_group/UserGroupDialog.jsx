@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   autoCompleteFix: {overflow: 'visible'},
 }))
 
-export function UserGroupDialog({open, code, onComplete}) {
+export function UserGroupDialog({open, id, onComplete}) {
   const classes = useStyles()
 
   const [openDelete, setOpenDelete] = useState(false)
@@ -33,8 +33,8 @@ export function UserGroupDialog({open, code, onComplete}) {
   const [state, setState] = useState(null)
 
   useEffect(() => {
-    if (code !== null) {
-      UserGroupClient.findByCode(code)
+    if (id !== null) {
+      UserGroupClient.findByid(id)
         .then(userGroup => setState(userGroup))
         .catch(err => {
           setMessage(err.message)
@@ -42,7 +42,7 @@ export function UserGroupDialog({open, code, onComplete}) {
     } else {
       setState(null)
     }
-  }, [code])
+  }, [id])
 
   const handleCloseDelete = ev => {
     setOpenDelete(false)
@@ -60,7 +60,7 @@ export function UserGroupDialog({open, code, onComplete}) {
           setMessage(err.message)
         })
     } else {
-      UserGroupClient.updateUserGroup(state.code, value)
+      UserGroupClient.updateUserGroup(state.id, value)
         .then(it => onComplete && onComplete(it))
         .catch(err => {
           setMessage(err.message)
@@ -69,7 +69,7 @@ export function UserGroupDialog({open, code, onComplete}) {
   }
 
   const handleDelete = () => {
-    UserGroupClient.deleteUserGroup(state.code)
+    UserGroupClient.deleteUserGroup(state.id)
       .then(it => {
         onComplete && onComplete(it)
         setOpenDelete(false)
