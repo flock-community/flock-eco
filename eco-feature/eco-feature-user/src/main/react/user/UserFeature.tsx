@@ -31,10 +31,13 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
+type UserFeature = {
+  enablePassword?: boolean
+}
 export function UserFeature({enablePassword}) {
   const classes = useStyles()
 
-  const [searchState, setSearchState] = useState('')
+  const [searchState, setSearchState] = useState<string>('')
 
   const [dialogState, setDialogState] = useState({
     open: false,
@@ -43,7 +46,7 @@ export function UserFeature({enablePassword}) {
 
   const [reload, setReload] = useState(false)
 
-  const handleRowClick = (ev, item) => {
+  const handleRowClick = item => {
     setDialogState({
       open: true,
       code: item.code,
@@ -61,7 +64,7 @@ export function UserFeature({enablePassword}) {
     })
   }
 
-  const handleComplete = value => {
+  const handleComplete = () => {
     setDialogState({
       open: false,
       code: null,

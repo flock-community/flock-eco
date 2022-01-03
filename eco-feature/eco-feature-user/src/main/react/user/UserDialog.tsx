@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import {ConfirmDialog} from '@flock-community/flock-eco-core/src/main/react/components/ConfirmDialog'
 import {Snackbar} from '@material-ui/core'
+import {User} from '../graphql/user'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,13 +29,25 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export function UserDialog({open, code, onComplete, enablePassword}) {
+type UserDialogProps = {
+  open: boolean
+  code: string
+  onComplete: () => void
+  enablePassword: boolean
+}
+export function UserDialog({
+  open,
+  code,
+  onComplete,
+  enablePassword,
+}: UserDialogProps) {
   const classes = useStyles()
 
-  const [state, setState] = useState(null)
-  const [message, setMessage] = useState(null)
-  const [openDelete, setOpenDelete] = useState(false)
-  const [authorities, setAuthorities] = useState(null)
+  const [state, setState] = useState<User>(null)
+
+  const [message, setMessage] = useState<string>(null)
+  const [openDelete, setOpenDelete] = useState<boolean>(false)
+  const [authorities, setAuthorities] = useState<string[]>(null)
 
   useEffect(() => {
     if (code !== null) {
@@ -56,10 +69,10 @@ export function UserDialog({open, code, onComplete, enablePassword}) {
       })
   }, [])
 
-  const handleDelete = ev => {
+  const handleDelete = () => {
     UserClient.deleteUser(state.code)
       .then(res => {
-        onComplete && onComplete()
+        onComplete?.()
         setOpenDelete(false)
       })
       .catch(err => {
@@ -81,26 +94,26 @@ export function UserDialog({open, code, onComplete, enablePassword}) {
 
   const handleReset = ev => {
     UserClient.resetUserPassword(state.code)
-      .then(res => onComplete && onComplete())
+      .then(res => onComplete?.())
       .catch(err => {
         setMessage(err.message)
       })
   }
 
   const handleClose = ev => {
-    onComplete && onComplete()
+    onComplete?.()
   }
 
   const handleSubmit = value => {
     if (value.code) {
       UserClient.updateUser(value.code, value)
-        .then(() => onComplete && onComplete(state))
+        .then(() => onComplete?.())
         .catch(err => {
           setMessage(err.message)
         })
     } else {
       UserClient.createUser(value)
-        .then(() => onComplete && onComplete(state))
+        .then(() => onComplete?.())
         .catch(err => {
           setMessage(err.message)
         })
