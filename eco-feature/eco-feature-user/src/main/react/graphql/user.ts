@@ -1,5 +1,5 @@
 export interface User {
-  id?: string;
+  id: string;
   name?: string;
   email?: string;
   authorities?: string[];
@@ -8,24 +8,25 @@ export interface User {
 }
 
 export interface UserGroup {
-  id?: string;
+  id: string;
   name?: string;
+  users?: string[];
 }
 
 export interface UserAccount {
-  id?: string;
+  id: string;
 }
 
 export interface UserAccountPassword extends UserAccount {
-  id?: string;
+  id: string;
 }
 
 export interface UserAccountOauth extends UserAccount {
-  id?: string;
+  id: string;
   provider?: string;
 }
 
 export interface UserAccountKey extends UserAccount {
-  id?: string;
+  id: string;
   key?: string;
 }

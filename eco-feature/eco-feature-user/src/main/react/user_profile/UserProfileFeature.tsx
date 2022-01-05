@@ -5,14 +5,12 @@ import {Typography} from '@material-ui/core'
 import List from '@material-ui/core/List'
 import ListItemText from '@material-ui/core/ListItemText'
 import Grid from '@material-ui/core/Grid'
+import {User} from "../graphql/user";
 
-const useStyles = makeStyles(theme => ({}))
-
-/**
- * @return {null}
- */
-export function UserProfileFeature({value}) {
-  const classes = useStyles()
+type UserProfileFeatureProps = {
+  value: User
+}
+export function UserProfileFeature({value}:UserProfileFeatureProps) {
 
   const [user, setUser] = useState(null)
 

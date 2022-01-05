@@ -1,4 +1,3 @@
-import React from 'react'
 import {PageableClient, ResourceClient} from '@flock-community/flock-eco-core'
 import {UserGroup} from "../graphql/user";
 

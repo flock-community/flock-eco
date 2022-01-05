@@ -5,20 +5,23 @@ import {Field, Form, Formik} from 'formik'
 import {TextField} from 'formik-material-ui'
 import * as Yup from 'yup'
 import {UserAutocomplete} from '../user/UserAutocomplete'
+import {User, UserGroup} from "../graphql/user";
 
 export const USER_GROUP_FORM_ID = 'user-form-id'
 
-const init = {
+
+const init: { name:string, users:string[] } = {
   name: '',
   users: [],
 }
 
-/**
- * @return {null}
- */
-export function UserGroupForm({value, onSummit, ...props}) {
+type UserGroupFormProps = {
+  value: UserGroup
+  onSummit: (userGroup:UserGroup) => void
+}
+export function UserGroupForm({value, onSummit}: UserGroupFormProps) {
   const [state, setState] = useState(init)
-  const [users, setUsers] = useState(value && value.users)
+  const [users, setUsers] = useState<string[]>(value && value.users)
 
   useEffect(() => {
     if (value) {

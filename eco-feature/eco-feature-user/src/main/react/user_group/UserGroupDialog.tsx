@@ -14,6 +14,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 import UserGroupClient from './UserGroupClient'
 import {ConfirmDialog} from '@flock-community/flock-eco-core/src/main/react/components/ConfirmDialog'
 import {Snackbar} from '@material-ui/core'
+import {UserGroup} from "../graphql/user";
 
 const useStyles = makeStyles(theme => ({
   closeButton: {
@@ -25,17 +26,22 @@ const useStyles = makeStyles(theme => ({
   autoCompleteFix: {overflow: 'visible'},
 }))
 
-export function UserGroupDialog({open, id, onComplete}) {
+type UserGroupDialogProps = {
+  open: boolean
+  id:string,
+  onComplete: () => void
+}
+export function UserGroupDialog({open, id, onComplete}:UserGroupDialogProps) {
   const classes = useStyles()
 
-  const [openDelete, setOpenDelete] = useState(false)
-  const [message, setMessage] = useState(null)
-  const [state, setState] = useState(null)
+  const [openDelete, setOpenDelete] = useState<boolean>(false)
+  const [message, setMessage] = useState<string>(null)
+  const [state, setState] = useState<UserGroup>(null)
 
   useEffect(() => {
     if (id !== null) {
       UserGroupClient.get(id)
-        .then(userGroup => setState(userGroup))
+        .then(userGroup => setState(userGroup.body))
         .catch(err => {
           setMessage(err.message)
         })
@@ -44,7 +50,7 @@ export function UserGroupDialog({open, id, onComplete}) {
     }
   }, [id])
 
-  const handleCloseDelete = ev => {
+  const handleCloseDelete = () => {
     setOpenDelete(false)
   }
 
@@ -54,14 +60,14 @@ export function UserGroupDialog({open, id, onComplete}) {
 
   const handleSubmit = value => {
     if (!value.id) {
-      UserGroupClient.createUserGroup(value)
-        .then(it => onComplete && onComplete(it))
+      UserGroupClient.post(value)
+        .then(() => onComplete && onComplete())
         .catch(err => {
           setMessage(err.message)
         })
     } else {
-      UserGroupClient.updateUserGroup(state.id, value)
-        .then(it => onComplete && onComplete(it))
+      UserGroupClient.put(state.id, value)
+        .then(() => onComplete && onComplete())
         .catch(err => {
           setMessage(err.message)
         })
@@ -69,9 +75,9 @@ export function UserGroupDialog({open, id, onComplete}) {
   }
 
   const handleDelete = () => {
-    UserGroupClient.deleteUserGroup(state.id)
-      .then(it => {
-        onComplete && onComplete(it)
+    UserGroupClient.delete(state.id)
+      .then(() => {
+        onComplete && onComplete()
         setOpenDelete(false)
       })
       .catch(err => {
