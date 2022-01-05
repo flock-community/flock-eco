@@ -34,7 +34,7 @@ export function UserGroupDialog({open, id, onComplete}) {
 
   useEffect(() => {
     if (id !== null) {
-      UserGroupClient.findByid(id)
+      UserGroupClient.get(id)
         .then(userGroup => setState(userGroup))
         .catch(err => {
           setMessage(err.message)

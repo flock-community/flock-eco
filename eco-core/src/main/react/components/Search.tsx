@@ -46,6 +46,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }))
 
 type SearchProps = {
+  value?: string
   onChange?: (search: string) => void
 }
 

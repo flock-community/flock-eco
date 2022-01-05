@@ -49,7 +49,8 @@ export function UserGroupFeature() {
     setSearchState(ev.target.value)
   }
 
-  const handleRowClick = (ev, item) => {
+  const handleRowClick = (item) => {
+    console.log('item', item)
     setDialogState({
       open: true,
       id: item.id,

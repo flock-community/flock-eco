@@ -1,13 +1,13 @@
 package community.flock.eco.feature.user.controllers
 
+import community.flock.eco.core.utils.toNullable
 import community.flock.eco.core.utils.toResponse
 import community.flock.eco.feature.user.forms.UserGroupForm
 import community.flock.eco.feature.user.model.UserGroup
+import community.flock.eco.feature.user.graphql.UserGroup as UserGroupGraphql
 import community.flock.eco.feature.user.repositories.UserGroupRepository
-import community.flock.eco.feature.user.repositories.UserRepository
 import community.flock.eco.feature.user.services.UserGroupService
 import org.springframework.data.domain.Pageable
-import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/user-groups")
 class UserGroupController(
     private val userGroupService: UserGroupService,
-    private val userRepository: UserRepository,
     private val userGroupRepository: UserGroupRepository
 ) {
 
@@ -24,26 +23,31 @@ class UserGroupController(
     fun findAllUserGroups(
         @RequestParam(defaultValue = "", required = false) search: String,
         page: Pageable
-    ): ResponseEntity<List<UserGroup>> = userGroupRepository
+    ) = userGroupRepository
         .findAllByNameIgnoreCaseContaining(search, page)
+        .map { it.toGraphql() }
         .toResponse()
 
     @GetMapping("/{code}")
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
-    fun findUserGroupById(@PathVariable code: String): ResponseEntity<UserGroup> = userGroupRepository
+    fun findUserGroupById(@PathVariable code: String) = userGroupRepository
         .findByCode(code)
+        .toNullable()
+        ?.toGraphql()
         .toResponse()
 
     @PostMapping()
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
     fun createUserGroup(@RequestBody form: UserGroupForm) = userGroupService
         .create(form)
+        .toGraphql()
         .toResponse()
 
     @PutMapping("/{code}")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
     fun updateUserGroup(@RequestBody form: UserGroupForm, @PathVariable code: String) = userGroupService
         .update(code, form)
+        ?.toGraphql()
         .toResponse()
 
     @DeleteMapping("/{code}")
@@ -52,3 +56,8 @@ class UserGroupController(
         .delete(code)
         .toResponse()
 }
+
+fun UserGroup.toGraphql() = UserGroupGraphql(
+    id = code,
+    name = name
+)

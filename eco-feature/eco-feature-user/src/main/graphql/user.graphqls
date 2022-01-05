@@ -18,6 +18,11 @@ type User {
     created:DateTime
 }
 
+type UserGroup {
+    id:ID
+    name:String
+}
+
 interface UserAccount {
     id:ID
 }

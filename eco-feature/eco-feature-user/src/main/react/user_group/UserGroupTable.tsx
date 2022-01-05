@@ -8,17 +8,27 @@ import TableFooter from '@material-ui/core/TableFooter'
 import TableRow from '@material-ui/core/TableRow'
 import {PageableClient} from '@flock-community/flock-eco-core'
 import TablePagination from '@material-ui/core/TablePagination'
+import UserGroupClient from "./UserGroupClient";
+import {UserGroup} from "../graphql/user";
 
 const DEFAULT_SIZE = 10
 
-export function UserGroupTable({reload, onRowClick, size}) {
-  const client = new PageableClient('/api/user-groups', {
-    size: size || DEFAULT_SIZE,
-  })
+type UserGroupTableProps = {
+  reload?: boolean
+  onRowClick?: (item:UserGroup) => void
+  size?: number
+}
+export function UserGroupTable({reload, onRowClick, size}:UserGroupTableProps) {
 
   const [count, setCount] = useState(0)
-  const [page, setPage] = useState(0)
+  const [page, setPage] = useState<number>(0)
   const [list, setList] = useState(null)
+
+  const pageable = {
+    page: page,
+    size: size ?? DEFAULT_SIZE,
+    sort: "name"
+  }
 
   useEffect(() => {
     loadList()
@@ -28,14 +38,15 @@ export function UserGroupTable({reload, onRowClick, size}) {
     setPage(page)
   }
 
-  const handleRowClick = item => ev => {
-    onRowClick && onRowClick(ev, item)
+  const handleRowClick = item => () => {
+    onRowClick?.(item)
   }
 
   const loadList = () => {
-    return client.findAll(page).then(data => {
+
+    return UserGroupClient.findAllByPage(pageable).then(data => {
       setList(data.list)
-      setCount(data.total)
+      setCount(data.count)
     })
   }
 
@@ -46,7 +57,6 @@ export function UserGroupTable({reload, onRowClick, size}) {
       <TableHead>
         <TableRow>
           <TableCell>Name</TableCell>
-          <TableCell>Users</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -55,7 +65,6 @@ export function UserGroupTable({reload, onRowClick, size}) {
             <TableCell component="th" scope="row">
               {it.name}
             </TableCell>
-            <TableCell>{it.users.length}</TableCell>
           </TableRow>
         ))}
       </TableBody>
@@ -66,7 +75,7 @@ export function UserGroupTable({reload, onRowClick, size}) {
             rowsPerPage={size || DEFAULT_SIZE}
             page={page}
             rowsPerPageOptions={[]}
-            onChangePage={handleChangePage}
+            onPageChange={handleChangePage}
           />
         </TableRow>
       </TableFooter>
