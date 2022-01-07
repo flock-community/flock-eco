@@ -4,9 +4,7 @@ type UserAuthorityUtilProps = {
   has:string
 }
 
-type UserAuthorityUtilState = {
-
-}
+type UserAuthorityUtilState = object
 
 class UserAuthorityUtil extends React.Component<UserAuthorityUtilProps, UserAuthorityUtilState> {
   static authorities = null
