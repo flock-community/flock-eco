@@ -6,7 +6,7 @@ fetch('http://localhost:3000/login', {
   headers: {
     'content-type': 'application/x-www-form-urlencoded',
   },
-  body: 'username=test&password=test',
+  body: 'username=test@test.nl&password=test',
   method: 'POST',
 }).then(() => {
   ReactDOM.render(<App />, document.getElementById('index'))

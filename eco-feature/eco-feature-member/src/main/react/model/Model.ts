@@ -3,9 +3,9 @@
  * The callback accepts a "tuple" [key, value] and returns the tuple [key, value].
  */
 export function map(model, callback) {
-  return Object.assign(
-    ...Object.entries(model)
-      .map(callback)
-      .map(([key, value]) => ({[key]: value})),
-  )
+  const res = Object.entries(model)
+    .map(callback)
+    .map(([key, value]) => ({[key]: value}))
+  // @ts-ignore
+  return Object.assign(...res)
 }

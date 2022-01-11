@@ -9,6 +9,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 import Grid from '@material-ui/core/Grid'
 import {TextField} from '@material-ui/core'
 import Paper from '@material-ui/core/Paper'
+import {UserGroup} from "../graphql/user";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -40,33 +41,34 @@ export function UserGroupFeature() {
 
   const [searchState, setSearchState] = useState('')
 
-  const [dialogState, setDialogState] = useState({
+  const [dialogState, setDialogState] = useState<{open:boolean, id:string}>({
     open: false,
-    code: null,
+    id: null,
   })
 
   const handleSearchChange = ev => {
     setSearchState(ev.target.value)
   }
 
-  const handleRowClick = (ev, item) => {
+  const handleRowClick = (item:UserGroup) => {
+
     setDialogState({
       open: true,
-      code: item.code,
+      id: item.id,
     })
   }
 
   const handleNewClick = () => {
     setDialogState({
       open: true,
-      code: null,
+      id: null,
     })
   }
 
-  const handleComplete = value => {
+  const handleComplete = () => {
     setDialogState({
       open: false,
-      code: null,
+      id: null,
     })
     setReload(!reload)
   }
@@ -99,7 +101,7 @@ export function UserGroupFeature() {
       </div>
 
       <UserGroupDialog
-        code={dialogState.code}
+        id={dialogState.id}
         open={dialogState.open}
         onComplete={handleComplete}
       />

@@ -4,6 +4,7 @@ import {
   UserFeature,
   UserLoginSignInForm,
   UserLoginResetForm,
+  UserAutocomplete, UserGroupFeature,
 } from '@flock-community/flock-eco-feature-user'
 import {
   MemberFeature,
@@ -29,6 +30,8 @@ export const features = {
     UserProfileFeature,
     UserLoginSignInForm,
     UserLoginResetForm,
+    UserAutocomplete,
+    UserGroupFeature,
   ],
   member: [
     MemberTable,

@@ -6,59 +6,77 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import {USER_FORM_ID, UserForm} from './UserForm'
-import UserClient from './UserClient'
+import {USER_GROUP_FORM_ID, UserGroupForm} from './UserGroupForm'
+import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
-import Typography from '@material-ui/core/Typography'
 import makeStyles from '@material-ui/core/styles/makeStyles'
+import UserGroupClient from './UserGroupClient'
 import {ConfirmDialog} from '@flock-community/flock-eco-core/src/main/react/components/ConfirmDialog'
 import {Snackbar} from '@material-ui/core'
+import {UserGroup} from "../graphql/user";
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(2),
-  },
   closeButton: {
     position: 'absolute',
     right: theme.spacing(1),
     top: theme.spacing(1),
     color: theme.palette.grey[500],
   },
+  autoCompleteFix: {overflow: 'visible'},
 }))
 
-export function UserDialog({open, code, onComplete, enablePassword}) {
+type UserGroupDialogProps = {
+  open: boolean
+  id:string,
+  onComplete: () => void
+}
+export function UserGroupDialog({open, id, onComplete}:UserGroupDialogProps) {
   const classes = useStyles()
 
-  const [state, setState] = useState(null)
-  const [message, setMessage] = useState(null)
-  const [openDelete, setOpenDelete] = useState(false)
-  const [authorities, setAuthorities] = useState(null)
+  const [openDelete, setOpenDelete] = useState<boolean>(false)
+  const [message, setMessage] = useState<string>(null)
+  const [state, setState] = useState<UserGroup>(null)
 
   useEffect(() => {
-    if (code !== null) {
-      UserClient.findUserByCode(code)
-        .then(res => setState(res))
+    if (id !== null) {
+      UserGroupClient.get(id)
+        .then(userGroup => setState(userGroup.body))
         .catch(err => {
           setMessage(err.message)
         })
     } else {
       setState(null)
     }
-  }, [code])
+  }, [id])
 
-  useEffect(() => {
-    UserClient.findAllAuthorities()
-      .then(setAuthorities)
-      .catch(err => {
-        setMessage(err.message)
-      })
-  }, [])
+  const handleCloseDelete = () => {
+    setOpenDelete(false)
+  }
 
-  const handleDelete = ev => {
-    UserClient.deleteUser(state.code)
-      .then(res => {
+  const handleConfirmDelete = ev => {
+    setOpenDelete(true)
+  }
+
+  const handleSubmit = value => {
+    if (!value.id) {
+      UserGroupClient.post(value)
+        .then(() => onComplete && onComplete())
+        .catch(err => {
+          setMessage(err.message)
+        })
+    } else {
+      UserGroupClient.put(state.id, value)
+        .then(() => onComplete && onComplete())
+        .catch(err => {
+          setMessage(err.message)
+        })
+    }
+  }
+
+  const handleDelete = () => {
+    UserGroupClient.delete(state.id)
+      .then(() => {
         onComplete && onComplete()
         setOpenDelete(false)
       })
@@ -67,49 +85,23 @@ export function UserDialog({open, code, onComplete, enablePassword}) {
       })
   }
 
-  const handleOpenDelete = () => {
-    setOpenDelete(true)
-  }
-
-  const handleCloseDelete = () => {
-    setOpenDelete(false)
-  }
-
   const handleMessageClose = () => {
     setMessage(null)
   }
 
-  const handleReset = ev => {
-    UserClient.resetUserPassword(state.code)
-      .then(res => onComplete && onComplete())
-      .catch(err => {
-        setMessage(err.message)
-      })
-  }
-
-  const handleClose = ev => {
+  const handleClose = () => {
     onComplete && onComplete()
-  }
-
-  const handleSubmit = value => {
-    if (value.code) {
-      UserClient.updateUser(value.code, value)
-        .then(() => onComplete && onComplete(state))
-        .catch(err => {
-          setMessage(err.message)
-        })
-    } else {
-      UserClient.createUser(value)
-        .then(() => onComplete && onComplete(state))
-        .catch(err => {
-          setMessage(err.message)
-        })
-    }
   }
 
   return (
     <>
-      <Dialog fullWidth maxWidth={'md'} open={open} onClose={handleClose}>
+      <Dialog
+        classes={{paperScrollPaper: classes.autoCompleteFix}}
+        fullWidth
+        maxWidth={'sm'}
+        open={open}
+        onClose={handleClose}
+      >
         <DialogTitle disableTypography>
           <Typography variant="h6">User</Typography>
           <IconButton
@@ -120,24 +112,17 @@ export function UserDialog({open, code, onComplete, enablePassword}) {
             <CloseIcon />
           </IconButton>
         </DialogTitle>
-        <DialogContent>
-          <UserForm
-            value={state}
-            authorities={authorities}
-            onSummit={handleSubmit}
-          />
+        <DialogContent className={classes.autoCompleteFix}>
+          <UserGroupForm value={state} onSummit={handleSubmit} />
         </DialogContent>
         <DialogActions>
-          {enablePassword && state && state.code && (
-            <Button onClick={handleReset}>Reset password</Button>
-          )}
-          {state && state.code && (
-            <Button onClick={handleOpenDelete}>Delete</Button>
+          {state && state.id && (
+            <Button onClick={handleConfirmDelete}>Delete</Button>
           )}
           <Button
             variant="contained"
             color="primary"
-            form={USER_FORM_ID}
+            form={USER_GROUP_FORM_ID}
             type="submit"
           >
             Save
@@ -150,7 +135,7 @@ export function UserDialog({open, code, onComplete, enablePassword}) {
         onConfirm={handleDelete}
       >
         <Typography>
-          Would you Are you sure you want to delete user: {state && state.name}
+          Would you Are you sure you want to delete group: {state && state.name}
         </Typography>
       </ConfirmDialog>
       <Snackbar

@@ -6,67 +6,73 @@ import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableFooter from '@material-ui/core/TableFooter'
 import TableRow from '@material-ui/core/TableRow'
-import {PageableClient} from '@flock-community/flock-eco-core'
 import TablePagination from '@material-ui/core/TablePagination'
+import UserClient from './UserClient'
 
-const DEFAULT_SIZE = 10
-
-export function UserGroupTable({reload, onRowClick, size}) {
-  const client = new PageableClient('/api/user-groups', {
-    size: size || DEFAULT_SIZE,
+type UserTableProps = {
+  search?: string
+  size?: number
+  reload?: boolean
+  onRowClick?: (user: any) => void
+  onChangePage?: (page: number) => void
+}
+export function UserTable({
+  search,
+  size,
+  reload,
+  onRowClick,
+  onChangePage,
+}: UserTableProps) {
+  const [state, setState] = useState({
+    page: 0,
+    count: 0,
+    list: [],
   })
 
-  const [count, setCount] = useState(0)
-  const [page, setPage] = useState(0)
-  const [list, setList] = useState(null)
-
   useEffect(() => {
-    loadList()
-  }, [page, reload])
+    UserClient.findAllUsers(search || '', state.page, size || 10).then(res => {
+      setState({...state, ...res})
+    })
+  }, [reload, search, size, state.page])
 
   const handleChangePage = (event, page) => {
-    setPage(page)
+    setState({...state, page})
+    onChangePage?.(page)
   }
 
-  const handleRowClick = item => ev => {
-    onRowClick && onRowClick(ev, item)
+  const handleRowClick = user => () => {
+    onRowClick?.(user)
   }
 
-  const loadList = () => {
-    return client.findAll(page).then(data => {
-      setList(data.list)
-      setCount(data.total)
-    })
-  }
-
-  if (!list) return null
-
+  console.log(state.list)
   return (
     <Table>
       <TableHead>
         <TableRow>
           <TableCell>Name</TableCell>
-          <TableCell>Users</TableCell>
+          <TableCell>Email</TableCell>
+          <TableCell>Authorities</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
-        {list.map(it => (
+        {state.list.map(it => (
           <TableRow key={it.name} hover onClick={handleRowClick(it)}>
             <TableCell component="th" scope="row">
               {it.name}
             </TableCell>
-            <TableCell>{it.users.length}</TableCell>
+            <TableCell>{it.email}</TableCell>
+            <TableCell>{it.authorities.length}</TableCell>
           </TableRow>
         ))}
       </TableBody>
       <TableFooter>
         <TableRow>
           <TablePagination
-            count={count}
-            rowsPerPage={size || DEFAULT_SIZE}
-            page={page}
+            count={state.count}
+            rowsPerPage={size || 10}
+            page={state.page}
             rowsPerPageOptions={[]}
-            onChangePage={handleChangePage}
+            onPageChange={handleChangePage}
           />
         </TableRow>
       </TableFooter>

@@ -10,7 +10,7 @@ extend type Query {
 }
 
 type User {
-    id:ID
+    id:ID!
     name:String
     email:String
     authorities:[String]
@@ -18,21 +18,27 @@ type User {
     created:DateTime
 }
 
+type UserGroup {
+    id:ID!
+    name:String
+    users:[String]
+}
+
 interface UserAccount {
-    id:ID
+    id:ID!
 }
 
 type UserAccountPassword implements UserAccount {
-    id:ID
+    id:ID!
 }
 
 type UserAccountOauth implements UserAccount {
-    id:ID,
+    id:ID!,
     provider:String
 }
 
 type UserAccountKey implements UserAccount {
-    id:ID,
+    id:ID!,
     key:String
 }
 

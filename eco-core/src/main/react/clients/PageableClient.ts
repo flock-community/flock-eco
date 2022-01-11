@@ -17,8 +17,8 @@ export function PageableClient<T>(path: string) {
       method: 'GET',
     }
 
-    const query = Object.entries<any>(pageable)
-      .filter(([_, value]) => value == null)
+    const query = Object.entries(pageable)
+      .filter(([, value]) => value == null)
       .map(([key, value]) => `${key}=${value}`)
       .join('&')
 

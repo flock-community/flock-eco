@@ -47,5 +47,6 @@ jobs:
       - run: npm run bootstrap
       - run: npm run generate
       - run: npm run compile
-      - run: npm run build
       - run: npm run prettier
+      - run: npm run lint
+      - run: npm run build

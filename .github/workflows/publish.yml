@@ -40,8 +40,9 @@ jobs:
           npm run bootstrap
           npm run generate
           npm run compile
-          npm run build
           npm run prettier
+          npm run lint
+          npm run build
           npm config set @flock-community:registry https://flock.jfrog.io/artifactory/api/npm/flock-npm/
           npm config set //flock.jfrog.io/artifactory/api/npm/flock-npm/:_password=$NODE_PASSWORD
           npm config set //flock.jfrog.io/artifactory/api/npm/flock-npm/:username=$NODE_USERNAME
