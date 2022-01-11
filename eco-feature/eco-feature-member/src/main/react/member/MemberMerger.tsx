@@ -129,7 +129,7 @@ export function MemberMerger({
       onClose={handleCancel}
       aria-labelledby="simple-dialog-title"
     >
-      <DialogTitleClosable onClose={handleCancel} id="simple-dialog-title">
+      <DialogTitleClosable onClose={handleCancel}>
         Merge members
       </DialogTitleClosable>
       <DialogContent>

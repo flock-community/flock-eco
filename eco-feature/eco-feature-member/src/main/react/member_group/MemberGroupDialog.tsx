@@ -40,7 +40,7 @@ export const MemberGroupDialog: React.FC<MemberGroupDialogProps> = ({
       onClose={handleClose}
       aria-labelledby="simple-dialog-title"
     >
-      <DialogTitleClosable id="simple-dialog-title">
+      <DialogTitleClosable onClose={handleClose}>
         Member Group
       </DialogTitleClosable>
       <DialogContent>{children}</DialogContent>
