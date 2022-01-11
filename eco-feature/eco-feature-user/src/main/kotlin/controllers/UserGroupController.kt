@@ -4,12 +4,12 @@ import community.flock.eco.core.utils.toNullable
 import community.flock.eco.core.utils.toResponse
 import community.flock.eco.feature.user.forms.UserGroupForm
 import community.flock.eco.feature.user.model.UserGroup
-import community.flock.eco.feature.user.graphql.UserGroup as UserGroupGraphql
 import community.flock.eco.feature.user.repositories.UserGroupRepository
 import community.flock.eco.feature.user.services.UserGroupService
 import org.springframework.data.domain.Pageable
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
+import community.flock.eco.feature.user.graphql.UserGroup as UserGroupGraphql
 
 @RestController
 @RequestMapping("/api/user-groups")
@@ -59,5 +59,6 @@ class UserGroupController(
 
 fun UserGroup.toGraphql() = UserGroupGraphql(
     id = code,
-    name = name
+    name = name,
+    users = users.map { it.code }
 )

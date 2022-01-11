@@ -132,7 +132,6 @@ private fun User.toGraphql(): UserGraphql {
     )
 }
 
-
 private fun UserAccount.toGraphql(): UserAccountGraphql {
     return when (this) {
         is UserAccountPassword -> UserAccountPasswordGraphql(id = id.toString())
