@@ -15,6 +15,7 @@ import UserGroupClient from './UserGroupClient'
 import {ConfirmDialog} from '@flock-community/flock-eco-core/src/main/react/components/ConfirmDialog'
 import {Snackbar} from '@material-ui/core'
 import {UserGroup} from '../graphql/user'
+import {DialogTitleClosable} from '@flock-community/flock-eco-core'
 
 const useStyles = makeStyles(theme => ({
   closeButton: {
@@ -102,16 +103,9 @@ export function UserGroupDialog({open, id, onComplete}: UserGroupDialogProps) {
         open={open}
         onClose={handleClose}
       >
-        <DialogTitle disableTypography>
+        <DialogTitleClosable onClose={handleClose}>
           <Typography variant="h6">User</Typography>
-          <IconButton
-            aria-label="close"
-            className={classes.closeButton}
-            onClick={handleClose}
-          >
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
+        </DialogTitleClosable>
         <DialogContent className={classes.autoCompleteFix}>
           <UserGroupForm value={state} onSummit={handleSubmit} />
         </DialogContent>

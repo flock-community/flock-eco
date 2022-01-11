@@ -17,12 +17,12 @@ export function AlignedLoader({height}: AlignedLoaderProps) {
 
   return (
     <Grid
+      item
       style={{height}}
       className={classes.root}
       container
       alignItems="center"
-      item
-      justify="center"
+      justifyContent="center"
     >
       <Grid>
         <CircularProgress />

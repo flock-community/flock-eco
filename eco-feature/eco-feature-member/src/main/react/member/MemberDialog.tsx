@@ -198,18 +198,16 @@ export function MemberDialog({id, open, onComplete}: MemberDialogProps) {
   const dialogBody = (
     <>
       <DialogContent>
-        {state.item && (
-          <MemberForm
-            value={state.item}
-            groups={state.groups}
-            fields={state.fields}
-            languages={languages}
-            countries={countries}
-            onChange={handleFormUpdate}
-            onSubmit={handleSubmit}
-            disabled={!isUpdatable}
-          />
-        )}
+        <MemberForm
+          value={state.item}
+          groups={state.groups}
+          fields={state.fields}
+          languages={languages}
+          countries={countries}
+          onChange={handleFormUpdate}
+          onSubmit={handleSubmit}
+          disabled={!isUpdatable}
+        />
       </DialogContent>
       <DialogActions>
         {id && isUpdatable && (
@@ -238,7 +236,7 @@ export function MemberDialog({id, open, onComplete}: MemberDialogProps) {
   return (
     <>
       <Dialog fullWidth maxWidth={'md'} open={open} onClose={handleClose}>
-        <DialogTitleClosable>Member</DialogTitleClosable>
+        <DialogTitleClosable onClose={handleClose}>Member</DialogTitleClosable>
         {dialogBody}
       </Dialog>
 

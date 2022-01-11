@@ -15,6 +15,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 import {ConfirmDialog} from '@flock-community/flock-eco-core/src/main/react/components/ConfirmDialog'
 import {Snackbar} from '@material-ui/core'
 import {User} from '../graphql/user'
+import {DialogTitleClosable} from '@flock-community/flock-eco-core'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -100,7 +101,7 @@ export function UserDialog({
       })
   }
 
-  const handleClose = ev => {
+  const handleClose = () => {
     onComplete?.()
   }
 
@@ -123,16 +124,9 @@ export function UserDialog({
   return (
     <>
       <Dialog fullWidth maxWidth={'md'} open={open} onClose={handleClose}>
-        <DialogTitle disableTypography>
+        <DialogTitleClosable onClose={handleClose}>
           <Typography variant="h6">User</Typography>
-          <IconButton
-            aria-label="close"
-            className={classes.closeButton}
-            onClick={handleClose}
-          >
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
+        </DialogTitleClosable>
         <DialogContent>
           <UserForm
             value={state}

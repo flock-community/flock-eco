@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
-import DialogTitle from '@material-ui/core/DialogTitle'
 import Radio from '@material-ui/core/Radio'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormControl from '@material-ui/core/FormControl'
@@ -10,6 +9,7 @@ import RadioGroup from '@material-ui/core/RadioGroup'
 import FormLabel from '@material-ui/core/FormLabel'
 import Button from '@material-ui/core/Button'
 import * as Member from '../model/Member'
+import {DialogTitleClosable} from '@flock-community/flock-eco-core'
 
 // TODO: refactor this so that it can be reused
 function post(url, body) {
@@ -129,7 +129,9 @@ export function MemberMerger({
       onClose={handleCancel}
       aria-labelledby="simple-dialog-title"
     >
-      <DialogTitle id="simple-dialog-title">Merge members</DialogTitle>
+      <DialogTitleClosable onClose={handleCancel} id="simple-dialog-title">
+        Merge members
+      </DialogTitleClosable>
       <DialogContent>
         <div style={{display: 'flex', flexDirection: 'column'}}>
           {Object.keys(flattenedMembers[0])
