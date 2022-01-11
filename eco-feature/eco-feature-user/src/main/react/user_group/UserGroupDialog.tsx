@@ -14,7 +14,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 import UserGroupClient from './UserGroupClient'
 import {ConfirmDialog} from '@flock-community/flock-eco-core/src/main/react/components/ConfirmDialog'
 import {Snackbar} from '@material-ui/core'
-import {UserGroup} from "../graphql/user";
+import {UserGroup} from '../graphql/user'
 
 const useStyles = makeStyles(theme => ({
   closeButton: {
@@ -28,10 +28,10 @@ const useStyles = makeStyles(theme => ({
 
 type UserGroupDialogProps = {
   open: boolean
-  id:string,
+  id: string
   onComplete: () => void
 }
-export function UserGroupDialog({open, id, onComplete}:UserGroupDialogProps) {
+export function UserGroupDialog({open, id, onComplete}: UserGroupDialogProps) {
   const classes = useStyles()
 
   const [openDelete, setOpenDelete] = useState<boolean>(false)

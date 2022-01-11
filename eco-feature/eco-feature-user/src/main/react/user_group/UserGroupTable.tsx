@@ -8,18 +8,21 @@ import TableFooter from '@material-ui/core/TableFooter'
 import TableRow from '@material-ui/core/TableRow'
 import {PageableClient} from '@flock-community/flock-eco-core'
 import TablePagination from '@material-ui/core/TablePagination'
-import UserGroupClient from "./UserGroupClient";
-import {UserGroup} from "../graphql/user";
+import UserGroupClient from './UserGroupClient'
+import {UserGroup} from '../graphql/user'
 
 const DEFAULT_SIZE = 10
 
 type UserGroupTableProps = {
   reload?: boolean
-  onRowClick?: (item:UserGroup) => void
+  onRowClick?: (item: UserGroup) => void
   size?: number
 }
-export function UserGroupTable({reload, onRowClick, size}:UserGroupTableProps) {
-
+export function UserGroupTable({
+  reload,
+  onRowClick,
+  size,
+}: UserGroupTableProps) {
   const [count, setCount] = useState(0)
   const [page, setPage] = useState<number>(0)
   const [list, setList] = useState(null)
@@ -27,7 +30,7 @@ export function UserGroupTable({reload, onRowClick, size}:UserGroupTableProps) {
   const pageable = {
     page: page,
     size: size ?? DEFAULT_SIZE,
-    sort: "name"
+    sort: 'name',
   }
 
   useEffect(() => {
@@ -43,7 +46,6 @@ export function UserGroupTable({reload, onRowClick, size}:UserGroupTableProps) {
   }
 
   const loadList = () => {
-
     return UserGroupClient.findAllByPage(pageable).then(data => {
       setList(data.list)
       setCount(data.count)

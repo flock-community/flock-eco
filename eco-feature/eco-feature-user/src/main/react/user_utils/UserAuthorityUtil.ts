@@ -1,12 +1,15 @@
 import React from 'react'
 
 type UserAuthorityUtilProps = {
-  has:string
+  has: string
 }
 
 type UserAuthorityUtilState = object
 
-class UserAuthorityUtil extends React.Component<UserAuthorityUtilProps, UserAuthorityUtilState> {
+class UserAuthorityUtil extends React.Component<
+  UserAuthorityUtilProps,
+  UserAuthorityUtilState
+> {
   static authorities = null
 
   static setAuthorities(authorities) {
@@ -25,7 +28,8 @@ class UserAuthorityUtil extends React.Component<UserAuthorityUtilProps, UserAuth
   }
 
   render() {
-    const hasAuthority = this.props.has && UserAuthorityUtil.hasAuthority(this.props.has)
+    const hasAuthority =
+      this.props.has && UserAuthorityUtil.hasAuthority(this.props.has)
     return hasAuthority ? this.props.children : null
   }
 }

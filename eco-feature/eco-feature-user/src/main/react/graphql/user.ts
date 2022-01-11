@@ -1,32 +1,32 @@
 export interface User {
-  id: string;
-  name?: string;
-  email?: string;
-  authorities?: string[];
-  accounts?: UserAccount[];
-  created?: Date;
+  id: string
+  name?: string
+  email?: string
+  authorities?: string[]
+  accounts?: UserAccount[]
+  created?: Date
 }
 
 export interface UserGroup {
-  id: string;
-  name?: string;
-  users?: string[];
+  id: string
+  name?: string
+  users?: string[]
 }
 
 export interface UserAccount {
-  id: string;
+  id: string
 }
 
 export interface UserAccountPassword extends UserAccount {
-  id: string;
+  id: string
 }
 
 export interface UserAccountOauth extends UserAccount {
-  id: string;
-  provider?: string;
+  id: string
+  provider?: string
 }
 
 export interface UserAccountKey extends UserAccount {
-  id: string;
-  key?: string;
+  id: string
+  key?: string
 }

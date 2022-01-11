@@ -4,7 +4,8 @@ import {
   UserFeature,
   UserLoginSignInForm,
   UserLoginResetForm,
-  UserAutocomplete, UserGroupFeature,
+  UserAutocomplete,
+  UserGroupFeature,
 } from '@flock-community/flock-eco-feature-user'
 import {
   MemberFeature,
