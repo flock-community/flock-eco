@@ -9,6 +9,7 @@
         <module>eco-feature-payment</module>
         <module>eco-feature-workspace</module>
         <module>eco-feature-multi_tenant</module>
+        <module>eco-feature-session</module>
     </modules>
 
     <parent>

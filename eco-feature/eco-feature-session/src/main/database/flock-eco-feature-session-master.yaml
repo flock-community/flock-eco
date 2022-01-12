@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - include:
+    - file: flock-eco-feature-session-001.yaml
+      relativeToChangelogFile: true
