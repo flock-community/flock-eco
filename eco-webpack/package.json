@@ -1,6 +1,6 @@
 {
   "name": "@flock-community/flock-eco-webpack",
-  "version": "2.3.4",
+  "version": "2.4.0",
   "main": "./webpack.config.js",
   "dependencies": {
     "@babel/core": "^7.12.10",
