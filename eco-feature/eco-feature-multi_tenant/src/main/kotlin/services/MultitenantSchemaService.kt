@@ -34,20 +34,19 @@ class MultiTenantSchemaService(
         connection.close()
     }
 
-    fun createMultiTenant(name: String): MultiTenant {
-        if (name.contains("-")) {
-            throw error("Hyphen not allowed in tenant name")
+    fun createMultiTenant(name: String) =
+        if (name.contains("-")) error("Hyphen not allowed in tenant name")
+        else {
+            val schemaName = "${prefix}_${name.uppercase()}"
+            MultiTenant(
+                name = name,
+                schema = when {
+                    lowerCase.contains(databaseName) -> schemaName.uppercase()
+                    upperCase.contains(databaseName) -> schemaName.uppercase()
+                    else -> schemaName
+                }
+            )
         }
-        val schemaName = "${prefix}_${name.uppercase()}"
-        return MultiTenant(
-            name = name,
-            schema = when {
-                lowerCase.contains(databaseName) -> schemaName.uppercase()
-                upperCase.contains(databaseName) -> schemaName.uppercase()
-                else -> schemaName
-            }
-        )
-    }
 
     fun liquibase(schemas: List<String>): MultiTenantSpringLiquibase {
         val liquibase = MultiTenantSpringLiquibase()

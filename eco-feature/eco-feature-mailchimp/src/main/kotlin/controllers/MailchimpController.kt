@@ -64,7 +64,7 @@ class MailchimpController(
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
         val event = MailchimpWebhookEvent(
             type = formData.getFirst("type")
-                .let { it.toUpperCase() }
+                .let { it.uppercase() }
                 .let { MailchimpWebhookEventType.valueOf(it) },
             firedAt = formData.getFirst("fired_at")
                 .let { LocalDateTime.parse(it, formatter) },

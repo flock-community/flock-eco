@@ -51,7 +51,7 @@ class WorkspaceService(
             it.copy(
                 users = it.users + WorkspaceUserRole(
                     userId = user.id,
-                    role = role.toUpperCase()
+                    role = role.uppercase()
                 )
             )
         }

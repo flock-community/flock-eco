@@ -196,7 +196,7 @@ class PaymentBuckarooService(
             httpMethod = httpMethod,
             nonce = nonce,
             timeStamp = timeStamp,
-            requestUri = URLEncoder.encode(requestUri, "UTF-8").toLowerCase(),
+            requestUri = URLEncoder.encode(requestUri, "UTF-8").lowercase(),
             content = content
         ).toString()
 

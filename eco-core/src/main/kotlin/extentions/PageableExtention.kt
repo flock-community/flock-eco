@@ -8,7 +8,7 @@ import org.springframework.data.domain.Sort
 
 fun Pageable?.consume(): PageRequest = when {
     this != null && sort == null -> PageRequest.of(page ?: 1, size ?: 10)
-    this != null && sort != null -> PageRequest.of(page ?: 1, size ?: 10, sort?.direction.consume(), sort?.order)
+    this != null && sort != null -> PageRequest.of(page ?: 1, size ?: 10, sort.direction.consume(), sort.order)
     else -> PageRequest.of(0, 10)
 }
 

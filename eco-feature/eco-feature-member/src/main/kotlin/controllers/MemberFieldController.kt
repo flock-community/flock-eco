@@ -49,7 +49,7 @@ class MemberFieldController(
     @PreAuthorize("hasAuthority('MemberFieldAuthority.WRITE')")
     fun create(@RequestBody memberFieldForm: MemberFieldForm): ResponseEntity<MemberField> {
         return MemberField(
-            name = memberFieldForm.name.toLowerCase(),
+            name = memberFieldForm.name.lowercase(),
             label = memberFieldForm.label,
             type = MemberFieldType.valueOf(memberFieldForm.type),
             options = memberFieldForm.options
@@ -74,7 +74,7 @@ class MemberFieldController(
                 .findById(id)
                 .map {
                     it.copy(
-                        name = memberFieldForm.name.toLowerCase(),
+                        name = memberFieldForm.name.lowercase(),
                         label = memberFieldForm.label,
                         type = MemberFieldType.valueOf(memberFieldForm.type),
                         options = memberFieldForm.options

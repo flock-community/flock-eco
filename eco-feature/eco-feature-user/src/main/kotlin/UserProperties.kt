@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 @ConfigurationProperties(prefix = "flock.eco.feature.user")
 data class UserProperties(
     val secretType: SecretType = SecretType.NONE,
-    val secretLength: Integer = Integer(8),
+    val secretLength: Int = 8,
     val secretAlphabet: String = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
 
     val secretResetMailFrom: String = "",

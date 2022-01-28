@@ -1,7 +1,11 @@
 package community.flock.eco.feature.member.services
 
 import community.flock.eco.core.utils.toNullable
-import community.flock.eco.feature.member.events.*
+import community.flock.eco.feature.member.events.CreateMemberEvent
+import community.flock.eco.feature.member.events.DeleteMemberEvent
+import community.flock.eco.feature.member.events.MemberEvent
+import community.flock.eco.feature.member.events.MergeMemberEvent
+import community.flock.eco.feature.member.events.UpdateMemberEvent
 import community.flock.eco.feature.member.model.Member
 import community.flock.eco.feature.member.model.MemberStatus
 import community.flock.eco.feature.member.repositories.MemberRepository
@@ -11,7 +15,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Component
 import java.time.LocalDate
-import java.util.*
+import java.util.UUID
 import javax.transaction.Transactional
 
 @Component
@@ -48,10 +52,8 @@ class MemberService(
 
     fun update(uuid: UUID, input: Member): Member = findByUuid(uuid)
         ?.apply {
-            if (status == MemberStatus.DELETED)
-                throw error("Cannot update DELETED member")
-            if (status == MemberStatus.MERGED)
-                throw error("Cannot update MERGED member")
+            if (status == MemberStatus.DELETED) error("Cannot update DELETED member")
+            if (status == MemberStatus.MERGED) error("Cannot update MERGED member")
             val update = input.copy(
                 id = id,
                 uuid = uuid,
@@ -64,12 +66,10 @@ class MemberService(
         ?: error("Cannot update member")
 
     fun delete(uuid: UUID) = findByUuid(uuid)
-        ?.let {
-            it.copy(
-                status = MemberStatus.DELETED,
-                updated = LocalDate.now()
-            )
-        }
+        ?.copy(
+            status = MemberStatus.DELETED,
+            updated = LocalDate.now()
+        )
         ?.save()
         ?.publish { DeleteMemberEvent(it) }
         ?: error("Cannot delete member")

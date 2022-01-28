@@ -5,6 +5,7 @@ import community.flock.eco.feature.member.mapper.MemberGraphqlMapper
 import community.flock.eco.feature.member.services.MemberService
 import community.flock.eco.feature.member.specifications.MemberSpecification
 import graphql.kickstart.tools.GraphQLQueryResolver
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.security.access.prepost.PreAuthorize
@@ -32,7 +33,7 @@ class MemberQueryResolver(
         size: Int?,
         sort: String?,
         order: String?
-    ) = pageable(page, size, sort, order)
+    ): Page<MemberGraphql> = pageable(page, size, sort, order)
         .let { pageable ->
             val specification = filter.consume()
             memberService
@@ -53,8 +54,8 @@ class MemberQueryResolver(
     fun MemberStatusGraphql.consume() = memberGraphqlMapper.consume(this)
 
     fun pageable(page: Int?, size: Int?, sort: String?, order: String?): PageRequest {
-        val order = order?.let { Sort.Direction.fromString(it) } ?: Sort.DEFAULT_DIRECTION
-        val sort = sort?.let { Sort.by(order, sort) } ?: Sort.unsorted()
-        return PageRequest.of(page ?: 0, size ?: 10, sort)
+        val direction = order?.let { Sort.Direction.fromString(it) } ?: Sort.DEFAULT_DIRECTION
+        val sorted = sort?.let { Sort.by(direction, sort) } ?: Sort.unsorted()
+        return PageRequest.of(page ?: 0, size ?: 10, sorted)
     }
 }

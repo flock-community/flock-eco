@@ -65,7 +65,7 @@ class MailchimpClient(
                         id = it.get("id").asText(),
                         name = it.get("name").asText(),
                         type = it.get("type").asText().let {
-                            MailchimpTemplateType.valueOf(it.toUpperCase())
+                            MailchimpTemplateType.valueOf(it.uppercase())
                         }
                     )
                 }
@@ -88,7 +88,7 @@ class MailchimpClient(
     fun postInterestsCategories(listId: String, interestCategory: MailchimpInterestCategory): MailchimpInterestCategory? {
         val json = mapper.createObjectNode()
         json.put("title", interestCategory.title)
-        json.put("type", interestCategory.type.toString().toLowerCase())
+        json.put("type", interestCategory.type.toString().lowercase())
         val entity = HttpEntity(json, headers)
         try {
             val res = restTemplate.exchange("/lists/$listId/interest-categories", HttpMethod.POST, entity, ObjectNode::class.java)
@@ -215,7 +215,7 @@ class MailchimpClient(
                         .map(this::convertMailchimpMembertoObjectNode)
                 )
             val entity = HttpEntity(body, headers)
-            val res = restTemplate.exchange("/lists/$listId", HttpMethod.POST, entity, ObjectNode::class.java)
+            restTemplate.exchange("/lists/$listId", HttpMethod.POST, entity, ObjectNode::class.java)
         } catch (ex: HttpClientErrorException) {
             throw MailchimpFetchException(ex.responseBodyAsString)
         }
@@ -266,7 +266,7 @@ class MailchimpClient(
         }
         val entity = HttpEntity(body, headers)
         try {
-            val res = restTemplate.exchange("/lists/$listId/members/$md5/tags", HttpMethod.POST, entity, ObjectNode::class.java)
+            restTemplate.exchange("/lists/$listId/members/$md5/tags", HttpMethod.POST, entity, ObjectNode::class.java)
         } catch (ex: HttpClientErrorException) {
             throw MailchimpFetchException(ex.responseBodyAsString)
         }
@@ -276,17 +276,17 @@ class MailchimpClient(
         val digest = MessageDigest.getInstance("MD5")
             .digest(
                 email
-                    .toLowerCase()
+                    .lowercase()
                     .toByteArray()
             )
         val md5 = DatatypeConverter.printHexBinary(digest)
-        return md5.toLowerCase()
+        return md5.lowercase()
     }
 
     private fun convertMailchimpMembertoObjectNode(member: MailchimpMember): ObjectNode {
         val json = mapper.createObjectNode()
         json.put("email_address", member.email)
-        json.put("status", member.status.toString().toLowerCase())
+        json.put("status", member.status.toString().lowercase())
         json.put("language", member.language ?: "")
         json.putPOJO("tags", member.tags)
         json.putPOJO("interests", mapper.valueToTree(member.interests))
@@ -299,7 +299,7 @@ class MailchimpClient(
         id = it.get("id").asText(),
         title = it.get("title").asText(),
         type = it.get("type").asText().let {
-            MailchimpInterestCategoryType.valueOf(it.toUpperCase())
+            MailchimpInterestCategoryType.valueOf(it.uppercase())
         }
     )
 
@@ -325,7 +325,7 @@ class MailchimpClient(
                 .let { if (it.isBlank()) null else it },
             status = obj.get("status")
                 ?.asText()
-                ?.let { MailchimpMemberStatus.valueOf(it.toUpperCase()) }
+                ?.let { MailchimpMemberStatus.valueOf(it.uppercase()) }
                 ?: MailchimpMemberStatus.UNSUBSCRIBED,
             tags = obj.get("tags")
                 ?.asIterable()
