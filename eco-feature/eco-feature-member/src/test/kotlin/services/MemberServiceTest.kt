@@ -14,10 +14,10 @@ import java.util.Optional
 import java.util.UUID
 import kotlin.test.assertEquals
 
-class MemberServiceTest{
+class MemberServiceTest {
 
     @Test
-    fun updateTest(){
+    fun updateTest() {
         println("Test")
 
         val applicationEventPublisher = mockk<ApplicationEventPublisher>()
@@ -28,7 +28,7 @@ class MemberServiceTest{
         val uuid = UUID.randomUUID()
         val current = Member(
             id = 1L,
-            uuid= uuid,
+            uuid = uuid,
             firstName = "firstName-1",
             surName = "surName-1",
         )
@@ -37,14 +37,14 @@ class MemberServiceTest{
             surName = "surName-2",
         )
 
-        fun mutateField(field:String, value:String){
+        fun mutateField(field: String, value: String) {
             val field = Member::class.java.getDeclaredField(field)
             field.isAccessible = true
             field.set(current, value)
         }
 
         every { memberRepository.findByUuid(uuid) } returns Optional.of(current)
-        every { memberRepository.save(any()) } answers  {
+        every { memberRepository.save(any()) } answers {
             mutateField("firstName", this.value.firstName)
             mutateField("surName", this.value.surName)
             this.value
@@ -56,13 +56,16 @@ class MemberServiceTest{
         assertEquals("firstName-2", res.firstName)
         assertEquals("surName-2", res.surName)
 
-        verify { applicationEventPublisher.publishEvent(withArg<Object>{
-            val obj = it as UpdateMemberEvent
-            assertEquals("firstName-2", obj.member.firstName)
-            assertEquals("surName-2", obj.member.surName)
-            assertEquals("firstName-1", obj.oldMember.firstName)
-            assertEquals("surName-1", obj.oldMember.surName)
-        })}
-
+        verify {
+            applicationEventPublisher.publishEvent(
+                withArg<Object> {
+                    val obj = it as UpdateMemberEvent
+                    assertEquals("firstName-2", obj.member.firstName)
+                    assertEquals("surName-2", obj.member.surName)
+                    assertEquals("firstName-1", obj.oldMember.firstName)
+                    assertEquals("surName-1", obj.oldMember.surName)
+                }
+            )
+        }
     }
 }
