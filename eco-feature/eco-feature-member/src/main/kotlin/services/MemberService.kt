@@ -47,11 +47,12 @@ class MemberService(
         .publish { CreateMemberEvent(it) }
 
     fun update(uuid: UUID, input: Member): Member = findByUuid(uuid)
-        ?.apply {
+        ?.run {
+            val prev = this.copy()
             if (status == MemberStatus.DELETED)
-                throw error("Cannot update DELETED member")
+                error("Cannot update DELETED member")
             if (status == MemberStatus.MERGED)
-                throw error("Cannot update MERGED member")
+                error("Cannot update MERGED member")
             val update = input.copy(
                 id = id,
                 uuid = uuid,
@@ -59,7 +60,8 @@ class MemberService(
                 updated = LocalDate.now()
             )
             update.save()
-            update.publish { UpdateMemberEvent(update, this) }
+            update.publish { UpdateMemberEvent(update, prev) }
+            update
         }
         ?: error("Cannot update member")
 

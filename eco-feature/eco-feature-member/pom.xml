@@ -22,6 +22,10 @@
             <groupId>com.github.flock-community.flock-eco</groupId>
             <artifactId>flock-eco-iso-language</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.mockk</groupId>
+            <artifactId>mockk</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
