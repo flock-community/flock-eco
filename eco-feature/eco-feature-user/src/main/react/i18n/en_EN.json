@@ -2,7 +2,10 @@
   "eco": {
     "feature": {
       "user": {
-        "choosePassword": "Choose password",
+        "savePassword": "Save password",
+        "generatePassword": "Generate a password",
+        "passwordGenerated": "A password was generated",
+        "passwordCopied": "Password was copied to clipboard",
         "passwordNoEqual": "Password not equal"
       }
     }

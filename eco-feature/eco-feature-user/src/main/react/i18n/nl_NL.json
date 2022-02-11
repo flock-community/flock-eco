@@ -2,7 +2,10 @@
   "eco": {
     "feature": {
       "user": {
-        "choosePassword": "Kies een wachtwoord",
+        "savePassword": "Sla het nieuwe wachtwoord op",
+        "generatePassword": "Genereer een wachtwoord",
+        "passwordGenerated": "Er is een wachtwoord gegenereerd",
+        "passwordCopied": "Wachtwoord is gekopieerd naar het klembord",
         "passwordNoEqual": "Wachtwoord is niet gelijk"
       }
     }

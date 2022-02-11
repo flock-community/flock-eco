@@ -6,6 +6,9 @@
   "scripts": {
     "compile": "tsc"
   },
+  "dependencies": {
+    "typescript": "4.5.5"
+  },
   "repository": {
     "type": "git",
     "url": "ssh://git@github.com/flock-community/flock-eco.git",
