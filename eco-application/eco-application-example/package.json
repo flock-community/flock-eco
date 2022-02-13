@@ -1,6 +1,6 @@
 {
   "name": "@flock-community/flock-eco-application-example",
-  "version": "2.5.3",
+  "version": "2.5.4",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -10,12 +10,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@flock-community/flock-eco-feature-member": "^2.5.3",
-    "@flock-community/flock-eco-feature-user": "^2.5.3",
-    "@flock-community/flock-eco-feature-workspace": "^2.5.3"
+    "@flock-community/flock-eco-feature-member": "^2.5.4",
+    "@flock-community/flock-eco-feature-user": "^2.5.4",
+    "@flock-community/flock-eco-feature-workspace": "^2.5.4"
   },
   "devDependencies": {
-    "@flock-community/flock-eco-webpack": "^2.5.3",
+    "@flock-community/flock-eco-webpack": "^2.5.4",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0",
     "webpack-dev-server": "^3.11.0"
