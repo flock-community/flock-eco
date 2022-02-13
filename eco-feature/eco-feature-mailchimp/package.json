@@ -1,6 +1,6 @@
 {
   "name": "@flock-community/flock-eco-feature-mailchimp",
-  "version": "2.5.6",
+  "version": "2.5.7",
   "scripts": {
     "compile": "tsc"
   },
