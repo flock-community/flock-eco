@@ -4,7 +4,6 @@
   "main": "./src/main/react",
   "dependencies": {
     "@flock-community/flock-eco-core": "^2.4.3",
-    "react-password-strength-bar": "^0.3.2"
   },
   "devDependencies": {
     "@flock/graphql-simple-bindings": "^1.0.8",
