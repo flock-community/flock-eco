@@ -2,6 +2,8 @@ package community.flock.eco.feature.multi_tenant.filters
 
 import community.flock.eco.feature.multi_tenant.MultiTenantContext
 import community.flock.eco.feature.multi_tenant.services.MultiTenantSchemaService
+import org.springframework.core.Ordered
+import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import javax.servlet.FilterChain
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Component
+@Order(Ordered.HIGHEST_PRECEDENCE)
 class MultiTenantFilter(
     private val multiTenantSchemaService: MultiTenantSchemaService
 ) : OncePerRequestFilter() {

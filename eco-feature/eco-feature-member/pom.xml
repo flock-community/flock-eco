@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.github.flock-community.flock-eco</groupId>
         <artifactId>flock-eco-feature-parent</artifactId>
-        <version>2.4.1</version>
+        <version>2.4.3</version>
     </parent>
 
     <artifactId>flock-eco-feature-member</artifactId>
@@ -21,6 +21,10 @@
         <dependency>
             <groupId>com.github.flock-community.flock-eco</groupId>
             <artifactId>flock-eco-iso-language</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.mockk</groupId>
+            <artifactId>mockk</artifactId>
         </dependency>
     </dependencies>
 

@@ -4,7 +4,7 @@
 
     <groupId>com.github.flock-community.flock-eco</groupId>
     <artifactId>flock-eco-parent</artifactId>
-    <version>2.4.1</version>
+    <version>2.4.3</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -15,8 +15,8 @@
         <spring.boot.graphql.version>12.0.0</spring.boot.graphql.version>
         <liquibase.version>3.9.0</liquibase.version>
         <jackson.version>2.13.1</jackson.version>
-        <node.version>v10.16.0</node.version>
-        <npm.version>6.9.0</npm.version>
+        <node.version>v16.13.2</node.version>
+        <npm.version>8.4.0</npm.version>
     </properties>
 
     <modules>
@@ -240,7 +240,14 @@
                 <artifactId>springdoc-openapi-ui</artifactId>
                 <version>1.6.3</version>
             </dependency>
+            <dependency>
+                <groupId>io.mockk</groupId>
+                <artifactId>mockk</artifactId>
+                <version>1.12.2</version>
+                <scope>test</scope>
+            </dependency>
 
+            <!-- spring -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
