@@ -21,4 +21,8 @@ class MultiTenantKeyValueService(
     fun save(keyValue: MultiTenantKeyValue) {
         multiTenantKeyValueRepository.save(keyValue)
     }
+
+    fun saveAll(keyValue: List<MultiTenantKeyValue>) {
+        multiTenantKeyValueRepository.saveAll(keyValue)
+    }
 }
