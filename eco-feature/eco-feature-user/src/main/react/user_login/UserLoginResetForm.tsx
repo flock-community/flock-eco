@@ -11,8 +11,8 @@ import {passgarble} from '@flock/pass-garble'
 import {FileCopy, Visibility, VisibilityOff} from '@material-ui/icons'
 import {Alert} from '@material-ui/lab'
 
-type PasswordGenerationOptions = passgarble.PasswordGenerationOptions;
-type PasswordGenerator = passgarble.PasswordGenerator;
+type PasswordGenerationOptions = passgarble.PasswordGenerationOptions
+type PasswordGenerator = passgarble.PasswordGenerator
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,11 +28,11 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(3, 0, 2),
   },
   hidden: {
-    display: "none"
+    display: 'none',
   },
   clickable: {
-    cursor: "pointer"
-  }
+    cursor: 'pointer',
+  },
 }))
 
 type UserLoginResetFormProps = {
@@ -42,11 +42,13 @@ type UserLoginResetFormProps = {
 export const UserLoginResetForm = ({onSubmit}: UserLoginResetFormProps) => {
   const classes = useStyles()
 
-  const [generator] = useState<PasswordGenerator>(new passgarble.PasswordGenerator())
+  const [generator] = useState<PasswordGenerator>(
+    new passgarble.PasswordGenerator(),
+  )
   const {t} = useTranslation(['translation'])
   const [message, setMessage] = useState<string>()
-  const [password, setPassword] = useState<string>("")
-  const [rePassword, setRePassword] = useState<string>("")
+  const [password, setPassword] = useState<string>('')
+  const [rePassword, setRePassword] = useState<string>('')
   const [score, setScore] = useState<number>()
   const [visibility, setVisibility] = useState<boolean>(false)
 
@@ -77,11 +79,11 @@ export const UserLoginResetForm = ({onSubmit}: UserLoginResetFormProps) => {
   }
 
   const copyPasswordToClipboard = () => {
-    navigator.clipboard.writeText(password).then();
+    navigator.clipboard.writeText(password).then()
     setMessage(t('eco.feature.user.passwordCopied'))
   }
 
-  const toggleVisibility= () => {
+  const toggleVisibility = () => {
     setVisibility(!visibility)
   }
 
@@ -89,14 +91,14 @@ export const UserLoginResetForm = ({onSubmit}: UserLoginResetFormProps) => {
     <Box className={classes.root}>
       <form className={classes.form} noValidate method="post" action="/login">
         <TextField
-            className={classes.hidden}
-            margin="normal"
-            fullWidth
-            id="username"
-            label="Username"
-            name="username"
-            autoComplete="username"
-            hidden={true}
+          className={classes.hidden}
+          margin="normal"
+          fullWidth
+          id="username"
+          label="Username"
+          name="username"
+          autoComplete="username"
+          hidden={true}
         />
         <TextField
           margin="normal"
@@ -104,7 +106,7 @@ export const UserLoginResetForm = ({onSubmit}: UserLoginResetFormProps) => {
           fullWidth
           name="password"
           label="Password"
-          type={visibility ? "text": "password"}
+          type={visibility ? 'text' : 'password'}
           id="password"
           autoComplete="current-password"
           onChange={handleChangePassword}
@@ -113,12 +115,18 @@ export const UserLoginResetForm = ({onSubmit}: UserLoginResetFormProps) => {
             endAdornment: (
               <InputAdornment className={classes.clickable} position="end">
                 <FileCopy onClick={copyPasswordToClipboard} />
-                { visibility ? <Visibility onClick={toggleVisibility} /> : <VisibilityOff onClick={toggleVisibility}/> }
+                {visibility ? (
+                  <Visibility onClick={toggleVisibility} />
+                ) : (
+                  <VisibilityOff onClick={toggleVisibility} />
+                )}
               </InputAdornment>
             ),
           }}
         />
-        <Button onClick={createRandomPassword}>{t('eco.feature.user.generatePassword')}</Button>
+        <Button onClick={createRandomPassword}>
+          {t('eco.feature.user.generatePassword')}
+        </Button>
         <PasswordStrengthBar
           password={password ?? ''}
           onChangeScore={setScore}
@@ -134,7 +142,7 @@ export const UserLoginResetForm = ({onSubmit}: UserLoginResetFormProps) => {
           onChange={handleChangeRePassword}
           value={rePassword}
         />
-        {message ? <Alert severity="warning">{message}</Alert> : ""}
+        {message ? <Alert severity="warning">{message}</Alert> : ''}
         <Button
           fullWidth
           variant="contained"
