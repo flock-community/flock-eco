@@ -36,7 +36,7 @@ jobs:
           node-version: '12.x'
       - name: Publish react to github packages
         run: |
-          npm install
+          npm ci
           npm run bootstrap
           npm run generate
           npm run compile
