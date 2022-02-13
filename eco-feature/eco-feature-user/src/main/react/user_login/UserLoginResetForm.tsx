@@ -7,7 +7,7 @@ import {makeStyles} from '@material-ui/core/styles'
 import PasswordStrengthBar from 'react-password-strength-bar'
 import {InputAdornment} from '@material-ui/core'
 import {useTranslation} from 'react-i18next'
-import {passgarble} from 'pass-garble/pass-garble'
+import {passgarble} from '@flock/pass-garble'
 import {FileCopy, Visibility, VisibilityOff} from '@material-ui/icons'
 import {Alert} from '@material-ui/lab'
 
