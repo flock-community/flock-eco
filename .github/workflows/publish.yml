@@ -21,7 +21,7 @@ jobs:
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven
-      - name: Publish maven to github packages
+      - name: Publish maven to jfrog packages
         run: mvn -B deploy -DskipTests=true --file ./pom.xml
         env:
           MAVEN_USERNAME: ${{ secrets.JFROG_USERNAME }}
@@ -34,7 +34,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
-      - name: Publish react to github packages
+      - name: Publish react to jfrog packages
         run: |
           npm ci
           npm run bootstrap
