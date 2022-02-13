@@ -10,6 +10,10 @@ class MultiTenantKeyValueService(
     private val multiTenantKeyValueRepository: MultiTenantKeyValueRepository
 ) {
 
+    fun findAll(): Iterable<MultiTenantKeyValue> {
+        return multiTenantKeyValueRepository.findAll()
+    }
+
     fun findByKey(key: String): MultiTenantKeyValue? {
         return multiTenantKeyValueRepository.findById(key).toNullable()
     }
