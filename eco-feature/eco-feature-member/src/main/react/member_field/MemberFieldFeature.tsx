@@ -54,6 +54,7 @@ export function MemberFieldFeature({list}: MemberFieldFeatureProps) {
 
   const handleFormSave = async () => {
     const id = state?.item?.id
+    console.log(state)
     if (id) {
       await MemberFieldClient.put(id, state.item)
     } else {
@@ -65,7 +66,7 @@ export function MemberFieldFeature({list}: MemberFieldFeatureProps) {
 
   const handleFormDelete = async () => {
     if (state.item?.id) {
-      await MemberFieldClient.delete(state.item.id)
+      await MemberFieldClient.delete(state.item?.id)
       setState(prev => ({...prev, item: undefined}))
       await load()
     }

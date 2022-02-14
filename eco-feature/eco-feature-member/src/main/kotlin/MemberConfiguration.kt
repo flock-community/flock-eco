@@ -7,6 +7,8 @@ import community.flock.eco.feature.member.controllers.MemberFieldController
 import community.flock.eco.feature.member.controllers.MemberGroupController
 import community.flock.eco.feature.member.mapper.MemberGraphqlMapper
 import community.flock.eco.feature.member.resolvers.MemberQueryResolver
+import community.flock.eco.feature.member.services.MemberFieldService
+import community.flock.eco.feature.member.services.MemberGroupService
 import community.flock.eco.feature.member.services.MemberService
 import community.flock.eco.iso.country.CountryIsoConfiguration
 import org.springframework.boot.autoconfigure.domain.EntityScan
@@ -22,6 +24,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
     CountryIsoConfiguration::class,
     LanguageIsoConfiguration::class,
     MemberService::class,
+    MemberFieldService::class,
+    MemberGroupService::class,
     MemberController::class,
     MemberGroupController::class,
     MemberFieldController::class,
