@@ -42,7 +42,7 @@ class MultiTenantSchemaService(
         return MultiTenant(
             name = name,
             schema = when {
-                lowerCase.contains(databaseName) -> schemaName.uppercase()
+                lowerCase.contains(databaseName) -> schemaName.lowercase()
                 upperCase.contains(databaseName) -> schemaName.uppercase()
                 else -> schemaName
             }

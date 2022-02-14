@@ -3,11 +3,13 @@
   "version": "2.5.7",
   "main": "./src/main/react",
   "dependencies": {
-    "@flock-community/flock-eco-core": "^2.5.7"
+    "@flock-community/flock-eco-core": "^2.5.7",
+    "apollo": "^2.27.3",
+    "@flock/pass-garble": "0.0.1",
+    "react-password-strength-bar": "0.4.0"
   },
   "devDependencies": {
-    "@flock/graphql-simple-bindings": "^1.0.8",
-    "apollo": "^2.27.3"
+    "@flock/graphql-simple-bindings": "^1.0.8"
   },
   "scripts": {
     "compile": "tsc",
