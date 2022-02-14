@@ -1,11 +1,11 @@
 {
   "name": "@flock-community/flock-eco-feature-user",
-  "version": "2.5.7",
+  "version": "2.5.8",
   "main": "./src/main/react",
   "dependencies": {
-    "@flock-community/flock-eco-core": "^2.5.7",
-    "apollo": "^2.27.3",
+    "@flock-community/flock-eco-core": "^2.5.8",
     "@flock/pass-garble": "0.0.1",
+    "apollo": "^2.27.3",
     "react-password-strength-bar": "0.4.0"
   },
   "devDependencies": {
