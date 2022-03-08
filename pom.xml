@@ -13,7 +13,7 @@
         <main.basedir>${project.basedir}</main.basedir>
         <spring.boot.version>2.6.2</spring.boot.version>
         <spring.boot.graphql.version>12.0.0</spring.boot.graphql.version>
-        <liquibase.version>3.9.0</liquibase.version>
+        <liquibase.version>4.8.0</liquibase.version>
         <jackson.version>2.13.1</jackson.version>
         <node.version>v16.13.2</node.version>
         <npm.version>8.4.0</npm.version>
