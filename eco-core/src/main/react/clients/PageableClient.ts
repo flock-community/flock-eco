@@ -1,4 +1,4 @@
-import {validateResponse} from './utils'
+import {QueryParameters, toQueryString, validateResponse} from './utils'
 
 interface Page<T> {
   list: T[]
@@ -12,15 +12,12 @@ interface Pageable {
 }
 
 export function PageableClient<T>(path: string) {
-  const findAllByPage = (pageable: Pageable): Promise<Page<T>> => {
+  const queryByPage = (pageable: Pageable, queryParameters: QueryParameters): Promise<Page<T>> => {
     const opts = {
       method: 'GET',
     }
 
-    const query = Object.entries(pageable)
-      .filter(([, value]) => value == null)
-      .map(([key, value]) => `${key}=${value}`)
-      .join('&')
+    const query = toQueryString({ ...pageable, ...queryParameters})
 
     return fetch(`${path}?${query}`, opts)
       .then(it => validateResponse<T[]>(it))
@@ -36,5 +33,8 @@ export function PageableClient<T>(path: string) {
         }
       })
   }
-  return {findAllByPage}
+
+  const findAllByPage = (pageable: Pageable) => queryByPage(pageable, {})
+
+  return {findAllByPage, queryByPage}
 }
