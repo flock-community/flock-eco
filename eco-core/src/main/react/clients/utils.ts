@@ -3,6 +3,7 @@ export type ValidResponse<T> = {
   headers: Headers
   body: T
 }
+
 export const validateResponse = <T>(
   res: Response,
 ): Promise<ValidResponse<T> | undefined> => {
@@ -19,6 +20,16 @@ export const validateResponse = <T>(
   return res.text().then(text => {
     throw new Error(text)
   })
+}
+
+export const checkResponse = <A>(
+  it: ValidResponse<A> | void,
+): ValidResponse<A> => {
+  if (it) {
+    return it
+  } else {
+    throw new Error('No response')
+  }
 }
 
 export type QueryParameters = {

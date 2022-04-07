@@ -1,4 +1,5 @@
 import {
+  checkResponse,
   QueryParameters,
   toQueryString,
   validateResponse,
@@ -8,14 +9,6 @@ import {
 type ID = string
 
 export function ResourceClient<Out, In>(path: string) {
-  const checkResponse = <A>(it: ValidResponse<A> | void): ValidResponse<A> => {
-    if (it) {
-      return it
-    } else {
-      throw new Error('No response')
-    }
-  }
-
   const all = (): Promise<ValidResponse<Out[]>> => {
     const opts = {
       method: 'GET',
