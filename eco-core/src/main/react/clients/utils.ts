@@ -26,7 +26,7 @@ export type QueryParameters = {
 }
 
 export const toQueryString = (object: object): any =>
-    Object.entries<any>(object)
-        .filter(([_, value]) => value != null)
-        .map(([key, value]) => `${key}=${value}`)
-        .join('&')
+  Object.entries<any>(object)
+    .filter(([_, value]) => value != null)
+    .map(([key, value]) => `${key}=${value}`)
+    .join('&')

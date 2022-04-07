@@ -12,12 +12,15 @@ interface Pageable {
 }
 
 export function PageableClient<T>(path: string) {
-  const queryByPage = (pageable: Pageable, queryParameters: QueryParameters): Promise<Page<T>> => {
+  const queryByPage = (
+    pageable: Pageable,
+    queryParameters: QueryParameters,
+  ): Promise<Page<T>> => {
     const opts = {
       method: 'GET',
     }
 
-    const query = toQueryString({ ...pageable, ...queryParameters})
+    const query = toQueryString({...pageable, ...queryParameters})
 
     return fetch(`${path}?${query}`, opts)
       .then(it => validateResponse<T[]>(it))
