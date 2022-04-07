@@ -61,7 +61,8 @@ export const UserLoginResetForm = ({onSubmit}: UserLoginResetFormProps) => {
   }
 
   const createRandomPassword = () => {
-    const passwordOptions: PasswordGenerationOptions = passgarble.defaultOptions()
+    const passwordOptions: PasswordGenerationOptions =
+      passgarble.defaultOptions()
     const newPassword = generator.generatePassword(passwordOptions)
     setPassword(newPassword)
     setRePassword(newPassword)

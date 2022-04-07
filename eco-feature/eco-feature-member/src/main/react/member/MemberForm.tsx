@@ -18,77 +18,36 @@ import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator'
 
 const schema = Yup.object()
   .shape({
-    firstName: Yup.string()
-      .required()
-      .default('')
-      .defined(),
-    infix: Yup.string()
-      .default('')
-      .defined(),
-    surName: Yup.string()
-      .required()
-      .default('')
-      .defined(),
-    email: Yup.string()
-      .default('')
-      .defined(),
-    phoneNumber: Yup.string()
-      .default('')
-      .defined(),
-    street: Yup.string()
-      .default('')
-      .defined(),
-    houseNumber: Yup.string()
-      .default('')
-      .defined(),
-    houseNumberExtension: Yup.string()
-      .default('')
-      .defined(),
-    postalCode: Yup.string()
-      .default('')
-      .defined(),
-    city: Yup.string()
-      .default('')
-      .defined(),
-    country: Yup.string()
-      .default('')
-      .defined(),
-    language: Yup.string()
-      .default('')
-      .defined(),
-    gender: Yup.string()
-      .default('UNKNOWN')
-      .defined(),
-    birthDate: Yup.string()
-      .default('')
-      .defined(),
+    firstName: Yup.string().required().default('').defined(),
+    infix: Yup.string().default('').defined(),
+    surName: Yup.string().required().default('').defined(),
+    email: Yup.string().default('').defined(),
+    phoneNumber: Yup.string().default('').defined(),
+    street: Yup.string().default('').defined(),
+    houseNumber: Yup.string().default('').defined(),
+    houseNumberExtension: Yup.string().default('').defined(),
+    postalCode: Yup.string().default('').defined(),
+    city: Yup.string().default('').defined(),
+    country: Yup.string().default('').defined(),
+    language: Yup.string().default('').defined(),
+    gender: Yup.string().default('UNKNOWN').defined(),
+    birthDate: Yup.string().default('').defined(),
     groups: Yup.array()
-      .of(
-        Yup.string()
-          .required()
-          .default('')
-          .defined(),
-      )
+      .of(Yup.string().required().default('').defined())
       .default([])
       .defined(),
     fields: Yup.array()
       .of(
         Yup.object()
           .shape({
-            key: Yup.string()
-              .default('')
-              .defined(),
-            value: Yup.string()
-              .default('')
-              .defined(),
+            key: Yup.string().default('').defined(),
+            value: Yup.string().default('').defined(),
           })
           .defined(),
       )
       .default([])
       .defined(),
-    status: Yup.string()
-      .default('NEW')
-      .defined(),
+    status: Yup.string().default('NEW').defined(),
   })
   .defined()
 

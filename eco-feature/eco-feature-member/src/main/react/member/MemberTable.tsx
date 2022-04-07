@@ -17,7 +17,7 @@ import TableContainer from '@material-ui/core/TableContainer'
 import {Direction, Specification} from './MemberModel'
 
 export const QUERY = gql`
-  query(
+  query (
     $search: String!
     $statuses: [MemberStatus!]
     $groups: [String!]

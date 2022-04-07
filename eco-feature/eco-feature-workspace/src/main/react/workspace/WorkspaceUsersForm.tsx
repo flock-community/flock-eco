@@ -16,16 +16,8 @@ import {WorkspaceRoleClient} from './WorkspaceRoleClient'
 const schema = yup
   .object()
   .shape({
-    reference: yup
-      .string()
-      .required()
-      .default('')
-      .defined(),
-    role: yup
-      .string()
-      .required()
-      .default('')
-      .defined(),
+    reference: yup.string().required().default('').defined(),
+    role: yup.string().required().default('').defined(),
   })
   .defined()
 
