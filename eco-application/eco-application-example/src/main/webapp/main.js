@@ -33625,7 +33625,7 @@ object-assign
       if (!n) return t
       const a = i()({}, t)
       return (
-        Object.keys(n).forEach(e => {
+        Object.keys(n).forEach((e) => {
           n[e] && (a[e] = `${t[e]} ${n[e]}`)
         }),
         a
@@ -33744,15 +33744,15 @@ object-assign
             const t = new RegExp(`.{1,${e.length / 3}}`, 'g')
             let n = e.match(t)
             return (
-              n && 1 === n[0].length && (n = n.map(e => e + e)),
-              n ? `rgb(${n.map(e => parseInt(e, 16)).join(', ')})` : ''
+              n && 1 === n[0].length && (n = n.map((e) => e + e)),
+              n ? `rgb(${n.map((e) => parseInt(e, 16)).join(', ')})` : ''
             )
           })(e),
         )
       const t = e.indexOf('('),
         n = e.substring(0, t)
       let r = e.substring(t + 1, e.length - 1).split(',')
-      return {type: n, values: (r = r.map(e => parseFloat(e)))}
+      return {type: n, values: (r = r.map((e) => parseFloat(e)))}
     }
     function G(e) {
       const {type: t} = e
@@ -33767,7 +33767,7 @@ object-assign
     function K(e) {
       const t = V(e)
       if (-1 !== t.type.indexOf('rgb')) {
-        const e = t.values.map(e =>
+        const e = t.values.map((e) =>
           (e /= 255) <= 0.03928 ? e / 12.92 : ((e + 0.055) / 1.055) ** 2.4,
         )
         return Number(
@@ -33926,7 +33926,7 @@ object-assign
           'allVariants',
         ]),
         v = o / 14,
-        y = e => `${(e / d) * v}rem`,
+        y = (e) => `${(e / d) * v}rem`,
         b = (t, n, a, o, l) =>
           i()(
             {
@@ -34153,7 +34153,7 @@ object-assign
         enteringScreen: 225,
         leavingScreen: 195,
       },
-      pe = e => `${Math.round(e)}ms`
+      pe = (e) => `${Math.round(e)}ms`
     var he = {
       easing: ce,
       duration: fe,
@@ -34166,7 +34166,7 @@ object-assign
         a()(t, ['duration', 'easing', 'delay'])
         return (Array.isArray(e) ? e : [e])
           .map(
-            e =>
+            (e) =>
               `${e} ${'string' == typeof n ? n : pe(n)} ${r} ${
                 'string' == typeof o ? o : pe(o)
               }`,
@@ -34269,7 +34269,7 @@ object-assign
     const ye = '__THEMING__'
     var be = {
       contextTypes: {[ye]: () => {}},
-      initial: e => (e[ye] ? e[ye].getState() : null),
+      initial: (e) => (e[ye] ? e[ye].getState() : null),
       subscribe: (e, t) => (e[ye] ? e[ye].subscribe(t) : null),
       unsubscribe: (e, t) => {
         e[ye] && e[ye].unsubscribe(t)
@@ -34291,7 +34291,7 @@ object-assign
           const o = n.overrides[r],
             l = i()({}, a)
           return (
-            Object.keys(o).forEach(e => {
+            Object.keys(o).forEach((e) => {
               l[e] = D()(l[e], o[e], {arrayMerge: we})
             }),
             l
@@ -34330,7 +34330,7 @@ object-assign
       Te = ve({typography: {suppressWarning: !0}}),
       Me =
         (e, t = {}) =>
-        n => {
+        (n) => {
           const {withTheme: r = !1, flip: o = null, name: l} = t,
             s = a()(t, ['withTheme', 'flip', 'name']),
             c = ke(e),
@@ -34358,7 +34358,7 @@ object-assign
             }
             componentDidMount() {
               f &&
-                (this.unsubscribeId = be.subscribe(this.context, e => {
+                (this.unsubscribeId = be.subscribe(this.context, (e) => {
                   const t = this.theme
                   ;(this.theme = e),
                     this.attach(this.theme),
@@ -34481,7 +34481,7 @@ object-assign
     n.d(t, 'styles', function () {
       return Ne
     })
-    const Ne = e => {
+    const Ne = (e) => {
       const t = {}
       return (
         e.shadows.forEach((e, n) => {

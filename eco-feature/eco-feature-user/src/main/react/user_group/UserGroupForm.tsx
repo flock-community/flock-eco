@@ -36,7 +36,7 @@ export function UserGroupForm({value, onSummit}: UserGroupFormProps) {
     name: Yup.string().required('Name is required'),
   })
 
-  const handleSubmit = ev => {
+  const handleSubmit = (ev) => {
     onSummit &&
       onSummit({
         ...ev,
@@ -44,7 +44,7 @@ export function UserGroupForm({value, onSummit}: UserGroupFormProps) {
       })
   }
 
-  const handleUserChange = ev => {
+  const handleUserChange = (ev) => {
     setUsers(ev)
   }
 

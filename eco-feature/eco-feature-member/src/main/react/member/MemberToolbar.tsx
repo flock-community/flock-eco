@@ -12,7 +12,7 @@ import {Search} from '@flock-community/flock-eco-core'
 import {MemberFilter} from './MemberFilter'
 import {Specification} from './MemberModel'
 
-const useStyles = makeStyles(theme =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
       paddingRight: theme.spacing(1),

@@ -21,7 +21,7 @@ export function ResourceClient<Out, In>(path: string) {
       method: 'GET',
     }
     return fetch(`${path}`, opts)
-      .then(it => validateResponse<Out[]>(it))
+      .then((it) => validateResponse<Out[]>(it))
       .then(checkResponse)
   }
 
@@ -35,7 +35,7 @@ export function ResourceClient<Out, In>(path: string) {
     const query = toQueryString(queryParameters)
 
     return fetch(`${path}?${query}`, opts)
-      .then(it => validateResponse<Out[]>(it))
+      .then((it) => validateResponse<Out[]>(it))
       .then(checkResponse)
   }
 
@@ -44,7 +44,7 @@ export function ResourceClient<Out, In>(path: string) {
       method: 'GET',
     }
     return fetch(`${path}/${id}`, opts)
-      .then(it => validateResponse<Out>(it))
+      .then((it) => validateResponse<Out>(it))
       .then(checkResponse)
   }
 
@@ -57,7 +57,7 @@ export function ResourceClient<Out, In>(path: string) {
       body: JSON.stringify(input),
     }
     return fetch(path, opts)
-      .then(it => validateResponse<Out>(it))
+      .then((it) => validateResponse<Out>(it))
       .then(checkResponse)
   }
 
@@ -70,7 +70,7 @@ export function ResourceClient<Out, In>(path: string) {
       body: JSON.stringify(input),
     }
     return fetch(`${path}/${id}`, opts)
-      .then(it => validateResponse<Out>(it))
+      .then((it) => validateResponse<Out>(it))
       .then(checkResponse)
   }
 
@@ -79,7 +79,7 @@ export function ResourceClient<Out, In>(path: string) {
       method: 'DELETE',
     }
     return fetch(`${path}/${id}`, opts)
-      .then(it => validateResponse<void>(it))
+      .then((it) => validateResponse<void>(it))
       .then(() => undefined)
   }
 

@@ -81,10 +81,11 @@ export function MemberForm({
     setState(value || schema.default())
   }, [value])
 
-  const resolverGroup = (code: string) => groups.find(it => it.code === code)
-  const resolveField = (key: string) => state.fields.find(it => it.key === key)
+  const resolverGroup = (code: string) => groups.find((it) => it.code === code)
+  const resolveField = (key: string) =>
+    state.fields.find((it) => it.key === key)
 
-  const handleChange = name => event => {
+  const handleChange = (name) => (event) => {
     const it = {
       ...state,
       [name]: event.target.value,
@@ -93,7 +94,7 @@ export function MemberForm({
     onChange(it)
   }
 
-  const handleChangeGroup = name => event => {
+  const handleChangeGroup = (name) => (event) => {
     const value = event.target.value
     const it = {
       ...state,
@@ -103,11 +104,11 @@ export function MemberForm({
     onChange(it)
   }
 
-  const handleChangeField = name => event => {
+  const handleChangeField = (name) => (event) => {
     const value = event.target.value
     const it = {
       ...state,
-      fields: fields.map(field => ({
+      fields: fields.map((field) => ({
         key: field.name,
         value:
           field.name === name
@@ -134,11 +135,11 @@ export function MemberForm({
           renderValue={(selected: string[]) =>
             selected
               .map(resolverGroup)
-              .map(it => it.name)
+              .map((it) => it.name)
               .join(',')
           }
         >
-          {groups.map(it => (
+          {groups.map((it) => (
             <MenuItem key={it.code} value={it.code}>
               <Checkbox checked={state.groups.indexOf(it.code) > -1} />
               <ListItemText primary={it.name} />
@@ -149,7 +150,7 @@ export function MemberForm({
     </Grid>
   )
 
-  const textField = field => (
+  const textField = (field) => (
     <TextField
       label={field.label}
       fullWidth
@@ -159,7 +160,7 @@ export function MemberForm({
     />
   )
 
-  const checkboxField = field => (
+  const checkboxField = (field) => (
     <FormControlLabel
       disabled={disabled || field.disabled}
       control={
@@ -173,7 +174,7 @@ export function MemberForm({
     />
   )
 
-  const singleSelectField = field => (
+  const singleSelectField = (field) => (
     <FormControl fullWidth disabled={disabled || field.disabled}>
       <InputLabel htmlFor={field.name}>{field.label}</InputLabel>
       <Select
@@ -181,7 +182,7 @@ export function MemberForm({
         input={<Input />}
         onChange={handleChangeField(field.name)}
       >
-        {field.options.map(it => (
+        {field.options.map((it) => (
           <MenuItem key={it} value={it}>
             <ListItemText primary={it} />
           </MenuItem>
@@ -190,7 +191,7 @@ export function MemberForm({
     </FormControl>
   )
 
-  const multiSelectField = field => (
+  const multiSelectField = (field) => (
     <FormControl fullWidth disabled={disabled || field.disabled}>
       <InputLabel htmlFor={field.name}>{field.label}</InputLabel>
       <Select
@@ -204,7 +205,7 @@ export function MemberForm({
         onChange={handleChangeField(field.name)}
         renderValue={(selected: string[]) => selected.join(',')}
       >
-        {field.options.map(it => (
+        {field.options.map((it) => (
           <MenuItem key={it} value={it}>
             <Checkbox
               checked={
@@ -221,7 +222,7 @@ export function MemberForm({
 
   const renderFieldsRow =
     fields &&
-    fields.map(it => (
+    fields.map((it) => (
       <Grid key={it.name} item xs={12}>
         {it.type === 'CHECKBOX' && checkboxField(it)}
         {it.type === 'TEXT' && textField(it)}
@@ -385,7 +386,7 @@ export function MemberForm({
               }}
             >
               <MenuItem value="">Unknown</MenuItem>
-              {countries.map(country => (
+              {countries.map((country) => (
                 <MenuItem
                   key={`country-${country.alpha2}`}
                   value={country.alpha2}
@@ -409,7 +410,7 @@ export function MemberForm({
               }}
             >
               <MenuItem value="">Unknown</MenuItem>
-              {languages.map(language => (
+              {languages.map((language) => (
                 <MenuItem
                   key={`language-${language.alpha2}`}
                   value={language.alpha2}

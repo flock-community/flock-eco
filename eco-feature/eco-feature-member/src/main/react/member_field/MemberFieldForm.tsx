@@ -26,7 +26,7 @@ export function MemberFieldForm({value, onChange}: MemberFieldFormProps) {
 
   const isSelect = ['SINGLE_SELECT', 'MULTI_SELECT'].includes(state.type)
 
-  const handleChange = name => event => {
+  const handleChange = (name) => (event) => {
     const value = {
       ...state,
       options: isSelect ? state.options : [],
@@ -85,7 +85,7 @@ export function MemberFieldForm({value, onChange}: MemberFieldFormProps) {
             fullWidth
             label="Options"
             value={state.options || ''}
-            onChange={ev => {
+            onChange={(ev) => {
               handleOptionsChange(ev.target.value.split(','))
             }}
           />

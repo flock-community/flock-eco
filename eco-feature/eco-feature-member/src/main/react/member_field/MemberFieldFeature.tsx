@@ -27,11 +27,11 @@ export function MemberFieldFeature({list}: MemberFieldFeatureProps) {
 
   const load = async () => {
     const res = await MemberFieldClient.all()
-    setState(prev => ({...prev, list: res.body}))
+    setState((prev) => ({...prev, list: res.body}))
   }
 
-  const rowClick = item => {
-    setState(prev => ({...prev, item}))
+  const rowClick = (item) => {
+    setState((prev) => ({...prev, item}))
   }
 
   const newClick = () => {
@@ -49,7 +49,7 @@ export function MemberFieldFeature({list}: MemberFieldFeatureProps) {
   }
 
   const handleFormClose = () => {
-    setState(prev => ({...prev, item: undefined}))
+    setState((prev) => ({...prev, item: undefined}))
   }
 
   const handleFormSave = async () => {
@@ -60,20 +60,20 @@ export function MemberFieldFeature({list}: MemberFieldFeatureProps) {
     } else {
       await MemberFieldClient.post(state.item)
     }
-    setState(prev => ({...prev, item: undefined}))
+    setState((prev) => ({...prev, item: undefined}))
     await load()
   }
 
   const handleFormDelete = async () => {
     if (state.item?.id) {
       await MemberFieldClient.delete(state.item?.id)
-      setState(prev => ({...prev, item: undefined}))
+      setState((prev) => ({...prev, item: undefined}))
       await load()
     }
   }
 
   const handleFormUpdate = (value: MemberField) => {
-    setState(prev => ({...prev, item: value}))
+    setState((prev) => ({...prev, item: value}))
   }
 
   return (

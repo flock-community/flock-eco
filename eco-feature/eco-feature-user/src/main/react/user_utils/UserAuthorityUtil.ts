@@ -23,7 +23,7 @@ class UserAuthorityUtil extends React.Component<
 
     return authority
       .split(',')
-      .map(it => UserAuthorityUtil.authorities.includes(it))
+      .map((it) => UserAuthorityUtil.authorities.includes(it))
       .reduce((acc, cur) => (acc ? acc : cur), false)
   }
 

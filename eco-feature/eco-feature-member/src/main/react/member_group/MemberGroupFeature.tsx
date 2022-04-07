@@ -24,7 +24,7 @@ export function MemberGroupFeature({list}: MemberGroupFeatureProps) {
     load()
   }, [])
 
-  const rowClick = item => {
+  const rowClick = (item) => {
     setState({...state, item})
   }
 
@@ -48,7 +48,7 @@ export function MemberGroupFeature({list}: MemberGroupFeatureProps) {
     } else {
       await MemberGroupClient.post(state.item)
     }
-    setState(prev => ({...prev, item: undefined}))
+    setState((prev) => ({...prev, item: undefined}))
     await load()
   }
 
@@ -56,17 +56,17 @@ export function MemberGroupFeature({list}: MemberGroupFeatureProps) {
     if (state.item?.id) {
       await MemberGroupClient.delete(state.item.id)
     }
-    setState(prev => ({...prev, item: undefined}))
+    setState((prev) => ({...prev, item: undefined}))
     await load()
   }
 
-  const handleFormUpdate = value => {
+  const handleFormUpdate = (value) => {
     setState({...state, item: value})
   }
   const load = () => {
     return fetch('/api/member_groups')
-      .then(res => res.json())
-      .then(json => {
+      .then((res) => res.json())
+      .then((json) => {
         setState({list: json})
       })
   }

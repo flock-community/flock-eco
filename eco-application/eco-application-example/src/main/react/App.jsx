@@ -39,7 +39,7 @@ export function App() {
   const hash = window.location.hash
   const component = Object.keys(features)
     .reduce((acc, cur) => acc.concat(features[cur]), [])
-    .find(it => `#${findComponentName(it)}` === hash)
+    .find((it) => `#${findComponentName(it)}` === hash)
 
   const [state, setState] = useState({
     drawer: !hash,
@@ -47,7 +47,7 @@ export function App() {
     component,
   })
 
-  const handleFeatureClick = component => {
+  const handleFeatureClick = (component) => {
     const hash = `#${findComponentName(component)}`
     setState({
       component,

@@ -14,7 +14,7 @@ import {Alert} from '@material-ui/lab'
 type PasswordGenerationOptions = passgarble.PasswordGenerationOptions
 type PasswordGenerator = passgarble.PasswordGenerator
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexDirection: 'column',

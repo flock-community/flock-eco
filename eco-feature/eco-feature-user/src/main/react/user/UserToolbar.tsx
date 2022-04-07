@@ -8,7 +8,7 @@ import AddIcon from '@material-ui/icons/Add'
 import {createStyles, makeStyles} from '@material-ui/core/styles'
 import {Search} from '@flock-community/flock-eco-core'
 
-const useStyles = makeStyles(theme =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
       paddingRight: theme.spacing(1),

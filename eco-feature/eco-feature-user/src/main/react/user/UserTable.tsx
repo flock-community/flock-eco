@@ -30,9 +30,11 @@ export function UserTable({
   })
 
   useEffect(() => {
-    UserClient.findAllUsers(search || '', state.page, size || 10).then(res => {
-      setState({...state, ...res})
-    })
+    UserClient.findAllUsers(search || '', state.page, size || 10).then(
+      (res) => {
+        setState({...state, ...res})
+      },
+    )
   }, [reload, search, size, state.page])
 
   const handleChangePage = (event, page) => {
@@ -40,7 +42,7 @@ export function UserTable({
     onChangePage?.(page)
   }
 
-  const handleRowClick = user => () => {
+  const handleRowClick = (user) => () => {
     onRowClick?.(user)
   }
 
@@ -55,7 +57,7 @@ export function UserTable({
         </TableRow>
       </TableHead>
       <TableBody>
-        {state.list.map(it => (
+        {state.list.map((it) => (
           <TableRow key={it.name} hover onClick={handleRowClick(it)}>
             <TableCell component="th" scope="row">
               {it.name}

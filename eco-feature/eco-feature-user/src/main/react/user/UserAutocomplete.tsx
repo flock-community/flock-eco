@@ -15,15 +15,15 @@ export function UserAutocomplete({value, onChange}: UserAutocompleteProps) {
   const [options, setOptions] = React.useState([])
 
   useEffect(() => {
-    UserClient.findAllUserByids(state || []).then(res => {
+    UserClient.findAllUserByids(state || []).then((res) => {
       setState(res)
     })
   }, [value])
 
   React.useEffect(() => {
-    UserClient.findAllUsers(inputValue, 0, 20).then(res => {
-      const ids = state.map(it => it.id)
-      setOptions(res.list.filter(it => !ids.includes(it.id)).slice(0, 10))
+    UserClient.findAllUsers(inputValue, 0, 20).then((res) => {
+      const ids = state.map((it) => it.id)
+      setOptions(res.list.filter((it) => !ids.includes(it.id)).slice(0, 10))
     })
   }, [state, inputValue])
 
@@ -36,15 +36,15 @@ export function UserAutocomplete({value, onChange}: UserAutocompleteProps) {
       filterSelectedOptions
       value={state}
       multiple
-      getOptionLabel={option =>
+      getOptionLabel={(option) =>
         option ? `${option.name} <${option.email}>` : ''
       }
-      renderInput={params => (
+      renderInput={(params) => (
         <TextField {...params} label="Combo box" variant="outlined" />
       )}
       onChange={(event, newValue) => {
         setState(newValue)
-        onChange?.(newValue.map(it => it.id))
+        onChange?.(newValue.map((it) => it.id))
       }}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue)

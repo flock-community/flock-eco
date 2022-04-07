@@ -17,16 +17,16 @@ class MailchimpTemplateTable extends React.Component {
 
   load() {
     fetch(`/api/mailchimp/templates`)
-      .then(res => {
+      .then((res) => {
         this.setState({
           count: parseInt(res.headers.get('x-total')),
         })
         return res.json()
       })
-      .then(json => {
+      .then((json) => {
         this.setState({list: json})
       })
-      .catch(e => {
+      .catch((e) => {
         this.setState({message: 'Cannot load members'})
       })
   }
@@ -46,11 +46,11 @@ class MailchimpTemplateTable extends React.Component {
         </TableHead>
 
         <TableBody>
-          {this.state.list.map(it => (
+          {this.state.list.map((it) => (
             <TableRow
               key={it.id}
               hover
-              onClick={event => this.handleRowClick(it)}
+              onClick={(event) => this.handleRowClick(it)}
             >
               <TableCell component="th" scope="row">
                 {it.name}

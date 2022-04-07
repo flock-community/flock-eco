@@ -21,7 +21,7 @@ import {
   WorkspaceTable,
 } from '@flock-community/flock-eco-feature-workspace/src/main/react/workspace'
 
-export const findComponentName = component =>
+export const findComponentName = (component) =>
   component.Naked ? component.Naked.name : component.name
 
 export const features = {

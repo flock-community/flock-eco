@@ -24,18 +24,18 @@ export function AppDrawer({open, onClick}) {
     })
   }
 
-  const handleClickItem = component => ev => {
+  const handleClickItem = (component) => (ev) => {
     onClick && onClick(component)
   }
 
-  const renderList = name => (
+  const renderList = (name) => (
     <>
       <ListItem>
         <Typography>
           <b>{name}</b>
         </Typography>
       </ListItem>
-      {features[name].map(component => (
+      {features[name].map((component) => (
         <ListItem
           button
           key={findComponentName(component)}

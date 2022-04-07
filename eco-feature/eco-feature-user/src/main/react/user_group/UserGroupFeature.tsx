@@ -11,7 +11,7 @@ import {TextField} from '@material-ui/core'
 import Paper from '@material-ui/core/Paper'
 import {UserGroup} from '../graphql/user'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     height: '100%',
     position: 'relative',
@@ -46,7 +46,7 @@ export function UserGroupFeature() {
     id: null,
   })
 
-  const handleSearchChange = ev => {
+  const handleSearchChange = (ev) => {
     setSearchState(ev.target.value)
   }
 
@@ -72,7 +72,7 @@ export function UserGroupFeature() {
     setReload(!reload)
   }
 
-  const handleFormUpdate = value => {
+  const handleFormUpdate = (value) => {
     this.setState({item: value})
   }
 

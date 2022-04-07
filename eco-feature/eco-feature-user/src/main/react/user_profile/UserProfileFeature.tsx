@@ -20,7 +20,7 @@ export function UserProfileFeature({value}: UserProfileFeatureProps) {
         authorities: !value.authorities ? [] : value.authorities,
       })
     }
-    UserClient.findUsersMe().then(json => {
+    UserClient.findUsersMe().then((json) => {
       setUser(json)
     })
   }, [])
@@ -37,7 +37,7 @@ export function UserProfileFeature({value}: UserProfileFeatureProps) {
         <Typography variant="h6">Authorities</Typography>
         {user.authorities.length > 0 && (
           <List disablePadding>
-            {user.authorities.map(it => (
+            {user.authorities.map((it) => (
               <ListItemText key={`profile-authority-${it}`}>{it}</ListItemText>
             ))}
           </List>

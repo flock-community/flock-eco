@@ -40,7 +40,7 @@ export const MemberFieldTable = ({list, onRowClick}: MemberTableProps) => {
         </TableRow>
       </TableHead>
       <TableBody>
-        {list.map(it => (
+        {list.map((it) => (
           <TableRow
             className={classes.row}
             key={it.name}
