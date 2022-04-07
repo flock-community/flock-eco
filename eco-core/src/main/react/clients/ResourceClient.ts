@@ -1,4 +1,4 @@
-import {validateResponse, ValidResponse} from './utils'
+import {QueryParameters, toQueryString, validateResponse, ValidResponse} from './utils'
 
 type ID = string
 
@@ -18,6 +18,18 @@ export function ResourceClient<Out, In>(path: string) {
     return fetch(`${path}`, opts)
       .then(it => validateResponse<Out[]>(it))
       .then(checkResponse)
+  }
+
+  const query = (queryParameters: QueryParameters): Promise<ValidResponse<Out[]>> => {
+    const opts = {
+      method: 'GET',
+    }
+
+    const query = toQueryString(queryParameters)
+
+    return fetch(`${path}?${query}`, opts)
+        .then(it => validateResponse<Out[]>(it))
+        .then(checkResponse)
   }
 
   const get = (id: ID): Promise<ValidResponse<Out>> => {
@@ -64,5 +76,5 @@ export function ResourceClient<Out, In>(path: string) {
       .then(() => undefined)
   }
 
-  return {all, get, post, put, delete: del}
+  return {all, query, get, post, put, delete: del}
 }
