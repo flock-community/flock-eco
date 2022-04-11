@@ -21,13 +21,13 @@ function post(url, body) {
 }
 
 function get(id) {
-  return fetch(`/api/members/${id}`).then(it => it.json())
+  return fetch(`/api/members/${id}`).then((it) => it.json())
 }
 
 function internalize(member) {
   return {
     ...member,
-    groups: member.groups.map(it => it.code),
+    groups: member.groups.map((it) => it.code),
   }
 }
 
@@ -54,9 +54,9 @@ export function MemberMerger({
 
   useEffect(() => {
     if (mergeMemberIds && mergeMemberIds.length > 1) {
-      Promise.all((mergeMemberIds || []).map(id => get(id)))
-        .then(it => it.map(internalize))
-        .then(mergeMembers => {
+      Promise.all((mergeMemberIds || []).map((id) => get(id)))
+        .then((it) => it.map(internalize))
+        .then((mergeMembers) => {
           const {id, ...newMember} = mergeMembers[0]
           setState({mergeMembers, newMember})
         })
@@ -65,7 +65,7 @@ export function MemberMerger({
 
   const merge = async () => {
     const res = await post('/api/members/merge', {
-      mergeMemberIds: state.mergeMembers.map(it => it.id),
+      mergeMemberIds: state.mergeMembers.map((it) => it.id),
       newMember: state.newMember,
     })
 
@@ -95,7 +95,7 @@ export function MemberMerger({
   const updateNewMember = (key, value) => {
     if (Object.keys(state.mergeMembers[0]).includes(key)) {
       // when key is not a field
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
         newMember: {
           ...prev.newMember,
@@ -104,7 +104,7 @@ export function MemberMerger({
       }))
     } else if (Object.keys(state.mergeMembers[0].fields).includes(key)) {
       // when key is a field
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
         newMember: {
           ...prev.newMember,
@@ -116,7 +116,7 @@ export function MemberMerger({
 
   if (state.mergeMembers && state.mergeMembers.length < 2) return null
 
-  const flattenedMembers = state.mergeMembers.map(it =>
+  const flattenedMembers = state.mergeMembers.map((it) =>
     Member.flattenFields(it),
   )
   const flattenedNewMember = Member.flattenFields(state.newMember)
@@ -135,16 +135,16 @@ export function MemberMerger({
       <DialogContent>
         <div style={{display: 'flex', flexDirection: 'column'}}>
           {Object.keys(flattenedMembers[0])
-            .filter(key => {
+            .filter((key) => {
               if (key === 'id') return false
               const labels = flattenedMembers.map(Member.getLabels)
-              return labels.some(it => it[key] !== labels[0][key])
+              return labels.some((it) => it[key] !== labels[0][key])
             })
-            .map(key => {
-              const values = flattenedMembers.map(it => it[key])
+            .map((key) => {
+              const values = flattenedMembers.map((it) => it[key])
               const labels = flattenedMembers
                 .map(Member.getLabels)
-                .map(it => it[key])
+                .map((it) => it[key])
 
               const valueWithLabels = values
                 .map((value, i) => [value, labels[i]])
@@ -162,7 +162,7 @@ export function MemberMerger({
                     aria-label={key}
                     name={key}
                     value={JSON.stringify(flattenedNewMember[key])}
-                    onChange={e =>
+                    onChange={(e) =>
                       updateNewMember(key, JSON.parse(e.target.value))
                     }
                   >

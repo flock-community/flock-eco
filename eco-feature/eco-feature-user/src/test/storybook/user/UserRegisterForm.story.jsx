@@ -13,7 +13,7 @@ storiesOf('User/UserRegisterForm', module)
         initialValues={{
           email: '123',
         }}
-        onSubmit={values => {
+        onSubmit={(values) => {
           console.log(values)
         }}
       />
@@ -27,7 +27,7 @@ storiesOf('User/UserRegisterForm', module)
         initialValues={{
           email: '123',
         }}
-        onSubmit={values => {
+        onSubmit={(values) => {
           console.log(values)
         }}
       />

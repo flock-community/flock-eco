@@ -8,7 +8,7 @@ function UserRegisterForm({initialValues, onSubmit}) {
     ...initialValues,
   }
 
-  const handleSubmit = value => {
+  const handleSubmit = (value) => {
     onSubmit && onSubmit(value)
   }
 

@@ -32,7 +32,7 @@ export const MemberGroupTable = ({list, onRowClick}: MemberGroupTableProps) => {
         </TableRow>
       </TableHead>
       <TableBody>
-        {list.map(it => (
+        {list.map((it) => (
           <TableRow
             className={classes.row}
             key={it.code}

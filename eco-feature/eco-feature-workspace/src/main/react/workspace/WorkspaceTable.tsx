@@ -77,7 +77,7 @@ export function WorkspaceTable({reload, size, onRowClick}: Props) {
     event: React.MouseEvent<HTMLButtonElement> | null,
     page: number,
   ) => {
-    setState(prev => ({...prev, page}))
+    setState((prev) => ({...prev, page}))
   }
 
   const handleRowClick = (workspace: WorkspaceTableQuery_list) => () => {
@@ -97,9 +97,9 @@ export function WorkspaceTable({reload, size, onRowClick}: Props) {
 
   const sortHandler = (key: string) => () => {
     if (state.order !== key) {
-      setState(prev => ({...prev, order: key}))
+      setState((prev) => ({...prev, order: key}))
     } else {
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
         direction: prev.direction !== 'asc' ? 'asc' : 'desc',
       }))
@@ -110,7 +110,7 @@ export function WorkspaceTable({reload, size, onRowClick}: Props) {
     <Table>
       <TableHead>
         <TableRow>
-          {fields.map(field => (
+          {fields.map((field) => (
             <TableCell key={field.key}>
               <TableSortLabel
                 active={state.order === field.key}
@@ -124,9 +124,9 @@ export function WorkspaceTable({reload, size, onRowClick}: Props) {
         </TableRow>
       </TableHead>
       <TableBody>
-        {data.list.map(it => (
+        {data.list.map((it) => (
           <TableRow key={it.name} hover onClick={handleRowClick(it)}>
-            {fields.map(field => (
+            {fields.map((field) => (
               <TableCell key={field.key}>{it[field.key]}</TableCell>
             ))}
           </TableRow>

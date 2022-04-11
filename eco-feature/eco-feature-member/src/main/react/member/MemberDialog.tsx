@@ -38,18 +38,18 @@ export function MemberDialog({id, open, onComplete}: MemberDialogProps) {
   useEffect(() => {
     if (id) {
       MemberClient.get(id)
-        .then(res =>
-          setState(prev => ({
+        .then((res) =>
+          setState((prev) => ({
             ...prev,
             item: {
               ...res.body,
-              groups: res.body.groups.map(it => it.code),
+              groups: res.body.groups.map((it) => it.code),
             },
             message: null,
           })),
         )
         .catch(() => {
-          setState(prev => ({
+          setState((prev) => ({
             ...prev,
             item: null,
             message: 'Cannot load member',
@@ -60,29 +60,29 @@ export function MemberDialog({id, open, onComplete}: MemberDialogProps) {
 
   useEffect(() => {
     fetch('/api/countries')
-      .then(res => res.json())
-      .then(json => setCountries(json))
+      .then((res) => res.json())
+      .then((json) => setCountries(json))
   }, [])
 
   useEffect(() => {
     fetch('/api/languages')
-      .then(res => res.json())
-      .then(json => setLanguages(json))
+      .then((res) => res.json())
+      .then((json) => setLanguages(json))
   }, [])
 
   useEffect(() => {
     fetch(`/api/member_groups`)
-      .then(res => {
+      .then((res) => {
         return res.json()
       })
-      .then(json => {
-        setState(prev => ({
+      .then((json) => {
+        setState((prev) => ({
           ...prev,
           groups: json,
         }))
       })
       .catch(() => {
-        setState(prev => ({
+        setState((prev) => ({
           ...prev,
           message: 'Cannot load groups',
         }))
@@ -91,17 +91,17 @@ export function MemberDialog({id, open, onComplete}: MemberDialogProps) {
 
   useEffect(() => {
     fetch(`/api/member_fields`)
-      .then(res => {
+      .then((res) => {
         return res.json()
       })
-      .then(json => {
-        setState(prev => ({
+      .then((json) => {
+        setState((prev) => ({
           ...prev,
           fields: json,
         }))
       })
       .catch(() => {
-        setState(prev => ({
+        setState((prev) => ({
           ...prev,
           message: 'Cannot load fields',
         }))
@@ -109,7 +109,7 @@ export function MemberDialog({id, open, onComplete}: MemberDialogProps) {
   }, [])
 
   const handleClose = () => {
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       item: null,
     }))
@@ -119,7 +119,7 @@ export function MemberDialog({id, open, onComplete}: MemberDialogProps) {
   const handleDelete = () => {
     MemberClient.delete(id).then(() => {
       onComplete && onComplete()
-      setState(prevState => ({
+      setState((prevState) => ({
         ...prevState,
         deleteOpen: false,
         item: null,
@@ -128,21 +128,21 @@ export function MemberDialog({id, open, onComplete}: MemberDialogProps) {
   }
 
   const handleDeleteOpen = () => {
-    setState(prevState => ({
+    setState((prevState) => ({
       ...prevState,
       deleteOpen: true,
     }))
   }
 
   const handleDeleteClose = () => {
-    setState(prevState => ({
+    setState((prevState) => ({
       ...prevState,
       deleteOpen: false,
     }))
   }
 
-  const handleFormUpdate = value => {
-    setState(prevState => ({
+  const handleFormUpdate = (value) => {
+    setState((prevState) => ({
       ...prevState,
       item: value,
     }))
@@ -153,13 +153,13 @@ export function MemberDialog({id, open, onComplete}: MemberDialogProps) {
       MemberClient.put(id, state.item)
         .then(() => {
           onComplete && onComplete()
-          setState(prevState => ({
+          setState((prevState) => ({
             ...prevState,
             item: null,
           }))
         })
-        .catch(e => {
-          setState(prevState => ({
+        .catch((e) => {
+          setState((prevState) => ({
             ...prevState,
             item: null,
             message: 'Cannot load fields',
@@ -169,13 +169,13 @@ export function MemberDialog({id, open, onComplete}: MemberDialogProps) {
       MemberClient.post(state.item)
         .then(() => {
           onComplete && onComplete()
-          setState(prevState => ({
+          setState((prevState) => ({
             ...prevState,
             item: null,
           }))
         })
-        .catch(e => {
-          setState(prevState => ({
+        .catch((e) => {
+          setState((prevState) => ({
             ...prevState,
             item: null,
             message: 'Cannot load fields',
@@ -185,7 +185,7 @@ export function MemberDialog({id, open, onComplete}: MemberDialogProps) {
   }
 
   const handleCloseSnackbar = () => {
-    setState(prevState => ({
+    setState((prevState) => ({
       ...prevState,
       message: null,
     }))

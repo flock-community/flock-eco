@@ -11,7 +11,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import Typography from '@material-ui/core/Typography'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   closeButton: {
     position: 'absolute',
     right: theme.spacing(1),

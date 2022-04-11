@@ -23,8 +23,8 @@ export function PageableClient<T>(path: string) {
     const query = toQueryString({...pageable, ...queryParameters})
 
     return fetch(`${path}?${query}`, opts)
-      .then(it => validateResponse<T[]>(it))
-      .then(it => {
+      .then((it) => validateResponse<T[]>(it))
+      .then((it) => {
         if (it) {
           const total = it?.headers.get('x-total')
           return {

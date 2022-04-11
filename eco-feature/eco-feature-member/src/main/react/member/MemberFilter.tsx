@@ -19,7 +19,7 @@ import FilterListIcon from '@material-ui/icons/FilterList'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import {Specification} from './MemberModel'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   popoverContent: {
     width: 250,
     margin: theme.spacing(2),
@@ -60,7 +60,7 @@ export function MemberFilter({filter, onChange}: MemberFilterProps) {
   }, [])
 
   useEffect(() => {
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       filter: filter || init,
     }))
@@ -68,50 +68,50 @@ export function MemberFilter({filter, onChange}: MemberFilterProps) {
 
   useEffect(() => {
     fetch(`/api/member_groups`)
-      .then(res => {
+      .then((res) => {
         return res.json()
       })
-      .then(json => {
-        setState(state => ({
+      .then((json) => {
+        setState((state) => ({
           ...state,
           groups: json,
         }))
       })
   }, [])
 
-  const handleGroupsChange = event => {
+  const handleGroupsChange = (event) => {
     const filter = {
       ...state.filter,
       groups: event.target.value,
     }
-    setState(state => ({
+    setState((state) => ({
       ...state,
       filter,
     }))
     onChange?.(filter)
   }
 
-  const handleStatusesChange = event => {
+  const handleStatusesChange = (event) => {
     const filter = {
       ...state.filter,
       statuses: event.target.value,
     }
-    setState(state => ({
+    setState((state) => ({
       ...state,
       filter,
     }))
     onChange?.(filter)
   }
 
-  const handleFilterClick = event => {
-    setState(state => ({
+  const handleFilterClick = (event) => {
+    setState((state) => ({
       ...state,
       anchorEl: event.currentTarget,
     }))
   }
 
   const handleFilterClose = () => {
-    setState(state => ({
+    setState((state) => ({
       ...state,
       anchorEl: null,
     }))
@@ -148,14 +148,14 @@ export function MemberFilter({filter, onChange}: MemberFilterProps) {
                   input={<Input id="select-multiple-checkbox" />}
                   renderValue={(selected: string[]) =>
                     selected
-                      .map(key =>
-                        state.groups.find(group => group.code === key),
+                      .map((key) =>
+                        state.groups.find((group) => group.code === key),
                       )
-                      .map(group => group.name)
+                      .map((group) => group.name)
                       .join(', ')
                   }
                 >
-                  {state.groups.map(group => (
+                  {state.groups.map((group) => (
                     <MenuItem key={group.code} value={group.code}>
                       <Checkbox
                         checked={state.filter.groups.indexOf(group.code) > -1}
@@ -178,7 +178,7 @@ export function MemberFilter({filter, onChange}: MemberFilterProps) {
                   input={<Input id="select-multiple-checkbox" />}
                   renderValue={(selected: string[]) => selected.join(', ')}
                 >
-                  {state.statuses.map(status => (
+                  {state.statuses.map((status) => (
                     <MenuItem key={status} value={status}>
                       <Checkbox
                         checked={state.filter.statuses.indexOf(status) > -1}

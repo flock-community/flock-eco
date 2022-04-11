@@ -16,25 +16,13 @@ import DeleteIcon from '@material-ui/icons/Delete'
 
 const schema = Yup.object()
   .shape({
-    name: Yup.string()
-      .required()
-      .default('')
-      .defined(),
-    host: Yup.string()
-      .required()
-      .default('')
-      .defined(),
+    name: Yup.string().required().default('').defined(),
+    host: Yup.string().required().default('').defined(),
     variables: Yup.array(
       Yup.object()
         .shape({
-          key: Yup.string()
-            .required()
-            .default('')
-            .defined(),
-          value: Yup.string()
-            .label('Value')
-            .default('')
-            .defined(),
+          key: Yup.string().required().default('').defined(),
+          value: Yup.string().label('Value').default('').defined(),
         })
         .defined(),
     )
@@ -58,53 +46,52 @@ export function WorkspaceForm({value, onSubmit}: Props) {
     onSubmit && onSubmit(input)
   }
 
-  const renderVariables = (props: FormikProps<SchemaType>) => (
-    helpers: ArrayHelpers,
-  ) => {
-    const addVariable = () =>
-      helpers.insert(props.values.variables.length, {key: '', value: ''})
-    const removeVariable = (index: number) => () => helpers.remove(index)
-    return (
-      <>
-        <Grid container spacing={1} alignItems="center">
-          <Grid item xs>
-            <Typography variant="h6">Variables</Typography>
-          </Grid>
-          <Grid item>
-            <IconButton color="primary" onClick={addVariable}>
-              <AddIcon />
-            </IconButton>
-          </Grid>
-        </Grid>
-
-        {props.values?.variables?.map(
-          (user: SchemaType['variables'], index: number) => (
-            <Grid key={index} container spacing={1}>
-              <Grid item xs>
-                <Field
-                  component={TextField}
-                  fullWidth
-                  name={`variables.${index}.key`}
-                />
-              </Grid>
-              <Grid item xs>
-                <Field
-                  component={TextField}
-                  fullWidth
-                  name={`variables.${index}.value`}
-                />
-              </Grid>
-              <Grid item>
-                <IconButton color="primary" onClick={removeVariable(index)}>
-                  <DeleteIcon />
-                </IconButton>
-              </Grid>
+  const renderVariables =
+    (props: FormikProps<SchemaType>) => (helpers: ArrayHelpers) => {
+      const addVariable = () =>
+        helpers.insert(props.values.variables.length, {key: '', value: ''})
+      const removeVariable = (index: number) => () => helpers.remove(index)
+      return (
+        <>
+          <Grid container spacing={1} alignItems="center">
+            <Grid item xs>
+              <Typography variant="h6">Variables</Typography>
             </Grid>
-          ),
-        )}
-      </>
-    )
-  }
+            <Grid item>
+              <IconButton color="primary" onClick={addVariable}>
+                <AddIcon />
+              </IconButton>
+            </Grid>
+          </Grid>
+
+          {props.values?.variables?.map(
+            (user: SchemaType['variables'], index: number) => (
+              <Grid key={index} container spacing={1}>
+                <Grid item xs>
+                  <Field
+                    component={TextField}
+                    fullWidth
+                    name={`variables.${index}.key`}
+                  />
+                </Grid>
+                <Grid item xs>
+                  <Field
+                    component={TextField}
+                    fullWidth
+                    name={`variables.${index}.value`}
+                  />
+                </Grid>
+                <Grid item>
+                  <IconButton color="primary" onClick={removeVariable(index)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </Grid>
+              </Grid>
+            ),
+          )}
+        </>
+      )
+    }
 
   const renderForm = (props: FormikProps<SchemaType>) => (
     <Form id={WORKSPACE_FORM_ID}>
