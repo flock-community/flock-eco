@@ -7,7 +7,7 @@ import IconButton from '@material-ui/core/IconButton'
 import AddIcon from '@material-ui/icons/Add'
 import {createStyles, lighten, makeStyles} from '@material-ui/core/styles'
 
-const useStyles = makeStyles(theme =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
       paddingLeft: theme.spacing(2),

@@ -17,7 +17,7 @@ import {Snackbar} from '@material-ui/core'
 import {UserGroup} from '../graphql/user'
 import {DialogTitleClosable} from '@flock-community/flock-eco-core'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   closeButton: {
     position: 'absolute',
     right: theme.spacing(1),
@@ -42,8 +42,8 @@ export function UserGroupDialog({open, id, onComplete}: UserGroupDialogProps) {
   useEffect(() => {
     if (id !== null) {
       UserGroupClient.get(id)
-        .then(userGroup => setState(userGroup.body))
-        .catch(err => {
+        .then((userGroup) => setState(userGroup.body))
+        .catch((err) => {
           setMessage(err.message)
         })
     } else {
@@ -55,21 +55,21 @@ export function UserGroupDialog({open, id, onComplete}: UserGroupDialogProps) {
     setOpenDelete(false)
   }
 
-  const handleConfirmDelete = ev => {
+  const handleConfirmDelete = (ev) => {
     setOpenDelete(true)
   }
 
-  const handleSubmit = value => {
+  const handleSubmit = (value) => {
     if (!value.id) {
       UserGroupClient.post(value)
         .then(() => onComplete && onComplete())
-        .catch(err => {
+        .catch((err) => {
           setMessage(err.message)
         })
     } else {
       UserGroupClient.put(state.id, value)
         .then(() => onComplete && onComplete())
-        .catch(err => {
+        .catch((err) => {
           setMessage(err.message)
         })
     }
@@ -81,7 +81,7 @@ export function UserGroupDialog({open, id, onComplete}: UserGroupDialogProps) {
         onComplete && onComplete()
         setOpenDelete(false)
       })
-      .catch(err => {
+      .catch((err) => {
         setMessage(err.message)
       })
   }

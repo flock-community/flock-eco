@@ -18,7 +18,7 @@ export function UserFeature({enablePassword}: UserFeatureProps) {
 
   const [reload, setReload] = useState(false)
 
-  const handleRowClick = item => {
+  const handleRowClick = (item) => {
     setDialogState({
       open: true,
       id: item.id,

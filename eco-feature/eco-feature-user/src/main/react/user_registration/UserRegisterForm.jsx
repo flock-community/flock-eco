@@ -26,7 +26,7 @@ function UserRegisterForm({initialValues, onSubmit}) {
       .oneOf([Yup.ref('password')], 'Password does not match'),
   })
 
-  const handleSubmit = value => {
+  const handleSubmit = (value) => {
     onSubmit && onSubmit(value)
   }
 

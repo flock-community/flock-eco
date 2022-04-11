@@ -53,7 +53,7 @@ type SearchProps = {
 export function Search({onChange}: SearchProps) {
   const classes = useStyles()
 
-  const handleChange: React.ChangeEventHandler<HTMLInputElement> = ev => {
+  const handleChange: React.ChangeEventHandler<HTMLInputElement> = (ev) => {
     onChange?.(ev.target.value)
   }
   return (

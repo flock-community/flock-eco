@@ -16,16 +16,8 @@ import {WorkspaceRoleClient} from './WorkspaceRoleClient'
 const schema = yup
   .object()
   .shape({
-    reference: yup
-      .string()
-      .required()
-      .default('')
-      .defined(),
-    role: yup
-      .string()
-      .required()
-      .default('')
-      .defined(),
+    reference: yup.string().required().default('').defined(),
+    role: yup.string().required().default('').defined(),
   })
   .defined()
 
@@ -45,7 +37,7 @@ export function WorkspaceUsersForm({id, onComplete}: Props) {
   const [roles, setRoles] = useState<string[]>([])
 
   useEffect(() => {
-    WorkspaceRoleClient.all().then(res => setRoles(res.body))
+    WorkspaceRoleClient.all().then((res) => setRoles(res.body))
   }, [])
 
   const handleSubmit = (values: Values) => {
@@ -69,7 +61,7 @@ export function WorkspaceUsersForm({id, onComplete}: Props) {
           <FormControl fullWidth>
             <InputLabel>Role</InputLabel>
             <Field component={Select} name="role">
-              {roles?.map(role => (
+              {roles?.map((role) => (
                 <MenuItem value={role}>{role}</MenuItem>
               ))}
             </Field>

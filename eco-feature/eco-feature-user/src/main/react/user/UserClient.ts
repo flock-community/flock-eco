@@ -8,18 +8,18 @@ function internalize<T>(res): Promise<T> {
       return res.json()
     }
   } else {
-    return res.text().then(text => {
+    return res.text().then((text) => {
       throw new Error(text)
     })
   }
 }
 
 export function findAllAuthorities() {
-  return fetch('/api/authorities').then(res => internalize<string[]>(res))
+  return fetch('/api/authorities').then((res) => internalize<string[]>(res))
 }
 
 export function findUsersMe() {
-  return fetch(`/api/users/me`).then(res => internalize<User>(res))
+  return fetch(`/api/users/me`).then((res) => internalize<User>(res))
 }
 
 export function findAllUsers(
@@ -28,8 +28,8 @@ export function findAllUsers(
   size,
 ): Promise<{list: User[]; count: number}> {
   return fetch(`/api/users?search=${search}&page=${page}&size=${size}`).then(
-    res =>
-      internalize<User[]>(res).then(json => ({
+    (res) =>
+      internalize<User[]>(res).then((json) => ({
         list: json,
         count: parseInt(res.headers.get('x-total')),
       })),
@@ -44,14 +44,16 @@ export function findAllUserByids(ids) {
     },
     body: JSON.stringify(ids),
   }
-  return fetch(`/api/users/search`, opts).then(res => internalize<User[]>(res))
+  return fetch(`/api/users/search`, opts).then((res) =>
+    internalize<User[]>(res),
+  )
 }
 
 export function findUserByid(id) {
   const opts = {
     method: 'GET',
   }
-  return fetch(`/api/users/${id}`, opts).then(res => internalize<User>(res))
+  return fetch(`/api/users/${id}`, opts).then((res) => internalize<User>(res))
 }
 
 export function createUser(item) {
@@ -62,7 +64,7 @@ export function createUser(item) {
     },
     body: JSON.stringify(item),
   }
-  return fetch('/api/users', opts).then(res => internalize<User>(res))
+  return fetch('/api/users', opts).then((res) => internalize<User>(res))
 }
 
 export function updateUser(id, item) {
@@ -73,7 +75,7 @@ export function updateUser(id, item) {
     },
     body: JSON.stringify(item),
   }
-  return fetch(`/api/users/${id}`, opts).then(res => internalize<User>(res))
+  return fetch(`/api/users/${id}`, opts).then((res) => internalize<User>(res))
 }
 
 export function deleteUser(id) {
@@ -83,14 +85,14 @@ export function deleteUser(id) {
       'Content-Type': 'application/json; charset=utf-8',
     },
   }
-  return fetch(`/api/users/${id}`, opts).then(res => internalize<User>(res))
+  return fetch(`/api/users/${id}`, opts).then((res) => internalize<User>(res))
 }
 
 export function resetUserPassword(id) {
   const opts = {
     method: 'PUT',
   }
-  return fetch(`/api/users/${id}/reset-password`, opts).then(res =>
+  return fetch(`/api/users/${id}/reset-password`, opts).then((res) =>
     internalize<User>(res),
   )
 }

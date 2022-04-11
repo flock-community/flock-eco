@@ -18,7 +18,7 @@ export function MemberGroupForm({value, onChange}: MemberGroupProps) {
     ...value,
   })
 
-  const handleChange = name => event => {
+  const handleChange = (name) => (event) => {
     const value = {
       ...state,
       [name]: event.target.value,

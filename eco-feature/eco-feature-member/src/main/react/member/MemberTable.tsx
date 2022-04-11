@@ -17,7 +17,7 @@ import TableContainer from '@material-ui/core/TableContainer'
 import {Direction, Specification} from './MemberModel'
 
 export const QUERY = gql`
-  query(
+  query (
     $search: String!
     $statuses: [MemberStatus!]
     $groups: [String!]
@@ -106,21 +106,21 @@ export function MemberTable({
 
   useEffect(() => {
     refetch()
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       selectedIds: [],
     }))
   }, [refresh])
 
   useEffect(() => {
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       page: page || 0,
     }))
   }, [page])
 
   useEffect(() => {
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       page: 0,
       specification: specification || initSpecification,
@@ -135,7 +135,7 @@ export function MemberTable({
     if (onRowClick) onRowClick(event)
   }
 
-  const handleChangeSort = id => event => {
+  const handleChangeSort = (id) => (event) => {
     const toggleDirection = () => (state.direction === 'desc' ? 'asc' : 'desc')
     setState({
       ...state,
@@ -145,7 +145,7 @@ export function MemberTable({
     })
   }
 
-  const isSelected = id => state.selectedIds.indexOf(id) !== -1
+  const isSelected = (id) => state.selectedIds.indexOf(id) !== -1
 
   const onCheckboxChange = (checked: boolean, id: string) => {
     if (checked) {
@@ -156,7 +156,7 @@ export function MemberTable({
       })
       onRowSelect?.(selectedIds)
     } else {
-      const selectedIds = state.selectedIds.filter(it => it !== id)
+      const selectedIds = state.selectedIds.filter((it) => it !== id)
       setState({
         ...state,
         selectedIds,
@@ -186,7 +186,7 @@ export function MemberTable({
           <TableHead>
             <TableRow>
               <TableCell style={{width: 25}} padding="checkbox" />
-              {rows.map(row => (
+              {rows.map((row) => (
                 <TableCell key={row.id}>
                   <TableSortLabel
                     active={state.order === row.id}
@@ -201,7 +201,7 @@ export function MemberTable({
           </TableHead>
 
           <TableBody>
-            {data.list.map(it => (
+            {data.list.map((it) => (
               <TableRow
                 key={it.id}
                 hover
@@ -210,24 +210,24 @@ export function MemberTable({
               >
                 <TableCell style={{width: 25}} padding="checkbox">
                   <Checkbox
-                    onChange={e => onCheckboxChange(e.target.checked, it.id)}
+                    onChange={(e) => onCheckboxChange(e.target.checked, it.id)}
                     checked={isSelected(it.id)}
                   />
                 </TableCell>
                 <TableCell
-                  onClick={_ => handleRowClick(it)}
+                  onClick={(_) => handleRowClick(it)}
                   component="th"
                   scope="row"
                 >
                   {Member.toName(it)}
                 </TableCell>
-                <TableCell onClick={_ => handleRowClick(it)}>
+                <TableCell onClick={(_) => handleRowClick(it)}>
                   {it.email}
                 </TableCell>
-                <TableCell onClick={_ => handleRowClick(it)}>
+                <TableCell onClick={(_) => handleRowClick(it)}>
                   {it.created}
                 </TableCell>
-                <TableCell onClick={_ => handleRowClick(it)}>
+                <TableCell onClick={(_) => handleRowClick(it)}>
                   {it.status}
                 </TableCell>
               </TableRow>

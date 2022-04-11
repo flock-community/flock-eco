@@ -41,12 +41,12 @@ export function UserGroupTable({
     setPage(page)
   }
 
-  const handleRowClick = item => () => {
+  const handleRowClick = (item) => () => {
     onRowClick?.(item)
   }
 
   const loadList = () => {
-    return UserGroupClient.findAllByPage(pageable).then(data => {
+    return UserGroupClient.findAllByPage(pageable).then((data) => {
       setList(data.list)
       setCount(data.count)
     })
@@ -62,7 +62,7 @@ export function UserGroupTable({
         </TableRow>
       </TableHead>
       <TableBody>
-        {list.map(it => (
+        {list.map((it) => (
           <TableRow key={it.name} hover onClick={handleRowClick(it)}>
             <TableCell component="th" scope="row">
               {it.name}

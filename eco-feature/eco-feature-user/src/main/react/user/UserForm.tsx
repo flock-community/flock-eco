@@ -40,7 +40,9 @@ export function UserForm({value, onSummit, ...props}) {
       setState({
         ...init,
         ...value,
-        authorities: authorities.map(it => value.authorities.indexOf(it) >= 0),
+        authorities: authorities.map(
+          (it) => value.authorities.indexOf(it) >= 0,
+        ),
       })
     } else {
       setState({
@@ -50,13 +52,13 @@ export function UserForm({value, onSummit, ...props}) {
     }
   }, [value, authorities])
 
-  const handleSubmit = value => {
+  const handleSubmit = (value) => {
     onSummit &&
       onSummit({
         ...value,
         authorities: authorities
           .map((it, index) => (value.authorities[index] ? it : null))
-          .filter(it => it !== null),
+          .filter((it) => it !== null),
       })
   }
 
@@ -92,7 +94,7 @@ export function UserForm({value, onSummit, ...props}) {
           <Grid item xs={12}>
             <FieldArray
               name="authorities"
-              render={arrayHelpers => (
+              render={(arrayHelpers) => (
                 <FormControl component="fieldset">
                   <FormLabel component="legend">Authorities</FormLabel>
                   <FormGroup>

@@ -38,7 +38,7 @@ export function WorkspaceDialog({id, open, onComplete}: Props) {
   }, [id])
 
   const loadState = (id: string) => {
-    WorkspaceClient.get(id).then(workspace => {
+    WorkspaceClient.get(id).then((workspace) => {
       setState(workspace.body)
     })
   }

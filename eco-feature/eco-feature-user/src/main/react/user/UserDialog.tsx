@@ -17,7 +17,7 @@ import {Snackbar} from '@material-ui/core'
 import {User} from '../graphql/user'
 import {DialogTitleClosable} from '@flock-community/flock-eco-core'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     margin: 0,
     padding: theme.spacing(2),
@@ -53,8 +53,8 @@ export function UserDialog({
   useEffect(() => {
     if (id !== null) {
       UserClient.findUserByid(id)
-        .then(res => setState(res))
-        .catch(err => {
+        .then((res) => setState(res))
+        .catch((err) => {
           setMessage(err.message)
         })
     } else {
@@ -65,18 +65,18 @@ export function UserDialog({
   useEffect(() => {
     UserClient.findAllAuthorities()
       .then(setAuthorities)
-      .catch(err => {
+      .catch((err) => {
         setMessage(err.message)
       })
   }, [])
 
   const handleDelete = () => {
     UserClient.deleteUser(state.id)
-      .then(res => {
+      .then((res) => {
         onComplete?.()
         setOpenDelete(false)
       })
-      .catch(err => {
+      .catch((err) => {
         setMessage(err.message)
       })
   }
@@ -93,10 +93,10 @@ export function UserDialog({
     setMessage(null)
   }
 
-  const handleReset = ev => {
+  const handleReset = (ev) => {
     UserClient.resetUserPassword(state.id)
-      .then(res => onComplete?.())
-      .catch(err => {
+      .then((res) => onComplete?.())
+      .catch((err) => {
         setMessage(err.message)
       })
   }
@@ -105,17 +105,17 @@ export function UserDialog({
     onComplete?.()
   }
 
-  const handleSubmit = value => {
+  const handleSubmit = (value) => {
     if (value.id) {
       UserClient.updateUser(value.id, value)
         .then(() => onComplete?.())
-        .catch(err => {
+        .catch((err) => {
           setMessage(err.message)
         })
     } else {
       UserClient.createUser(value)
         .then(() => onComplete?.())
-        .catch(err => {
+        .catch((err) => {
           setMessage(err.message)
         })
     }

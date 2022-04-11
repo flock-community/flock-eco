@@ -44,7 +44,7 @@ export function MemberFeature({search}: MemberFeatureProps) {
     selectedIds: [],
   })
 
-  const handleRowClick = item => {
+  const handleRowClick = (item) => {
     setState({
       ...state,
       item,
@@ -52,7 +52,7 @@ export function MemberFeature({search}: MemberFeatureProps) {
     })
   }
 
-  const handleRowSelect = selectedIds => {
+  const handleRowSelect = (selectedIds) => {
     setState({
       ...state,
       selectedIds,
@@ -60,15 +60,15 @@ export function MemberFeature({search}: MemberFeatureProps) {
   }
 
   const handleNewClick = () => {
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       item: null,
       openDialog: true,
     }))
   }
 
-  const handleFilterChange = filter => {
-    setState(prev => ({
+  const handleFilterChange = (filter) => {
+    setState((prev) => ({
       ...prev,
       page: 0,
       specification: {
@@ -79,7 +79,7 @@ export function MemberFeature({search}: MemberFeatureProps) {
   }
 
   const handleComplete = () => {
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       item: null,
       openDialog: false,
@@ -89,20 +89,20 @@ export function MemberFeature({search}: MemberFeatureProps) {
   }
 
   const handleMergeComplete = () =>
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       mergeMemberIds: null,
       refresh: !prev.refresh,
     }))
 
-  const mergeMembers = mergeMemberIds =>
-    setState(prev => ({
+  const mergeMembers = (mergeMemberIds) =>
+    setState((prev) => ({
       ...prev,
       mergeMemberIds,
     }))
 
   const handleMergerCancel = () =>
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       mergeMemberIds: null,
     }))

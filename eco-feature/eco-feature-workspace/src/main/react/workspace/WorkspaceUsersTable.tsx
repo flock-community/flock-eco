@@ -41,15 +41,15 @@ export function WorkspaceUserTable({value, onRowClick}: Props) {
     <Table>
       <TableHead>
         <TableRow>
-          {fields.map(field => (
+          {fields.map((field) => (
             <TableCell key={field.key}>{field.label}</TableCell>
           ))}
         </TableRow>
       </TableHead>
       <TableBody>
-        {list.map(it => (
+        {list.map((it) => (
           <TableRow key={it.name} hover onClick={handleRowClick(it.id)}>
-            {fields.map(field => (
+            {fields.map((field) => (
               <TableCell key={field.key}>{it[field.key]}</TableCell>
             ))}
           </TableRow>

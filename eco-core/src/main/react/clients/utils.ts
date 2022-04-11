@@ -10,13 +10,13 @@ export const validateResponse = <T>(
     if (res.status === 204) {
       return Promise.resolve(undefined)
     }
-    return res.json().then(body => ({
+    return res.json().then((body) => ({
       status: res.status,
       headers: res.headers,
       body,
     }))
   }
-  return res.text().then(text => {
+  return res.text().then((text) => {
     throw new Error(text)
   })
 }
