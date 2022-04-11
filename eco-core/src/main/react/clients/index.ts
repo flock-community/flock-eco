@@ -16,5 +16,4 @@ export {
   toQueryString,
 }
 
-// FIXME: change to "export type" after updating Prettier
-export {ValidResponse, QueryParameters}
+export type {ValidResponse, QueryParameters}
