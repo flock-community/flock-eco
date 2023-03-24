@@ -14,13 +14,13 @@ Install Nvm
 mvn clean install
 nvm use
 npm install
-npm run boostrap
+npm run bootstrap
 ```
 
 ## start example app
 ```
-cd ./eco-application/eco-application-example
-mvn sprint-boot
+./start-example-kotlin.sh
+./start-example-react.sh
 ```
 
 ## flock-eco-member
