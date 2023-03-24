@@ -23,6 +23,10 @@ npm run bootstrap
 ./start-example-react.sh
 ```
 
+## Publish
+```
+./eco-scripts/prepare.sh *.*.*
+```
 ## flock-eco-member
 
 Member management
