@@ -27,12 +27,13 @@ export function findAllUsers(
   page,
   size,
 ): Promise<{list: User[]; count: number}> {
-  return fetch(`/api/users?search=${search}&page=${page}&size=${size}`).then(
-    (res) =>
-      internalize<User[]>(res).then((json) => ({
-        list: json,
-        count: parseInt(res.headers.get('x-total')),
-      })),
+  return fetch(
+    `/api/users?search=${search}&page=${page}&size=${size}&sort=name,ignoreCase`,
+  ).then((res) =>
+    internalize<User[]>(res).then((json) => ({
+      list: json,
+      count: parseInt(res.headers.get('x-total')),
+    })),
   )
 }
 
