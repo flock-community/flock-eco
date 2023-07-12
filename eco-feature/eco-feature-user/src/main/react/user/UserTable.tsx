@@ -57,7 +57,7 @@ export function UserTable({
       </TableHead>
       <TableBody>
         {state.list.map((it) => (
-          <TableRow key={it.name} hover onClick={handleRowClick(it)}>
+          <TableRow key={it.id} hover onClick={handleRowClick(it)}>
             <TableCell component="th" scope="row">
               {it.name}
             </TableCell>
