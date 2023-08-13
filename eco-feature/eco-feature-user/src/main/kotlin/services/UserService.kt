@@ -62,8 +62,7 @@ class UserService(
     fun searchByNameOrEmail(name: String, email: String, pageable: Pageable) = userRepository
         .findAllByNameIgnoreCaseContainingOrEmailIgnoreCaseContaining(name, email, pageable)
 
-    fun findByEmail(email: String) = userRepository.findByEmail(email)
-        .toNullable()
+    fun findByEmail(email: String) = userRepository.findByEmailIgnoreCase(email).toNullable()
 
     private fun UserForm.toUser() = User(
         name = this.name,
