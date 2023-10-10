@@ -2,6 +2,9 @@ package community.flock.eco.feature.mailchimp.clients
 
 import community.flock.eco.feature.mailchimp.MailchimpConfiguration
 import community.flock.eco.feature.mailchimp.model.MailchimpMember
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -10,9 +13,6 @@ import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebCl
 import org.springframework.boot.test.context.SpringBootTest
 import java.util.*
 import javax.transaction.Transactional
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
-import kotlin.test.assertNull
 
 @SpringBootTest(classes = [MailchimpConfiguration::class])
 @AutoConfigureTestDatabase

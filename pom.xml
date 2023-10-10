@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.flock-community.flock-eco</groupId>
+    <groupId>community.flock.flock-eco</groupId>
     <artifactId>flock-eco-parent</artifactId>
     <version>2.7.11</version>
     <packaging>pom</packaging>
@@ -63,6 +63,12 @@
             </dependency>
             <dependency>
                 <groupId>com.graphql-java-kickstart</groupId>
+                <artifactId>graphql-spring-boot-test-autoconfigure</artifactId>
+                <version>7.0.1</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.graphql-java-kickstart</groupId>
                 <artifactId>graphiql-spring-boot-starter</artifactId>
                 <version>11.1.0</version>
             </dependency>
@@ -101,108 +107,108 @@
 
             <!-- Flock eco-->
             <dependency>
-                <groupId>com.github.flock-community.flock-eco</groupId>
+                <groupId>community.flock.flock-eco</groupId>
                 <artifactId>flock-eco-core</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.flock-community.flock-eco</groupId>
+                <groupId>community.flock.flock-eco</groupId>
                 <artifactId>flock-eco-iso-country</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.flock-community.flock-eco</groupId>
+                <groupId>community.flock.flock-eco</groupId>
                 <artifactId>flock-eco-iso-language</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.flock-community.flock-eco</groupId>
+                <groupId>community.flock.flock-eco</groupId>
                 <artifactId>flock-eco-cloud-aws</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.flock-community.flock-eco</groupId>
+                <groupId>community.flock.flock-eco</groupId>
                 <artifactId>flock-eco-cloud-gcp</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.flock-community.flock-eco</groupId>
+                <groupId>community.flock.flock-eco</groupId>
                 <artifactId>flock-eco-cloud-azure</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.flock-community.flock-eco</groupId>
+                <groupId>community.flock.flock-eco</groupId>
                 <artifactId>flock-eco-cloud-stub</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.flock-community.flock-eco</groupId>
+                <groupId>community.flock.flock-eco</groupId>
                 <artifactId>flock-eco-feature-user</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.flock-community.flock-eco</groupId>
+                <groupId>community.flock.flock-eco</groupId>
                 <artifactId>flock-eco-feature-user</artifactId>
                 <version>${project.parent.version}</version>
                 <classifier>develop</classifier>
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>com.github.flock-community.flock-eco</groupId>
+                <groupId>community.flock.flock-eco</groupId>
                 <artifactId>flock-eco-feature-workspace</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.flock-community.flock-eco</groupId>
+                <groupId>community.flock.flock-eco</groupId>
                 <artifactId>flock-eco-feature-workspace</artifactId>
                 <version>${project.parent.version}</version>
                 <classifier>develop</classifier>
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>com.github.flock-community.flock-eco</groupId>
+                <groupId>community.flock.flock-eco</groupId>
                 <artifactId>flock-eco-feature-member</artifactId>
                 <version>${project.parent.version}</version>
                 <classifier>develop</classifier>
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>com.github.flock-community.flock-eco</groupId>
+                <groupId>community.flock.flock-eco</groupId>
                 <artifactId>flock-eco-feature-member</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.flock-community.flock-eco</groupId>
+                <groupId>community.flock.flock-eco</groupId>
                 <artifactId>flock-eco-feature-payment</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.flock-community.flock-eco</groupId>
+                <groupId>community.flock.flock-eco</groupId>
                 <artifactId>flock-eco-feature-mailchimp</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.flock-community.flock-eco</groupId>
+                <groupId>community.flock.flock-eco</groupId>
                 <artifactId>flock-eco-feature-gcp-runtimeconfig</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.flock-community.flock-eco</groupId>
+                <groupId>community.flock.flock-eco</groupId>
                 <artifactId>flock-eco-feature-gcp-sql</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.flock-community.flock-eco</groupId>
+                <groupId>community.flock.flock-eco</groupId>
                 <artifactId>flock-eco-feature-gcp-mail</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.flock-community.flock-eco</groupId>
+                <groupId>community.flock.flock-eco</groupId>
                 <artifactId>flock-eco-feature-multi_tenant</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github.flock-community.flock-eco</groupId>
+                <groupId>community.flock.flock-eco</groupId>
                 <artifactId>flock-eco-feature-session</artifactId>
                 <version>${project.parent.version}</version>
             </dependency>
@@ -512,6 +518,33 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.jetbrains.dokka</groupId>
+                <artifactId>dokka-maven-plugin</artifactId>
+                <version>1.9.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>javadocJar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -522,6 +555,17 @@
             <url>https://repo.spring.io/milestone</url>
         </repository>
     </repositories>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>flock</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>flock</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 
     <scm>
         <url>https://github.com/flock-community/flock-eco</url>
