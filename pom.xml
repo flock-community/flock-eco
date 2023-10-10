@@ -7,6 +7,26 @@
     <version>2.7.11</version>
     <packaging>pom</packaging>
 
+    <name>Flock. eco</name>
+    <description>Flock. eco</description>
+
+    <url>https://github.com/flock-community/flock-eco</url>
+
+    <licenses>
+        <license>
+            <name>The MIT License</name>
+            <url>https://github.com/flock-community/flock-eco</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Willem Veelenturf</name>
+            <email>willem.veelenturf@flock.community</email>
+        </developer>
+    </developers>
+
     <properties>
         <java.version>11</java.version>
         <kotlin.version>1.6.10</kotlin.version>
