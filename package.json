@@ -77,6 +77,7 @@
     "bracketSpacing": false
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/flock-community"
+    "registry": "https://npm.pkg.github.com/flock-community",
+    "access": "public"
   }
 }

@@ -13,5 +13,8 @@
     "generate": "npm run generate:apollo && npm run generate:simple",
     "generate:apollo": "apollo client:codegen ./src/main/react/Apollo.ts --target=typescript --outputFlat",
     "generate:simple": "graphql-simple-bindings ./src/main/graphql/* './src/main/react/graphql'"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
