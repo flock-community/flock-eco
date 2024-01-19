@@ -73,7 +73,10 @@
                 <groupId>community.flock</groupId>
                 <artifactId>graphql-simple-bindings-maven-plugin</artifactId>
                 <configuration>
+                    <sourceDirectory>${project.basedir}/src/main/graphql</sourceDirectory>
+                    <targetDirectory>${project.build.directory}/generated-sources</targetDirectory>
                     <packageName>community.flock.eco.core.graphql</packageName>
+                    <language>Kotlin</language>
                 </configuration>
             </plugin>
         </plugins>

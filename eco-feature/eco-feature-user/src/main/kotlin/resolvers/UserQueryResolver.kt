@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Component
 import javax.transaction.Transactional
-import community.flock.eco.feature.user.graphql.User as UserGraphql
-import community.flock.eco.feature.user.graphql.UserAccount as UserAccountGraphql
-import community.flock.eco.feature.user.graphql.UserAccountOauth as UserAccountOauthGraphql
-import community.flock.eco.feature.user.graphql.UserAccountPassword as UserAccountPasswordGraphql
+import community.flock.eco.feature.user.graphql.kotlin.User as UserGraphql
+import community.flock.eco.feature.user.graphql.kotlin.UserAccount as UserAccountGraphql
+import community.flock.eco.feature.user.graphql.kotlin.UserAccountOauth as UserAccountOauthGraphql
+import community.flock.eco.feature.user.graphql.kotlin.UserAccountPassword as UserAccountPasswordGraphql
 import community.flock.eco.feature.user.model.User as UserModel
 import community.flock.eco.feature.user.model.UserAccount as UserAccountModel
 import community.flock.eco.feature.user.model.UserAccountKey as UserAccountKeyModel

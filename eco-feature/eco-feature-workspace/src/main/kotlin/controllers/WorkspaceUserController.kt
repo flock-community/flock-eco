@@ -1,7 +1,7 @@
 package community.flock.eco.feature.workspace.controllers
 
 import community.flock.eco.core.utils.toResponse
-import community.flock.eco.feature.workspace.graphql.WorkspaceUserInput
+import community.flock.eco.feature.workspace.graphql.kotlin.WorkspaceUserInput
 import community.flock.eco.feature.workspace.mappers.WorkspaceGraphqlMapper
 import community.flock.eco.feature.workspace.services.WorkspaceService
 import org.springframework.security.access.prepost.PreAuthorize

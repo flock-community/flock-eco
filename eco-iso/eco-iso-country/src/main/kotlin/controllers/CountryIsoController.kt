@@ -1,7 +1,7 @@
 package community.flock.eco.iso.country.controllers
 
 import community.flock.eco.core.utils.toResponse
-import community.flock.eco.iso.country.graphql.Country
+import community.flock.eco.iso.country.graphql.kotlin.Country
 import community.flock.eco.iso.country.services.CountryIsoService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable

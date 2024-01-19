@@ -1,7 +1,7 @@
 package extentions
 
-import community.flock.eco.core.graphql.Direction
-import community.flock.eco.core.graphql.Pageable
+import community.flock.eco.core.graphql.kotlin.Direction
+import community.flock.eco.core.graphql.kotlin.Pageable
 import community.flock.eco.core.utils.toNullable
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort

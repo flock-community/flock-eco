@@ -1,16 +1,18 @@
 package community.flock.eco.feature.member.mapper
 
-import community.flock.eco.feature.member.graphql.MemberFieldInput
-import community.flock.eco.feature.member.graphql.MemberInput
+import community.flock.eco.feature.member.graphql.kotlin.MemberField
+import community.flock.eco.feature.member.graphql.kotlin.MemberFieldInput
+import community.flock.eco.feature.member.graphql.kotlin.MemberInput
 import community.flock.eco.feature.member.model.Member
 import community.flock.eco.feature.member.model.MemberGender
 import community.flock.eco.feature.member.model.MemberGroup
 import community.flock.eco.feature.member.model.MemberStatus
 import community.flock.eco.feature.member.repositories.MemberGroupRepository
 import org.springframework.stereotype.Component
-import community.flock.eco.feature.member.graphql.Member as MemberGraphql
-import community.flock.eco.feature.member.graphql.MemberGender as MemberGenderGraphql
-import community.flock.eco.feature.member.graphql.MemberStatus as MemberStatusGraphql
+import community.flock.eco.feature.member.graphql.kotlin.Member as MemberGraphql
+import community.flock.eco.feature.member.graphql.kotlin.MemberGender as MemberGenderGraphql
+import community.flock.eco.feature.member.graphql.kotlin.MemberGroup as MemberGroupGraphql
+import community.flock.eco.feature.member.graphql.kotlin.MemberStatus as MemberStatusGraphql
 
 @Component
 class MemberGraphqlMapper(
@@ -56,7 +58,7 @@ class MemberGraphqlMapper(
         birthDate = it.birthDate,
         groups = it.groups.produce(),
         fields = it.fields.entries.map {
-            community.flock.eco.feature.member.graphql.MemberField(
+            MemberField(
                 key = it.key,
                 value = it.value
             )
@@ -86,7 +88,7 @@ class MemberGraphqlMapper(
     fun MemberGender.produce() = MemberGenderGraphql.valueOf(this.name)
     fun MemberStatus.produce() = MemberStatusGraphql.valueOf(this.name)
     fun Set<MemberGroup>.produce() = this.map {
-        community.flock.eco.feature.member.graphql.MemberGroup(
+        MemberGroupGraphql(
             code = it.code,
             name = it.name
         )

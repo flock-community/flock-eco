@@ -1,7 +1,7 @@
 package community.flock.eco.application.multi_tenant
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import community.flock.eco.feature.multi_tenant.graphql.TenantInput
+import community.flock.eco.feature.multi_tenant.graphql.kotlin.TenantInput
 import community.flock.eco.feature.multi_tenant.services.MultiTenantSchemaService
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
