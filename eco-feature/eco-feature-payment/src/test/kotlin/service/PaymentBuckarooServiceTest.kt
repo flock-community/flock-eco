@@ -14,15 +14,14 @@ import javax.transaction.Transactional
 @AutoConfigureDataJpa
 @Transactional
 class PaymentBuckarooServiceTest(
-    @Autowired private val service: PaymentBuckarooService
+    @Autowired private val service: PaymentBuckarooService,
 ) {
-
     @Test
     fun createCreditcardTransaction() {
         PaymentBuckarooService.PaymentMethod.CreditCard(
             issuer = "visa",
             amount = 10.00,
-            description = "Creditcard"
+            description = "Creditcard",
         )
             .let { service.create(it) }
     }
@@ -32,7 +31,7 @@ class PaymentBuckarooServiceTest(
         PaymentBuckarooService.PaymentMethod.Ideal(
             issuer = "INGBNL2A",
             amount = 11.00,
-            description = "Ideal"
+            description = "Ideal",
         )
             .let { service.create(it) }
     }

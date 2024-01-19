@@ -1,7 +1,7 @@
-package community.flock.eco.application.multi_tenant
+package community.flock.eco.application.multitenant
 
-import community.flock.eco.application.multi_tenant.config.WebMvcConfig
-import community.flock.eco.application.multi_tenant.config.WebSecurityConfig
+import community.flock.eco.application.multitenant.config.WebMvcConfig
+import community.flock.eco.application.multitenant.config.WebSecurityConfig
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.autoconfigure.data.rest.RepositoryRestMvcAutoConfiguration
@@ -12,15 +12,16 @@ import org.springframework.context.annotation.Import
 
 @Configuration
 @SpringBootApplication(
-    exclude = arrayOf(
-        RepositoryRestMvcAutoConfiguration::class,
-        SecurityAutoConfiguration::class
-    )
+    exclude =
+        arrayOf(
+            RepositoryRestMvcAutoConfiguration::class,
+            SecurityAutoConfiguration::class,
+        ),
 )
 @Import(
     WebMvcConfig::class,
     WebSecurityConfig::class,
-    ApplicationConfiguration::class
+    ApplicationConfiguration::class,
 )
 class Application : SpringBootServletInitializer()
 

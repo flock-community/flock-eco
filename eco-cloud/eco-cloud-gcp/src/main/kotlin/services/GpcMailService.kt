@@ -4,7 +4,7 @@ import community.flock.eco.core.model.MailMessage
 import community.flock.eco.core.services.MailService
 import org.springframework.stereotype.Component
 import java.io.UnsupportedEncodingException
-import java.util.*
+import java.util.Properties
 import javax.mail.Message
 import javax.mail.MessagingException
 import javax.mail.Session
@@ -14,9 +14,7 @@ import javax.mail.internet.MimeMessage
 
 @Component
 class GpcMailService : MailService {
-
     override fun sendMail(message: MailMessage) {
-
         val props = Properties()
         val session = Session.getDefaultInstance(props, null)
 

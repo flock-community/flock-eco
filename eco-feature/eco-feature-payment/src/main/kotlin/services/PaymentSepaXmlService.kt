@@ -10,7 +10,6 @@ import javax.xml.parsers.DocumentBuilderFactory
 
 @Service
 class PaymentSepaXmlService {
-
     data class Sepa(
         val id: String,
         val privateIdentification: String,
@@ -18,7 +17,7 @@ class PaymentSepaXmlService {
         val creationDatetime: LocalDateTime = LocalDateTime.now(),
         val collectionDateTime: LocalDateTime,
         val organisation: SepaOrganisation,
-        val transactions: List<PaymentTransaction>
+        val transactions: List<PaymentTransaction>,
     )
 
     data class SepaOrganisation(
@@ -27,7 +26,7 @@ class PaymentSepaXmlService {
         val bic: String,
         val country: SepaCountry,
         val address1: String,
-        val address2: String
+        val address2: String,
     )
 
     enum class SepaCountry {
@@ -76,7 +75,7 @@ class PaymentSepaXmlService {
         SI,
         SE,
         CH,
-        GB
+        GB,
     }
 
     fun generate(sepa: Sepa): Document {
@@ -84,13 +83,11 @@ class PaymentSepaXmlService {
         val total = sepa.transactions.map { it.amount }.reduce { acc, cur -> acc + cur }.toString()
 
         return document {
-
             element("Document") {
                 attribute("xmlns", "urn:iso:std:iso:20022:tech:xsd:pain.008.001.02")
                 attribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
 
                 element("CstmrDrctDbtInitn") {
-
                     element("GrpHdr") {
                         element("MsgId", sepa.id)
                         element("CreDtTm", sepa.creationDatetime.format(DateTimeFormatter.ISO_DATE_TIME))
@@ -187,7 +184,7 @@ class PaymentSepaXmlService {
                                                 "Ctry",
                                                 bankAccount.country.let {
                                                     SepaCountry.valueOf(it).toString()
-                                                }
+                                                },
                                             )
                                         }
                                     }
@@ -214,31 +211,45 @@ class PaymentSepaXmlService {
         }
     }
 
-    private fun document(init: Document.() -> Document): Document = DocumentBuilderFactory
-        .newInstance()
-        .newDocumentBuilder()
-        .newDocument()
-        .init()
-
-    private fun Document.element(name: String, init: Element.() -> Unit): Document = apply {
-        createElement(name)
-            .also { appendChild(it) }
+    private fun document(init: Document.() -> Document): Document =
+        DocumentBuilderFactory
+            .newInstance()
+            .newDocumentBuilder()
+            .newDocument()
             .init()
-    }
 
-    private fun Element.element(name: String, init: Element.() -> Unit) {
+    private fun Document.element(
+        name: String,
+        init: Element.() -> Unit,
+    ): Document =
+        apply {
+            createElement(name)
+                .also { appendChild(it) }
+                .init()
+        }
+
+    private fun Element.element(
+        name: String,
+        init: Element.() -> Unit,
+    ) {
         ownerDocument.createElement(name)
             .also { appendChild(it) }
             .init()
     }
 
-    private fun Element.element(name: String, value: String) {
+    private fun Element.element(
+        name: String,
+        value: String,
+    ) {
         ownerDocument.createElement(name)
             .also { it.appendChild(ownerDocument.createTextNode(value)) }
             .also { appendChild(it) }
     }
 
-    private fun Element.attribute(name: String, value: String) {
+    private fun Element.attribute(
+        name: String,
+        value: String,
+    ) {
         setAttribute(name, value)
     }
 

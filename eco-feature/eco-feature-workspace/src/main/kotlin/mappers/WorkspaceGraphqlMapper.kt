@@ -8,55 +8,66 @@ import community.flock.eco.feature.workspace.model.Workspace
 import community.flock.eco.feature.workspace.model.WorkspaceImage
 import community.flock.eco.feature.workspace.providers.WorkspaceUserProvider
 import org.springframework.stereotype.Component
-import java.util.*
+import java.util.UUID
 import community.flock.eco.feature.workspace.graphql.kotlin.Workspace as WorkspaceGraphql
 import community.flock.eco.feature.workspace.graphql.kotlin.WorkspaceUser as WorkspaceUserGraphql
 
 @Component
 class WorkspaceGraphqlMapper(
-    private val workspaceUserProvider: WorkspaceUserProvider
+    private val workspaceUserProvider: WorkspaceUserProvider,
 ) {
+    fun consume(
+        input: WorkspaceInput,
+        workspace: Workspace? = null,
+    ): Workspace =
+        Workspace(
+            id = workspace?.id ?: UUID.randomUUID(),
+            name = input.name,
+            variables =
+                input.variables
+                    .run { consume(this) },
+            host = input.host,
+            image =
+                input.image
+                    ?.run { consume(this) },
+            users = workspace?.users ?: setOf(),
+        )
 
-    fun consume(input: WorkspaceInput, workspace: Workspace? = null): Workspace = Workspace(
-        id = workspace?.id ?: UUID.randomUUID(),
-        name = input.name,
-        variables = input.variables
-            .run { consume(this) },
-        host = input.host,
-        image = input.image
-            ?.run { consume(this) },
-        users = workspace?.users ?: setOf()
-    )
+    fun consume(it: List<KeyValueInput>): Map<String, String?> =
+        it
+            .map { it.key to it.value }
+            .toMap()
 
-    fun consume(it: List<KeyValueInput>): Map<String, String?> = it
-        .map { it.key to it.value }
-        .toMap()
+    fun consume(it: WorkspaceImageInput) =
+        WorkspaceImage(
+            name = it.name,
+            file = it.file.toByteArray(),
+        )
 
-    fun consume(it: WorkspaceImageInput) = WorkspaceImage(
-        name = it.name,
-        file = it.file.toByteArray()
-    )
-
-    fun produce(it: Workspace): WorkspaceGraphql = WorkspaceGraphql(
-        id = it.id.toString(),
-        name = it.name,
-        variables = it.variables.map {
-            KeyValue(it.key, it.value)
-        },
-        users = it.users.let { users ->
-            users
-                .map { it.userId }
-                .let { workspaceUserProvider.findWorkspaceUsers(it) }
-                .map { user ->
-                    WorkspaceUserGraphql(
-                        id = user.id,
-                        name = user.name,
-                        role = users.find { it.userId == user.id }
-                            ?.role
-                            ?: error("Cannot find user")
-                    )
-                }
-        },
-        host = it.host
-    )
+    fun produce(it: Workspace): WorkspaceGraphql =
+        WorkspaceGraphql(
+            id = it.id.toString(),
+            name = it.name,
+            variables =
+                it.variables.map {
+                    KeyValue(it.key, it.value)
+                },
+            users =
+                it.users.let { users ->
+                    users
+                        .map { it.userId }
+                        .let { workspaceUserProvider.findWorkspaceUsers(it) }
+                        .map { user ->
+                            WorkspaceUserGraphql(
+                                id = user.id,
+                                name = user.name,
+                                role =
+                                    users.find { it.userId == user.id }
+                                        ?.role
+                                        ?: error("Cannot find user"),
+                            )
+                        }
+                },
+            host = it.host,
+        )
 }

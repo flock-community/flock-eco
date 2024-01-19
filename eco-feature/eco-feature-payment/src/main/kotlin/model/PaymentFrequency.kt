@@ -5,5 +5,5 @@ enum class PaymentFrequency {
     MONTHLY,
     QUARTERLY,
     HALF_YEARLY,
-    YEARLY
+    YEARLY,
 }

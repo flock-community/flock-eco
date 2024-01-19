@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping
 @Controller
 @RequestMapping("/api/workspace-roles")
 class WorkspaceRoleController(
-    private val workspaceUserProvider: WorkspaceUserProvider
+    private val workspaceUserProvider: WorkspaceUserProvider,
 ) {
-
     @GetMapping
     @PreAuthorize("hasAuthority('WorkspaceAuthority.READ')")
-    fun getAll() = workspaceUserProvider
-        .findRoles()
-        .toResponse()
+    fun getAll() =
+        workspaceUserProvider
+            .findRoles()
+            .toResponse()
 }

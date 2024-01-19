@@ -18,22 +18,21 @@ import javax.transaction.Transactional
 @Transactional
 class UserAccountPasswordRepositoryTest(
     @Autowired private val userRepository: UserRepository,
-    @Autowired private val userAccountPasswordRepository: UserAccountPasswordRepository
-
+    @Autowired private val userAccountPasswordRepository: UserAccountPasswordRepository,
 ) {
-
     @Test
     fun `save user via repository`() {
+        val user =
+            User(
+                name = "User Name",
+                email = "user@gmail.com",
+            ).save()
 
-        val user = User(
-            name = "User Name",
-            email = "user@gmail.com"
-        ).save()
-
-        val account = UserAccountPassword(
-            user = user,
-            secret = "123456"
-        )
+        val account =
+            UserAccountPassword(
+                user = user,
+                secret = "123456",
+            )
         userAccountPasswordRepository.save(account)
 
         val res1 = userAccountPasswordRepository.findByUserEmailIgnoreCase("USER@gmail.com").toNullable()

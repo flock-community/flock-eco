@@ -1,7 +1,7 @@
-package community.flock.eco.feature.multi_tenant.filters
+package community.flock.eco.feature.multitenant.filters
 
-import community.flock.eco.feature.multi_tenant.MultiTenantContext
-import community.flock.eco.feature.multi_tenant.services.MultiTenantSchemaService
+import community.flock.eco.feature.multitenant.MultiTenantContext
+import community.flock.eco.feature.multitenant.services.MultiTenantSchemaService
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
@@ -13,10 +13,13 @@ import javax.servlet.http.HttpServletResponse
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 class MultiTenantFilter(
-    private val multiTenantSchemaService: MultiTenantSchemaService
+    private val multiTenantSchemaService: MultiTenantSchemaService,
 ) : OncePerRequestFilter() {
-
-    override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
+    override fun doFilterInternal(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        filterChain: FilterChain,
+    ) {
         val tenantName = request.getHeader("X-TENANT")
 
         val tenantSession = request.session.getAttribute("tenant")

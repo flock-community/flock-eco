@@ -9,11 +9,9 @@ import org.springframework.stereotype.Component
 @Component
 @ConditionalOnProperty("flock.eco.cloud.stub.enabled")
 class StubMailService : MailService {
-
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun sendMail(message: MailMessage) {
-
         logger.warn("=== Send Mail ===")
         logger.warn(message.from.toString())
         logger.warn(message.recipients.toString())

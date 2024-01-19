@@ -7,18 +7,19 @@ import org.springframework.stereotype.Service
 
 @Service
 class LanguageIsoService(
-    objectMapper: ObjectMapper
+    objectMapper: ObjectMapper,
 ) {
-
     val resource = ClassPathResource("language-iso-data.json")
-    val data = objectMapper.readTree(resource.inputStream)
-        .map {
-            Language(
-                name = it.get("name").asText(),
-                alpha2 = it.get("alpha2").asText()
-            )
-        }
+    val data =
+        objectMapper.readTree(resource.inputStream)
+            .map {
+                Language(
+                    name = it.get("name").asText(),
+                    alpha2 = it.get("alpha2").asText(),
+                )
+            }
 
-    fun findByAlpha2(code: String): Language? = data
-        .find { it.alpha2 == code }
+    fun findByAlpha2(code: String): Language? =
+        data
+            .find { it.alpha2 == code }
 }

@@ -17,11 +17,9 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 class WebSecurityConfig(
     private val userAuthorityService: UserAuthorityService,
     private val userSecurityService: UserSecurityService,
-    private val userKeyTokenFilter: UserKeyTokenFilter
+    private val userKeyTokenFilter: UserKeyTokenFilter,
 ) : WebSecurityConfigurerAdapter() {
-
     override fun configure(http: HttpSecurity) {
-
         userAuthorityService.addAuthority(ExampleAuthority::class.java)
 
         http

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 
 @ControllerAdvice
 class UserControllerAdvice {
-
     @ExceptionHandler(UserAccountExistsException::class)
     fun handleUserAccountWithEmailExistsException(e: UserAccountExistsException) = respond(e, CONFLICT)
 
@@ -24,5 +23,9 @@ class UserControllerAdvice {
     fun handleUserAccountNotFoundForUser(e: UserAccountNotFoundForUserEmail) = respond(NO_CONTENT)
 
     private fun respond(status: HttpStatus) = ResponseEntity<String>(status)
-    private fun respond(e: FlockEcoException, status: HttpStatus) = ResponseEntity<String>(e.message, status)
+
+    private fun respond(
+        e: FlockEcoException,
+        status: HttpStatus,
+    ) = ResponseEntity<String>(e.message, status)
 }

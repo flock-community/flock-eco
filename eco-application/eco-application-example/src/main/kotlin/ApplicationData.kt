@@ -13,21 +13,21 @@ import org.springframework.stereotype.Component
 @Import(
     UserLoadData::class,
     MemberLoadData::class,
-    WorkspaceLoadData::class
+    WorkspaceLoadData::class,
 )
 class ApplicationData(
     userAuthorityService: UserAuthorityService,
     userAccountService: UserAccountService,
     userLoadData: UserLoadData,
     memberLoadData: MemberLoadData,
-    workspaceLoadData: WorkspaceLoadData
+    workspaceLoadData: WorkspaceLoadData,
 ) {
-
     init {
-        val all = userAuthorityService
-            .allAuthorities()
-            .map { it.toName() }
-            .toSet()
+        val all =
+            userAuthorityService
+                .allAuthorities()
+                .map { it.toName() }
+                .toSet()
         userAccountService
             .createUserAccountPassword(UserAccountPasswordForm(name = "Test", email = "test@test.nl", password = "test", authorities = all))
         userLoadData.load(10)

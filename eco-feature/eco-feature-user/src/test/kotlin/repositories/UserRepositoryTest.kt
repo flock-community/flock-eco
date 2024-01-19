@@ -16,20 +16,20 @@ import javax.transaction.Transactional
 @AutoConfigureDataJpa
 @Transactional
 class UserRepositoryTest(
-    @Autowired private val userRepository: UserRepository
+    @Autowired private val userRepository: UserRepository,
 ) {
-
     @Test
     fun `save user via repository`() {
         userRepository.save(
             User(
                 name = "User Name",
-                email = "user@gmail.com"
-            )
+                email = "user@gmail.com",
+            ),
         )
 
-        val res = userRepository.findByEmail("user@gmail.com")
-            .toNullable()
+        val res =
+            userRepository.findByEmail("user@gmail.com")
+                .toNullable()
 
         assertEquals("User Name", res!!.name)
     }

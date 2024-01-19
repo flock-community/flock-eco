@@ -36,29 +36,30 @@ import community.flock.eco.feature.user.graphql.kotlin.UserAccountPassword as Us
 class UserController(
     private val userRepository: UserRepository,
     private val userService: UserService,
-    private val userAccountService: UserAccountService
+    private val userAccountService: UserAccountService,
 ) {
-
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
-    fun findMeUser(authentication: Authentication) = userService
-        .read(authentication.name)
-        ?.toGraphql()
-        .toResponse()
+    fun findMeUser(authentication: Authentication) =
+        userService
+            .read(authentication.name)
+            ?.toGraphql()
+            .toResponse()
 
     @GetMapping("/me/accounts")
     @PreAuthorize("isAuthenticated()")
-    fun findMeUserAccounts(authentication: Authentication) = userAccountService
-        .findUserAccountByUserCode(authentication.name)
-        .toList()
-        .map { it.toGraphql() }
-        .toResponse()
+    fun findMeUserAccounts(authentication: Authentication) =
+        userAccountService
+            .findUserAccountByUserCode(authentication.name)
+            .toList()
+            .map { it.toGraphql() }
+            .toResponse()
 
     @GetMapping
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
     fun findAllUsers(
         @RequestParam(defaultValue = "", required = false) search: String,
-        page: Pageable
+        page: Pageable,
     ) = userRepository
         .findAllByNameIgnoreCaseContainingOrEmailIgnoreCaseContaining(search, search, page)
         .map { it.toGraphql() }
@@ -67,7 +68,7 @@ class UserController(
     @PostMapping("search")
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
     fun findAllUsersByCodes(
-        @RequestBody(required = false) codes: Set<String>
+        @RequestBody(required = false) codes: Set<String>,
     ) = userRepository.findAllByCodeIn(codes)
         .toList()
         .map { it.toGraphql() }
@@ -75,28 +76,38 @@ class UserController(
 
     @PostMapping
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
-    fun createUser(@RequestBody form: UserForm) = userService
+    fun createUser(
+        @RequestBody form: UserForm,
+    ) = userService
         .create(form)
         .toGraphql()
         .toResponse()
 
     @GetMapping("/{code}")
     @PreAuthorize("hasAuthority('UserAuthority.READ')")
-    fun findUserById(@PathVariable code: String) = userService
+    fun findUserById(
+        @PathVariable code: String,
+    ) = userService
         .read(code)
         ?.toGraphql()
         .toResponse()
 
     @PutMapping("/{code}")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
-    fun updateUser(@PathVariable code: String, @RequestBody form: UserForm) = userService
+    fun updateUser(
+        @PathVariable code: String,
+        @RequestBody form: UserForm,
+    ) = userService
         .update(code, form)
         ?.toGraphql()
         .toResponse()
 
     @DeleteMapping("/{code}")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
-    fun deleteUser(@PathVariable code: String, principal: Principal?): ResponseEntity<Unit> {
+    fun deleteUser(
+        @PathVariable code: String,
+        principal: Principal?,
+    ): ResponseEntity<Unit> {
         if (principal?.name == code) throw UserCannotRemoveOwnAccount()
         return userService
             .delete(code)
@@ -105,19 +116,23 @@ class UserController(
 
     @PutMapping("/{code}/reset-password")
     @PreAuthorize("hasAuthority('UserAuthority.WRITE')")
-    fun generateUserResetCodeForUserCode(@PathVariable code: String) = userAccountService
+    fun generateUserResetCodeForUserCode(
+        @PathVariable code: String,
+    ) = userAccountService
         .generateResetCodeForUserCode(code)
         .let { Unit }
         .toResponse()
 
     @PutMapping("/reset-password")
-    fun generateUserResetCode(@RequestBody form: RequestPasswordReset) = userAccountService
+    fun generateUserResetCode(
+        @RequestBody form: RequestPasswordReset,
+    ) = userAccountService
         .generateResetCodeForUserEmail(form.email)
         .let { Unit }
         .toResponse()
 
     data class RequestPasswordReset(
-        val email: String
+        val email: String,
     )
 }
 
@@ -128,7 +143,7 @@ private fun User.toGraphql(): UserGraphql {
         email = this.email,
         authorities = this.authorities.toList(),
         accounts = this.accounts.map { it.toGraphql() },
-        created = this.created
+        created = this.created,
     )
 }
 

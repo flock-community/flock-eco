@@ -14,26 +14,28 @@ class UserLoadData(
     val userRepository: UserRepository,
     val userAccountRepository: UserAccountRepository,
     val userAuthorityService: UserAuthorityService,
-    val passwordEncoder: PasswordEncoder
+    val passwordEncoder: PasswordEncoder,
 ) : LoadData<User> {
-
     override fun load(n: Int): Iterable<User> {
         val users = (1..n).map { user(it) }.let { userRepository.saveAll(it) }
         val accounts = users.map { account(it) }.let { userAccountRepository.saveAll(it) }
         return users
     }
 
-    private fun user(int: Int) = User(
-        name = "name-$int",
-        code = int.toString(),
-        email = "email-$int@email-$int.xx",
-        authorities = userAuthorityService.allAuthorities()
-            .map { it.toName() }
-            .toMutableSet()
-    )
+    private fun user(int: Int) =
+        User(
+            name = "name-$int",
+            code = int.toString(),
+            email = "email-$int@email-$int.xx",
+            authorities =
+                userAuthorityService.allAuthorities()
+                    .map { it.toName() }
+                    .toMutableSet(),
+        )
 
-    private fun account(user: User) = UserAccountPassword(
-        user = user,
-        secret = passwordEncoder.encode(user.name)
-    )
+    private fun account(user: User) =
+        UserAccountPassword(
+            user = user,
+            secret = passwordEncoder.encode(user.name),
+        )
 }

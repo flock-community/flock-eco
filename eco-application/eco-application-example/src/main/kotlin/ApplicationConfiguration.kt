@@ -18,6 +18,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
     UserConfiguration::class,
     MemberConfiguration::class,
     LanguageIsoConfiguration::class,
-    WorkspaceConfiguration::class
+    WorkspaceConfiguration::class,
 )
 class ApplicationConfiguration
