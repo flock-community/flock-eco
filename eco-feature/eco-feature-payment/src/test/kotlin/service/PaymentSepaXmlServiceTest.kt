@@ -1,7 +1,11 @@
 package community.flock.eco.feature.payment.service
 
 import community.flock.eco.feature.payment.PaymentConfiguration
-import community.flock.eco.feature.payment.model.*
+import community.flock.eco.feature.payment.model.PaymentBankAccount
+import community.flock.eco.feature.payment.model.PaymentFrequency
+import community.flock.eco.feature.payment.model.PaymentMandate
+import community.flock.eco.feature.payment.model.PaymentTransaction
+import community.flock.eco.feature.payment.model.PaymentType
 import community.flock.eco.feature.payment.services.PaymentSepaXmlService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -24,65 +28,71 @@ import javax.xml.transform.stream.StreamResult
 @AutoConfigureDataJpa
 @Transactional
 class PaymentSepaXmlServiceTest(
-    @Autowired private val paymentSepaXmlService: PaymentSepaXmlService
+    @Autowired private val paymentSepaXmlService: PaymentSepaXmlService,
 ) {
-
     val date: LocalDate = LocalDate.of(2019, 1, 1)
-    val data = listOf(
-        PaymentTransaction(
-            amount = 5.00,
-            mandate = PaymentMandate(
-                code = "2",
+    val data =
+        listOf(
+            PaymentTransaction(
                 amount = 5.00,
-                frequency = PaymentFrequency.MONTHLY,
-                type = PaymentType.SEPA,
-                bankAccount = PaymentBankAccount(
-                    name = "H. van Broektest",
-                    iban = "NL97ZZZ342160180000",
-                    bic = "TRIONL2U",
-                    country = "NL"
-                ),
-                startDate = date
+                mandate =
+                    PaymentMandate(
+                        code = "2",
+                        amount = 5.00,
+                        frequency = PaymentFrequency.MONTHLY,
+                        type = PaymentType.SEPA,
+                        bankAccount =
+                            PaymentBankAccount(
+                                name = "H. van Broektest",
+                                iban = "NL97ZZZ342160180000",
+                                bic = "TRIONL2U",
+                                country = "NL",
+                            ),
+                        startDate = date,
+                    ),
+                created = date,
             ),
-            created = date
-        ),
-        PaymentTransaction(
-            amount = 5.00,
-            mandate = PaymentMandate(
-                code = "256",
+            PaymentTransaction(
                 amount = 5.00,
-                frequency = PaymentFrequency.MONTHLY,
-                type = PaymentType.SEPA,
-                bankAccount = PaymentBankAccount(
-                    name = "Mw H Testoeven",
-                    iban = "NL00TRIO0000000",
-                    bic = "TRIONL2U",
-                    country = "NL"
-                ),
-                startDate = date
+                mandate =
+                    PaymentMandate(
+                        code = "256",
+                        amount = 5.00,
+                        frequency = PaymentFrequency.MONTHLY,
+                        type = PaymentType.SEPA,
+                        bankAccount =
+                            PaymentBankAccount(
+                                name = "Mw H Testoeven",
+                                iban = "NL00TRIO0000000",
+                                bic = "TRIONL2U",
+                                country = "NL",
+                            ),
+                        startDate = date,
+                    ),
+                created = date,
             ),
-            created = date
         )
-    )
 
     @Test
     fun test() {
-        val sepa = PaymentSepaXmlService.Sepa(
-            id = "90000000092",
-            message = "HARTELIJK DANK VOOR UW BIJDRAGE",
-            privateIdentification = "NL00ZZZ0000000000",
-            organisation = PaymentSepaXmlService.SepaOrganisation(
-                name = "Doneasy",
-                iban = "NL00XXXX0000000000",
-                bic = "XXXXNL2A",
-                address1 = "Address 1",
-                address2 = "Address 2",
-                country = PaymentSepaXmlService.SepaCountry.NL
-            ),
-            creationDatetime = LocalDateTime.of(2019, Month.JANUARY, 15, 0, 0),
-            collectionDateTime = LocalDateTime.of(2019, Month.JANUARY, 28, 0, 0),
-            transactions = data
-        )
+        val sepa =
+            PaymentSepaXmlService.Sepa(
+                id = "90000000092",
+                message = "HARTELIJK DANK VOOR UW BIJDRAGE",
+                privateIdentification = "NL00ZZZ0000000000",
+                organisation =
+                    PaymentSepaXmlService.SepaOrganisation(
+                        name = "Doneasy",
+                        iban = "NL00XXXX0000000000",
+                        bic = "XXXXNL2A",
+                        address1 = "Address 1",
+                        address2 = "Address 2",
+                        country = PaymentSepaXmlService.SepaCountry.NL,
+                    ),
+                creationDatetime = LocalDateTime.of(2019, Month.JANUARY, 15, 0, 0),
+                collectionDateTime = LocalDateTime.of(2019, Month.JANUARY, 28, 0, 0),
+                transactions = data,
+            )
 
         val doc = paymentSepaXmlService.generate(sepa)
 

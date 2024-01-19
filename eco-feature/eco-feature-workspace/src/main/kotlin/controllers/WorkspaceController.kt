@@ -10,27 +10,33 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.*
-import java.util.*
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import java.util.UUID
 
 @Controller
 @RequestMapping("/api/workspaces")
 class WorkspaceController(
     private val workspaceGraphqlMapper: WorkspaceGraphqlMapper,
-    private val workspaceService: WorkspaceService
+    private val workspaceService: WorkspaceService,
 ) {
-
     @GetMapping
     @PreAuthorize("hasAuthority('WorkspaceAuthority.READ')")
-    fun getAll(pageable: Pageable) = workspaceService
-        .findAll(pageable)
-        .map { workspaceGraphqlMapper.produce(it) }
-        .toResponse()
+    fun getAll(pageable: Pageable) =
+        workspaceService
+            .findAll(pageable)
+            .map { workspaceGraphqlMapper.produce(it) }
+            .toResponse()
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('WorkspaceAuthority.READ')")
     fun getById(
-        @PathVariable id: UUID
+        @PathVariable id: UUID,
     ) = workspaceService
         .findById(id)
         ?.let { workspaceGraphqlMapper.produce(it) }
@@ -38,7 +44,9 @@ class WorkspaceController(
 
     @PostMapping
     @PreAuthorize("hasAuthority('WorkspaceAuthority.WRITE')")
-    fun post(@RequestBody input: WorkspaceInput) = input
+    fun post(
+        @RequestBody input: WorkspaceInput,
+    ) = input
         .let { workspaceGraphqlMapper.consume(it) }
         .let { workspaceService.create(it) }
         .let { workspaceGraphqlMapper.produce(it) }
@@ -48,7 +56,7 @@ class WorkspaceController(
     @PreAuthorize("hasAuthority('WorkspaceAuthority.WRITE')")
     fun put(
         @PathVariable id: UUID,
-        @RequestBody input: WorkspaceInput
+        @RequestBody input: WorkspaceInput,
     ) = workspaceService
         .findById(id)
         ?.let { workspaceGraphqlMapper.consume(input, it) }
@@ -59,7 +67,7 @@ class WorkspaceController(
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('WorkspaceAuthority.WRITE')")
     fun delete(
-        @PathVariable id: UUID
+        @PathVariable id: UUID,
     ) = workspaceService
         .findById(id)
         ?.let { workspaceService.delete(id) }
@@ -69,7 +77,7 @@ class WorkspaceController(
     @PreAuthorize("hasAuthority('WorkspaceAuthority.READ')")
     fun getImage(
         @PathVariable id: UUID,
-        authentication: Authentication?
+        authentication: Authentication?,
     ) = workspaceService
         .findById(id)
         ?.image

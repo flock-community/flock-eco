@@ -10,7 +10,7 @@ data class MailchimpWebhookEvent(
     val fields: Map<String, String> = mapOf(),
     val listId: String?,
     val email: String,
-    val interests: Set<String>
+    val interests: Set<String>,
 ) : Event
 
 enum class MailchimpWebhookEventType {
@@ -19,5 +19,5 @@ enum class MailchimpWebhookEventType {
     PROFILE,
     UPEMAIL,
     CLEANED,
-    CAMPAIGN
+    CAMPAIGN,
 }

@@ -1,6 +1,6 @@
-package community.flock.eco.feature.multi_tenant.repositories
+package community.flock.eco.feature.multitenant.repositories
 
-import community.flock.eco.feature.multi_tenant.model.MultiTenantKeyValue
+import community.flock.eco.feature.multitenant.model.MultiTenantKeyValue
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.stereotype.Repository
 

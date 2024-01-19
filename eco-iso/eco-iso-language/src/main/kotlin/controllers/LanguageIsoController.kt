@@ -11,25 +11,27 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("api/languages")
 class LanguageIsoController(
-    val languageIsoService: LanguageIsoService
+    val languageIsoService: LanguageIsoService,
 ) {
-
     @GetMapping
-    fun getAll() = languageIsoService.data
-        .map {
-            Language(
-                name = it.name,
-                alpha2 = it.alpha2
-            )
-        }
-        .toResponse()
+    fun getAll() =
+        languageIsoService.data
+            .map {
+                Language(
+                    name = it.name,
+                    alpha2 = it.alpha2,
+                )
+            }
+            .toResponse()
 
     @GetMapping("/{code}")
-    fun getById(@PathVariable code: String) = languageIsoService.findByAlpha2(code)
+    fun getById(
+        @PathVariable code: String,
+    ) = languageIsoService.findByAlpha2(code)
         ?.let {
             Language(
                 name = it.name,
-                alpha2 = it.alpha2
+                alpha2 = it.alpha2,
             )
         }
         .toResponse()

@@ -4,5 +4,5 @@ enum class PaymentType {
     CACHE,
     IDEAL,
     CREDIT_CARD,
-    SEPA
+    SEPA,
 }

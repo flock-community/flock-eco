@@ -7,9 +7,8 @@ import javax.persistence.MappedSuperclass
 @MappedSuperclass
 abstract class AbstractEntity<ID : Serializable>(
     @Id
-    open val id: ID
+    open val id: ID,
 ) : Serializable {
-
     override fun hashCode(): Int {
         return 13
     }

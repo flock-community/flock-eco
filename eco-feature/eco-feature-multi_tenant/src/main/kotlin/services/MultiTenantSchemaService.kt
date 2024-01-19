@@ -1,9 +1,9 @@
-package community.flock.eco.feature.multi_tenant.services
+package community.flock.eco.feature.multitenant.services
 
-import community.flock.eco.feature.multi_tenant.MultiTenantConstants.DEFAULT_TENANT
-import community.flock.eco.feature.multi_tenant.events.MultiTenantCreateEvent
-import community.flock.eco.feature.multi_tenant.events.MultiTenantDeleteEvent
-import community.flock.eco.feature.multi_tenant.model.MultiTenant
+import community.flock.eco.feature.multitenant.MultiTenantConstants.DEFAULT_TENANT
+import community.flock.eco.feature.multitenant.events.MultiTenantCreateEvent
+import community.flock.eco.feature.multitenant.events.MultiTenantDeleteEvent
+import community.flock.eco.feature.multitenant.model.MultiTenant
 import liquibase.integration.spring.MultiTenantSpringLiquibase
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties
 import org.springframework.context.ApplicationEventPublisher
@@ -18,7 +18,7 @@ class MultiTenantSchemaService(
     private val dataSource: DataSource,
     private val jdbcTemplate: JdbcTemplate,
     private val liquibaseProperties: LiquibaseProperties,
-    private val applicationEventPublisher: ApplicationEventPublisher
+    private val applicationEventPublisher: ApplicationEventPublisher,
 ) {
     val prefix = "TENANT"
 
@@ -41,11 +41,12 @@ class MultiTenantSchemaService(
         val schemaName = "${prefix}_${name.uppercase()}"
         return MultiTenant(
             name = name,
-            schema = when {
-                lowerCase.contains(databaseName) -> schemaName.lowercase()
-                upperCase.contains(databaseName) -> schemaName.uppercase()
-                else -> schemaName
-            }
+            schema =
+                when {
+                    lowerCase.contains(databaseName) -> schemaName.lowercase()
+                    upperCase.contains(databaseName) -> schemaName.uppercase()
+                    else -> schemaName
+                },
         )
     }
 
@@ -73,14 +74,15 @@ class MultiTenantSchemaService(
     }
 
     // TODO: input validation
-    fun findAllTenant() = jdbcTemplate
-        .queryForList("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA")
-        .map { it["SCHEMA_NAME"] as String }
-        .filter { it.startsWith("${prefix}_", true) }
-        .map {
-            MultiTenant(
-                name = it.replace("${prefix}_", "", true),
-                schema = it
-            )
-        }
+    fun findAllTenant() =
+        jdbcTemplate
+            .queryForList("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA")
+            .map { it["SCHEMA_NAME"] as String }
+            .filter { it.startsWith("${prefix}_", true) }
+            .map {
+                MultiTenant(
+                    name = it.replace("${prefix}_", "", true),
+                    schema = it,
+                )
+            }
 }

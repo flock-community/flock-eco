@@ -1,4 +1,4 @@
-package community.flock.eco.feature.multi_tenant.model
+package community.flock.eco.feature.multitenant.model
 
 import javax.persistence.Entity
 import javax.persistence.Id
@@ -7,5 +7,5 @@ import javax.persistence.Id
 data class MultiTenantKeyValue(
     @Id
     val key: String,
-    val value: String
+    val value: String,
 )

@@ -11,7 +11,9 @@ import community.flock.eco.feature.user.forms.UserForm
 import community.flock.eco.feature.user.forms.UserKeyForm
 import community.flock.eco.feature.user.model.UserAccountOauthProvider
 import community.flock.eco.feature.user.repositories.UserAccountPasswordRepository
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -32,14 +34,14 @@ class UserAccountServiceTest(
     @Autowired val userService: UserService,
     @Autowired val userAccountService: UserAccountService,
     @Autowired val userAccountPasswordRepository: UserAccountPasswordRepository,
-    @Autowired val passwordEncoder: PasswordEncoder
+    @Autowired val passwordEncoder: PasswordEncoder,
 ) {
-
-    private val passwordForm = UserAccountPasswordForm(
-        name = "Willem Veelenturf",
-        email = "willem.veelenturf@gmail.com",
-        password = "123456"
-    )
+    private val passwordForm =
+        UserAccountPasswordForm(
+            name = "Willem Veelenturf",
+            email = "willem.veelenturf@gmail.com",
+            password = "123456",
+        )
 
     @Test
     fun `register user with password`() {
@@ -64,12 +66,13 @@ class UserAccountServiceTest(
 
     @Test
     fun `test register oauth user`() {
-        val form = UserAccountOauthForm(
-            name = passwordForm.name,
-            email = passwordForm.email,
-            provider = UserAccountOauthProvider.GOOGLE,
-            reference = "123123123"
-        )
+        val form =
+            UserAccountOauthForm(
+                name = passwordForm.name,
+                email = passwordForm.email,
+                provider = UserAccountOauthProvider.GOOGLE,
+                reference = "123123123",
+            )
         val account = userAccountService.createUserAccountOauth(form)
 
         assertNotNull(account.id)
@@ -155,12 +158,13 @@ class UserAccountServiceTest(
 
     @Test
     fun `create user account password without password`() {
-        val user = userService.create(
-            UserForm(
-                name = "Pino",
-                email = "pino@sesamstreet.xx"
+        val user =
+            userService.create(
+                UserForm(
+                    name = "Pino",
+                    email = "pino@sesamstreet.xx",
+                ),
             )
-        )
         userAccountService.createUserAccountPasswordWithoutPassword(user.code)
 
         val account = userAccountService.findUserAccountPasswordByUserEmail(user.email)
@@ -170,12 +174,13 @@ class UserAccountServiceTest(
 
     @Test
     fun `create user account password without password create twice`() {
-        val user = userService.create(
-            UserForm(
-                name = "Pino",
-                email = "pino@sesamstreet.xx"
+        val user =
+            userService.create(
+                UserForm(
+                    name = "Pino",
+                    email = "pino@sesamstreet.xx",
+                ),
             )
-        )
         userAccountService.createUserAccountPasswordWithoutPassword(user.code)
         assertFailsWith<UserAccountExistsException> {
             userAccountService.createUserAccountPasswordWithoutPassword(user.code)
@@ -203,13 +208,13 @@ class UserAccountServiceTest(
 
     @Test
     fun `update account key for user with label`() {
-
         var label = "1 2 3 my key"
         var newLabel = "Alrighty then"
 
-        val form = UserKeyForm(
-            label = newLabel
-        )
+        val form =
+            UserKeyForm(
+                label = newLabel,
+            )
 
         val account = userAccountService.createUserAccountPassword(passwordForm.copy())
 

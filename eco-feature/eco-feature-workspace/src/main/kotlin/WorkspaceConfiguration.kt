@@ -22,6 +22,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
     WorkspaceController::class,
     WorkspaceUserController::class,
     WorkspaceRoleController::class,
-    WorkspaceQueryResolver::class
+    WorkspaceQueryResolver::class,
 )
 class WorkspaceConfiguration

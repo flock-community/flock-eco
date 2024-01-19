@@ -1,8 +1,8 @@
-package community.flock.eco.application.multi_tenant.controllers
+package community.flock.eco.application.multitenant.controllers
 
-import community.flock.eco.feature.multi_tenant.model.MultiTenantKeyValue
-import community.flock.eco.feature.multi_tenant.services.MultiTenantKeyValueService
-import community.flock.eco.feature.multi_tenant.services.MultiTenantSchemaService
+import community.flock.eco.feature.multitenant.model.MultiTenantKeyValue
+import community.flock.eco.feature.multitenant.services.MultiTenantKeyValueService
+import community.flock.eco.feature.multitenant.services.MultiTenantSchemaService
 import community.flock.eco.feature.user.forms.UserAccountPasswordForm
 import community.flock.eco.feature.user.services.UserAccountService
 import liquibase.integration.spring.MultiTenantSpringLiquibase
@@ -26,8 +26,9 @@ class RegistrationController(
     private val userAccountService: UserAccountService,
 ) {
     @PostMapping("/register")
-    fun register(@RequestBody input: RegistrationInput) {
-
+    fun register(
+        @RequestBody input: RegistrationInput,
+    ) {
         // Find all tenants
         val tenant = multiTenantSchemaService.createMultiTenant(input.tenantName)
         multiTenantSchemaService.createTenant(input.tenantName)
@@ -40,16 +41,16 @@ class RegistrationController(
         userAccountService.createUserAccountPassword(
             UserAccountPasswordForm(
                 email = input.email,
-                password = "password"
-            )
+                password = "password",
+            ),
         )
 
         // Create Tenant Key Value
         multiTenantKeyValueService.save(
             MultiTenantKeyValue(
                 key = "NAME",
-                value = tenant.name
-            )
+                value = tenant.name,
+            ),
         )
     }
 }

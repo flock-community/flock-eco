@@ -12,15 +12,16 @@ import org.springframework.context.annotation.Import
 
 @Configuration
 @SpringBootApplication(
-    exclude = arrayOf(
-        RepositoryRestMvcAutoConfiguration::class,
-        UserDetailsServiceAutoConfiguration::class
-    )
+    exclude =
+        arrayOf(
+            RepositoryRestMvcAutoConfiguration::class,
+            UserDetailsServiceAutoConfiguration::class,
+        ),
 )
 @Import(
     WebMvcConfig::class,
     WebSecurityConfig::class,
-    ApplicationConfiguration::class
+    ApplicationConfiguration::class,
 )
 class Application : SpringBootServletInitializer()
 

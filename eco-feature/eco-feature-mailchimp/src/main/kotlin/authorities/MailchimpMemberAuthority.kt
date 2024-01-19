@@ -4,5 +4,5 @@ import community.flock.eco.core.authorities.Authority
 
 enum class MailchimpMemberAuthority : Authority {
     READ,
-    WRITE
+    WRITE,
 }

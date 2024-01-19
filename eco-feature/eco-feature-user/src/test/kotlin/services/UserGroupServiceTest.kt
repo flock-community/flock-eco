@@ -21,9 +21,8 @@ import javax.transaction.Transactional
 class UserGroupServiceTest(
     @Autowired private val userService: UserService,
     @Autowired private val userGroupService: UserGroupService,
-    @Autowired private val userGroupRepository: UserGroupRepository
+    @Autowired private val userGroupRepository: UserGroupRepository,
 ) {
-
     @Test
     fun `create new group`() {
         val group = userGroupService.create(UserGroupForm("Test"))
@@ -32,10 +31,11 @@ class UserGroupServiceTest(
 
     @Test
     fun `create new group with user`() {
-        val form = UserForm(
-            name = "User 2",
-            email = "user-2@gmail.com"
-        )
+        val form =
+            UserForm(
+                name = "User 2",
+                email = "user-2@gmail.com",
+            )
         val user = userService.create(form)
         val group = userGroupService.create(UserGroupForm("Test", mutableSetOf(user.code)))
         assertNotNull(group)
@@ -43,10 +43,11 @@ class UserGroupServiceTest(
 
     @Test
     fun `remove user from group`() {
-        val form = UserForm(
-            name = "User 3",
-            email = "user-3@gmail.com"
-        )
+        val form =
+            UserForm(
+                name = "User 3",
+                email = "user-3@gmail.com",
+            )
         val user = userService.create(form)
         assertNotNull(user.id)
 
@@ -56,8 +57,8 @@ class UserGroupServiceTest(
         userGroupService.update(
             group.code,
             UserGroupForm(
-                users = setOf()
-            )
+                users = setOf(),
+            ),
         )
 
         assertEquals(1, userService.findAll().count())

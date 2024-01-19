@@ -31,7 +31,7 @@
                 <groupId>community.flock</groupId>
                 <artifactId>graphql-simple-bindings-maven-plugin</artifactId>
                 <configuration>
-                    <packageName>community.flock.eco.feature.multi_tenant.graphql</packageName>
+                    <packageName>community.flock.eco.feature.multitenant.graphql</packageName>
                     <scalarsKotlin>
                         <DateTime>java.time.LocalDateTime</DateTime>
                     </scalarsKotlin>

@@ -1,6 +1,6 @@
-package community.flock.eco.feature.multi_tenant.events
+package community.flock.eco.feature.multitenant.events
 
 import community.flock.eco.core.events.Event
-import community.flock.eco.feature.multi_tenant.model.MultiTenant
+import community.flock.eco.feature.multitenant.model.MultiTenant
 
 abstract class MultiTenantEvent(open val entity: MultiTenant) : Event
