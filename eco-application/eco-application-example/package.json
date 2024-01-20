@@ -24,5 +24,8 @@
     "type": "git",
     "url": "ssh://git@github.com/flock-community/flock-eco.git",
     "directory": "eco-application/eco-application-example"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

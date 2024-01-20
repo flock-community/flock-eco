@@ -21,5 +21,8 @@
     "type": "git",
     "url": "ssh://git@github.com/flock-community/flock-eco.git",
     "directory": "eco-webpack"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

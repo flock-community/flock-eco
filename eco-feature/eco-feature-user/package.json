@@ -14,5 +14,8 @@
     "type": "git",
     "url": "ssh://git@github.com/flock-community/flock-eco.git",
     "directory": "eco-feature/eco-feature-user"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

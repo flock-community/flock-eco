@@ -41,7 +41,7 @@
     "react-dom": "^16.14.0",
     "react-i18next": "^11.15.2",
     "react-material-ui-form-validator": "^2.0.8",
-    "react-password-strength-bar": "^0.3.2",
+    "react-password-strength-bar": "0.4.1",
     "react-router-dom": "^5.0.1",
     "react-select": "^3.0.5",
     "react-select-material-ui": "^6.0.0",
@@ -77,6 +77,7 @@
     "bracketSpacing": false
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/flock-community"
+    "registry": "https://npm.pkg.github.com/flock-community",
+    "access": "public"
   }
 }

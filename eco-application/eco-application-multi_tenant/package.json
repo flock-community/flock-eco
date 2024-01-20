@@ -23,5 +23,8 @@
     "type": "git",
     "url": "ssh://git@github.com/flock-community/flock-eco.git",
     "directory": "eco-application/eco-application-multi_tenant"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
