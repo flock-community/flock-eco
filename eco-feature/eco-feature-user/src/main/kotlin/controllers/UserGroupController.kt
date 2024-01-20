@@ -9,7 +9,7 @@ import community.flock.eco.feature.user.services.UserGroupService
 import org.springframework.data.domain.Pageable
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
-import community.flock.eco.feature.user.graphql.UserGroup as UserGroupGraphql
+import community.flock.eco.feature.user.graphql.kotlin.UserGroup as UserGroupGraphql
 
 @RestController
 @RequestMapping("/api/user-groups")

@@ -1,6 +1,6 @@
 package community.flock.eco.iso.language.resolvers
 
-import community.flock.eco.iso.language.graphql.Language
+import community.flock.eco.iso.language.graphql.kotlin.Language
 import community.flock.eco.iso.language.services.LanguageIsoService
 import graphql.kickstart.tools.GraphQLQueryResolver
 import org.springframework.stereotype.Component

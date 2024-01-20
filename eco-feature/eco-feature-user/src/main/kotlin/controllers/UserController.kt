@@ -25,11 +25,11 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
-import community.flock.eco.feature.user.graphql.User as UserGraphql
-import community.flock.eco.feature.user.graphql.UserAccount as UserAccountGraphql
-import community.flock.eco.feature.user.graphql.UserAccountKey as UserAccountKeyGraphql
-import community.flock.eco.feature.user.graphql.UserAccountOauth as UserAccountOauthGraphql
-import community.flock.eco.feature.user.graphql.UserAccountPassword as UserAccountPasswordGraphql
+import community.flock.eco.feature.user.graphql.kotlin.User as UserGraphql
+import community.flock.eco.feature.user.graphql.kotlin.UserAccount as UserAccountGraphql
+import community.flock.eco.feature.user.graphql.kotlin.UserAccountKey as UserAccountKeyGraphql
+import community.flock.eco.feature.user.graphql.kotlin.UserAccountOauth as UserAccountOauthGraphql
+import community.flock.eco.feature.user.graphql.kotlin.UserAccountPassword as UserAccountPasswordGraphql
 
 @RestController
 @RequestMapping("/api/users")

@@ -1,7 +1,7 @@
 package community.flock.eco.feature.member.controllers
 
 import community.flock.eco.core.utils.toResponse
-import community.flock.eco.feature.member.graphql.MemberInput
+import community.flock.eco.feature.member.graphql.kotlin.MemberInput
 import community.flock.eco.feature.member.mapper.MemberGraphqlMapper
 import community.flock.eco.feature.member.model.Member
 import community.flock.eco.feature.member.model.MemberStatus
@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import java.util.*
-import community.flock.eco.feature.member.graphql.Member as MemberGraphql
+import community.flock.eco.feature.member.graphql.kotlin.Member as MemberGraphql
 
 @RestController
 @RequestMapping("/api/members")

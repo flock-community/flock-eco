@@ -1,7 +1,7 @@
 package community.flock.eco.iso.language.controllers
 
 import community.flock.eco.core.utils.toResponse
-import community.flock.eco.iso.language.graphql.Language
+import community.flock.eco.iso.language.graphql.kotlin.Language
 import community.flock.eco.iso.language.services.LanguageIsoService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable

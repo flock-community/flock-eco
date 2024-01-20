@@ -1,6 +1,6 @@
 package community.flock.eco.feature.multi_tenant.controllers
 
-import community.flock.eco.feature.multi_tenant.graphql.TenantInput
+import community.flock.eco.feature.multi_tenant.graphql.kotlin.TenantInput
 import community.flock.eco.feature.multi_tenant.services.MultiTenantSchemaService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping

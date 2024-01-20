@@ -1,6 +1,6 @@
 package community.flock.eco.feature.workspace.resolvers
 
-import community.flock.eco.core.graphql.Pageable
+import community.flock.eco.core.graphql.kotlin.Pageable
 import community.flock.eco.feature.workspace.mappers.WorkspaceGraphqlMapper
 import community.flock.eco.feature.workspace.providers.WorkspaceUserProvider
 import community.flock.eco.feature.workspace.services.WorkspaceService

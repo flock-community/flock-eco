@@ -1,6 +1,6 @@
 package community.flock.eco.iso.country.resolvers
 
-import community.flock.eco.iso.country.graphql.Country
+import community.flock.eco.iso.country.graphql.kotlin.Country
 import community.flock.eco.iso.country.services.CountryIsoService
 import graphql.kickstart.tools.GraphQLQueryResolver
 import org.springframework.security.access.prepost.PreAuthorize

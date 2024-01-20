@@ -1,7 +1,7 @@
 package community.flock.eco.feature.workspace.controllers
 
 import community.flock.eco.core.utils.toResponse
-import community.flock.eco.feature.workspace.graphql.WorkspaceInput
+import community.flock.eco.feature.workspace.graphql.kotlin.WorkspaceInput
 import community.flock.eco.feature.workspace.mappers.WorkspaceGraphqlMapper
 import community.flock.eco.feature.workspace.model.getMediaType
 import community.flock.eco.feature.workspace.services.WorkspaceService

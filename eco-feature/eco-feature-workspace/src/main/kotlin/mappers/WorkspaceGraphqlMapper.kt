@@ -1,16 +1,16 @@
 package community.flock.eco.feature.workspace.mappers
 
-import community.flock.eco.feature.workspace.graphql.KeyValue
-import community.flock.eco.feature.workspace.graphql.KeyValueInput
-import community.flock.eco.feature.workspace.graphql.WorkspaceImageInput
-import community.flock.eco.feature.workspace.graphql.WorkspaceInput
+import community.flock.eco.feature.workspace.graphql.kotlin.KeyValue
+import community.flock.eco.feature.workspace.graphql.kotlin.KeyValueInput
+import community.flock.eco.feature.workspace.graphql.kotlin.WorkspaceImageInput
+import community.flock.eco.feature.workspace.graphql.kotlin.WorkspaceInput
 import community.flock.eco.feature.workspace.model.Workspace
 import community.flock.eco.feature.workspace.model.WorkspaceImage
 import community.flock.eco.feature.workspace.providers.WorkspaceUserProvider
 import org.springframework.stereotype.Component
 import java.util.*
-import community.flock.eco.feature.workspace.graphql.Workspace as WorkspaceGraphql
-import community.flock.eco.feature.workspace.graphql.WorkspaceUser as WorkspaceUserGraphql
+import community.flock.eco.feature.workspace.graphql.kotlin.Workspace as WorkspaceGraphql
+import community.flock.eco.feature.workspace.graphql.kotlin.WorkspaceUser as WorkspaceUserGraphql
 
 @Component
 class WorkspaceGraphqlMapper(

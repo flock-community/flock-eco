@@ -335,7 +335,7 @@
                 <plugin>
                     <groupId>community.flock</groupId>
                     <artifactId>graphql-simple-bindings-maven-plugin</artifactId>
-                    <version>0.6.1</version>
+                    <version>0.8.0</version>
                     <configuration>
                         <language>Kotlin</language>
                         <sourceDirectory>${project.basedir}/src/main/graphql</sourceDirectory>
@@ -521,40 +521,7 @@
             <name>Spring Milestones</name>
             <url>https://repo.spring.io/milestone</url>
         </repository>
-        <repository>
-            <id>jfrog-flock-community</id>
-            <name>jfrog-repositories</name>
-            <url>https://flock.jfrog.io/artifactory/flock-maven</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
     </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>jfrog-flock-community</id>
-            <name>jfrog-plugins</name>
-            <url>https://flock.jfrog.io/artifactory/flock-maven</url>
-        </pluginRepository>
-    </pluginRepositories>
-
-
-    <distributionManagement>
-        <repository>
-            <id>jfrog-flock-community</id>
-            <name>jfrog-repo-releases</name>
-            <url>https://flock.jfrog.io/artifactory/flock-maven</url>
-        </repository>
-        <snapshotRepository>
-            <id>jfrog-flock-community</id>
-            <name>jfrog-repo-snapshots</name>
-            <url>https://flock.jfrog.io/artifactory/flock-maven</url>
-        </snapshotRepository>
-    </distributionManagement>
 
     <scm>
         <url>https://github.com/flock-community/flock-eco</url>
