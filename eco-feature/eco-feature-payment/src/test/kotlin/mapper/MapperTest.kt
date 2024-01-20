@@ -20,17 +20,17 @@ import org.springframework.boot.test.context.SpringBootTest
 @AutoConfigureJsonTesters
 class MapperTest(
     @Autowired private val objectMapper: ObjectMapper,
-    @Autowired private val paymentMandateRepository: PaymentMandateRepository
+    @Autowired private val paymentMandateRepository: PaymentMandateRepository,
 ) {
-
     @Test
     fun tests1() {
-        val model = PaymentMandate(
-            id = 1,
-            amount = 10.0,
-            frequency = PaymentFrequency.MONTHLY,
-            type = PaymentType.SEPA
-        )
+        val model =
+            PaymentMandate(
+                id = 1,
+                amount = 10.0,
+                frequency = PaymentFrequency.MONTHLY,
+                type = PaymentType.SEPA,
+            )
 
         val res = objectMapper.writeValueAsString(model)
         println(res)
@@ -38,22 +38,24 @@ class MapperTest(
 
     @Test
     fun tests2() {
-        val mandate = PaymentMandate(
-            id = 1,
-            amount = 10.0,
-            frequency = PaymentFrequency.MONTHLY,
-            type = PaymentType.SEPA
+        val mandate =
+            PaymentMandate(
+                id = 1,
+                amount = 10.0,
+                frequency = PaymentFrequency.MONTHLY,
+                type = PaymentType.SEPA,
+            )
 
-        )
+        val transactions =
+            PaymentTransaction(
+                amount = 10.0,
+                mandate = mandate,
+            )
 
-        val transactions = PaymentTransaction(
-            amount = 10.0,
-            mandate = mandate
-        )
-
-        val model = mandate.copy(
-            transactions = setOf(transactions)
-        )
+        val model =
+            mandate.copy(
+                transactions = setOf(transactions),
+            )
 
         val res = objectMapper.writeValueAsString(model)
         println(res)

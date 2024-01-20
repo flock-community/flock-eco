@@ -19,11 +19,13 @@ class UserRegisterController(
     private val passwordEncoder: PasswordEncoder,
     private val userRepository: UserRepository,
     private val userService: UserService,
-    private val userAccountService: UserAccountService
+    private val userAccountService: UserAccountService,
 ) {
-
     @PostMapping("/register")
-    fun register(@RequestBody form: UserAccountPasswordForm): ResponseEntity<UserAccount> = userAccountService
-        .createUserAccountPassword(form)
-        .toResponse()
+    fun register(
+        @RequestBody form: UserAccountPasswordForm,
+    ): ResponseEntity<UserAccount> =
+        userAccountService
+            .createUserAccountPassword(form)
+            .toResponse()
 }

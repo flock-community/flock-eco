@@ -7,33 +7,46 @@ import community.flock.eco.feature.payment.repositories.PaymentTransactionReposi
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/payment/mandates")
 class PaymentMandateController(
     private val paymentMandateRepository: PaymentMandateRepository,
-    private val paymentTransactionRepository: PaymentTransactionRepository
+    private val paymentTransactionRepository: PaymentTransactionRepository,
 ) {
-
     @GetMapping
     @PreAuthorize("hasAuthority('PaymentMandateAuthority.READ')")
     fun findByAll(pageable: Pageable): Page<PaymentMandate> = paymentMandateRepository.findAll(pageable)
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('PaymentMandateAuthority.READ')")
-    fun findById(@PathVariable id: Long): PaymentMandate? = paymentMandateRepository.findById(id).orElse(null)
+    fun findById(
+        @PathVariable id: Long,
+    ): PaymentMandate? = paymentMandateRepository.findById(id).orElse(null)
 
     @GetMapping("/{id}/transactions")
     @PreAuthorize("hasAuthority('PaymentMandateAuthority.READ')")
-    fun findByIdTransactions(@PathVariable id: Long): List<PaymentTransaction> = paymentMandateRepository.findById(id)
-        .map { paymentTransactionRepository.findByMandate(it) }
-        .orElse(listOf())
+    fun findByIdTransactions(
+        @PathVariable id: Long,
+    ): List<PaymentTransaction> =
+        paymentMandateRepository.findById(id)
+            .map { paymentTransactionRepository.findByMandate(it) }
+            .orElse(listOf())
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('PaymentMandateAuthority.READ')")
-    fun update(@PathVariable id: Long, @RequestBody form: PaymentMandate): PaymentMandate? = paymentMandateRepository.findById(id)
-        .let {
-            it.orElse(null).apply { paymentMandateRepository.save(form.copy(id = this.id)) }
-        }
+    fun update(
+        @PathVariable id: Long,
+        @RequestBody form: PaymentMandate,
+    ): PaymentMandate? =
+        paymentMandateRepository.findById(id)
+            .let {
+                it.orElse(null).apply { paymentMandateRepository.save(form.copy(id = this.id)) }
+            }
 }

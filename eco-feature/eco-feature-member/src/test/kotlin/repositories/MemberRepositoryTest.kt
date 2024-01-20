@@ -1,7 +1,11 @@
 package community.flock.eco.feature.member.repositories
 
 import community.flock.eco.feature.member.MemberConfiguration
-import community.flock.eco.feature.member.model.*
+import community.flock.eco.feature.member.model.Member
+import community.flock.eco.feature.member.model.MemberField
+import community.flock.eco.feature.member.model.MemberFieldType
+import community.flock.eco.feature.member.model.MemberGroup
+import community.flock.eco.feature.member.model.MemberStatus
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -10,7 +14,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient
 import org.springframework.boot.test.context.SpringBootTest
-import java.util.*
+import java.util.Optional
 import javax.transaction.Transactional
 
 @SpringBootTest(classes = [MemberConfiguration::class])
@@ -20,9 +24,8 @@ import javax.transaction.Transactional
 @Transactional
 class MemberRepositoryTest(
     @Autowired private val memberRepository: MemberRepository,
-    @Autowired private val memberFieldRepository: MemberFieldRepository
+    @Autowired private val memberFieldRepository: MemberFieldRepository,
 ) {
-
     @BeforeEach
     fun init() {
         memberRepository.deleteAll()
@@ -33,8 +36,8 @@ class MemberRepositoryTest(
                     firstName = "member$it",
                     surName = "member$it",
                     email = "member$it@gmail.com",
-                    status = MemberStatus.ACTIVE
-                )
+                    status = MemberStatus.ACTIVE,
+                ),
             )
         }
 
@@ -43,8 +46,8 @@ class MemberRepositoryTest(
                 firstName = "joop",
                 surName = "joop",
                 email = "joop@gmail.com",
-                status = MemberStatus.ACTIVE
-            )
+                status = MemberStatus.ACTIVE,
+            ),
         )
     }
 
@@ -64,32 +67,35 @@ class MemberRepositoryTest(
 
     @Test
     fun testsCreate() {
-        val member = createMember(
-            email = "willem.veelenturf@gmail.com"
-        )
+        val member =
+            createMember(
+                email = "willem.veelenturf@gmail.com",
+            )
         val res = memberRepository.save(member)
         assertEquals("Willem", res.firstName)
     }
 
     @Test
     fun testsGroup() {
-
-        val group = MemberGroup(
-            code = "LEKSTREEK",
-            name = "Lekstreek"
-        )
-        val member1 = createMember(
-            groups = mutableSetOf(group)
-        )
+        val group =
+            MemberGroup(
+                code = "LEKSTREEK",
+                name = "Lekstreek",
+            )
+        val member1 =
+            createMember(
+                groups = mutableSetOf(group),
+            )
         val res1 = memberRepository.save(member1)
 
         assertEquals("Willem", res1.firstName)
         assertEquals("LEKSTREEK", res1.groups.toList()[0].code)
 
-        val member2 = createMember(
-            email = "willem.veelenturf@gmail.com2",
-            groups = mutableSetOf(group)
-        )
+        val member2 =
+            createMember(
+                email = "willem.veelenturf@gmail.com2",
+                groups = mutableSetOf(group),
+            )
         val res2 = memberRepository.save(member2)
 
         assertEquals("Willem", res2.firstName)
@@ -98,18 +104,19 @@ class MemberRepositoryTest(
 
     @Test
     fun testsField() {
+        val fieldAgreement =
+            MemberField(
+                name = "agreement",
+                label = "Agreement",
+                type = MemberFieldType.TEXT,
+            )
 
-        val fieldAgreement = MemberField(
-            name = "agreement",
-            label = "Agreement",
-            type = MemberFieldType.TEXT
-        )
-
-        val fieldCheckbox = MemberField(
-            name = "checkbox",
-            label = "Checkbox",
-            type = MemberFieldType.TEXT
-        )
+        val fieldCheckbox =
+            MemberField(
+                name = "checkbox",
+                label = "Checkbox",
+                type = MemberFieldType.TEXT,
+            )
 
         memberFieldRepository.save(fieldAgreement)
         memberFieldRepository.save(fieldCheckbox)
@@ -120,10 +127,11 @@ class MemberRepositoryTest(
         assertEquals("Willem", res1.firstName)
         assertEquals("Test123", res1.fields["agreement"])
 
-        val member2 = createMember(
-            email = "willem.veelenturf@gmail.com2",
-            fields = mutableMapOf(fieldCheckbox.name to "Checked")
-        )
+        val member2 =
+            createMember(
+                email = "willem.veelenturf@gmail.com2",
+                fields = mutableMapOf(fieldCheckbox.name to "Checked"),
+            )
         val res2 = memberRepository.save(member2)
 
         assertEquals("Willem", res2.firstName)
@@ -135,12 +143,13 @@ class MemberRepositoryTest(
         surName: String = "Veelenturf",
         email: String = "willem.veelenturf@gmail.com1",
         groups: MutableSet<MemberGroup> = mutableSetOf(),
-        fields: MutableMap<String, String> = mutableMapOf()
-    ): Member = Member(
-        firstName = firstName,
-        surName = surName,
-        email = email,
-        groups = groups,
-        fields = fields
-    )
+        fields: MutableMap<String, String> = mutableMapOf(),
+    ): Member =
+        Member(
+            firstName = firstName,
+            surName = surName,
+            email = email,
+            groups = groups,
+            fields = fields,
+        )
 }

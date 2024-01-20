@@ -23,9 +23,8 @@ import kotlin.test.assertTrue
 @Import(MemberConfiguration::class, MemberLoadData::class)
 class MemberQueryResolverTest(
     @Autowired private val graphQLTestTemplate: GraphQLTestTemplate,
-    @Autowired private val memberLoadData: MemberLoadData
+    @Autowired private val memberLoadData: MemberLoadData,
 ) {
-
     @Test
     fun countMembers() {
         memberLoadData.load(33)

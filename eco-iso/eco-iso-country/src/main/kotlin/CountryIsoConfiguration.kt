@@ -12,6 +12,6 @@ import org.springframework.context.annotation.Import
     GraphqlConfiguration::class,
     CountryIsoService::class,
     CountryIsoController::class,
-    CountryIsoQueryResolver::class
+    CountryIsoQueryResolver::class,
 )
 class CountryIsoConfiguration

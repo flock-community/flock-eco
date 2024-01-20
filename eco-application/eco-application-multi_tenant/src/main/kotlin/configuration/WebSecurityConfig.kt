@@ -1,6 +1,6 @@
-package community.flock.eco.application.multi_tenant.config
+package community.flock.eco.application.multitenant.config
 
-import community.flock.eco.feature.multi_tenant.filters.MultiTenantFilter
+import community.flock.eco.feature.multitenant.filters.MultiTenantFilter
 import community.flock.eco.feature.user.filters.UserKeyTokenFilter
 import community.flock.eco.feature.user.services.UserAuthorityService
 import community.flock.eco.feature.user.services.UserSecurityService
@@ -18,7 +18,6 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 class WebSecurityConfig : WebSecurityConfigurerAdapter() {
-
     @Autowired
     lateinit var userAuthorityService: UserAuthorityService
 
@@ -32,7 +31,6 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     lateinit var multiTenantFilter: MultiTenantFilter
 
     override fun configure(http: HttpSecurity) {
-
         http
             .csrf().disable()
         http

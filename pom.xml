@@ -17,6 +17,9 @@
         <jackson.version>2.13.1</jackson.version>
         <node.version>v16.13.2</node.version>
         <npm.version>8.4.0</npm.version>
+
+        <quality.skip>false</quality.skip>
+        <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
     </properties>
 
     <modules>
@@ -502,13 +505,28 @@
             <plugin>
                 <groupId>com.github.gantsign.maven</groupId>
                 <artifactId>ktlint-maven-plugin</artifactId>
-                <version>1.7.0</version>
+                <version>3.0.0</version>
+                <configuration>
+                    <!-- Unofficial way to include only `src` files: https://github.com/gantsign/ktlint-maven-plugin/issues/341#issuecomment-1677673242 -->
+                    <sourceRoots>${project.build.sourceDirectory}</sourceRoots>
+                </configuration>
                 <executions>
                     <execution>
-                        <id>format-and-check</id>
+                        <id>ktlint-check</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <phase>verify</phase>
+                        <configuration>
+                            <skip>${quality.skip}</skip>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>ktlint-format</id>
                         <goals>
                             <goal>format</goal>
                         </goals>
+                        <phase>none</phase>
                     </execution>
                 </executions>
             </plugin>
@@ -521,7 +539,41 @@
             <name>Spring Milestones</name>
             <url>https://repo.spring.io/milestone</url>
         </repository>
+
+        <!--        <repository>-->
+        <!--            <id>jfrog-flock-community</id>-->
+        <!--            <name>jfrog-repositories</name>-->
+        <!--            <url>https://flock.jfrog.io/artifactory/flock-maven</url>-->
+        <!--            <snapshots>-->
+        <!--                <enabled>false</enabled>-->
+        <!--            </snapshots>-->
+        <!--        </repository>-->
     </repositories>
+
+    <pluginRepositories>
+        <!--        <pluginRepository>-->
+        <!--            <snapshots>-->
+        <!--                <enabled>false</enabled>-->
+        <!--            </snapshots>-->
+        <!--            <id>jfrog-flock-community</id>-->
+        <!--            <name>jfrog-plugins</name>-->
+        <!--            <url>https://flock.jfrog.io/artifactory/flock-maven</url>-->
+        <!--        </pluginRepository>-->
+    </pluginRepositories>
+
+
+    <distributionManagement>
+        <repository>
+            <id>jfrog-flock-community</id>
+            <name>jfrog-repo-releases</name>
+            <url>https://flock.jfrog.io/artifactory/flock-maven</url>
+        </repository>
+        <snapshotRepository>
+            <id>jfrog-flock-community</id>
+            <name>jfrog-repo-snapshots</name>
+            <url>https://flock.jfrog.io/artifactory/flock-maven</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <scm>
         <url>https://github.com/flock-community/flock-eco</url>
@@ -579,10 +631,6 @@
                                 </configuration>
                             </execution>
                         </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>com.github.gantsign.maven</groupId>
-                        <artifactId>ktlint-maven-plugin</artifactId>
                     </plugin>
                 </plugins>
             </build>

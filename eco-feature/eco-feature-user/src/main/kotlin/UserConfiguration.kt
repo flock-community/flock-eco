@@ -1,11 +1,24 @@
 package community.flock.eco.feature.user
 
 import community.flock.eco.core.configurations.GraphqlConfiguration
-import community.flock.eco.feature.user.controllers.*
+import community.flock.eco.feature.user.controllers.UserAccountController
+import community.flock.eco.feature.user.controllers.UserAuthorityController
+import community.flock.eco.feature.user.controllers.UserController
+import community.flock.eco.feature.user.controllers.UserControllerAdvice
+import community.flock.eco.feature.user.controllers.UserGroupController
+import community.flock.eco.feature.user.controllers.UserStatusController
 import community.flock.eco.feature.user.filters.UserKeyTokenFilter
-import community.flock.eco.feature.user.graphql.kotlin.*
+import community.flock.eco.feature.user.graphql.kotlin.User
+import community.flock.eco.feature.user.graphql.kotlin.UserAccount
+import community.flock.eco.feature.user.graphql.kotlin.UserAccountKey
+import community.flock.eco.feature.user.graphql.kotlin.UserAccountOauth
+import community.flock.eco.feature.user.graphql.kotlin.UserAccountPassword
 import community.flock.eco.feature.user.resolvers.UserQueryResolver
-import community.flock.eco.feature.user.services.*
+import community.flock.eco.feature.user.services.UserAccountService
+import community.flock.eco.feature.user.services.UserAuthorityService
+import community.flock.eco.feature.user.services.UserGroupService
+import community.flock.eco.feature.user.services.UserSecurityService
+import community.flock.eco.feature.user.services.UserService
 import graphql.kickstart.tools.SchemaParserDictionary
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.context.properties.EnableConfigurationProperties
@@ -34,10 +47,9 @@ import org.springframework.security.crypto.password.PasswordEncoder
     UserAuthorityService::class,
     UserSecurityService::class,
     UserQueryResolver::class,
-    UserKeyTokenFilter::class
+    UserKeyTokenFilter::class,
 )
 class UserConfiguration {
-
     @Bean
     fun passwordEncoder(): PasswordEncoder {
         return BCryptPasswordEncoder()

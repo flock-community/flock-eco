@@ -15,7 +15,6 @@ import java.util.UUID
 import kotlin.test.assertEquals
 
 class MemberServiceTest {
-
     @Test
     fun updateTest() {
         println("Test")
@@ -26,18 +25,23 @@ class MemberServiceTest {
         val service = MemberService(applicationEventPublisher, memberRepository)
 
         val uuid = UUID.randomUUID()
-        val current = Member(
-            id = 1L,
-            uuid = uuid,
-            firstName = "firstName-1",
-            surName = "surName-1",
-        )
-        val updated = Member(
-            firstName = "firstName-2",
-            surName = "surName-2",
-        )
+        val current =
+            Member(
+                id = 1L,
+                uuid = uuid,
+                firstName = "firstName-1",
+                surName = "surName-1",
+            )
+        val updated =
+            Member(
+                firstName = "firstName-2",
+                surName = "surName-2",
+            )
 
-        fun mutateField(field: String, value: String) {
+        fun mutateField(
+            field: String,
+            value: String,
+        ) {
             val field = Member::class.java.getDeclaredField(field)
             field.isAccessible = true
             field.set(current, value)
@@ -64,7 +68,7 @@ class MemberServiceTest {
                     assertEquals("surName-2", obj.member.surName)
                     assertEquals("firstName-1", obj.oldMember.firstName)
                     assertEquals("surName-1", obj.oldMember.surName)
-                }
+                },
             )
         }
     }

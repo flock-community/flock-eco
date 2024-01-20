@@ -11,17 +11,12 @@ import javax.persistence.EntityListeners
 @Entity
 @EntityListeners(EventEntityListeners::class)
 class UserAccountPassword(
-
     override val id: Long = 0,
-
     @JsonIdentityReference(alwaysAsId = true)
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator::class, property = "code")
     override val user: User,
-
     @JsonIgnore
     val secret: String? = null,
-
     @JsonIgnore
-    val resetCode: String? = null
-
+    val resetCode: String? = null,
 ) : UserAccount(id, user)

@@ -7,5 +7,5 @@ data class PaymentBankAccount(
     val name: String,
     val iban: String,
     val bic: String,
-    val country: String
+    val country: String,
 )

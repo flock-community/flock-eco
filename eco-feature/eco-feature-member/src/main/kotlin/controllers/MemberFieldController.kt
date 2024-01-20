@@ -18,45 +18,54 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/member_fields")
 class MemberFieldController(
-    private val memberFieldService: MemberFieldService
+    private val memberFieldService: MemberFieldService,
 ) {
-
     data class MemberFieldForm(
         val name: String,
         val label: String,
         val type: String,
-        val options: Set<String>?
+        val options: Set<String>?,
     )
 
     @GetMapping
     @PreAuthorize("hasAuthority('MemberFieldAuthority.READ')")
-    fun findAll(): List<MemberField> = memberFieldService
-        .findAll()
-        .toList()
-        .sortedBy { it.name }
+    fun findAll(): List<MemberField> =
+        memberFieldService
+            .findAll()
+            .toList()
+            .sortedBy { it.name }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('MemberFieldAuthority.READ')")
-    fun findById(@PathVariable("id") id: Long): ResponseEntity<MemberField> = memberFieldService
-        .findById(id)
-        .toResponse()
+    fun findById(
+        @PathVariable("id") id: Long,
+    ): ResponseEntity<MemberField> =
+        memberFieldService
+            .findById(id)
+            .toResponse()
 
     @GetMapping("/{name}")
     @PreAuthorize("hasAuthority('MemberFieldAuthority.READ')")
-    fun findByName(@PathVariable("name") name: String): ResponseEntity<MemberField> = memberFieldService
-        .findByName(name)
-        .toResponse()
+    fun findByName(
+        @PathVariable("name") name: String,
+    ): ResponseEntity<MemberField> =
+        memberFieldService
+            .findByName(name)
+            .toResponse()
 
     @PostMapping
     @PreAuthorize("hasAuthority('MemberFieldAuthority.WRITE')")
-    fun create(@RequestBody memberFieldForm: MemberFieldForm): ResponseEntity<MemberField> {
+    fun create(
+        @RequestBody memberFieldForm: MemberFieldForm,
+    ): ResponseEntity<MemberField> {
         return MemberField(
             name = memberFieldForm.name.lowercase(),
             label = memberFieldForm.label,
             type = MemberFieldType.valueOf(memberFieldForm.type),
-            options = memberFieldForm.options
-                ?.toSortedSet()
-                ?: sortedSetOf()
+            options =
+                memberFieldForm.options
+                    ?.toSortedSet()
+                    ?: sortedSetOf(),
         )
             .let { memberFieldService.create(it) }
             .toResponse()
@@ -66,24 +75,27 @@ class MemberFieldController(
     @PreAuthorize("hasAuthority('MemberFieldAuthority.WRITE')")
     fun update(
         @PathVariable("id") id: Long,
-        @RequestBody memberFieldForm: MemberFieldForm
-    ): ResponseEntity<MemberField> = memberFieldService
-        .findById(id)
-        ?.let {
-            it.copy(
-                name = memberFieldForm.name.lowercase(),
-                label = memberFieldForm.label,
-                type = MemberFieldType.valueOf(memberFieldForm.type),
-                options = memberFieldForm.options
-                    ?.toSortedSet()
-                    ?: sortedSetOf()
-            )
-        }
-        ?.let { memberFieldService.update(id, it) }
-        .toResponse()
+        @RequestBody memberFieldForm: MemberFieldForm,
+    ): ResponseEntity<MemberField> =
+        memberFieldService
+            .findById(id)
+            ?.let {
+                it.copy(
+                    name = memberFieldForm.name.lowercase(),
+                    label = memberFieldForm.label,
+                    type = MemberFieldType.valueOf(memberFieldForm.type),
+                    options =
+                        memberFieldForm.options
+                            ?.toSortedSet()
+                            ?: sortedSetOf(),
+                )
+            }
+            ?.let { memberFieldService.update(id, it) }
+            .toResponse()
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('MemberFieldAuthority.WRITE')")
-    fun delete(@PathVariable("id") id: Long) =
-        memberFieldService.delete(id)
+    fun delete(
+        @PathVariable("id") id: Long,
+    ) = memberFieldService.delete(id)
 }

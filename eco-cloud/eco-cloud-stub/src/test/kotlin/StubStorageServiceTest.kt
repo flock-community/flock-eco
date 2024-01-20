@@ -9,9 +9,8 @@ import org.springframework.util.ResourceUtils
 
 @SpringBootTest(classes = [StubCloudConfiguration::class])
 class StubStorageServiceTest(
-    @Autowired private val storageService: StorageService
+    @Autowired private val storageService: StorageService,
 ) {
-
     val bucket: String = "bucket-test"
     val key: String = "key-test"
 
@@ -25,7 +24,6 @@ class StubStorageServiceTest(
 
     @Test
     fun `put multipart`() {
-
         val file = ResourceUtils.getFile("classpath:test.txt")
 
         val uploadId = storageService.initChunk(bucket, key).uploadId

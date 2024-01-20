@@ -1,7 +1,7 @@
-package community.flock.eco.application.multi_tenant
+package community.flock.eco.application.multitenant
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import community.flock.eco.application.multi_tenant.controllers.RegistrationInput
+import community.flock.eco.application.multitenant.controllers.RegistrationInput
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -18,7 +18,6 @@ import java.util.UUID
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 class CrossLoginTenantTest {
-
     @Autowired
     lateinit var mockMvc: MockMvc
 
@@ -27,7 +26,6 @@ class CrossLoginTenantTest {
 
     @Test
     fun `should not be able to cross login into tenant`() {
-
         val sessionA = MockHttpSession()
         val sessionB = MockHttpSession()
 
@@ -44,7 +42,7 @@ class CrossLoginTenantTest {
             MockMvcRequestBuilders
                 .get("/api/users/me")
                 .session(sessionA)
-                .header("X-TENANT", tenantB.tenantName)
+                .header("X-TENANT", tenantB.tenantName),
         )
             .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isUnauthorized)
@@ -52,11 +50,12 @@ class CrossLoginTenantTest {
 
     fun register(session: MockHttpSession): RegistrationInput {
         val random = UUID.randomUUID().toString().replace("-", "_")
-        val input = RegistrationInput(
-            tenantName = random,
-            email = "tenant@$random.nl",
-            name = "Tenant de Tenant"
-        )
+        val input =
+            RegistrationInput(
+                tenantName = random,
+                email = "tenant@$random.nl",
+                name = "Tenant de Tenant",
+            )
 
         mockMvc.perform(
             MockMvcRequestBuilders
@@ -65,7 +64,7 @@ class CrossLoginTenantTest {
                 .header("X-TENANT", input.tenantName)
                 .content(objectMapper.writeValueAsBytes(input))
                 .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON),
         )
             .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk)
@@ -73,27 +72,31 @@ class CrossLoginTenantTest {
         return input
     }
 
-    fun login(session: MockHttpSession, tenant: RegistrationInput) {
-
+    fun login(
+        session: MockHttpSession,
+        tenant: RegistrationInput,
+    ) {
         mockMvc.perform(
             MockMvcRequestBuilders
                 .post("/login")
                 .session(session)
                 .header("X-TENANT", tenant.tenantName)
                 .content("username=${tenant.email}&password=password")
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED),
         )
             .andDo(MockMvcResultHandlers.print())
             .andExpect(status().is3xxRedirection)
     }
 
-    fun me(session: MockHttpSession, tenant: RegistrationInput) {
-
+    fun me(
+        session: MockHttpSession,
+        tenant: RegistrationInput,
+    ) {
         mockMvc.perform(
             MockMvcRequestBuilders
                 .get("/api/users/me")
                 .session(session)
-                .header("X-TENANT", tenant.tenantName)
+                .header("X-TENANT", tenant.tenantName),
         )
             .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk)

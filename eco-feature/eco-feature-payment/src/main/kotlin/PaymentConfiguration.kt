@@ -20,6 +20,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
     PaymentSepaXmlService::class,
     PaymentMandateController::class,
     PaymentTransactionController::class,
-    PaymentBuckarooController::class
+    PaymentBuckarooController::class,
 )
 class PaymentConfiguration

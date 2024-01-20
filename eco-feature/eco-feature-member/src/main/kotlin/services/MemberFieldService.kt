@@ -13,35 +13,43 @@ import javax.transaction.Transactional
 @Component
 class MemberFieldService(
     private val publisher: ApplicationEventPublisher,
-    private val memberFieldRepository: MemberFieldRepository
+    private val memberFieldRepository: MemberFieldRepository,
 ) {
-    fun findById(id: Long): MemberField? = memberFieldRepository
-        .findById(id)
-        .toNullable()
+    fun findById(id: Long): MemberField? =
+        memberFieldRepository
+            .findById(id)
+            .toNullable()
 
-    fun findByName(name: String): MemberField? = memberFieldRepository
-        .findByName(name)
-        .toNullable()
+    fun findByName(name: String): MemberField? =
+        memberFieldRepository
+            .findByName(name)
+            .toNullable()
 
     fun findAll(): Iterable<MemberField> = memberFieldRepository.findAll()
 
     @Transactional
-    fun create(input: MemberField): MemberField = memberFieldRepository
-        .save(input)
-        .also { publisher.publishEvent(CreateMemberFieldEvent(it)) }
+    fun create(input: MemberField): MemberField =
+        memberFieldRepository
+            .save(input)
+            .also { publisher.publishEvent(CreateMemberFieldEvent(it)) }
 
     @Transactional
-    fun update(id: Long, input: MemberField): MemberField? = findById(id)
-        ?.apply {
-            val cur = this.copy()
-            val res = memberFieldRepository.save(input.copy(id = id))
-            publisher.publishEvent(UpdateMemberFieldEvent(res, cur))
-        }
+    fun update(
+        id: Long,
+        input: MemberField,
+    ): MemberField? =
+        findById(id)
+            ?.apply {
+                val cur = this.copy()
+                val res = memberFieldRepository.save(input.copy(id = id))
+                publisher.publishEvent(UpdateMemberFieldEvent(res, cur))
+            }
 
     @Transactional
-    fun delete(id: Long) = findById(id)
-        ?.let {
-            memberFieldRepository.deleteById(id)
-            publisher.publishEvent(DeleteMemberFieldEvent(it))
-        }
+    fun delete(id: Long) =
+        findById(id)
+            ?.let {
+                memberFieldRepository.deleteById(id)
+                publisher.publishEvent(DeleteMemberFieldEvent(it))
+            }
 }

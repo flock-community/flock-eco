@@ -14,7 +14,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
 import org.springframework.boot.test.context.SpringBootTest
 import java.time.LocalDate
 import java.time.Month
-import java.util.*
+import java.util.UUID
 import javax.transaction.Transactional
 
 @SpringBootTest(classes = [PaymentConfiguration::class])
@@ -23,25 +23,25 @@ import javax.transaction.Transactional
 @Transactional
 class PaymentSepaServiceTest(
     @Autowired private val service: PaymentSepaService,
-    @Autowired private val repository: PaymentMandateRepository
+    @Autowired private val repository: PaymentMandateRepository,
 ) {
-
     @Test
     fun createSimple() {
-
         val code = UUID.randomUUID().toString()
 
-        val sepa = PaymentSepaService.PaymentSepa(
-            code = code,
-            amount = 10.12,
-            frequency = PaymentFrequency.MONTHLY,
-            bankAccount = PaymentBankAccount(
-                name = "W.F. Veelenturf",
-                iban = "NL00ABCD0012345678",
-                bic = "BIC123",
-                country = "NL"
+        val sepa =
+            PaymentSepaService.PaymentSepa(
+                code = code,
+                amount = 10.12,
+                frequency = PaymentFrequency.MONTHLY,
+                bankAccount =
+                    PaymentBankAccount(
+                        name = "W.F. Veelenturf",
+                        iban = "NL00ABCD0012345678",
+                        bic = "BIC123",
+                        country = "NL",
+                    ),
             )
-        )
 
         service.create(sepa)
 
@@ -58,21 +58,22 @@ class PaymentSepaServiceTest(
 
     @Test
     fun createWithCollectionMonth() {
-
         val code = UUID.randomUUID().toString()
 
-        val sepa = PaymentSepaService.PaymentSepa(
-            code = code,
-            amount = 10.12,
-            frequency = PaymentFrequency.YEARLY,
-            collectionMonth = Month.APRIL,
-            bankAccount = PaymentBankAccount(
-                name = "W.F. Veelenturf",
-                iban = "NL00ABCD0012345678",
-                bic = "BIC123",
-                country = "NL"
+        val sepa =
+            PaymentSepaService.PaymentSepa(
+                code = code,
+                amount = 10.12,
+                frequency = PaymentFrequency.YEARLY,
+                collectionMonth = Month.APRIL,
+                bankAccount =
+                    PaymentBankAccount(
+                        name = "W.F. Veelenturf",
+                        iban = "NL00ABCD0012345678",
+                        bic = "BIC123",
+                        country = "NL",
+                    ),
             )
-        )
 
         service.create(sepa)
 

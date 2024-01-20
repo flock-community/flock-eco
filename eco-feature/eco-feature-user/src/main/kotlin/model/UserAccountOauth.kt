@@ -10,14 +10,10 @@ import javax.persistence.EntityListeners
 @Entity
 @EntityListeners(EventEntityListeners::class)
 class UserAccountOauth(
-
     override val id: Long = 0,
-
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator::class, property = "code")
     @JsonIdentityReference(alwaysAsId = true)
     override val user: User,
-
     val reference: String,
-    val provider: UserAccountOauthProvider
-
+    val provider: UserAccountOauthProvider,
 ) : UserAccount(id, user)
