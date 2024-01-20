@@ -430,7 +430,7 @@
                     <execution>
                         <id>attach-sources</id>
                         <goals>
-                            <goal>jar</goal>
+                            <goal>jar-no-fork</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -539,6 +539,7 @@
             <name>Spring Milestones</name>
             <url>https://repo.spring.io/milestone</url>
         </repository>
+
         <!--        <repository>-->
         <!--            <id>jfrog-flock-community</id>-->
         <!--            <name>jfrog-repositories</name>-->

@@ -4,7 +4,7 @@ Flock. eco is a collection of fullstack moduels which bootstraps development of 
 
 ## Setup
 ```
-Install Java 11
+Install Java 17
 Install Maven
 Install Nvm
 ```
