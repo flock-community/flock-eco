@@ -39,6 +39,8 @@
         <npm.version>8.4.0</npm.version>
 
         <quality.skip>false</quality.skip>
+        <gpg.skip>true</gpg.skip>
+        <dokka.skip>true</dokka.skip>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
     </properties>
 
@@ -566,6 +568,9 @@
                         <goals>
                             <goal>javadocJar</goal>
                         </goals>
+                        <configuration>
+                            <skip>${dokka.skip}</skip>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
