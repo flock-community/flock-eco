@@ -20,25 +20,26 @@ import javax.transaction.Transactional
 class UserServiceTest(
     @Autowired private val userService: UserService,
     @Autowired private val userGroupService: UserGroupService,
-    @Autowired private val userGroupRepository: UserGroupRepository
+    @Autowired private val userGroupRepository: UserGroupRepository,
 ) {
-
     @Test
     fun `create new user`() {
-        val form = UserForm(
-            name = "User 1",
-            email = "user-1@gmail.com"
-        )
+        val form =
+            UserForm(
+                name = "User 1",
+                email = "user-1@gmail.com",
+            )
         val user = userService.create(form)
         assertNotNull(user)
     }
 
     @Test
     fun `remove user`() {
-        val form = UserForm(
-            name = "User 2",
-            email = "user-1@gmail.com"
-        )
+        val form =
+            UserForm(
+                name = "User 2",
+                email = "user-1@gmail.com",
+            )
         val user = userService.create(form)
         assertNotNull(user)
 
@@ -49,10 +50,11 @@ class UserServiceTest(
 
     @Test
     fun `remove user in group`() {
-        val form = UserForm(
-            name = "User 3",
-            email = "user-3@gmail.com"
-        )
+        val form =
+            UserForm(
+                name = "User 3",
+                email = "user-3@gmail.com",
+            )
         val user = userService.create(form)
         assertNotNull(user.id)
 

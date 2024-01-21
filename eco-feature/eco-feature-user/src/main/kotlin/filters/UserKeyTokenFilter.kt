@@ -13,14 +13,18 @@ import javax.servlet.http.HttpServletRequest
 
 @Component
 class UserKeyTokenFilter(
-    val userAccountService: UserAccountService
+    val userAccountService: UserAccountService,
 ) : GenericFilterBean() {
-
-    override fun doFilter(request: ServletRequest, response: ServletResponse, filterChain: FilterChain) {
+    override fun doFilter(
+        request: ServletRequest,
+        response: ServletResponse,
+        filterChain: FilterChain,
+    ) {
         val token = (request as HttpServletRequest).getHeader("Authorization")
-        val key = token?.let {
-            "TOKEN (.*)".toRegex().find(it)?.groups?.get(1)?.value
-        }
+        val key =
+            token?.let {
+                "TOKEN (.*)".toRegex().find(it)?.groups?.get(1)?.value
+            }
         if (key != null) {
             userAccountService.findUserAccountKeyByKey(key)
                 ?.also { account ->

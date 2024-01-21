@@ -13,6 +13,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 @EntityScan
 @Import(
     MailchimpClient::class,
-    MailchimpController::class
+    MailchimpController::class,
 )
 class MailchimpConfiguration : WebMvcConfigurer

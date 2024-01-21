@@ -19,19 +19,19 @@ import community.flock.eco.feature.user.model.UserAccountPassword as UserAccount
 @Component
 @ConditionalOnClass(GraphQLQueryResolver::class)
 class UserQueryResolver(
-    private val userService: UserService
+    private val userService: UserService,
 ) : GraphQLQueryResolver {
-
-    fun findUserById(id: String): UserGraphql? = userService
-        .findByCode(id)
-        ?.produce()
+    fun findUserById(id: String): UserGraphql? =
+        userService
+            .findByCode(id)
+            ?.produce()
 
     @Transactional
     fun findAllUsers(
         search: String? = "",
         page: Int?,
         size: Int?,
-        order: String?
+        order: String?,
     ) = PageRequest.of(page ?: 0, size ?: 10)
         .let { pageable ->
             userService
@@ -42,25 +42,30 @@ class UserQueryResolver(
     fun countUsers() = userService.count()
 }
 
-fun UserModel.produce() = UserGraphql(
-    id = this.code,
-    name = this.name,
-    email = this.email,
-    authorities = this.authorities.toList(),
-    accounts = this.accounts.map { it.produce() },
-    created = this.created
-)
+fun UserModel.produce() =
+    UserGraphql(
+        id = this.code,
+        name = this.name,
+        email = this.email,
+        authorities = this.authorities.toList(),
+        accounts = this.accounts.map { it.produce() },
+        created = this.created,
+    )
 
-fun UserAccountModel.produce(): UserAccountGraphql = when (this) {
-    is UserAccountPasswordModel -> UserAccountPasswordGraphql(
-        id = this.id.toString()
-    )
-    is UserAccountKeyModel -> UserAccountPasswordGraphql(
-        id = this.id.toString()
-    )
-    is UserAccountOauthModel -> UserAccountOauthGraphql(
-        id = this.id.toString(),
-        provider = this.provider.name
-    )
-    else -> error("cannot produce UserAccount")
-}
+fun UserAccountModel.produce(): UserAccountGraphql =
+    when (this) {
+        is UserAccountPasswordModel ->
+            UserAccountPasswordGraphql(
+                id = this.id.toString(),
+            )
+        is UserAccountKeyModel ->
+            UserAccountPasswordGraphql(
+                id = this.id.toString(),
+            )
+        is UserAccountOauthModel ->
+            UserAccountOauthGraphql(
+                id = this.id.toString(),
+                provider = this.provider.name,
+            )
+        else -> error("cannot produce UserAccount")
+    }

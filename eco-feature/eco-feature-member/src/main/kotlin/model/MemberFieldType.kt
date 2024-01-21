@@ -4,5 +4,5 @@ enum class MemberFieldType {
     TEXT,
     CHECKBOX,
     SINGLE_SELECT,
-    MULTI_SELECT
+    MULTI_SELECT,
 }

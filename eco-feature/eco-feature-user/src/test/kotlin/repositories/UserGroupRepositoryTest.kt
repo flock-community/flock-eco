@@ -16,15 +16,14 @@ import javax.transaction.Transactional
 @AutoConfigureDataJpa
 @Transactional
 class UserGroupRepositoryTest(
-    @Autowired private val usergroupRepository: UserGroupRepository
+    @Autowired private val usergroupRepository: UserGroupRepository,
 ) {
-
     @Test
     fun `save userGroup via repository`() {
-
-        val userGroup = UserGroup(
-            name = "group name"
-        )
+        val userGroup =
+            UserGroup(
+                name = "group name",
+            )
 
         usergroupRepository.save(userGroup)
 

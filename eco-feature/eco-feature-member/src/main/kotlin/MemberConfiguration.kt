@@ -30,6 +30,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
     MemberGroupController::class,
     MemberFieldController::class,
     MemberGraphqlMapper::class,
-    MemberQueryResolver::class
+    MemberQueryResolver::class,
 )
 class MemberConfiguration

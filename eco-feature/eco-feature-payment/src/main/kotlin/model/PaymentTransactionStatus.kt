@@ -5,5 +5,5 @@ enum class PaymentTransactionStatus {
     CANCELED,
     SUCCESS,
     FAILED,
-    ERROR
+    ERROR,
 }

@@ -2,7 +2,11 @@ package community.flock.eco.feature.user.services
 
 import community.flock.eco.feature.user.forms.UserAccountOauthForm
 import community.flock.eco.feature.user.forms.UserAccountPasswordForm
-import community.flock.eco.feature.user.model.*
+import community.flock.eco.feature.user.model.User
+import community.flock.eco.feature.user.model.UserAccountKey
+import community.flock.eco.feature.user.model.UserAccountOauth
+import community.flock.eco.feature.user.model.UserAccountOauthProvider
+import community.flock.eco.feature.user.model.UserAccountPassword
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer
 import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer
@@ -17,10 +21,12 @@ import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser
 
 class UserSecurityService(
     private val userAccountService: UserAccountService,
-    private val passwordEncoder: PasswordEncoder
+    private val passwordEncoder: PasswordEncoder,
 ) {
-
-    class UserSecurityOauth2(val account: UserAccountOauth, token: OidcIdToken) : DefaultOidcUser(account.user.getGrantedAuthority(), token) {
+    class UserSecurityOauth2(
+        val account: UserAccountOauth,
+        token: OidcIdToken,
+    ) : DefaultOidcUser(account.user.getGrantedAuthority(), token) {
         override fun getName(): String {
             return account.user.code
         }
@@ -28,21 +34,33 @@ class UserSecurityService(
 
     class UserSecurityPassword(val account: UserAccountPassword) : UserDetails {
         override fun getAuthorities() = account.user.getGrantedAuthority()
+
         override fun isEnabled() = account.user.enabled
+
         override fun getUsername() = account.user.code
+
         override fun getPassword() = account.secret
+
         override fun isCredentialsNonExpired() = true
+
         override fun isAccountNonExpired() = true
+
         override fun isAccountNonLocked() = true
     }
 
     class UserSecurityKey(val account: UserAccountKey) : UserDetails {
         override fun getAuthorities() = account.user.getGrantedAuthority()
+
         override fun isEnabled() = account.user.enabled
+
         override fun getUsername() = account.user.code
+
         override fun getPassword() = null
+
         override fun isCredentialsNonExpired() = true
+
         override fun isAccountNonExpired() = true
+
         override fun isAccountNonLocked() = true
     }
 
@@ -58,7 +76,6 @@ class UserSecurityService(
     }
 
     fun databaseLogin(http: HttpSecurity): FormLoginConfigurer<HttpSecurity> {
-
         return http
             .userDetailsService { ref ->
                 userAccountService.findUserAccountPasswordByUserEmail(ref)
@@ -69,7 +86,6 @@ class UserSecurityService(
     }
 
     fun googleLogin(http: HttpSecurity): OAuth2LoginConfigurer<HttpSecurity>.UserInfoEndpointConfig {
-
         return http
             .oauth2Login()
             .userInfoEndpoint()
@@ -82,12 +98,13 @@ class UserSecurityService(
                 val name = oidcUser.attributes["name"].toString()
                 val email = oidcUser.attributes["email"].toString()
 
-                val form = UserAccountOauthForm(
-                    email = email,
-                    name = name,
-                    reference = reference,
-                    provider = UserAccountOauthProvider.GOOGLE
-                )
+                val form =
+                    UserAccountOauthForm(
+                        email = email,
+                        name = name,
+                        reference = reference,
+                        provider = UserAccountOauthProvider.GOOGLE,
+                    )
 
                 if (userAccountService.findUserAccountOauthByReference(reference) == null) {
                     userAccountService.createUserAccountOauth(form)

@@ -8,13 +8,10 @@ import javax.persistence.Embeddable
 
 @Embeddable
 class WorkspaceImage(
-
     @Column(name = "image_name")
     val name: String,
-
     @Column(name = "image_file")
-    val file: ByteArray
-
+    val file: ByteArray,
 )
 
 fun WorkspaceImage.getMediaType(): MediaType {

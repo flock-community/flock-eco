@@ -11,27 +11,29 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("api/countries")
 class CountryIsoController(
-    val countryIsoService: CountryIsoService
+    val countryIsoService: CountryIsoService,
 ) {
-
     @GetMapping
-    fun getAll() = countryIsoService.data
-        .map {
-            Country(
-                name = it.name,
-                alpha2 = it.alpha2,
-                alpha3 = it.alpha3
-            )
-        }
-        .toResponse()
+    fun getAll() =
+        countryIsoService.data
+            .map {
+                Country(
+                    name = it.name,
+                    alpha2 = it.alpha2,
+                    alpha3 = it.alpha3,
+                )
+            }
+            .toResponse()
 
     @GetMapping("/{code}")
-    fun getById(@PathVariable code: String) = countryIsoService.findByCode(code)
+    fun getById(
+        @PathVariable code: String,
+    ) = countryIsoService.findByCode(code)
         ?.let {
             Country(
                 name = it.name,
                 alpha2 = it.alpha2,
-                alpha3 = it.alpha3
+                alpha3 = it.alpha3,
             )
         }
         .toResponse()

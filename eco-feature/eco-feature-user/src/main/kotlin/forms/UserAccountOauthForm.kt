@@ -7,5 +7,5 @@ data class UserAccountOauthForm(
     override val name: String?,
     override val authorities: Set<String> = setOf(),
     val reference: String,
-    val provider: UserAccountOauthProvider
+    val provider: UserAccountOauthProvider,
 ) : UserAccountForm(email, name, authorities)

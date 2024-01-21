@@ -10,14 +10,10 @@ import javax.persistence.EntityListeners
 @Entity
 @EntityListeners(EventEntityListeners::class)
 class UserAccountKey(
-
     override val id: Long = 0,
-
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator::class, property = "code")
     @JsonIdentityReference(alwaysAsId = true)
     override val user: User,
-
     val key: String,
-    val label: String?
-
+    val label: String?,
 ) : UserAccount(id, user)

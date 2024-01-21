@@ -1,8 +1,8 @@
-package community.flock.eco.application.multi_tenant
+package community.flock.eco.application.multitenant
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import community.flock.eco.application.multi_tenant.controllers.RegistrationInput
-import community.flock.eco.feature.multi_tenant.services.MultiTenantSchemaService
+import community.flock.eco.application.multitenant.controllers.RegistrationInput
+import community.flock.eco.feature.multitenant.services.MultiTenantSchemaService
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -20,7 +20,6 @@ import java.util.UUID
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 class RegisterTenantTest {
-
     @Autowired
     lateinit var mockMvc: MockMvc
 
@@ -32,13 +31,13 @@ class RegisterTenantTest {
 
     @Test
     fun registerTenant() {
-
         val random = UUID.randomUUID().toString().replace("-", "_")
-        val input = RegistrationInput(
-            tenantName = random,
-            email = "tenant@$random.nl",
-            name = "Tenant de Tenant"
-        )
+        val input =
+            RegistrationInput(
+                tenantName = random,
+                email = "tenant@$random.nl",
+                name = "Tenant de Tenant",
+            )
 
         val session = MockHttpSession()
 
@@ -49,7 +48,7 @@ class RegisterTenantTest {
                 .header("X-TENANT", input.tenantName)
                 .content(objectMapper.writeValueAsBytes(input))
                 .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON),
         )
             .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk)
@@ -60,7 +59,7 @@ class RegisterTenantTest {
                 .session(session)
                 .header("X-TENANT", input.tenantName)
                 .content("username=${input.email}&password=password")
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED),
         )
             .andDo(MockMvcResultHandlers.print())
             .andExpect(status().is3xxRedirection)
@@ -69,14 +68,14 @@ class RegisterTenantTest {
             MockMvcRequestBuilders
                 .get("/api/users/me")
                 .session(session)
-                .header("X-TENANT", input.tenantName)
+                .header("X-TENANT", input.tenantName),
         )
             .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk)
             .andExpect(
                 MockMvcResultMatchers
                     .jsonPath("$.email")
-                    .value(input.email)
+                    .value(input.email),
             )
     }
 }

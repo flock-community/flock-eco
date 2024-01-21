@@ -11,7 +11,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient
 import org.springframework.boot.test.context.SpringBootTest
-import java.util.*
+import java.util.UUID
 import javax.transaction.Transactional
 
 @SpringBootTest(classes = [MailchimpConfiguration::class])
@@ -21,9 +21,8 @@ import javax.transaction.Transactional
 @Transactional
 @Disabled
 class MailchimpClientTest(
-    private val mailchimpClient: MailchimpClient
+    private val mailchimpClient: MailchimpClient,
 ) {
-
     private val listId = "1d3504aedc"
 
     @Test
@@ -37,19 +36,21 @@ class MailchimpClientTest(
     fun `post member`() {
         val uuid = UUID.randomUUID().toString()
         val email = "$uuid@test.nl"
-        val memberPost = mailchimpClient.postMember(
-            listId,
-            MailchimpMember(
-                id = "1",
-                webId = "1",
-                email = email,
-                fields = mapOf(
-                    "FNAME" to "Test",
-                    "LNAME" to "Test"
+        val memberPost =
+            mailchimpClient.postMember(
+                listId,
+                MailchimpMember(
+                    id = "1",
+                    webId = "1",
+                    email = email,
+                    fields =
+                        mapOf(
+                            "FNAME" to "Test",
+                            "LNAME" to "Test",
+                        ),
+                    language = "nl",
                 ),
-                language = "nl"
             )
-        )
         assertNotNull(memberPost)
         assertEquals(email, memberPost?.email)
         assertEquals("Test", memberPost?.fields?.getValue("FNAME"))
@@ -66,15 +67,16 @@ class MailchimpClientTest(
     fun `post member no name`() {
         val uuid = UUID.randomUUID().toString()
         val email = "$uuid@test.nl"
-        val memberPost = mailchimpClient.postMember(
-            listId,
-            MailchimpMember(
-                id = "1",
-                webId = "1",
-                email = email,
-                language = "nl"
+        val memberPost =
+            mailchimpClient.postMember(
+                listId,
+                MailchimpMember(
+                    id = "1",
+                    webId = "1",
+                    email = email,
+                    language = "nl",
+                ),
             )
-        )
         assertNotNull(memberPost)
         assertEquals(email, memberPost?.email)
         assertNull(memberPost?.fields?.getValue("FNAME"))
@@ -89,41 +91,44 @@ class MailchimpClientTest(
 
     @Test
     fun `put member`() {
-
         val uuid = UUID.randomUUID().toString()
         val email = "$uuid@test.nl"
 
-        val memberPost = mailchimpClient.postMember(
-            listId,
-            MailchimpMember(
-                id = "1",
-                webId = "1",
-                email = email,
-                fields = mapOf(
-                    "FNAME" to "Test",
-                    "LNAME" to "Test"
+        val memberPost =
+            mailchimpClient.postMember(
+                listId,
+                MailchimpMember(
+                    id = "1",
+                    webId = "1",
+                    email = email,
+                    fields =
+                        mapOf(
+                            "FNAME" to "Test",
+                            "LNAME" to "Test",
+                        ),
+                    language = "nl",
                 ),
-                language = "nl"
             )
-        )
         assertNotNull(memberPost)
         assertEquals(email, memberPost?.email)
         assertEquals("Test", memberPost?.fields?.getValue("FNAME"))
         assertEquals("Test", memberPost?.fields?.getValue("LNAME"))
 
-        val memberPut = mailchimpClient.putMember(
-            listId,
-            MailchimpMember(
-                id = "1",
-                webId = "1",
-                email = email,
-                fields = mapOf(
-                    "FNAME" to "Test 2",
-                    "LNAME" to "Test 2"
+        val memberPut =
+            mailchimpClient.putMember(
+                listId,
+                MailchimpMember(
+                    id = "1",
+                    webId = "1",
+                    email = email,
+                    fields =
+                        mapOf(
+                            "FNAME" to "Test 2",
+                            "LNAME" to "Test 2",
+                        ),
+                    language = "nl",
                 ),
-                language = "nl"
             )
-        )
         assertNotNull(memberPut)
         assertEquals(email, memberPut?.email)
         assertEquals("Test 2", memberPut?.fields?.getValue("FNAME"))
@@ -144,46 +149,49 @@ class MailchimpClientTest(
 
     @Test
     fun `put tags`() {
-
-        val tags = (0..3).map {
-            val tag = UUID.randomUUID().toString()
-            val tagPost = mailchimpClient.postSegment(listId, tag)
-            assertNotNull(tagPost)
-            assertEquals(tag, tagPost)
-            tag
-        }
+        val tags =
+            (0..3).map {
+                val tag = UUID.randomUUID().toString()
+                val tagPost = mailchimpClient.postSegment(listId, tag)
+                assertNotNull(tagPost)
+                assertEquals(tag, tagPost)
+                tag
+            }
 
         val uuid = UUID.randomUUID().toString()
         val email = "$uuid@test.nl"
 
-        val memberPost = mailchimpClient.postMember(
-            listId,
-            MailchimpMember(
-                id = "1",
-                webId = "1",
-                email = email,
-                fields = mapOf(
-                    "FNAME" to "Test",
-                    "LNAME" to "Test"
+        val memberPost =
+            mailchimpClient.postMember(
+                listId,
+                MailchimpMember(
+                    id = "1",
+                    webId = "1",
+                    email = email,
+                    fields =
+                        mapOf(
+                            "FNAME" to "Test",
+                            "LNAME" to "Test",
+                        ),
+                    tags = setOf(tags[0], tags[1]),
+                    language = "nl",
                 ),
-                tags = setOf(tags[0], tags[1]),
-                language = "nl"
-
             )
-        )
         assertNotNull(memberPost)
         assertEquals(2, memberPost?.tags?.size)
         assertEquals(setOf(tags[0], tags[1]), memberPost?.tags)
 
-        val memberPut = mailchimpClient.putMember(
-            listId,
-            memberPost!!.copy(
-                fields = mapOf(
-                    "FNAME" to "Test1",
-                    "LNAME" to "Test1"
-                )
+        val memberPut =
+            mailchimpClient.putMember(
+                listId,
+                memberPost!!.copy(
+                    fields =
+                        mapOf(
+                            "FNAME" to "Test1",
+                            "LNAME" to "Test1",
+                        ),
+                ),
             )
-        )
 
         mailchimpClient.putTags(listId, email, setOf(tags[2], tags[3]), setOf(tags[0], tags[1]))
 

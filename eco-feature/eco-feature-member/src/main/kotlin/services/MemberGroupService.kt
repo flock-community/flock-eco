@@ -16,27 +16,36 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/member_groups")
 class MemberGroupService(
     private val publisher: ApplicationEventPublisher,
-    private val memberGroupRepository: MemberGroupRepository
+    private val memberGroupRepository: MemberGroupRepository,
 ) {
-
     fun findAll(): Iterable<MemberGroup> = memberGroupRepository.findAll()
 
-    fun findById(@PathVariable("id") id: Long) = memberGroupRepository
+    fun findById(
+        @PathVariable("id") id: Long,
+    ) = memberGroupRepository
         .findById(id)
         .toNullable()
 
-    fun create(@RequestBody memberGroup: MemberGroup): MemberGroup = memberGroupRepository
-        .save(memberGroup)
-        .also { publisher.publishEvent(CreateMemberGroupEvent(it)) }
+    fun create(
+        @RequestBody memberGroup: MemberGroup,
+    ): MemberGroup =
+        memberGroupRepository
+            .save(memberGroup)
+            .also { publisher.publishEvent(CreateMemberGroupEvent(it)) }
 
-    fun update(id: Long, memberGroup: MemberGroup) = findById(id)
+    fun update(
+        id: Long,
+        memberGroup: MemberGroup,
+    ) = findById(id)
         ?.let {
             val cur = it.copy()
             val res = memberGroupRepository.save(memberGroup.copy(id = it.id))
             publisher.publishEvent(UpdateMemberGroupEvent(res, cur))
         }
 
-    fun delete(@PathVariable("id") id: Long) = findById(id)
+    fun delete(
+        @PathVariable("id") id: Long,
+    ) = findById(id)
         ?.let {
             memberGroupRepository.deleteById(id)
             publisher.publishEvent(DeleteMemberGroupEvent(it))

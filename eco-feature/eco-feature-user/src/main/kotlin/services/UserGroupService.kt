@@ -11,41 +11,50 @@ import javax.transaction.Transactional
 @Service
 class UserGroupService(
     private val userRepository: UserRepository,
-    private val userGroupRepository: UserGroupRepository
+    private val userGroupRepository: UserGroupRepository,
 ) {
+    fun findByCode(code: String) =
+        userGroupRepository
+            .findByCode(code)
+            .toNullable()
 
-    fun findByCode(code: String) = userGroupRepository
-        .findByCode(code)
-        .toNullable()
-
-    fun create(form: UserGroupForm): UserGroup = UserGroup(
-        name = form.name ?: "",
-        users = form.users
-            ?.let { it.internalizeUsers() }
-            ?: mutableSetOf()
-    )
-        .let {
-            userGroupRepository.save(it)
-        }
-
-    fun update(code: String, form: UserGroupForm): UserGroup? = findByCode(code)
-        ?.let { userGroup ->
-            userGroup.copy(
-                name = form.name ?: userGroup.name,
-                users = form.users
+    fun create(form: UserGroupForm): UserGroup =
+        UserGroup(
+            name = form.name ?: "",
+            users =
+                form.users
                     ?.let { it.internalizeUsers() }
-                    ?: userGroup.users
-            )
-        }
-        ?.let {
-            userGroupRepository.save(it)
-        }
+                    ?: mutableSetOf(),
+        )
+            .let {
+                userGroupRepository.save(it)
+            }
+
+    fun update(
+        code: String,
+        form: UserGroupForm,
+    ): UserGroup? =
+        findByCode(code)
+            ?.let { userGroup ->
+                userGroup.copy(
+                    name = form.name ?: userGroup.name,
+                    users =
+                        form.users
+                            ?.let { it.internalizeUsers() }
+                            ?: userGroup.users,
+                )
+            }
+            ?.let {
+                userGroupRepository.save(it)
+            }
 
     @Transactional
-    fun delete(code: String) = userGroupRepository
-        .deleteByCode(code)
+    fun delete(code: String) =
+        userGroupRepository
+            .deleteByCode(code)
 
-    fun Set<String>.internalizeUsers() = userRepository
-        .findAllByCodeIn(this)
-        .toMutableSet()
+    fun Set<String>.internalizeUsers() =
+        userRepository
+            .findAllByCodeIn(this)
+            .toMutableSet()
 }

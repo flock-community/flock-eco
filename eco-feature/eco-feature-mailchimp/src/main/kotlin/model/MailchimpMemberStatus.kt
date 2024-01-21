@@ -4,5 +4,5 @@ enum class MailchimpMemberStatus {
     SUBSCRIBED,
     UNSUBSCRIBED,
     CLEANED,
-    PENDING
+    PENDING,
 }
