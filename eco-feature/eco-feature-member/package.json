@@ -1,9 +1,9 @@
 {
   "name": "@flock-community/flock-eco-feature-member",
-  "version": "2.7.11",
+  "version": "2.8.0",
   "main": "./src/main/react",
   "dependencies": {
-    "@flock-community/flock-eco-core": "^2.7.11"
+    "@flock-community/flock-eco-core": "^2.8.0"
   },
   "scripts": {
     "compile": "tsc",
