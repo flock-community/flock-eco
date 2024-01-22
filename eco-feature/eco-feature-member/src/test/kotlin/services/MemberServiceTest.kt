@@ -42,9 +42,9 @@ class MemberServiceTest {
             field: String,
             value: String,
         ) {
-            val field = Member::class.java.getDeclaredField(field)
-            field.isAccessible = true
-            field.set(current, value)
+            val declaredField = Member::class.java.getDeclaredField(field)
+            declaredField.isAccessible = true
+            declaredField.set(current, value)
         }
 
         every { memberRepository.findByUuid(uuid) } returns Optional.of(current)
@@ -62,7 +62,7 @@ class MemberServiceTest {
 
         verify {
             applicationEventPublisher.publishEvent(
-                withArg<Object> {
+                withArg<Any> {
                     val obj = it as UpdateMemberEvent
                     assertEquals("firstName-2", obj.member.firstName)
                     assertEquals("surName-2", obj.member.surName)

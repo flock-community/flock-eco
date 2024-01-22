@@ -22,6 +22,7 @@ import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
@@ -65,17 +66,17 @@ class MailchimpClient(
         try {
             val entity = HttpEntity<String>(headers)
             val res = restTemplate.exchange("/templates", HttpMethod.GET, entity, ObjectNode::class.java)
-            return res.body.get("templates").asIterable()
-                .map {
+            return res.body?.get("templates")?.asIterable()
+                ?.map {
                     MailchimpTemplate(
                         id = it.get("id").asText(),
                         name = it.get("name").asText(),
                         type =
                             it.get("type").asText().let {
-                                MailchimpTemplateType.valueOf(it.toUpperCase())
+                                MailchimpTemplateType.valueOf(it.uppercase())
                             },
                     )
-                }
+                } ?: error("Could not retrieve mailchimp template")
         } catch (ex: HttpClientErrorException) {
             throw MailchimpFetchException(ex.responseBodyAsString)
         }
@@ -91,8 +92,9 @@ class MailchimpClient(
                     entity,
                     ObjectNode::class.java,
                 )
-            return res.body.get("categories").asIterable()
-                .map { convertObjectNodeToMailchimpInterestCategory(it) }
+            return res.body?.get("categories")?.asIterable()
+                ?.map { convertObjectNodeToMailchimpInterestCategory(it) }
+                ?: error("Could not retrieve getInterestsCategories")
         } catch (ex: HttpClientErrorException) {
             throw MailchimpFetchException(ex.responseBodyAsString)
         }
@@ -104,7 +106,8 @@ class MailchimpClient(
     ): MailchimpInterestCategory? {
         val json = mapper.createObjectNode()
         json.put("title", interestCategory.title)
-        json.put("type", interestCategory.type.toString().toLowerCase())
+
+        json.put("type", interestCategory.type.toString().lowercase())
         val entity = HttpEntity(json, headers)
         try {
             val res =
@@ -114,7 +117,7 @@ class MailchimpClient(
                     entity,
                     ObjectNode::class.java,
                 )
-            return convertObjectNodeToMailchimpInterestCategory(res.body)
+            return res.body?.let { convertObjectNodeToMailchimpInterestCategory(it) }
         } catch (ex: HttpClientErrorException) {
             throw MailchimpFetchException(ex.responseBodyAsString)
         }
@@ -133,8 +136,9 @@ class MailchimpClient(
                     entity,
                     ObjectNode::class.java,
                 )
-            return res.body.get("interests").asIterable()
-                .map { convertObjectNodeToMailchimpInterest(it) }
+            return res.body?.get("interests")?.asIterable()
+                ?.map { convertObjectNodeToMailchimpInterest(it) }
+                ?: error("Could not retrieve getInterests")
         } catch (ex: HttpClientErrorException) {
             throw MailchimpFetchException(ex.responseBodyAsString)
         }
@@ -156,7 +160,9 @@ class MailchimpClient(
                     entity,
                     ObjectNode::class.java,
                 )
-            return convertObjectNodeToMailchimpInterest(res.body)
+            return convertObjectNodeToMailchimpInterest(
+                res.body ?: error("Could not post interests for list $listId, category id $interestCategoryId"),
+            )
         } catch (ex: HttpClientErrorException) {
             throw MailchimpFetchException(ex.responseBodyAsString)
         }
@@ -166,14 +172,15 @@ class MailchimpClient(
         try {
             val entity = HttpEntity<String>(headers)
             val res = restTemplate.exchange("/campaigns", HttpMethod.GET, entity, ObjectNode::class.java)
-            return res.body.get("campaigns").asIterable()
-                .map {
+            return res.body?.get("campaigns")?.asIterable()
+                ?.map {
                     MailchimpCampaign(
                         id = it.get("id").asText(),
                         webId = it.get("web_id").asText(),
                         name = it.get("settings").get("title").asText(),
                     )
                 }
+                ?: error("Could not retrieve campaigns")
         } catch (ex: HttpClientErrorException) {
             throw MailchimpFetchException(ex.responseBodyAsString)
         }
@@ -185,8 +192,9 @@ class MailchimpClient(
             val entity = HttpEntity<String>(headers)
             val res =
                 restTemplate.exchange("/lists?offset=$offset&count=10", HttpMethod.GET, entity, ObjectNode::class.java)
-            val total = res.body.get("total_items").asLong()
-            return res.body.get("lists").asIterable()
+            val body = res.body ?: error("Could not retrieve lists")
+            val total = body.get("total_items").asLong()
+            return body.get("lists").asIterable()
                 .map(this::convertObjectNodetoMailchimpList)
                 .let { PageImpl(it, page, total) }
         } catch (ex: HttpClientErrorException) {
@@ -202,15 +210,16 @@ class MailchimpClient(
         val count = page.pageSize
         try {
             val entity = HttpEntity<String>(headers)
-            val res =
+            val res: ResponseEntity<ObjectNode> =
                 restTemplate.exchange(
                     "/lists/$listId/members?offset=$offset&count=$count",
                     HttpMethod.GET,
                     entity,
                     ObjectNode::class.java,
                 )
-            val total = res.body.get("total_items").asLong()
-            return res.body.get("members").asIterable()
+            val body = res.body ?: error("Could not retrieve getMembers")
+            val total = body.get("total_items").asLong()
+            return body.get("members").asIterable()
                 .map(this::convertObjectNodeToMailchimpMember)
                 .let { PageImpl(it, page, total) }
         } catch (ex: HttpClientErrorException) {
@@ -227,7 +236,7 @@ class MailchimpClient(
         try {
             val res =
                 restTemplate.exchange("/lists/$listId/members/$md5", HttpMethod.GET, entity, ObjectNode::class.java)
-            return convertObjectNodeToMailchimpMember(res.body)
+            return convertObjectNodeToMailchimpMember(res.body ?: error("Could not retrieve member $email from list $listId"))
         } catch (ex: HttpClientErrorException) {
             if (ex.statusCode == HttpStatus.NOT_FOUND) {
                 return null
@@ -244,7 +253,7 @@ class MailchimpClient(
         val entity = HttpEntity(obj, headers)
         try {
             val res = restTemplate.exchange("/lists/$listId/members", HttpMethod.POST, entity, ObjectNode::class.java)
-            return convertObjectNodeToMailchimpMember(res.body)
+            return convertObjectNodeToMailchimpMember(res.body ?: error("Could not post member ${member.email} to list $listId"))
         } catch (ex: HttpClientErrorException) {
             throw MailchimpFetchException(ex.responseBodyAsString)
         }
@@ -260,7 +269,7 @@ class MailchimpClient(
         try {
             val res =
                 restTemplate.exchange("/lists/$listId/members/$md5", HttpMethod.PUT, entity, ObjectNode::class.java)
-            return convertObjectNodeToMailchimpMember(res.body)
+            return convertObjectNodeToMailchimpMember(res.body ?: error("Could not put member ${member.email} from list $listId"))
         } catch (ex: HttpClientErrorException) {
             throw MailchimpFetchException(ex.responseBodyAsString)
         }
@@ -279,7 +288,7 @@ class MailchimpClient(
                         .map(this::convertMailchimpMembertoObjectNode),
                 )
             val entity = HttpEntity(body, headers)
-            val res = restTemplate.exchange("/lists/$listId", HttpMethod.POST, entity, ObjectNode::class.java)
+            restTemplate.exchange("/lists/$listId", HttpMethod.POST, entity, ObjectNode::class.java)
         } catch (ex: HttpClientErrorException) {
             throw MailchimpFetchException(ex.responseBodyAsString)
         }
@@ -295,7 +304,7 @@ class MailchimpClient(
             body.putArray("static_segment")
             val entity = HttpEntity(body, headers)
             val res = restTemplate.exchange("/lists/$listId/segments", HttpMethod.POST, entity, ObjectNode::class.java)
-            return res.body.get("name").asText()
+            return res.body?.get("name")?.asText() ?: error("Could not retrieve segment")
         } catch (ex: HttpClientErrorException) {
             val res = mapper.readTree(ex.responseBodyAsString)
             val detail = res.get("detail").asText()
@@ -332,13 +341,12 @@ class MailchimpClient(
         }
         val entity = HttpEntity(body, headers)
         try {
-            val res =
-                restTemplate.exchange(
-                    "/lists/$listId/members/$md5/tags",
-                    HttpMethod.POST,
-                    entity,
-                    ObjectNode::class.java,
-                )
+            restTemplate.exchange(
+                "/lists/$listId/members/$md5/tags",
+                HttpMethod.POST,
+                entity,
+                ObjectNode::class.java,
+            )
         } catch (ex: HttpClientErrorException) {
             throw MailchimpFetchException(ex.responseBodyAsString)
         }
@@ -349,17 +357,17 @@ class MailchimpClient(
             MessageDigest.getInstance("MD5")
                 .digest(
                     email
-                        .toLowerCase()
+                        .lowercase()
                         .toByteArray(),
                 )
         val md5 = DatatypeConverter.printHexBinary(digest)
-        return md5.toLowerCase()
+        return md5.lowercase()
     }
 
     private fun convertMailchimpMembertoObjectNode(member: MailchimpMember): ObjectNode {
         val json = mapper.createObjectNode()
         json.put("email_address", member.email)
-        json.put("status", member.status.toString().toLowerCase())
+        json.put("status", member.status.toString().lowercase())
         json.put("language", member.language ?: "")
         json.putPOJO("tags", member.tags)
         json.putPOJO("interests", mapper.valueToTree(member.interests))
@@ -374,7 +382,7 @@ class MailchimpClient(
             title = it.get("title").asText(),
             type =
                 it.get("type").asText().let {
-                    MailchimpInterestCategoryType.valueOf(it.toUpperCase())
+                    MailchimpInterestCategoryType.valueOf(it.uppercase())
                 },
         )
 
@@ -406,7 +414,7 @@ class MailchimpClient(
             status =
                 obj.get("status")
                     ?.asText()
-                    ?.let { MailchimpMemberStatus.valueOf(it.toUpperCase()) }
+                    ?.let { MailchimpMemberStatus.valueOf(it.uppercase()) }
                     ?: MailchimpMemberStatus.UNSUBSCRIBED,
             tags =
                 obj.get("tags")

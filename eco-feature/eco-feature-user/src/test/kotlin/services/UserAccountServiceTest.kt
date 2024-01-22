@@ -221,7 +221,7 @@ class UserAccountServiceTest(
 
         userAccountService.updateKey(accountKey?.key!!, form)
 
-        val foundAccountKey = userAccountService.findUserAccountKeyByKey(accountKey?.key!!)
+        val foundAccountKey = userAccountService.findUserAccountKeyByKey(accountKey.key)
 
         assertEquals(newLabel, foundAccountKey?.label)
     }

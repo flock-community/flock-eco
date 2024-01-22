@@ -84,8 +84,7 @@ class MailchimpController(
         val event =
             MailchimpWebhookEvent(
                 type =
-                    formData.getFirst("type")
-                        .let { it.toUpperCase() }
+                    formData.getFirst("type")!!.uppercase()
                         .let { MailchimpWebhookEventType.valueOf(it) },
                 firedAt =
                     formData.getFirst("fired_at")

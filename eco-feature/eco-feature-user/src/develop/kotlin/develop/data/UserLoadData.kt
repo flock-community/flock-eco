@@ -18,7 +18,7 @@ class UserLoadData(
 ) : LoadData<User> {
     override fun load(n: Int): Iterable<User> {
         val users = (1..n).map { user(it) }.let { userRepository.saveAll(it) }
-        val accounts = users.map { account(it) }.let { userAccountRepository.saveAll(it) }
+        users.map { account(it) }.let { userAccountRepository.saveAll(it) }
         return users
     }
 
