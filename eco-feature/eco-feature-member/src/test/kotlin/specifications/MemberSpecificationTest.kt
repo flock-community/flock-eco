@@ -1,7 +1,7 @@
 package community.flock.eco.feature.member.specifications
 
 import community.flock.eco.feature.member.MemberConfiguration
-import community.flock.eco.feature.member.develop.data.MemberLoadData
+import community.flock.eco.feature.member.develop.MemberLoadData
 import community.flock.eco.feature.member.model.MemberStatus
 import community.flock.eco.feature.member.repositories.MemberRepository
 import org.junit.jupiter.api.Assertions.assertEquals

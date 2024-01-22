@@ -1,4 +1,4 @@
-package community.flock.eco.feature.member.develop.data
+package community.flock.eco.feature.member.develop
 
 import community.flock.eco.core.data.LoadData
 import community.flock.eco.feature.member.model.Member
