@@ -170,7 +170,8 @@ class PaymentBuckarooService(
 
         try {
             val res = restTemplate.postForEntity("https://$requestUri", HttpEntity(postContent, headers), ObjectNode::class.java)
-            if (res.body != null && res.statusCode.is2xxSuccessful) {
+            val body = res.body
+            if (body != null && res.statusCode.is2xxSuccessful) {
                 val mandate =
                     PaymentMandate(
                         code = UUID.randomUUID().toString(),
@@ -182,19 +183,19 @@ class PaymentBuckarooService(
                 val transaction =
                     PaymentTransaction(
                         amount = paymentMethod.amount,
-                        reference = res.body["Key"].asText(),
+                        reference = body["Key"].asText(),
                         status = PaymentTransactionStatus.PENDING,
                         mandate = mandate,
                     ).also { paymentTransactionRepository.save(it) }
 
-                if (res.body["Status"]["Code"]["Code"].asInt() in 400..499) {
-                    throw PaymentNotCreatedException(res.body["Status"]["SubCode"]["Description"].asText())
+                if (body["Status"]["Code"]["Code"].asInt() in 400..499) {
+                    throw PaymentNotCreatedException(body["Status"]["SubCode"]["Description"].asText())
                 }
 
                 return BuckarooResult(
                     mandate = mandate,
                     transaction = transaction,
-                    redirectUrl = res.body["RequiredAction"]["RedirectURL"].asText(),
+                    redirectUrl = body["RequiredAction"]["RedirectURL"].asText(),
                 )
             } else {
                 throw PaymentNotCreatedException(res.toString())
@@ -220,7 +221,7 @@ class PaymentBuckarooService(
                 httpMethod = httpMethod,
                 nonce = nonce,
                 timeStamp = timeStamp,
-                requestUri = URLEncoder.encode(requestUri, "UTF-8").toLowerCase(),
+                requestUri = URLEncoder.encode(requestUri, "UTF-8").lowercase(),
                 content = content,
             ).toString()
 

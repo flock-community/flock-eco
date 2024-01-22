@@ -36,7 +36,7 @@ class MultiTenantSchemaService(
 
     fun createMultiTenant(name: String): MultiTenant {
         if (name.contains("-")) {
-            throw error("Hyphen not allowed in tenant name")
+            error("Hyphen not allowed in tenant name")
         }
         val schemaName = "${prefix}_${name.uppercase()}"
         return MultiTenant(

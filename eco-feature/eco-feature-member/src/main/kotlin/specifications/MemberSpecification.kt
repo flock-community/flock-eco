@@ -24,9 +24,9 @@ class MemberSpecification(
         val searchCriteria =
             if (search.isNotBlank()) {
                 cb.or(
-                    cb.like(cb.lower(root.get("firstName")), "%${search.toLowerCase()}%"),
-                    cb.like(cb.lower(root.get("surName")), "%${search.toLowerCase()}%"),
-                    cb.like(cb.lower(root.get("email")), "%${search.toLowerCase()}%"),
+                    cb.like(cb.lower(root.get("firstName")), "%${search.lowercase()}%"),
+                    cb.like(cb.lower(root.get("surName")), "%${search.lowercase()}%"),
+                    cb.like(cb.lower(root.get("email")), "%${search.lowercase()}%"),
                 )
             } else {
                 cb.conjunction()

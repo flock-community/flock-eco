@@ -60,8 +60,8 @@ class MemberQueryResolver(
         sort: String?,
         order: String?,
     ): PageRequest {
-        val order = order?.let { Sort.Direction.fromString(it) } ?: Sort.DEFAULT_DIRECTION
-        val sort = sort?.let { Sort.by(order, sort) } ?: Sort.unsorted()
-        return PageRequest.of(page ?: 0, size ?: 10, sort)
+        val resolvedDirection = order?.let { Sort.Direction.fromString(it) } ?: Sort.DEFAULT_DIRECTION
+        val resolvedSort = sort?.let { Sort.by(resolvedDirection, sort) } ?: Sort.unsorted()
+        return PageRequest.of(page ?: 0, size ?: 10, resolvedSort)
     }
 }

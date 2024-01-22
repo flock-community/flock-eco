@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -28,20 +29,24 @@
     </developers>
 
     <properties>
+
+        <!-- Dependency versions -->
+        <jackson.version>2.13.1</jackson.version>
         <java.version>11</java.version>
         <kotlin.version>1.6.10</kotlin.version>
-        <main.basedir>${project.basedir}</main.basedir>
-        <spring.boot.version>2.6.2</spring.boot.version>
-        <spring.boot.graphql.version>12.0.0</spring.boot.graphql.version>
         <liquibase.version>3.9.0</liquibase.version>
-        <jackson.version>2.13.1</jackson.version>
+        <main.basedir>${project.basedir}</main.basedir>
         <node.version>v16.13.2</node.version>
         <npm.version>8.4.0</npm.version>
+        <spring.boot.graphql.version>12.0.0</spring.boot.graphql.version>
+        <spring.boot.version>2.6.2</spring.boot.version>
 
-        <quality.skip>false</quality.skip>
-        <gpg.skip>true</gpg.skip>
+        <!--- configuration -->
         <dokka.skip>true</dokka.skip>
+        <gpg.skip>true</gpg.skip>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <quality.skip>false</quality.skip>
     </properties>
 
     <modules>
@@ -526,6 +531,7 @@
                             <includes>
                                 <include>**/develop/data/*</include>
                             </includes>
+                            <skipIfEmpty>true</skipIfEmpty>
                         </configuration>
                     </execution>
                 </executions>
@@ -562,15 +568,15 @@
                 <groupId>org.jetbrains.dokka</groupId>
                 <artifactId>dokka-maven-plugin</artifactId>
                 <version>1.9.0</version>
+                <configuration>
+                    <skip>${dokka.skip}</skip>
+                </configuration>
                 <executions>
                     <execution>
                         <phase>package</phase>
                         <goals>
                             <goal>javadocJar</goal>
                         </goals>
-                        <configuration>
-                            <skip>${dokka.skip}</skip>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
