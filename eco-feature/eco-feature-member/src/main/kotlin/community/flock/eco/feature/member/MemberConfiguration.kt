@@ -1,6 +1,5 @@
 package community.flock.eco.feature.member
 
-import LanguageIsoConfiguration
 import community.flock.eco.core.configurations.GraphqlConfiguration
 import community.flock.eco.feature.member.controllers.MemberController
 import community.flock.eco.feature.member.controllers.MemberFieldController
@@ -11,6 +10,7 @@ import community.flock.eco.feature.member.services.MemberFieldService
 import community.flock.eco.feature.member.services.MemberGroupService
 import community.flock.eco.feature.member.services.MemberService
 import community.flock.eco.iso.country.CountryIsoConfiguration
+import community.flock.eco.iso.language.LanguageIsoConfiguration
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import

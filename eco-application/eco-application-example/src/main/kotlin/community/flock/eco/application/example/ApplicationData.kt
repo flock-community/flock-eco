@@ -1,6 +1,6 @@
 package community.flock.eco.application.example
 
-import community.flock.eco.feature.member.develop.data.MemberLoadData
+import community.flock.eco.feature.member.develop.MemberLoadData
 import community.flock.eco.feature.user.develop.data.UserLoadData
 import community.flock.eco.feature.user.forms.UserAccountPasswordForm
 import community.flock.eco.feature.user.services.UserAccountService
@@ -29,7 +29,14 @@ class ApplicationData(
                 .map { it.toName() }
                 .toSet()
         userAccountService
-            .createUserAccountPassword(UserAccountPasswordForm(name = "Test", email = "test@test.nl", password = "test", authorities = all))
+            .createUserAccountPassword(
+                UserAccountPasswordForm(
+                    name = "Test",
+                    email = "test@test.nl",
+                    password = "test",
+                    authorities = all,
+                ),
+            )
         userLoadData.load(10)
         memberLoadData.load(100)
         workspaceLoadData.load()
