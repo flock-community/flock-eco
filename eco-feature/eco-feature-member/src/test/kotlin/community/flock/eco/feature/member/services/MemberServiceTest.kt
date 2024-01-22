@@ -1,9 +1,8 @@
-package services
+package community.flock.eco.feature.member.services
 
 import community.flock.eco.feature.member.events.UpdateMemberEvent
 import community.flock.eco.feature.member.model.Member
 import community.flock.eco.feature.member.repositories.MemberRepository
-import community.flock.eco.feature.member.services.MemberService
 import io.mockk.every
 import io.mockk.justRun
 import io.mockk.mockk

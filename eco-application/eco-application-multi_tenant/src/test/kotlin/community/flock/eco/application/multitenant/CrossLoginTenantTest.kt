@@ -1,8 +1,7 @@
-package community.flock.eco.application.multitenant
+package community.flock.eco.application.multitenant.community.flock.eco.application.multitenant
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import community.flock.eco.application.multitenant.controllers.RegistrationInput
-import community.flock.eco.feature.multitenant.services.MultiTenantSchemaService
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -12,25 +11,43 @@ import org.springframework.mock.web.MockHttpSession
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.util.UUID
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-class RegisterTenantTest {
+class CrossLoginTenantTest {
     @Autowired
     lateinit var mockMvc: MockMvc
-
-    @Autowired
-    lateinit var multiTenantSchemaService: MultiTenantSchemaService
 
     @Autowired
     lateinit var objectMapper: ObjectMapper
 
     @Test
-    fun registerTenant() {
+    fun `should not be able to cross login into tenant`() {
+        val sessionA = MockHttpSession()
+        val sessionB = MockHttpSession()
+
+        val tenantA = register(sessionA)
+        val tenantB = register(sessionB)
+
+        login(sessionA, tenantA)
+        login(sessionB, tenantB)
+
+        me(sessionA, tenantA)
+        me(sessionB, tenantB)
+
+        mockMvc.perform(
+            MockMvcRequestBuilders
+                .get("/api/users/me")
+                .session(sessionA)
+                .header("X-TENANT", tenantB.tenantName),
+        )
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isUnauthorized)
+    }
+
+    fun register(session: MockHttpSession): RegistrationInput {
         val random = UUID.randomUUID().toString().replace("-", "_")
         val input =
             RegistrationInput(
@@ -38,8 +55,6 @@ class RegisterTenantTest {
                 email = "tenant@$random.nl",
                 name = "Tenant de Tenant",
             )
-
-        val session = MockHttpSession()
 
         mockMvc.perform(
             MockMvcRequestBuilders
@@ -53,29 +68,36 @@ class RegisterTenantTest {
             .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk)
 
+        return input
+    }
+
+    fun login(
+        session: MockHttpSession,
+        tenant: RegistrationInput,
+    ) {
         mockMvc.perform(
             MockMvcRequestBuilders
                 .post("/login")
                 .session(session)
-                .header("X-TENANT", input.tenantName)
-                .content("username=${input.email}&password=password")
+                .header("X-TENANT", tenant.tenantName)
+                .content("username=${tenant.email}&password=password")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED),
         )
             .andDo(MockMvcResultHandlers.print())
             .andExpect(status().is3xxRedirection)
+    }
 
+    fun me(
+        session: MockHttpSession,
+        tenant: RegistrationInput,
+    ) {
         mockMvc.perform(
             MockMvcRequestBuilders
                 .get("/api/users/me")
                 .session(session)
-                .header("X-TENANT", input.tenantName),
+                .header("X-TENANT", tenant.tenantName),
         )
             .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk)
-            .andExpect(
-                MockMvcResultMatchers
-                    .jsonPath("$.email")
-                    .value(input.email),
-            )
     }
 }
