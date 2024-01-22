@@ -1,4 +1,4 @@
-package community.flock.eco.application.multitenant.config
+package community.flock.eco.application.multitenant.configuration
 
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer

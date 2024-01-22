@@ -1,7 +1,7 @@
 package community.flock.eco.application.multitenant
 
-import community.flock.eco.application.multitenant.config.WebMvcConfig
-import community.flock.eco.application.multitenant.config.WebSecurityConfig
+import community.flock.eco.application.multitenant.configuration.WebMvcConfig
+import community.flock.eco.application.multitenant.configuration.WebSecurityConfig
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.autoconfigure.data.rest.RepositoryRestMvcAutoConfiguration

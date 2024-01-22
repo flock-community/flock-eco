@@ -1,4 +1,4 @@
-package community.flock.eco.application.multitenant.config
+package community.flock.eco.application.multitenant.configuration
 
 import community.flock.eco.feature.multitenant.filters.MultiTenantFilter
 import community.flock.eco.feature.user.filters.UserKeyTokenFilter
