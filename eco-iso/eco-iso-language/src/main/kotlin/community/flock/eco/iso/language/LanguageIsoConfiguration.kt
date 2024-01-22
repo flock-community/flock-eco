@@ -1,3 +1,5 @@
+package community.flock.eco.iso.language
+
 import community.flock.eco.core.configurations.GraphqlConfiguration
 import community.flock.eco.iso.language.controllers.LanguageIsoController
 import community.flock.eco.iso.language.resolvers.LanguageIsoQueryResolver
