@@ -181,7 +181,6 @@
                 <artifactId>flock-eco-feature-user</artifactId>
                 <version>${project.parent.version}</version>
                 <classifier>develop</classifier>
-                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>community.flock.flock-eco</groupId>
@@ -193,14 +192,12 @@
                 <artifactId>flock-eco-feature-workspace</artifactId>
                 <version>${project.parent.version}</version>
                 <classifier>develop</classifier>
-                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>community.flock.flock-eco</groupId>
                 <artifactId>flock-eco-feature-member</artifactId>
                 <version>${project.parent.version}</version>
                 <classifier>develop</classifier>
-                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>community.flock.flock-eco</groupId>
@@ -522,6 +519,18 @@
                 <version>3.2.0</version>
                 <executions>
                     <execution>
+                        <id>default-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <excludes>
+                                <exclude>community/flock/eco/**/develop/**</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <phase>package</phase>
                         <goals>
                             <goal>test-jar</goal>
@@ -529,7 +538,7 @@
                         <configuration>
                             <classifier>develop</classifier>
                             <includes>
-                                <include>**/develop/data/*</include>
+                                <include>community/flock/eco/**/develop/**</include>
                             </includes>
                             <skipIfEmpty>true</skipIfEmpty>
                         </configuration>
