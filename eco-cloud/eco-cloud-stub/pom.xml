@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>flock-eco-cloud-stub</artifactId>
+    <description>DEPRECATED - This artifact is end of life. No further development is happening. Please migrate away from flock-eco or create a fork.</description>
 
     <dependencies>
         <dependency>

@@ -10,5 +10,6 @@
     </parent>
 
     <artifactId>flock-eco-cloud-azure</artifactId>
+    <description>DEPRECATED - This artifact is end of life. No further development is happening. Please migrate away from flock-eco or create a fork.</description>
 
 </project>

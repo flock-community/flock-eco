@@ -9,5 +9,6 @@
     </parent>
 
     <artifactId>flock-eco-feature-session</artifactId>
+    <description>DEPRECATED - This artifact is end of life. No further development is happening. Please migrate away from flock-eco or create a fork.</description>
 
 </project>

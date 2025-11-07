@@ -1,6 +1,7 @@
 {
   "name": "@flock-community/flock-eco-application-multi_tenant",
   "version": "2.8.1",
+  "deprecated": "This package is end of life. No further development is happening. Please migrate away from flock-eco or create a fork.",
   "description": "",
   "main": "index.js",
   "scripts": {

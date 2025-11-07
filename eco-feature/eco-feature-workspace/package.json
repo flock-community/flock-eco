@@ -1,6 +1,7 @@
 {
   "name": "@flock-community/flock-eco-feature-workspace",
   "version": "2.8.1",
+  "deprecated": "This package is end of life. No further development is happening. Please migrate away from flock-eco or create a fork.",
   "dependencies": {
     "@flock-community/flock-eco-core": "^2.8.1"
   },

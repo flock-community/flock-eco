@@ -1,5 +1,11 @@
 # Flock ecosystem
 
+## ⚠️ END OF LIFE NOTICE
+
+**This repository is end of life, and no further development is happening.** We kindly request users to migrate away from flock-eco or create a fork.
+
+---
+
 Flock. eco is a collection of fullstack moduels which bootstraps development of platforms which can be deployed in the cloud.
 
 ## Setup

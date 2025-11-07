@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
 
     <name>Flock. eco</name>
-    <description>Flock. eco</description>
+    <description>DEPRECATED - This project is end of life. No further development is happening. Please migrate away from flock-eco or create a fork.</description>
 
     <url>https://github.com/flock-community/flock-eco</url>
 
@@ -591,6 +591,35 @@
                         <goals>
                             <goal>sign</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>antrun-plugin</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <echo message="" />
+                                <echo message="" />
+                                <echo message="" />
+                                <echo message="" />
+                                <echo message="DEPRECATED - This artifact is end of life. No further development is happening. Please migrate away from flock-eco or create a fork."/>
+                                <echo message="No further development is happening. Please migrate away from flock-eco or create a fork."/>
+                                <echo message="Please migrate away from flock-eco or create a fork."/>
+                                <echo message=""/>
+                                <echo message=""/>
+                                <echo message=""/>
+                            </target>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
